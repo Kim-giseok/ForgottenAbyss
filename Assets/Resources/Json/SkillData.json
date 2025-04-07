@@ -1,28 +1,28 @@
 {
-  "Skills": {
-    "1": {
+  "Skills": [
+    {
       "Id": 1,
       "Name": "sampleSkill_01",
       "Description": "샘플 스킬 1",
       "CoolTime": 5,
       "Damage": 50,
-      "EffectPath": "Prefabs/Skill/SampleEffect_01"
+      "SkillSOName": "Sample_01"
     },
-    "2": {
+    {
       "Id": 2,
       "Name": "sampleSkill_02",
       "Description": "샘플 스킬 2",
       "CoolTime": 3,
       "Damage": 30,
-      "EffectPath": "Prefabs/Skill/SampleEffect_02"
+      "SkillSOName": "Sample_02"
     },
-    "3": {
+    {
       "Id": 3,
       "Name": "sampleSkill_03",
       "Description": "샘플 스킬 3",
       "CoolTime": 7,
       "Damage": 70,
-      "EffectPath": "Prefabs/Skill/SampleEffect_03"
+      "SkillSOName": "Sample_03"
     }
-  }
+  ]
 }

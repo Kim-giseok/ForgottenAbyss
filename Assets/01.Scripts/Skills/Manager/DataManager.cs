@@ -22,8 +22,8 @@ public class DataManager : Singleton<DataManager>
         LoadSkillData();
         InitSkillSO();
 
-        LoadWeaponData();
-        InitWeaponSO();
+        //LoadWeaponData();
+        //InitWeaponSO();
     }
 
     private void LoadSkillData()
