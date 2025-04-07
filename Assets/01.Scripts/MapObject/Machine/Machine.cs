@@ -4,5 +4,11 @@ using UnityEngine;
 
 public class Machine : MonoBehaviour
 {
-    public void Active() { }
+    protected bool isActivated = false;
+
+    public virtual void Active()
+    {
+        if (isActivated) return;
+        isActivated = true;
+    }
 }
