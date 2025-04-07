@@ -4,4 +4,10 @@ using UnityEngine;
 
 public class Map : MonoBehaviour
 {
+    [SerializeField] Transform startP;
+
+    public void MapStart()
+    {
+        //move player's transform to startP
+    }
 }

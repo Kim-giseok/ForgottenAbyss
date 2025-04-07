@@ -23,5 +23,6 @@ public class MapSpawnManager : Singleton<MapSpawnManager>
             Destroy(curMap.gameObject);
 
         curMap = Instantiate(maps[Random.Range(0, maps.Length)]);
+        curMap.MapStart();
     }
 }
