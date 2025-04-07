@@ -4,11 +4,6 @@ using UnityEngine;
 
 public class MachinePortal : Machine, IInteractable
 {
-    public override void Active()
-    {
-        base.Active();
-    }
-
     public void ActiveInteraction()
     {
         if (!isActivated) return;
