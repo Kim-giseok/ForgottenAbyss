@@ -6,7 +6,7 @@ public class LaberBase : MonoBehaviour
 {
     [SerializeField] Machine targetMachine;
     [SerializeField] Animator laberAnim;
-    bool isSwitched = false;
+    protected bool isSwitched = false;
 
     protected virtual void SwitchMachine()
     {
