@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class IdleNode : Node
@@ -17,13 +18,23 @@ public class IdleNode : Node
 
     public override void Update()
     {
+        Vector2 distance = (controller.agent.player.transform.position - controller.transform.position);
+        
+        if (controller.agent.detectedDistance >= distance.magnitude)
+        {
+            SetStatus(Status.Fail);
+            return;
+        }
+
+        
         currTime += Time.deltaTime;
-        Debug.Log("idle");
         if (currTime >= duration)
         {
             SetStatus(Status.Success);
             return;
         }
+        
+        Debug.Log("idle");
     }
 }
 
@@ -47,6 +58,14 @@ public class PatrolNode : Node
 
     public override void Update()
     {
+        Vector2 distance = (controller.agent.player.transform.position - controller.transform.position);
+        
+        if (controller.agent.detectedDistance >= distance.magnitude)
+        {
+            SetStatus(Status.Fail);
+            return;
+        }
+        
         currTime += Time.deltaTime;
         if (currTime >= duration)
         {
@@ -55,34 +74,33 @@ public class PatrolNode : Node
         }
         
         controller.rigidbody.velocity = new Vector2(direction.x, controller.rigidbody.velocity.y);
+        Debug.Log("Patrol");
     }
 }
 
 public class TracingNode : Node
 {
-    public override void Start()
-    {
-        if (controller.agent.detectedDistance < controller.agent.GetDistance())  
-        {
-            SetStatus(Status.Fail);
-            return;
-        }
-    }
-
     public override void Update()
     {
-        Debug.Log(controller.agent.GetDistance());
-        if (controller.agent.detectedDistance < controller.agent.GetDistance())
+        Vector2 distance = (controller.agent.player.transform.position - controller.transform.position);
+        controller.Flip(distance.normalized.x > 0);
+        
+        if (controller.agent.detectedDistance < distance.magnitude)
         {
+            Debug.Log("fail");
             SetStatus(Status.Fail);
             return;
         }
         
-        if (controller.agent.stopingDistance > controller.agent.GetDistance())
+        if (controller.agent.stoppingDistance > distance.magnitude)
         {
+            Debug.Log("success");
             SetStatus(Status.Success);
            return;
         }
+        
+        controller.rigidbody.velocity = new Vector2(distance.normalized.x * controller.agent.tracingSpeed, controller.rigidbody.velocity.y);
+        Debug.Log("tracing");
     }
 }
 
@@ -91,7 +109,9 @@ public class KnifeAttackNode : Node
 {
     public override void Update()
     {
-        if (controller.agent.stopingDistance < controller.agent.GetDistance())
+        float distance = (controller.transform.position - controller.agent.player.transform.position).magnitude;
+
+        if (controller.agent.stoppingDistance < distance)
         {
             SetStatus(Status.Fail);
             return;
@@ -99,6 +119,18 @@ public class KnifeAttackNode : Node
         
         Debug.Log("attack");
     }
-} 
+}
 
-
+public class HitNode : Node
+{
+    public override void Start()
+    {
+        if (!controller.isHit)
+        {
+            SetStatus(Status.Fail);
+            return;
+        }
+        
+        controller.isHit = false;
+    }
+}

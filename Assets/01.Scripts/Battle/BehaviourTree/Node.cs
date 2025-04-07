@@ -23,7 +23,7 @@ public abstract class Node
     public void SetStatus(Status newStatus)
     {
         btMachine.isRunning = false; // 일시 정지, 캡슐화 필요
-        parent.GetStatus(newStatus);
+        parent.GetStatus(newStatus, this);
     }
 
     public virtual void Start() {}
@@ -33,5 +33,5 @@ public abstract class Node
     public virtual void OnAnimatedEvent(bool isFire) {}
     public virtual void OnAnimated(AnimationStatus status, Animator animator) {}
     
-    public virtual void GetStatus(Status newStatus) {}
+    public virtual void GetStatus(Status newStatus, Node caller) {}
 }

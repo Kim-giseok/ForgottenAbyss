@@ -7,13 +7,15 @@ public class EnemyController : MonoBehaviour, IDamagable
     public float health;
     public float attack;
 
+    [HideInInspector] public bool isHit;
+
     public BTMachine btMachine { get; private set; }
     public EnemyAgent agent { get; private set; }
     public Rigidbody2D rigidbody { get; private set; }
     
     
     private Transform pivot;
-    public WeaponSO currWeapon;
+    public GameObject currWeapon; // 무기의 애니메이션이 발생할 수도 있음
 
     public void Awake()
     {
@@ -27,14 +29,11 @@ public class EnemyController : MonoBehaviour, IDamagable
     {
         pivot = transform.Find("Pivot");
         if (!pivot) { pivot = new GameObject("Pivot").transform; pivot.parent = transform; }
-
-        GameObject weapon = new("Weapon");
-        weapon.AddComponent<SpriteRenderer>().sprite = currWeapon.image;
-        weapon.transform.SetParent(pivot);
-
+        
         btMachine.Define(
             new Selector(
-                // new Sequence(new TracingNode(), new KnifeAttackNode()),
+                new Sequence(new HitNode()),
+                new Sequence(new TracingNode(), new KnifeAttackNode()),
                 new Sequence(new IdleNode(duration: 1), new PatrolNode(duration: 1)))
         );
     }
@@ -44,9 +43,19 @@ public class EnemyController : MonoBehaviour, IDamagable
         transform.rotation = Quaternion.Euler(0, isFlip ? 0 : 180, 0);
     }
     
-    public void TakeDamage(float damage)
+    public void GetDamage(float damage)
     {
+        isHit = true;
         health -= damage;
+        // btMachine.Notify();
+        if(health <= 0) Destroy(gameObject);
+
+    }
+
+    // 리워드 표시, 리스폰 아리어에서 제거
+    public void Clear()
+    {
+        
     }
 
     private void FixedUpdate()

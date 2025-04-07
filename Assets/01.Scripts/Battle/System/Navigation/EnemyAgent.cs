@@ -6,8 +6,11 @@ using UnityEngine.Tilemaps;
 public class EnemyAgent : MonoBehaviour
 {
     public GameObject player { get; private set; }
+    
     public float detectedDistance;
-    public float stopingDistance;
+    public float stoppingDistance;
+    public float tracingSpeed;
+    
     public Tilemap tilemap; // 추후 동적으로 찾도록 처리
 
     private void Awake()

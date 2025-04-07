@@ -41,4 +41,9 @@ public class BTMachine
         rootNode = new RootNode(newNode);
         SetNode(rootNode);
     }
+
+    public void Notify()
+    {
+        SetNode(rootNode);
+    }
 }

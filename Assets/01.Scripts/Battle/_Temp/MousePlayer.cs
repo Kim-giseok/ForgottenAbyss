@@ -15,7 +15,12 @@ public class MousePlayer : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            ProjectileManager.Instance.CreateProjectile(transform.position + transform.right, 0);
+            ProjectileManager.Instance.CreateProjectile(transform, 10);
+        }
+
+        if (Input.GetKeyUp(KeyCode.Space))
+        {
+            ProjectileManager.Instance.DestroyProjectile(transform);
         }
     }
     

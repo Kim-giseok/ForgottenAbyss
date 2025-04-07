@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class RootNode : Node
@@ -18,8 +17,9 @@ public class RootNode : Node
     }
 
     // 어떤 상태가 들어오든 다시 시작
-    public override void GetStatus(Status newStatus)
+    public override void GetStatus(Status newStatus, Node caller)
     {
+        Debug.Log("restart");
         btMachine.SetNode(child);    
     }
 }
@@ -41,22 +41,24 @@ public class Sequence : Node
         btMachine.SetNode(children[0]);
     }
 
-    public override void GetStatus(Status newStatus)
+    public override void GetStatus(Status newStatus , Node caller)
     {
         if (newStatus == Status.Fail)
         {
-            parent.SetStatus(Status.Fail);
+            Debug.Log("fail from sequence");
+            SetStatus(Status.Fail);
             return;
         }
         
-        int currIndex = children.IndexOf(btMachine.currNode);
+        int currIndex = children.IndexOf(caller);
         if (currIndex < children.Count - 1)
         {
             btMachine.SetNode(children[currIndex + 1]);
             return;
         }
         
-        parent.SetStatus(Status.Success);
+        Debug.Log("success from here");
+        SetStatus(Status.Success);
         return;
     }
 }
@@ -79,20 +81,25 @@ public class Selector : Node
         btMachine.SetNode(children[0]);
     }
     
-    public override void GetStatus(Status newStatus)
+    public override void GetStatus(Status newStatus, Node caller)
     {
         if (newStatus == Status.Fail)
         {
-            int currIndex = children.IndexOf(btMachine.currNode);
+            int currIndex = children.IndexOf(caller);
+            
+            Debug.Log(currIndex);
             if (currIndex < children.Count - 1)
             {
                 btMachine.SetNode(children[currIndex + 1]);
+                Debug.Log(children[currIndex + 1]);
                 return;
             }
             
                  
-            parent.SetStatus(Status.Fail);
+            SetStatus(Status.Fail);
             return;
         }
+        
+        SetStatus(Status.Success);
     }
 }
