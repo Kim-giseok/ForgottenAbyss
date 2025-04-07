@@ -34,7 +34,7 @@ public class SkillManager : Singleton<SkillManager>
 
         // 이펙트 생성
         Instantiate(skillSO.skillEffectPrefab, spawnPoint.position, spawnPoint.rotation);
-        Debug.Log($"Used Skill: {skillData.Name} (Damage: {skillData.Damage})");
+        Debug.Log($"Used Skill: {skillData.Name} (Damage: {skillData.DamageMultiplier})");
 
         // 쿨타임 갱신
         nextAvailableTimes[skillId] = Time.time + skillData.CoolTime;

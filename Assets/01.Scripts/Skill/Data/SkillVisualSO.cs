@@ -2,9 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "SkillSO", menuName = "SO/SkillSO")]
-public class SkillDataSO : ScriptableObject
+[CreateAssetMenu(fileName = "VisualSkillSO", menuName = "SO/Skill/VisualSkillSO")]
+public class SkillVisualSO : ScriptableObject
 {
+    // 스킬 실행 연결
+    public SkillExecutionSO executionSO;
+
+    // 스킬 아이콘
+    public Sprite icon;
+
     // 이펙트 프리팹
     public GameObject skillEffectPrefab;
 

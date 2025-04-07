@@ -15,6 +15,6 @@ public class WeaponDataSO : ScriptableObject
     public AudioClip AttackSound;
 
     // 연결할 스킬 SO
-    public SkillDataSO Skill1SO;
-    public SkillDataSO Skill2SO;
+    public SkillVisualSO Skill01SO;
+    public SkillVisualSO Skill02SO;
 }

@@ -5,8 +5,8 @@ using UnityEngine;
 public class DataManager : Singleton<DataManager>
 {
     public SkillDataList skillDataList;
-    public Dictionary<string, SkillDataSO> skillSODic = new Dictionary<string, SkillDataSO>();
-    public List<SkillDataSO> skillSOList;
+    public Dictionary<string, SkillVisualSO> skillSODic = new Dictionary<string, SkillVisualSO>();
+    public List<SkillVisualSO> skillSOList;
 
     public WeaponDataList weaponDataList;
     public Dictionary<string, WeaponDataSO> weaponSODic = new Dictionary<string, WeaponDataSO>();
@@ -34,7 +34,7 @@ public class DataManager : Singleton<DataManager>
 
     private void InitSkillSO()
     {
-        var allSOs = Resources.LoadAll<SkillDataSO>("SkillSO");
+        var allSOs = Resources.LoadAll<SkillVisualSO>("Visual");
 
         foreach (var so in allSOs)
         {
@@ -50,7 +50,7 @@ public class DataManager : Singleton<DataManager>
         return skillDataList.Skills.Find(x => x.Id == id);
     }
 
-    public SkillDataSO GetSkillSO(string name)
+    public SkillVisualSO GetSkillSO(string name)
     {
         return skillSODic[name];
     }
