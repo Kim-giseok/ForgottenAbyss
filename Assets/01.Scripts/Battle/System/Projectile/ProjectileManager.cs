@@ -8,12 +8,13 @@ public class ProjectileManager : Singleton<ProjectileManager>
     public List<GameObject> projectileList;
     public List<(int index, GameObject instance)> currProjectiles = new();
     
-    public GameObject CreateProjectile(Transform currPos, int index)
+    // 사이즈 포함
+    public GameObject CreateProjectile(Vector2 currPos, int index)
     {
         var selectedProjectile = currProjectiles.Find(projectile => projectile.index == index && !projectile.instance.activeSelf);
         if (!selectedProjectile.instance)
         {
-            GameObject newProjectile  = Instantiate(projectileList[index], currPos.position, Quaternion.identity, transform);
+            GameObject newProjectile  = Instantiate(projectileList[index], currPos, Quaternion.identity, transform);
             currProjectiles.Add((index, newProjectile));
             return newProjectile;
         }

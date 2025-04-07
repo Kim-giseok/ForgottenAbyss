@@ -33,7 +33,9 @@ public class EnemyController : MonoBehaviour, IDamagable
         weapon.transform.SetParent(pivot);
 
         btMachine.Define(
-            new Selector(new Sequence(), new Sequence())
+            new Selector(
+                // new Sequence(new TracingNode(), new KnifeAttackNode()),
+                new Sequence(new IdleNode(duration: 1), new PatrolNode(duration: 1)))
         );
     }
 

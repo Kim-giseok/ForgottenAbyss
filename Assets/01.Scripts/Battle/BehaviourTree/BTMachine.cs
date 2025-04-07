@@ -3,7 +3,7 @@ public class BTMachine
     private EnemyController controller;
     private BlackBoard blackBoard = new();
 
-    private bool isLooping = false;
+    public bool isRunning = true;
     private Node rootNode;
     public Node currNode { get; private set; }
 
@@ -12,21 +12,23 @@ public class BTMachine
         this.controller = controller;
     }
     
+    // ReSharper disable Unity.PerformanceAnalysis
     public void Run()
     {
-        if (!isLooping) return;
+        if (!isRunning) return;
         currNode.Update();
     }
 
     public void SetNode(Node newNode)
     {
-        isLooping = false;
+        isRunning = false;
         
         currNode?.End();
         currNode = newNode;
+        currNode.Connect(controller);
         currNode.Start();
         
-        isLooping = true;
+        isRunning = true;
     }
 
     public void OnAnimatedEvent(bool isFire)
@@ -34,9 +36,9 @@ public class BTMachine
         currNode?.OnAnimatedEvent(isFire);
     }
 
-    public void Define(Node newNode)
+    public void Define(Node newNode)    
     {
         rootNode = new RootNode(newNode);
-        currNode = rootNode;
+        SetNode(rootNode);
     }
 }

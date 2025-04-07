@@ -9,15 +9,20 @@ public abstract class Node
     public enum Status { Success, Fail }
     public enum AnimationStatus { Start, End }
 
-    public void Connect(EnemyController controller, BTMachine btMachine)
+    public void Connect(EnemyController controller)
     {
         this.controller = controller;
-        this.btMachine = btMachine;
+        this.btMachine = this.controller.btMachine;
+    }
+
+    public void SetParent(Node parent)
+    {
+        this.parent = parent;
     }
 
     public void SetStatus(Status newStatus)
     {
-        btMachine.SetNode(null); // 상태를 비우거나, 변경을 위한 정지 필요
+        btMachine.isRunning = false; // 일시 정지, 캡슐화 필요
         parent.GetStatus(newStatus);
     }
 

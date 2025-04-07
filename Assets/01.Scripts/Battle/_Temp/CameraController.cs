@@ -3,7 +3,7 @@ using UnityEngine;
 public class CameraController : MonoBehaviour
 {
     public int depth;
-    public Transform player;
+    public Transform player { get; private set; }
 
     private void Awake()
     {

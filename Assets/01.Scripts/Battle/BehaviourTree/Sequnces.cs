@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 
 public class RootNode : Node
 {
@@ -6,6 +8,7 @@ public class RootNode : Node
 
     public RootNode(Node node)
     {
+        node.SetParent(this);
         child = node;
     }
 
@@ -23,10 +26,19 @@ public class RootNode : Node
 
 public class Sequence : Node
 {
-    private List<Node> children;
+    private List<Node> children = new();
     public Sequence(params Node[] nodes)
     {
-        children.AddRange(nodes);
+        foreach (Node child in nodes)
+        {
+            child.SetParent(this);
+            children.Add(child);
+        }
+    }
+
+    public override void Start()
+    {
+        btMachine.SetNode(children[0]);
     }
 
     public override void GetStatus(Status newStatus)
@@ -51,11 +63,20 @@ public class Sequence : Node
 
 public class Selector : Node
 {
-    private List<Node> children;
+    private List<Node> children = new();
     
     public Selector(params Node[] nodes)
     {
-        children.AddRange(nodes);
+        foreach(Node child in nodes)
+        {
+            child.SetParent(this);
+            children.Add(child);
+        }
+    }
+    
+    public override void Start()
+    {
+        btMachine.SetNode(children[0]);
     }
     
     public override void GetStatus(Status newStatus)
