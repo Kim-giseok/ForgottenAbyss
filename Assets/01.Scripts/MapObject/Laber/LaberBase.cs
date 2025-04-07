@@ -10,6 +10,7 @@ public class LaberBase : MonoBehaviour
 
     public virtual void SwitchMachine()
     {
+        laberAnim.SetTrigger("Active");
         targetMachine.Active();
         isSwitched = true;
     }
