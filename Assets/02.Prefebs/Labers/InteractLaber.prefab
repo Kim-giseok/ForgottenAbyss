@@ -47,6 +47,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetMachine: {fileID: 0}
+  laberAnim: {fileID: 0}
 --- !u!61 &2796516333006488116
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -103,6 +104,7 @@ GameObject:
   - component: {fileID: 27271908401129838}
   - component: {fileID: 7822760281104899675}
   - component: {fileID: 235059874148236258}
+  - component: {fileID: 9079759598699955294}
   m_Layer: 0
   m_Name: Square
   m_TagString: Untagged
@@ -222,3 +224,24 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!95 &9079759598699955294
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7035314710040318383}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 22100000, guid: b32f41ce42e77324fb8e0efe0e7e93f3, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
