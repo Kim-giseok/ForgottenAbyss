@@ -1,19 +1,27 @@
 {
   "Skills": [
     {
+      "Id": 0,
+      "Name": "BasicAttack",
+      "Description": "기본 공격",
+      "CoolTime": 0.5,
+      "DamageMultiplier": 1,
+      "SkillSOName": "Basic_Attack"
+    },
+    {
       "Id": 1,
       "Name": "sampleSkill_01",
       "Description": "샘플 스킬 1",
-      "CoolTime": 5,
-      "Damage": 50,
+      "CoolTime": 3,
+      "DamageMultiplier": 2,
       "SkillSOName": "Sample_01"
     },
     {
       "Id": 2,
       "Name": "sampleSkill_02",
       "Description": "샘플 스킬 2",
-      "CoolTime": 3,
-      "Damage": 30,
+      "CoolTime": 5,
+      "DamageMultiplier": 3,
       "SkillSOName": "Sample_02"
     },
     {
@@ -21,7 +29,7 @@
       "Name": "sampleSkill_03",
       "Description": "샘플 스킬 3",
       "CoolTime": 7,
-      "Damage": 70,
+      "DamageMultiplier": 5,
       "SkillSOName": "Sample_03"
     }
   ]

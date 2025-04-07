@@ -34,10 +34,14 @@ public class DataManager : Singleton<DataManager>
 
     private void InitSkillSO()
     {
-        foreach (SkillDataSO so in skillSOList)
+        var allSOs = Resources.LoadAll<SkillDataSO>("SkillSO");
+
+        foreach (var so in allSOs)
         {
             if (!skillSODic.ContainsKey(so.name))
+            {
                 skillSODic.Add(so.name, so);
+            }
         }
     }
 
