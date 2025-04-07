@@ -7,16 +7,20 @@ public class EnemyController : MonoBehaviour, IDamagable
     public float health;
     public float attack;
 
-    private BTMachine btMachine;
+    public BTMachine btMachine { get; private set; }
+    public EnemyAgent agent { get; private set; }
+    public Rigidbody2D rigidbody { get; private set; }
+    
     
     private Transform pivot;
     public WeaponSO currWeapon;
 
     public void Awake()
     {
-        btMachine = new(this);
+        agent = GetComponent<EnemyAgent>();
+        rigidbody = GetComponent<Rigidbody2D>();
         
- 
+        btMachine = new(this);
     }
 
     private void Start()
@@ -27,6 +31,10 @@ public class EnemyController : MonoBehaviour, IDamagable
         GameObject weapon = new("Weapon");
         weapon.AddComponent<SpriteRenderer>().sprite = currWeapon.image;
         weapon.transform.SetParent(pivot);
+
+        btMachine.Define(
+            new Selector(new Sequence(), new Sequence())
+        );
     }
 
     public void Flip(bool isFlip)
@@ -42,5 +50,10 @@ public class EnemyController : MonoBehaviour, IDamagable
     private void FixedUpdate()
     {
         btMachine.Run();
+    }
+
+    private void OnAnimatedEvent(int value)
+    {
+        btMachine.OnAnimatedEvent(value == 1);
     }
 }

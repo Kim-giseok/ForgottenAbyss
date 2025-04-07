@@ -5,7 +5,7 @@ public class BTMachine
 
     private bool isLooping = false;
     private Node rootNode;
-    private Node currNode;
+    public Node currNode { get; private set; }
 
     public BTMachine(EnemyController controller)
     {
@@ -18,7 +18,7 @@ public class BTMachine
         currNode.Update();
     }
 
-    public void SetState(Node newNode)
+    public void SetNode(Node newNode)
     {
         isLooping = false;
         
@@ -27,5 +27,16 @@ public class BTMachine
         currNode.Start();
         
         isLooping = true;
+    }
+
+    public void OnAnimatedEvent(bool isFire)
+    {
+        currNode?.OnAnimatedEvent(isFire);
+    }
+
+    public void Define(Node newNode)
+    {
+        rootNode = new RootNode(newNode);
+        currNode = rootNode;
     }
 }

@@ -1,8 +1,13 @@
 using UnityEngine;
 
-public class HitBox : MonoBehaviour
+public class HitBox : MonoBehaviour // 1회 공격 당의 캐싱이 필요할 수 있음
 {
-    public float damage;
+    private float damage = 1;
+
+    public void SetDamage(float damage)
+    {
+        this.damage = damage;
+    }
 
     private void OnTriggerEnter(Collider other)
     {
