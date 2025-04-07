@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Net.NetworkInformation;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -16,9 +17,12 @@ public class ControllerPlayer : MonoBehaviour
 
     Rigidbody2D rigid;
 
+    PlayerInteraction interaction;
+
     private void Awake()
     {
         rigid = GetComponent<Rigidbody2D>();
+        interaction = GetComponent<PlayerInteraction>();
     }
 
     private void FixedUpdate()
@@ -44,7 +48,7 @@ public class ControllerPlayer : MonoBehaviour
         }
     }
 
-    void OnDash(InputValue value)
+    void OnDash(InputValue value) //대쉬 키 입력
     {
         if (value.isPressed && !isDashing && isGround)
         {
@@ -52,42 +56,45 @@ public class ControllerPlayer : MonoBehaviour
         }
     }
 
-    void OnAttack()
+    void OnAttack() //일반공격 키 입력
     {
         Debug.Log("A: 일반공격");
     }
 
-    void OnFirstSkill()
+    void OnFirstSkill() //1번스킬 키 입력
     {
         Debug.Log("S: 스킬1");
     }
 
-    void OnSecondSkill()
+    void OnSecondSkill() //2번스킬 키 입력
     {
         Debug.Log("D: 스킬2");
     }
 
-    void OnSpecialSkill()
+    void OnSpecialSkill() //특수스킬 키 입력
     {
         Debug.Log("R: 특수 스킬");
     }
 
-    void OnInteraction()
+    void OnInteraction() //상호 작용 키 입력
     {
+        Vector2 origin = transform.position;
+        Vector2 direction = transform.right;
+        interaction.Interact(origin, direction);
         Debug.Log("F: 상호작용");
     }
 
-    void OnInventory()
+    void OnInventory() //인벤토리 키 입력
     {
         Debug.Log("I: 인벤토리 열기");
     }
 
-    void OnMenu()
+    void OnMenu() //메뉴 키 입력
     {
         Debug.Log("Esc: 메뉴창 열기");
     }
 
-    void OnOtherWeapon()
+    void OnOtherWeapon() //무기변환 키 입력
     {
         Debug.Log("Z: 다른무기로 변환");
     }
