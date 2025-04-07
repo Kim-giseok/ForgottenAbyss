@@ -11,9 +11,8 @@ public class MachinePortal : Machine, IInteractable
 
     public void ActiveInteraction()
     {
-        if (isActivated)
-        {        //MapSpawnManager.Instance.SpawnRandomMap();
-        }
+        if (!isActivated) return;
+        MapSpawnManager.Instance.SpawnRandomMap();
     }
 
     public void ReadyInteraction()
