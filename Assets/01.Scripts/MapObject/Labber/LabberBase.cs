@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class LabberBase : MonoBehaviour
 {
-    IMachine targetMachine;
+    public Machine targetMachine;
 
     public virtual void SwitchMachine()
     {

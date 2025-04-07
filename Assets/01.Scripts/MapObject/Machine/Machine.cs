@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IMachine
+public class Machine : MonoBehaviour
 {
-    public void Active();
+    public void Active() { }
 }
