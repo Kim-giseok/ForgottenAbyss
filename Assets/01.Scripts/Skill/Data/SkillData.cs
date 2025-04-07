@@ -18,6 +18,6 @@ public class SkillData
     public string Description;
     public float CoolTime;
     public float DamageMultiplier;
-    public string SkillSOName;
+    public string VisualSOName;
     public SkillType Type;
 }

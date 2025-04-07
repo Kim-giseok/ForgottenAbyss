@@ -44,7 +44,7 @@ public class SkillEditorWindow : EditorWindow
         if (selectedSkillVisualSO != null)
         {
             string soName = selectedSkillVisualSO.name;
-            currentSkillData = skillDataList.Skills.FirstOrDefault(s => s.SkillSOName == soName);
+            currentSkillData = skillDataList.Skills.FirstOrDefault(s => s.VisualSOName == soName);
 
             if (currentSkillData != null)
             {
@@ -93,7 +93,7 @@ public class SkillEditorWindow : EditorWindow
             Description = "New skill description",
             CoolTime = 1f,
             DamageMultiplier = 1f,
-            SkillSOName = newSkillName
+            VisualSOName = newSkillName
         };
 
         skillDataList.Skills.Add(newSkillData);

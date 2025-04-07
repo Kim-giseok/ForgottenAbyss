@@ -25,15 +25,15 @@ public class SkillManager : Singleton<SkillManager>
         }
 
         // SO에서 스킬 이펙트 가져오기
-        var skillSO = DataManager.Instance.GetSkillSO(skillData.SkillSOName);
-        if (skillSO == null || skillSO.skillEffectPrefab == null)
+        var visualSO = DataManager.Instance.GetSkillSO(skillData.VisualSOName);
+        if (visualSO == null || visualSO.skillEffectPrefab == null)
         {
             Debug.LogWarning("Skill SO or skillEffectPrefab is missing.");
             return;
         }
 
         // 이펙트 생성
-        Instantiate(skillSO.skillEffectPrefab, spawnPoint.position, spawnPoint.rotation);
+        Instantiate(visualSO.skillEffectPrefab, spawnPoint.position, spawnPoint.rotation);
         Debug.Log($"Used Skill: {skillData.Name} (Damage: {skillData.DamageMultiplier})");
 
         // 쿨타임 갱신

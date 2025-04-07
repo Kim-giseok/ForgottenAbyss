@@ -10,7 +10,7 @@ public class SkillController : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Q))
+        if (Input.GetKeyDown(KeyCode.A))
         {
             //SkillManager.Instance.TryUseSkill(testSkillId, skillSpawnPoint);
             Animator anim = sword.GetComponentInChildren<Animator>();
