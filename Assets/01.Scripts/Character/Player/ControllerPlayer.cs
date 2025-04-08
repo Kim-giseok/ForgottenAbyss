@@ -14,8 +14,10 @@ public class ControllerPlayer : MonoBehaviour
 
     private bool isGround; //땅 밟고 있는지 여부
     private bool isDashing = false; //대쉬 여부
+    private bool isAttacking = false; //공격 여부
 
     Rigidbody2D rigid;
+    Animator animator;
 
     PlayerInteraction interaction;
 
@@ -23,11 +25,12 @@ public class ControllerPlayer : MonoBehaviour
     {
         rigid = GetComponent<Rigidbody2D>();
         interaction = GetComponent<PlayerInteraction>();
+        animator = GetComponent<Animator>();
     }
 
     private void FixedUpdate()
     {
-        if (!isDashing)
+        if (!isDashing && !isAttacking)
         {
             rigid.velocity = new Vector2(inputVec.x * speed, rigid.velocity.y);
             UpdateDirection();
@@ -37,28 +40,33 @@ public class ControllerPlayer : MonoBehaviour
     void OnMove(InputValue value)
     {
         inputVec = value.Get<Vector2>();
+        animator.SetBool("IsRun", inputVec.x != 0);
     }
 
     void OnJump(InputValue value)
     {
-        if (value.isPressed && isGround) //땅에 닿아 있을 때 점프 가능
+        if (value.isPressed && isGround && !isAttacking) //땅에 닿아 있을 때 점프 가능
         {
             rigid.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
             isGround = false;
+            animator.SetBool("IsJump", true);
         }
     }
 
     void OnDash(InputValue value) //대쉬 키 입력
     {
-        if (value.isPressed && !isDashing && isGround)
+        if (value.isPressed && !isDashing && isGround && !isAttacking)
         {
             StartCoroutine(Dash());
         }
     }
 
-    void OnAttack() //일반공격 키 입력
+    public void OnAttack(InputValue value) //일반공격 키 입력
     {
-        Debug.Log("A: 일반공격");
+        if (value.isPressed && !isDashing && !isAttacking )
+        {
+            StartCoroutine (Attack());
+        }
     }
 
     void OnFirstSkill() //1번스킬 키 입력
@@ -116,6 +124,7 @@ public class ControllerPlayer : MonoBehaviour
         if (collision.gameObject.CompareTag("Ground"))
         {
             isGround = true;
+            animator.SetBool("IsJump", false);
         }
     }
 
@@ -131,5 +140,27 @@ public class ControllerPlayer : MonoBehaviour
         
         isDashing = false; //대쉬 종료
         rigid.velocity = new Vector2(inputVec.x * speed, rigid.velocity.y); //원래 속도로 복귀
+    }
+
+    IEnumerator Attack()
+    {
+        isAttacking = true;
+        animator.SetBool("IsAttacking", true);
+        animator.SetBool("IsRun", false);
+        rigid.velocity = new Vector2(0, rigid.velocity.y);
+        ProjectileManager.Instance.CreateProjectile(transform, 10);
+
+        yield return new WaitForSeconds(1f);
+
+        isAttacking = false;
+        animator.SetBool("IsAttacking", false);
+        ProjectileManager.Instance.DestroyProjectile(transform);
+
+        // 공격 종료 후 방향키가 여전히 눌려있다면 속도 복원
+        if (inputVec.x != 0)
+        {
+            animator.SetBool("IsRun", true);
+            rigid.velocity = new Vector2(inputVec.x * speed, rigid.velocity.y);
+        }
     }
 }
