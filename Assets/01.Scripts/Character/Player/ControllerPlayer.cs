@@ -57,7 +57,7 @@ public class ControllerPlayer : MonoBehaviour
             animator.SetBool("IsJump", true);
 
             StartCoroutine(IgnorePlatformCollision(true));
-            StartCoroutine(ResetIgnoreCollision(0.4f));
+            StartCoroutine(ResetIgnoreCollision(0.5f));
             
         }
     }
@@ -134,9 +134,19 @@ public class ControllerPlayer : MonoBehaviour
         {
             isGround = true;
             animator.SetBool("IsJump", false);
-        }
 
-        
+            if (isIgnoringCollision) //땅에 닿으면 무시 상태 해제
+            {
+                StartCoroutine(IgnorePlatformCollision(false));
+                isIgnoringCollision = false;
+            }
+        }
+        else if (isIgnoringCollision) //다른 물체와 충돌 시 무시 상태 해제
+        {
+            StartCoroutine(IgnorePlatformCollision(false));
+            isIgnoringCollision = false;
+        }
+             
     }
 
     IEnumerator Dash()
@@ -200,10 +210,9 @@ public class ControllerPlayer : MonoBehaviour
     {
         yield return new WaitForSeconds(delay);
 
-        if (!isGround) //땅에 닿아있지 않을 때
-        {
-            StartCoroutine(IgnorePlatformCollision(false)); 
-            isIgnoringCollision = false;
-        }
+
+        StartCoroutine(IgnorePlatformCollision(false));
+        isIgnoringCollision = false;
     }
+        
 }
