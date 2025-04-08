@@ -6,13 +6,15 @@ public class LaberBase : MonoBehaviour
 {
     [SerializeField] Machine targetMachine;
     [SerializeField] Animator laberAnim;
-    bool isSwitched = false;
+    protected bool isSwitched = false;
 
     protected virtual void SwitchMachine()
     {
-        if (isSwitched) return;
+        if (isSwitched || targetMachine == null) return;
         laberAnim?.SetTrigger("Active");
-        targetMachine?.Active();
+        targetMachine.Active();
         isSwitched = true;
+
+        Debug.Log(targetMachine.name + " activated");
     }
 }

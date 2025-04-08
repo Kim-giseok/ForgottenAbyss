@@ -26,6 +26,7 @@ public class ControllerPlayer : MonoBehaviour
         if (!isDashing)
         {
             rigid.velocity = new Vector2(inputVec.x * speed, rigid.velocity.y);
+            UpdateDirection();
         }
     }
 
@@ -53,42 +54,54 @@ public class ControllerPlayer : MonoBehaviour
 
     void OnAttack()
     {
-        Debug.Log("일반공격");
+        Debug.Log("A: 일반공격");
     }
 
     void OnFirstSkill()
     {
-        Debug.Log("스킬1");
+        Debug.Log("S: 스킬1");
     }
 
     void OnSecondSkill()
     {
-        Debug.Log("스킬2");
+        Debug.Log("D: 스킬2");
     }
 
     void OnSpecialSkill()
     {
-        Debug.Log("특수 스킬");
+        Debug.Log("R: 특수 스킬");
     }
 
     void OnInteraction()
     {
-        Debug.Log("상호작용 시작");
+        Debug.Log("F: 상호작용");
     }
 
     void OnInventory()
     {
-        Debug.Log("인벤토리 열기");
+        Debug.Log("I: 인벤토리 열기");
     }
 
     void OnMenu()
     {
-        Debug.Log("메뉴창 열기");
+        Debug.Log("Esc: 메뉴창 열기");
     }
 
     void OnOtherWeapon()
     {
-        Debug.Log("다른무기로 변환");
+        Debug.Log("Z: 다른무기로 변환");
+    }
+
+    void UpdateDirection() //방향 전환
+    {
+        if(inputVec.x < 0)
+        {
+            transform.localEulerAngles = new Vector3(0, 180, 0);
+        }
+        else if(inputVec.x > 0)
+        {
+            transform.localEulerAngles = new Vector3(0, 0, 0);
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
