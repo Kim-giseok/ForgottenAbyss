@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.Tilemaps;
@@ -15,8 +16,25 @@ public class EnemyAgent : MonoBehaviour
 
     private void Awake()
     {
-        BoundsInt bounds = tilemap.cellBounds;
         player = GameObject.FindGameObjectWithTag("Player");
+
+        // agent에서 체크할 수 없으니 surface에서 등록 필요
+        BoundsInt bounds = tilemap.cellBounds;
+        TileBase[] allTiles = tilemap.GetTilesBlock(bounds);
+        foreach (Vector3Int position in bounds.allPositionsWithin)
+        {
+            TileBase tile = tilemap.GetTile(position);
+
+            if (tile != null)
+            {
+                Vector3Int abovePosition = position + Vector3Int.up;
+                TileBase tileAbove = tilemap.GetTile(abovePosition);
+                if (tileAbove != null)
+                {
+                    // Debug.Log("위쪽에 타일이 존재하여, 이 타일을 제외합니다: " + position);
+                }
+            }
+        }
     }
 
     public float GetDistance()
