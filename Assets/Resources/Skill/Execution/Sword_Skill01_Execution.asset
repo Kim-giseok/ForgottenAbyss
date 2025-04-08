@@ -9,7 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 229da057bac1c3143a6115d392eeea64, type: 3}
+  m_Script: {fileID: 11500000, guid: 0680af4349dc239448217e5bd6c9d1ae, type: 3}
   m_Name: Sword_Skill01_Execution
   m_EditorClassIdentifier: 
   description: 
+  range: 3.2
+  targetLayer:
+    serializedVersion: 2
+    m_Bits: 16
+  delayBetweenHits: 0.1
+  effectKey: SwordSkill01

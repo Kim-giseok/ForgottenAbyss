@@ -4,10 +4,23 @@ using UnityEngine;
 
 public class WeaponManager : MonoBehaviour
 {
-    public List<WeaponData> weaponDataList;
+    public SkillController skillController;
+    public SpriteRenderer playerRenderer;
 
-    private void Awake()
+    public void EquipWeapon(WeaponDataSO selectedWeapon)
     {
-        weaponDataList = DataLoadUtil.LoadJsonData<WeaponData>("Json/WeaponData");
+        if (selectedWeapon == null)
+        {
+            Debug.LogWarning("무기 데이터 없음");
+            return;
+        }
+
+        // 스프라이트 변경
+        playerRenderer.sprite = selectedWeapon.playerSprite;
+
+        // 스킬 ID 설정
+        skillController.basicAttackSkillId = selectedWeapon.basicAttack.skillId;
+        skillController.skill01Id = selectedWeapon.skill01SO.skillId;
+        skillController.skill02Id = selectedWeapon.skill02SO.skillId;
     }
 }

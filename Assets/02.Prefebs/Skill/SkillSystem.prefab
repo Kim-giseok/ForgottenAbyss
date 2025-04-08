@@ -1,0 +1,89 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2714057563554896699
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8218525754157547995}
+  - component: {fileID: 5660962680461697657}
+  - component: {fileID: 1524514876729645651}
+  - component: {fileID: 3622915880698505367}
+  m_Layer: 0
+  m_Name: SkillSystem
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8218525754157547995
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2714057563554896699}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5660962680461697657
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2714057563554896699}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7130ddd03ed9634c8160c2df6fa04e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skillDataList:
+    Skills: []
+  weaponDataList:
+    Weapons: []
+  skillVisualSOList: []
+  skillExecutionSOList: []
+  weaponSOList: []
+--- !u!114 &1524514876729645651
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2714057563554896699}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c200e6942817124a924cfc608b67435, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &3622915880698505367
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2714057563554896699}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 194f38a218719ca478fe9f47534a2008, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  effectList:
+  - key: SwordAttack
+    prefab: {fileID: 5503505460791601945, guid: b3456a9e333061342b3301b59c8a5069, type: 3}
+    initialSize: 5
+  - key: SwordSkill01
+    prefab: {fileID: 3600389243222657682, guid: d99774163d80f7f45af76e8cd9d244c6, type: 3}
+    initialSize: 2
+  - key: SwordSkill02
+    prefab: {fileID: 1205478487176026167, guid: 1341b472ed220a64eae7777e5caf8078, type: 3}
+    initialSize: 2

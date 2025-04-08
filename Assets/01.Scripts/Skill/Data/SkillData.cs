@@ -7,7 +7,7 @@ public enum SkillType
     BasicAttack,
     Active1,
     Active2,
-    MemoryFragment
+    Memory
 }
 
 [System.Serializable]
@@ -19,5 +19,6 @@ public class SkillData
     public float CoolTime;
     public float DamageMultiplier;
     public string VisualSOName;
+    public string ExecutionSOName;
     public SkillType Type;
 }
