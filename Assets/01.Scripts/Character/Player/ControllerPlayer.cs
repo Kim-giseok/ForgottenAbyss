@@ -148,10 +148,13 @@ public class ControllerPlayer : MonoBehaviour
         animator.SetBool("IsAttacking", true);
         animator.SetBool("IsRun", false);
         rigid.velocity = new Vector2(0, rigid.velocity.y);
+
+        yield return new WaitForSeconds(0.4f);
+
         ProjectileManager.Instance.CreateProjectile(transform, 10);
 
-        yield return new WaitForSeconds(1f);
-
+        yield return new WaitForSeconds(0.1f);
+              
         isAttacking = false;
         animator.SetBool("IsAttacking", false);
         ProjectileManager.Instance.DestroyProjectile(transform);
