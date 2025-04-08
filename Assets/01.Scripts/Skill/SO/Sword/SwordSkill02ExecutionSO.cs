@@ -25,15 +25,11 @@ public class SwordSkill02ExecutionSO : SkillExecutionSO
         float rayLength = dashDistance - 0.1f;
 
         float actualDistance = dashDistance;
-        float minDashDistance = dashDistance;
-
         RaycastHit2D hit = Physics2D.Raycast(rayStartPos, dashDir, rayLength, obstacleLayer);
 
         if (hit.collider != null)
         {
-            actualDistance = hit.distance - 0.1f;
-            actualDistance = Mathf.Max(0f, actualDistance);
-            minDashDistance = actualDistance;
+            actualDistance = Mathf.Max(0f, hit.distance - 0.1f);
         }
 
         Vector3 targetPos = startPos + dashDir * actualDistance;
@@ -42,16 +38,36 @@ public class SwordSkill02ExecutionSO : SkillExecutionSO
         if (casterCollider != null)
             casterCollider.enabled = false;
 
-        // DOTween으로 돌진
-        //caster.transform.DOMove(targetPos, dashDuration)
-        //    .SetEase(Ease.OutQuad)
-        //    .OnComplete(() =>
-        //    {
-        //        if (casterCollider != null)
-        //            casterCollider.enabled = true;
+        MonoBehaviour mono = caster.GetComponent<MonoBehaviour>();
+        if (mono != null)
+        {
+            mono.StartCoroutine(DashCoroutine(caster, startPos, targetPos, casterCollider));
+        }
+    }
 
-        //        caster.GetComponent<MonoBehaviour>().StartCoroutine(DelayedHitCoroutine(startPos, targetPos));
-        //    });
+    private IEnumerator DashCoroutine(GameObject caster, Vector3 startPos, Vector3 targetPos, Collider2D casterCollider)
+    {
+        float elapsed = 0f;
+
+        while (elapsed < dashDuration)
+        {
+            elapsed += Time.deltaTime;
+            float t = Mathf.Clamp01(elapsed / dashDuration);
+            float easeT = 1f - Mathf.Pow(1f - t, 2f); // Ease.OutQuad
+
+            caster.transform.position = Vector3.Lerp(startPos, targetPos, easeT);
+            yield return null;
+        }
+
+        caster.transform.position = targetPos;
+
+        if (casterCollider != null)
+            casterCollider.enabled = true;
+
+        // 데미지 판정 코루틴 시작
+        MonoBehaviour mono = caster.GetComponent<MonoBehaviour>();
+        if (mono != null)
+            mono.StartCoroutine(DelayedHitCoroutine(startPos, targetPos));
     }
 
     private IEnumerator DelayedHitCoroutine(Vector3 start, Vector3 end)
