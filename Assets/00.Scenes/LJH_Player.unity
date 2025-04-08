@@ -375,7 +375,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inputVec: {x: 0, y: 0}
   speed: 3
-  jumpPower: 5
+  jumpPower: 10
   dashDistance: 5
   dashTime: 0.1
 --- !u!50 &2111495011145674751
@@ -404,7 +404,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!4 &2170989572865992545
 Transform:
   m_ObjectHideFlags: 0
