@@ -6,12 +6,12 @@ public class EnemyController : MonoBehaviour, IDamagable
     [Header("Resource")]
     public float health;
     public float attack;
-
-    [HideInInspector] public bool isHit;
-
+    
+    public Rigidbody2D rigidbody { get; private set; }
     public BTMachine btMachine { get; private set; }
     public EnemyAgent agent { get; private set; }
-    public Rigidbody2D rigidbody { get; private set; }
+    public EnemyAnimationHandler animationHandler { get; private set; }
+    public EnemyStatusHandler statusHandler { get; private set; }
     
     
     private Transform pivot;
@@ -21,20 +21,19 @@ public class EnemyController : MonoBehaviour, IDamagable
     {
         agent = GetComponent<EnemyAgent>();
         rigidbody = GetComponent<Rigidbody2D>();
-        
+
+        animationHandler = new EnemyAnimationHandler(GetComponent<Animator>());
+        statusHandler = new EnemyStatusHandler();
         btMachine = new(this);
     }
 
-    private void Start()
+    public virtual void Start()
     {
-        pivot = transform.Find("Pivot");
-        if (!pivot) { pivot = new GameObject("Pivot").transform; pivot.parent = transform; }
-        
         btMachine.Define(
-            new Selector(
-                new Sequence(new HitNode()),
-                new Sequence(new TracingNode(), new KnifeAttackNode()),
-                new Sequence(new IdleNode(duration: 1), new PatrolNode(duration: 1)))
+            new SelectorNode(
+                new SequenceNode(new HitNode()),
+                new SequenceNode(new TracingNode(), new AttackNode(), new CombatIdleNode(duration: 1f)),
+                new SequenceNode(new IdleNode(duration: 1), new PatrolNode(duration: 1)))
         );
     }
 
@@ -45,11 +44,9 @@ public class EnemyController : MonoBehaviour, IDamagable
     
     public void GetDamage(float damage)
     {
-        isHit = true;
+        statusHandler.isHit = true;
         health -= damage;
-        // btMachine.Notify();
-        if(health <= 0) Destroy(gameObject);
-
+        btMachine.Notify();
     }
 
     // 리워드 표시, 리스폰 아리어에서 제거
@@ -65,6 +62,7 @@ public class EnemyController : MonoBehaviour, IDamagable
 
     private void OnAnimatedEvent(int value)
     {
+        Debug.Log("animated event");
         btMachine.OnAnimatedEvent(value == 1);
     }
 }

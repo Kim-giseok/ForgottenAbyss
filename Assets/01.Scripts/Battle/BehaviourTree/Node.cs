@@ -1,8 +1,11 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class Node
 {
     protected Node parent;
+    protected List<Node> children = new();
+    
     protected EnemyController controller; 
     protected BTMachine btMachine;
     
