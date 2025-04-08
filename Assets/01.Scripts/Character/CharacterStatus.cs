@@ -5,7 +5,9 @@ using UnityEngine;
 public enum StatType
 {
     HP, 
-    ATK 
+    ATK,
+    LEVEL,
+    EXP
 }
 public class CharacterStatus : MonoBehaviour
 {
