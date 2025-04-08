@@ -4,10 +4,13 @@ using UnityEngine;
 
 public enum StatType
 {
-    HP, 
+    HP,
+    MP,
     ATK,
+    DEF,
     LEVEL,
-    EXP
+    EXP,
+    GOLD
 }
 public class CharacterStatus : MonoBehaviour
 {

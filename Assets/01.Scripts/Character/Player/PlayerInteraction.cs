@@ -13,13 +13,13 @@ public class PlayerInteraction : MonoBehaviour
         Vector2 rayOrigin = transform.position; // Raycast 시작점
         Vector2 rayDirection = transform.right; // 오른쪽 방향으로 Raycast
 
-        
+
         Debug.DrawRay(rayOrigin, rayDirection * interactionRange, Color.red);
-        
+
     }
 
     public void Interact(Vector2 origin, Vector2 direction)
-    {               
+    {
         RaycastHit2D hit = Physics2D.Raycast(origin, direction, interactionRange, interactableLayer); // 2D Raycast
 
         if (hit.collider != null)
@@ -32,4 +32,5 @@ public class PlayerInteraction : MonoBehaviour
             }
         }
     }
-}
+
+}  

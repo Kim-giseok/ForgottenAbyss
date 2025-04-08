@@ -11,13 +11,17 @@ public class ControllerPlayer : MonoBehaviour
     public float jumpPower; //점프력
     public float dashDistance; //대쉬거리
     public float dashTime; //대쉬지속시간
+    public LayerMask platformLayerMask; //점프 중 무시할 플랫폼 레이어
 
     private bool isGround; //땅 밟고 있는지 여부
     private bool isDashing = false; //대쉬 여부
     private bool isAttacking = false; //공격 여부
+    private bool isIgnoringCollision = false; //콜라이더 충돌 무시 여부
+    
 
     Rigidbody2D rigid;
     Animator animator;
+    Collider2D playerCollider;
 
     PlayerInteraction interaction;
 
@@ -26,6 +30,7 @@ public class ControllerPlayer : MonoBehaviour
         rigid = GetComponent<Rigidbody2D>();
         interaction = GetComponent<PlayerInteraction>();
         animator = GetComponent<Animator>();
+        playerCollider = GetComponent<Collider2D>();
     }
 
     private void FixedUpdate()
@@ -50,6 +55,10 @@ public class ControllerPlayer : MonoBehaviour
             rigid.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
             isGround = false;
             animator.SetBool("IsJump", true);
+
+            StartCoroutine(IgnorePlatformCollision(true));
+            StartCoroutine(ResetIgnoreCollision(0.4f));
+            
         }
     }
 
@@ -126,6 +135,8 @@ public class ControllerPlayer : MonoBehaviour
             isGround = true;
             animator.SetBool("IsJump", false);
         }
+
+        
     }
 
     IEnumerator Dash()
@@ -164,6 +175,35 @@ public class ControllerPlayer : MonoBehaviour
         {
             animator.SetBool("IsRun", true);
             rigid.velocity = new Vector2(inputVec.x * speed, rigid.velocity.y);
+        }
+    }
+
+    IEnumerator IgnorePlatformCollision(bool ignore) //플랫폼 콜라이더 무시
+    {
+        isIgnoringCollision = ignore;
+
+        //플랫폼 레이어의 모든 콜라이더 찾기
+        Collider2D[] platformColliders = Physics2D.OverlapCircleAll(transform.position, 10f, platformLayerMask);
+
+        foreach (Collider2D platformCollider in platformColliders) //콜라이더 무시
+        {
+            if(platformCollider != null && platformCollider.CompareTag("Ground"))
+            {
+                Physics2D.IgnoreCollision(playerCollider, platformCollider, ignore);
+            }
+        }
+
+        yield return null;
+    }
+
+    IEnumerator ResetIgnoreCollision(float delay) //콜라이더 무시 상태 초기화
+    {
+        yield return new WaitForSeconds(delay);
+
+        if (!isGround) //땅에 닿아있지 않을 때
+        {
+            StartCoroutine(IgnorePlatformCollision(false)); 
+            isIgnoringCollision = false;
         }
     }
 }
