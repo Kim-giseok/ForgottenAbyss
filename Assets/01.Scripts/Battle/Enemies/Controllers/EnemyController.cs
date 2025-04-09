@@ -33,7 +33,7 @@ public class EnemyController : MonoBehaviour, IDamagable
     {
         try
         {
-            MapSpawnManager.Instance.CurMap.monsterManager.AddList(this);
+            MapSpawnManager.Instance.SpawnedMap.monsterManager.AddList(this);
         }
         catch
         {
@@ -68,7 +68,7 @@ public class EnemyController : MonoBehaviour, IDamagable
         {
             try
             {
-                MapSpawnManager.Instance.CurMap.monsterManager.RemoveEnemy(this);
+                MapSpawnManager.Instance.SpawnedMap.monsterManager.RemoveEnemy(this);
             }
             catch
             {
