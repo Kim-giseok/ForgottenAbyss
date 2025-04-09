@@ -13,7 +13,7 @@ public class SwordSkill01ExecutionSO : SkillExecutionSO
     public override void Execute(GameObject caster, GameObject target, SkillData data)
     {
         var castData = PrepareCastData(caster, target, data);
-        // 타격 코루틴 실행
+
         caster.GetComponent<MonoBehaviour>().StartCoroutine(HitTwiceCoroutine(caster, castData));
     }
 
@@ -36,21 +36,6 @@ public class SwordSkill01ExecutionSO : SkillExecutionSO
             DealDamageToTarget(hit.gameObject, castData);
         }
 
-        DebugDrawCircle(center, range, Color.red);
-    }
-
-    private void DebugDrawCircle(Vector3 center, float radius, Color color, float duration = 0.5f)
-    {
-        int segments = 30;
-        float angleStep = 360f / segments;
-        Vector3 prevPoint = center + new Vector3(Mathf.Cos(0), Mathf.Sin(0)) * radius;
-
-        for (int i = 1; i <= segments; i++)
-        {
-            float angle = i * angleStep * Mathf.Deg2Rad;
-            Vector3 nextPoint = center + new Vector3(Mathf.Cos(angle), Mathf.Sin(angle)) * radius;
-            Debug.DrawLine(prevPoint, nextPoint, color, duration);
-            prevPoint = nextPoint;
-        }
+        DebugDrawUtil.DrawCircle(center, range, Color.red);
     }
 }

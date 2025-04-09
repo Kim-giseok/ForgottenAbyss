@@ -89,23 +89,6 @@ public class SwordSkill02ExecutionSO : SkillExecutionSO
             CameraShake.Instance.Shake(0.05f, 0.1f);
         }
 
-        DebugDrawBox(center, size, angle, Color.red, 0.5f);
-    }
-
-    private void DebugDrawBox(Vector2 center, Vector2 size, float angle, Color color, float duration)
-    {
-        Quaternion rot = Quaternion.Euler(0, 0, angle);
-        Vector2 halfSize = size / 2f;
-
-        Vector2[] corners = new Vector2[4];
-        corners[0] = center + (Vector2)(rot * new Vector3(-halfSize.x, -halfSize.y));
-        corners[1] = center + (Vector2)(rot * new Vector3(-halfSize.x, halfSize.y));
-        corners[2] = center + (Vector2)(rot * new Vector3(halfSize.x, halfSize.y));
-        corners[3] = center + (Vector2)(rot * new Vector3(halfSize.x, -halfSize.y));
-
-        Debug.DrawLine(corners[0], corners[1], color, duration);
-        Debug.DrawLine(corners[1], corners[2], color, duration);
-        Debug.DrawLine(corners[2], corners[3], color, duration);
-        Debug.DrawLine(corners[3], corners[0], color, duration);
+        DebugDrawUtil.DrawBox(center, size, angle, Color.red, 0.5f);
     }
 }

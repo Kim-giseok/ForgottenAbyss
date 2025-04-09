@@ -29,21 +29,6 @@ public class SwordAttackExecutionSO : SkillExecutionSO
             }
         }
 
-        DebugDrawCircle(center, range, Color.red);
-    }
-
-    private void DebugDrawCircle(Vector3 center, float radius, Color color, float duration = 0.5f)
-    {
-        int segments = 30;
-        float angleStep = 360f / segments;
-        Vector3 prevPoint = center + new Vector3(Mathf.Cos(0), Mathf.Sin(0)) * radius;
-
-        for (int i = 1; i <= segments; i++)
-        {
-            float angle = i * angleStep * Mathf.Deg2Rad;
-            Vector3 nextPoint = center + new Vector3(Mathf.Cos(angle), Mathf.Sin(angle)) * radius;
-            Debug.DrawLine(prevPoint, nextPoint, color, duration);
-            prevPoint = nextPoint;
-        }
+        DebugDrawUtil.DrawFan(caster.transform.position, range, angleLimit * 2f, caster.transform.right, Color.red, 0.5f);
     }
 }
