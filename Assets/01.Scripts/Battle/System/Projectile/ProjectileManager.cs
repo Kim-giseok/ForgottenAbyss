@@ -8,7 +8,7 @@ public class ProjectileManager : Singleton<ProjectileManager>
     public List<(int index, GameObject instance)> currProjectiles = new();
 
     // ReSharper disable Unity.PerformanceAnalysis
-    public void CreateMeleeProjectile(Transform parent, float power, Vector2? startPos = null)
+    public void CreateMeleeProjectile(Transform parent, float power, Vector2 startPos = default)
     {
         var instance = parent.GetComponentInChildren<HitBox>(true)?.gameObject; // 찾는 방법 필요
         
@@ -16,7 +16,7 @@ public class ProjectileManager : Singleton<ProjectileManager>
         {
             instance = Instantiate(meleeProjectile, parent);
             instance.transform.SetParent(parent);
-            instance.transform.localPosition = startPos ?? Vector2.right;
+            instance.transform.localPosition = transform.right;
         }
         
         instance.SetActive(true);
@@ -36,12 +36,12 @@ public class ProjectileManager : Singleton<ProjectileManager>
     
     // 사이즈 포함
     // ReSharper disable Unity.PerformanceAnalysis
-    public void CreateProjectile(Transform parent, float power, Vector2? startPos = null, int index = 0) // melee attack인 경우 우연히 두번 켜지는 현상 방지 필요
+    public void CreateProjectile(Transform parent, float power, Vector2 startPos = default, int index = 0) // melee attack인 경우 우연히 두번 켜지는 현상 방지 필요
     {
         var instance = currProjectiles.Find(projectile => projectile.index == index && !projectile.instance.activeSelf).instance;
         if (!instance)
         {
-            instance  = Instantiate(projectileList[index], Vector2.zero, Quaternion.identity, parent);
+            instance  = Instantiate(projectileList[index], Vector2.zero, Quaternion.identity, transform); // 발사체는 프로젝타일 매니저에서 관리
             currProjectiles.Add((index, instance));
         }
         else
@@ -54,7 +54,7 @@ public class ProjectileManager : Singleton<ProjectileManager>
         hitBox.SetOwner(parent);
         
         instance.transform.localRotation = Quaternion.Euler(0, 0, -90); // 방향 계산 필요 -90 이 오른쪽
-        instance.transform.localPosition = startPos ?? instance.transform.right;
+        instance.transform.localPosition = new Vector2(parent.position.x + startPos.x, parent.position.y + startPos.y);
     }
 
     public void DestroyProjectile(Transform transform)
