@@ -11,8 +11,16 @@ public class LaberBase : MonoBehaviour
     protected virtual void SwitchMachine()
     {
         if (isSwitched || targetMachine == null) return;
-        laberAnim?.SetTrigger("Active");
+        laberAnim?.SetFloat("Active", 1);
         targetMachine.Active();
         isSwitched = true;
+    }
+
+    protected virtual void DisSwitchMachine()
+    {
+        if (!isSwitched || targetMachine == null) return;
+        laberAnim?.SetFloat("Active", -1);
+        targetMachine.UnActive();
+        isSwitched = false;
     }
 }

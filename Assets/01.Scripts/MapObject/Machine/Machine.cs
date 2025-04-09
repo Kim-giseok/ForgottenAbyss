@@ -10,9 +10,16 @@ public class Machine : MonoBehaviour
     public virtual void Active()
     {
         if (isActivated) return;
-        machineAnim.SetTrigger("Active");
+        machineAnim.SetFloat("Active", 1);
         isActivated = true;
 
         Debug.Log(name + " activated");
+    }
+
+    public virtual void UnActive()
+    {
+        if (!isActivated) return;
+        machineAnim.SetFloat("Active", -1);
+        isActivated = false;
     }
 }
