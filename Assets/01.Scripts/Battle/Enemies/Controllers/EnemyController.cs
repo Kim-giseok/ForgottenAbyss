@@ -29,7 +29,7 @@ public class EnemyController : MonoBehaviour, IDamagable
         btMachine = new(this);
     }
 
-    public virtual void Start()
+    public void Start()
     {
         try
         {
@@ -39,6 +39,11 @@ public class EnemyController : MonoBehaviour, IDamagable
         {
             Debug.Log("there is no MapspawnManager");
         }
+        Init();
+    }
+
+    protected virtual void Init()
+    {
         btMachine.Define(
                     new SelectorNode(
                         new SequenceNode(new HitNode()),

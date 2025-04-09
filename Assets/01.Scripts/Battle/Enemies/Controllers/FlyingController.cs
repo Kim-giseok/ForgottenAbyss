@@ -1,6 +1,6 @@
-public class FlyingController: EnemyController
+public class FlyingController : EnemyController
 {
-    public override void Start()
+    protected override void Init()
     {
         btMachine.Define(
             new SelectorNode(
