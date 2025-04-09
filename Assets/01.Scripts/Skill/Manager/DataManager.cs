@@ -6,6 +6,7 @@ public class DataManager : Singleton<DataManager>
 {
     public SkillDataList skillDataList;
     public WeaponDataList weaponDataList;
+    public MemoryPieceDataList memoryPieceDataList;
 
     public Dictionary<string, SkillVisualSO> skillVisualSODic = new Dictionary<string, SkillVisualSO>();
     public List<SkillVisualSO> skillVisualSOList;
@@ -15,6 +16,9 @@ public class DataManager : Singleton<DataManager>
 
     public Dictionary<string, WeaponDataSO> weaponSODic = new Dictionary<string, WeaponDataSO>();
     public List<WeaponDataSO> weaponSOList;
+
+    public Dictionary<string, MemoryPieceSO> memoryVisualSODic = new Dictionary<string, MemoryPieceSO>();
+    public List<MemoryPieceSO> memoryVisualSOList;
 
     private void Awake()
     {
@@ -28,6 +32,9 @@ public class DataManager : Singleton<DataManager>
 
         LoadWeaponData();
         InitWeaponSO();
+
+        LoadMemoryPieceData();
+        InitMemoryPieceSO();
     }
 
     private void LoadSkillData()
@@ -133,5 +140,53 @@ public class DataManager : Singleton<DataManager>
     public WeaponDataSO GetWeaponSO(string name)
     {
         return weaponSODic[name];
+    }
+
+    private void LoadMemoryPieceData()
+    {
+        TextAsset json = Resources.Load<TextAsset>("Json/MemoryPieceData");
+        memoryPieceDataList = JsonUtility.FromJson<MemoryPieceDataList>(json.text);
+    }
+
+    private void InitMemoryPieceSO()
+    {
+        var allMemoryVisualSOs = Resources.LoadAll<MemoryPieceSO>("Weapon");
+        memoryVisualSOList = new List<MemoryPieceSO>(allMemoryVisualSOs);
+
+        foreach (var so in allMemoryVisualSOs)
+        {
+            if (!memoryVisualSODic.ContainsKey(so.name))
+            {
+                memoryVisualSODic.Add(so.name, so);
+            }
+
+            MemoryPieceData matchedData = memoryPieceDataList.MemoryPieces.Find(m => m.Id == so.currentMemoryPieceId);
+            if (matchedData != null)
+            {
+                SkillData skillData = GetSkillData(matchedData.SkillId);
+                if (skillData != null)
+                {
+                    so.memorySkillVisualSO = GetSkillVisualSO(skillData.VisualSOName);
+                }
+            }
+            else
+            {
+                Debug.LogWarning($"MemoryPieceData not found for MemoryPieceSO '{so.name}' with ID {so.currentMemoryPieceId}");
+            }
+        }
+    }
+
+    public MemoryPieceData GetMemoryPieceData(int id)
+    {
+        return memoryPieceDataList.MemoryPieces.Find(x => x.Id == id);
+    }
+
+    public MemoryPieceSO GetMemoryVisualSO(string name)
+    {
+        if (memoryVisualSODic.TryGetValue(name, out var so))
+            return so;
+
+        Debug.LogWarning($"MemoryVisualSO with name {name} not found.");
+        return null;
     }
 }

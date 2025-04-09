@@ -29,4 +29,10 @@ public class SkillController : MonoBehaviour
         SkillManager.Instance.TryUseSkill(skill02Id, skillSpawnPoint);
         Debug.Log("D: 스킬2");
     }
+
+    void OnSpecialSkill(InputValue value) //특수스킬 키 입력
+    {
+        SkillManager.Instance.TryUseSkill(memorySkillId, skillSpawnPoint);
+        Debug.Log("R: 기억 스킬");
+    }
 }

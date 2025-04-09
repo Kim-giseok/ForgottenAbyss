@@ -7,13 +7,12 @@ public class SwordAttackExecutionSO : SkillExecutionSO
     public float angleLimit = 30f;
     public LayerMask targetLayer;
 
-    public override void Execute(GameObject caster, GameObject target)
+    public override void Execute(GameObject caster, GameObject target, SkillData data)
     {
-        DebugDrawCircle(caster.transform.position, range, Color.red);
+        var castData = PrepareCastData(caster, target, data);
 
-        // 공격 판정
         Vector2 center = caster.transform.position;
-        Vector2 forward = caster.transform.right; // 또는 바라보는 방향
+        Vector2 forward = caster.transform.right;
 
         Collider2D[] hits = Physics2D.OverlapCircleAll(center, range, targetLayer);
 
@@ -26,23 +25,11 @@ public class SwordAttackExecutionSO : SkillExecutionSO
             {
                 Debug.Log($"Hit (in cone): {hit.name}");
                 CameraShake.Instance.Shake(0.05f, 0.1f);
-                //DamageCalculator.CalculateDamage(플레이어 공격력, 무기 공격력, 스킬 계수);
+                DealDamageToTarget(hit.gameObject, castData);
+                KnockbackUtil.ApplyKnockback(hit.gameObject, caster.transform.position, 1f);
             }
         }
-    }
 
-    private void DebugDrawCircle(Vector3 center, float radius, Color color, float duration = 0.5f)
-    {
-        int segments = 30;
-        float angleStep = 360f / segments;
-        Vector3 prevPoint = center + new Vector3(Mathf.Cos(0), Mathf.Sin(0)) * radius;
-
-        for (int i = 1; i <= segments; i++)
-        {
-            float angle = i * angleStep * Mathf.Deg2Rad;
-            Vector3 nextPoint = center + new Vector3(Mathf.Cos(angle), Mathf.Sin(angle)) * radius;
-            Debug.DrawLine(prevPoint, nextPoint, color, duration);
-            prevPoint = nextPoint;
-        }
+        DebugDrawUtil.DrawFan(caster.transform.position, range, angleLimit * 2f, caster.transform.right, Color.red, 0.5f);
     }
 }
