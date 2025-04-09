@@ -12,5 +12,7 @@ public class Machine : MonoBehaviour
         if (isActivated) return;
         machineAnim.SetTrigger("Active");
         isActivated = true;
+
+        Debug.Log(name + " activated");
     }
 }

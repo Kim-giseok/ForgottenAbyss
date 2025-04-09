@@ -14,7 +14,5 @@ public class LaberBase : MonoBehaviour
         laberAnim?.SetTrigger("Active");
         targetMachine.Active();
         isSwitched = true;
-
-        Debug.Log(targetMachine.name + " activated");
     }
 }
