@@ -16,7 +16,7 @@ public class ProjectileManager : Singleton<ProjectileManager>
         {
             instance = Instantiate(meleeProjectile, parent);
             instance.transform.SetParent(parent);
-            instance.transform.localPosition = new Vector2(parent.position.x + startPos.x, parent.position.y + startPos.y);
+            instance.transform.localPosition = transform.right;
         }
         
         instance.SetActive(true);
