@@ -6,6 +6,7 @@ using UnityEngine;
 public class MemorySkillExecutionSO : SkillExecutionSO
 {
     public float range = 3f;
+    public float effectRange = 3f;
 
     public override void Execute(GameObject caster, GameObject target, SkillData data)
     {
@@ -15,11 +16,13 @@ public class MemorySkillExecutionSO : SkillExecutionSO
         SkillCastData castData = PrepareCastData(caster, target, data);
 
         // 1. 범위 내 적 탐색
-        Collider2D[] hits = GetEnemiesInRange(center, range, LayerMask.GetMask("Enemy"));
+        Collider2D[] hits = GetEnemiesInRange(center, range, LayerMask.GetMask("Water"));
 
         foreach (var hit in hits)
         {
+            Debug.Log($"Hit : {hit.name}");
             DealDamageToTarget(hit.gameObject, castData);
+            CameraShake.Instance.Shake(0.05f, 0.1f);
         }
 
         // 2. 범위 이펙트 생성 (시각적 효과)
@@ -30,7 +33,7 @@ public class MemorySkillExecutionSO : SkillExecutionSO
 
             if (effect != null)
             {
-                effect.transform.localScale = Vector3.one * (range * 2f);
+                effect.transform.localScale = Vector3.one * effectRange;
             }
         }
 
