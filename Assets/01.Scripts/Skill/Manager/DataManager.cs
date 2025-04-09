@@ -5,10 +5,14 @@ using UnityEngine;
 public class DataManager : Singleton<DataManager>
 {
     public SkillDataList skillDataList;
-    public Dictionary<string, SkillVisualSO> skillSODic = new Dictionary<string, SkillVisualSO>();
-    public List<SkillVisualSO> skillSOList;
-
     public WeaponDataList weaponDataList;
+
+    public Dictionary<string, SkillVisualSO> skillVisualSODic = new Dictionary<string, SkillVisualSO>();
+    public List<SkillVisualSO> skillVisualSOList;
+
+    public Dictionary<string, SkillExecutionSO> skillExecutionSODic = new Dictionary<string, SkillExecutionSO>();
+    public List<SkillExecutionSO> skillExecutionSOList;
+
     public Dictionary<string, WeaponDataSO> weaponSODic = new Dictionary<string, WeaponDataSO>();
     public List<WeaponDataSO> weaponSOList;
 
@@ -22,8 +26,8 @@ public class DataManager : Singleton<DataManager>
         LoadSkillData();
         InitSkillSO();
 
-        //LoadWeaponData();
-        //InitWeaponSO();
+        LoadWeaponData();
+        InitWeaponSO();
     }
 
     private void LoadSkillData()
@@ -34,25 +38,55 @@ public class DataManager : Singleton<DataManager>
 
     private void InitSkillSO()
     {
-        var allSOs = Resources.LoadAll<SkillVisualSO>("Visual");
+        var allVisualSOs = Resources.LoadAll<SkillVisualSO>("Skill/Visual");
+        skillVisualSOList = new List<SkillVisualSO>(allVisualSOs);
 
-        foreach (var so in allSOs)
+        foreach (var so in allVisualSOs)
         {
-            if (!skillSODic.ContainsKey(so.name))
+            if (!skillVisualSODic.ContainsKey(so.name))
             {
-                skillSODic.Add(so.name, so);
+                skillVisualSODic.Add(so.name, so);
+            }
+        }
+
+        var allExecutionSOs = Resources.LoadAll<SkillExecutionSO>("Skill/Execution");
+        skillExecutionSOList = new List<SkillExecutionSO>(allExecutionSOs);
+
+        foreach (var so in allExecutionSOs)
+        {
+            if (!skillExecutionSODic.ContainsKey(so.name))
+            {
+                skillExecutionSODic.Add(so.name, so);
             }
         }
     }
 
     public SkillData GetSkillData(int id)
     {
-        return skillDataList.Skills.Find(x => x.Id == id);
+        var data = skillDataList.Skills.Find(x => x.Id == id);
+        if (data == null)
+        {
+            Debug.LogWarning($"SkillData with ID {id} not found.");
+        }
+        return data;
     }
 
-    public SkillVisualSO GetSkillSO(string name)
+    public SkillVisualSO GetSkillVisualSO(string name)
     {
-        return skillSODic[name];
+        if (skillVisualSODic.TryGetValue(name, out var so))
+            return so;
+
+        Debug.LogWarning($"SkillVisualSO with name {name} not found.");
+        return null;
+    }
+
+    public SkillExecutionSO GetSkillExecutionSO(string name)
+    {
+        if (skillExecutionSODic.TryGetValue(name, out var so))
+            return so;
+
+        Debug.LogWarning($"SkillExecutionSO with name {name} not found.");
+        return null;
     }
 
     private void LoadWeaponData()
@@ -63,10 +97,31 @@ public class DataManager : Singleton<DataManager>
 
     private void InitWeaponSO()
     {
-        foreach (WeaponDataSO so in weaponSOList)
+        var allWeaponSOs = Resources.LoadAll<WeaponDataSO>("Weapon");
+        weaponSOList = new List<WeaponDataSO>(allWeaponSOs);
+
+        foreach (WeaponDataSO so in allWeaponSOs)
         {
             if (!weaponSODic.ContainsKey(so.name))
+            {
                 weaponSODic.Add(so.name, so);
+            }
+
+            WeaponData matchedData = weaponDataList.Weapons.Find(w => w.Id == so.currentWeaponId);
+            if (matchedData != null)
+            {
+                var basicData = GetSkillData(matchedData.basicAttackID);
+                var skill01Data = GetSkillData(matchedData.Skill1Id);
+                var skill02Data = GetSkillData(matchedData.Skill2Id);
+
+                so.basicAttack = GetSkillVisualSO(basicData?.VisualSOName);
+                so.skill01SO = GetSkillVisualSO(skill01Data?.VisualSOName);
+                so.skill02SO = GetSkillVisualSO(skill02Data?.VisualSOName);
+            }
+            else
+            {
+                Debug.LogWarning($"WeaponData not found for WeaponDataSO '{so.name}' with ID {so.currentWeaponId}");
+            }
         }
     }
 

@@ -12,7 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 972e03dd77b293d4e8f841afa193bc57, type: 3}
   m_Name: Sword_Skill01_Visual
   m_EditorClassIdentifier: 
+  skillId: 101
   executionSO: {fileID: 11400000, guid: 2fa3a074c35cc044096674ef9bb1220b, type: 2}
-  icon: {fileID: 0}
-  skillEffectPrefab: {fileID: 0}
+  skillIcon: {fileID: 0}
+  skillEffectPrefab: {fileID: 3600389243222657682, guid: d99774163d80f7f45af76e8cd9d244c6, type: 3}
   skillSound: {fileID: 0}
+  effectKey: SwordSkill01
+  useEffectOffset: 0
+  effectOffset: 0

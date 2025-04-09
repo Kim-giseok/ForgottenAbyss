@@ -1,20 +1,32 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class SkillController : MonoBehaviour
 {
-    public int testSkillId = 0; // 테스트용 스킬 ID
-    public Transform skillSpawnPoint; // 이펙트를 생성할 위치
-    public GameObject sword;
+    public int basicAttackSkillId;
+    public int skill01Id;
+    public int skill02Id;
+    public int memorySkillId;
 
-    void Update()
+    public Transform skillSpawnPoint;
+
+    void OnAttack(InputValue value)
     {
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            //SkillManager.Instance.TryUseSkill(testSkillId, skillSpawnPoint);
-            Animator anim = sword.GetComponentInChildren<Animator>();
-            anim.SetTrigger("isAttack");
-        }
+        SkillManager.Instance.TryUseSkill(basicAttackSkillId, skillSpawnPoint);
+        Debug.Log("A: 일반공격");
+    }
+
+    void OnFirstSkill(InputValue value)
+    {
+        SkillManager.Instance.TryUseSkill(skill01Id, skillSpawnPoint);
+        Debug.Log("S: 스킬1");
+    }
+
+    void OnSecondSkill(InputValue value)
+    {
+        SkillManager.Instance.TryUseSkill(skill02Id, skillSpawnPoint);
+        Debug.Log("D: 스킬2");
     }
 }

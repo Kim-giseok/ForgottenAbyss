@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net.NetworkInformation;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SocialPlatforms;
 
 public class ControllerPlayer : MonoBehaviour
 {
@@ -11,17 +12,21 @@ public class ControllerPlayer : MonoBehaviour
     public float jumpPower; //점프력
     public float dashDistance; //대쉬거리
     public float dashTime; //대쉬지속시간
+    public int jumplimit; //점프 가능 횟수
+    private int currentJumpCount; //현재 점프 횟수
     public LayerMask platformLayerMask; //점프 중 무시할 플랫폼 레이어
+    public LayerMask invincibilityLayerMask; //무적 상태에서 무시할 레이어
 
     private bool isGround; //땅 밟고 있는지 여부
     private bool isDashing = false; //대쉬 여부
     private bool isAttacking = false; //공격 여부
     private bool isIgnoringCollision = false; //콜라이더 충돌 무시 여부
-    
+    private bool isInvincible = false; //무적 상태 여부
 
     Rigidbody2D rigid;
     Animator animator;
     Collider2D playerCollider;
+    SpriteRenderer spriteRenderer;
 
     PlayerInteraction interaction;
 
@@ -31,6 +36,7 @@ public class ControllerPlayer : MonoBehaviour
         interaction = GetComponent<PlayerInteraction>();
         animator = GetComponent<Animator>();
         playerCollider = GetComponent<Collider2D>();
+        spriteRenderer = GetComponentInChildren<SpriteRenderer>();
     }
 
     private void FixedUpdate()
@@ -50,21 +56,29 @@ public class ControllerPlayer : MonoBehaviour
 
     void OnJump(InputValue value)
     {
-        if (value.isPressed && isGround && !isAttacking) //땅에 닿아 있을 때 점프 가능
-        {
-            rigid.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
-            isGround = false;
-            animator.SetBool("IsJump", true);
-
-            StartCoroutine(IgnorePlatformCollision(true));
-            StartCoroutine(ResetIgnoreCollision(0.5f));
-            
-        }
+        if (value.isPressed && !isAttacking && currentJumpCount < jumplimit) //점프 가능 조건
+            if (isGround)
+            {
+                rigid.velocity = new Vector2(rigid.velocity.x, 0); // y축 속도 초기화
+                rigid.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
+                isGround = false;
+                animator.SetBool("IsJump", true);
+                currentJumpCount = 1;
+                            
+                StartCoroutine(IgnorePlatformCollision(true));
+                StartCoroutine(ResetIgnoreCollision(0.5f));
+            }
+            else if (currentJumpCount < jumplimit)
+            {
+                rigid.velocity = new Vector2(rigid.velocity.x, 0); // y축 속도 초기화
+                rigid.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
+                currentJumpCount++;
+            }
     }
 
     void OnDash(InputValue value) //대쉬 키 입력
     {
-        if (value.isPressed && !isDashing && isGround && !isAttacking)
+        if (value.isPressed && !isDashing && isGround && !isAttacking && inputVec.x != 0)
         {
             StartCoroutine(Dash());
         }
@@ -130,10 +144,20 @@ public class ControllerPlayer : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        //// 무적 상태일 때는 충돌 무시
+        //if (isInvincible && ((1 << collision.gameObject.layer) & invincibilityLayerMask) != 0)
+        //{
+        //    Debug.Log("1");
+        //    // 적이나 투사체 등과의 충돌 무시
+        //    Physics2D.IgnoreCollision(playerCollider, collision.collider, true);
+        //    return;
+        //}
+
         if (collision.gameObject.CompareTag("Ground"))
         {
             isGround = true;
             animator.SetBool("IsJump", false);
+            currentJumpCount = 0;
 
             if (isIgnoringCollision) //땅에 닿으면 무시 상태 해제
             {
@@ -146,13 +170,57 @@ public class ControllerPlayer : MonoBehaviour
             StartCoroutine(IgnorePlatformCollision(false));
             isIgnoringCollision = false;
         }
-             
+
+    }
+
+    private void SetInvincibility(bool isInvincible)
+    {
+        this.isInvincible = isInvincible;
+
+        // 무적 상태 투명도 조절
+        if (isInvincible)
+        {
+            StartCoroutine(InvincibleEffect());
+
+            Collider2D[] Colliders = Physics2D.OverlapCircleAll(transform.position, 10f, invincibilityLayerMask);
+
+            foreach (Collider2D Collider in Colliders) //콜라이더 무시
+            {
+                if (Collider != null )
+                {
+                    Physics2D.IgnoreCollision(playerCollider, Collider, true);
+                }
+            }
+        }
+        else
+        {
+            // 무적 해제 시 원래 상태로 복귀
+            spriteRenderer.color = new Color(1f, 1f, 1f, 1f);
+        }
+
+        if (!isInvincible)
+        {
+            ResetIgnoredCollision(); //무적 상태 해제
+        }
+
+    }
+
+    private void ResetIgnoredCollision() //무적 상태 해제
+    {
+        // 무적 중에 무시했던 모든 콜라이더와의 충돌 설정 초기화
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, 10f, invincibilityLayerMask);
+
+        foreach (Collider2D collider in colliders)
+        {
+            Physics2D.IgnoreCollision(playerCollider, collider, false);
+        }
     }
 
     IEnumerator Dash()
     {
         isDashing = true; //대쉬 시작
-        
+        SetInvincibility(true); //무적 상태 시작
+
         Vector2 dashDirection = new Vector2(inputVec.x, 0); //현재 이동 방향
         rigid.velocity = new Vector2(dashDirection.x * dashDistance / dashTime, rigid.velocity.y);
 
@@ -160,6 +228,8 @@ public class ControllerPlayer : MonoBehaviour
         yield return new WaitForSeconds(dashTime);
         
         isDashing = false; //대쉬 종료
+        SetInvincibility(false); //무적 상태 종료
+
         rigid.velocity = new Vector2(inputVec.x * speed, rigid.velocity.y); //원래 속도로 복귀
     }
 
@@ -170,15 +240,15 @@ public class ControllerPlayer : MonoBehaviour
         animator.SetBool("IsRun", false);
         rigid.velocity = new Vector2(0, rigid.velocity.y);
 
-        yield return new WaitForSeconds(0.4f);
+        yield return new WaitForSeconds(0.35f);
 
-        ProjectileManager.Instance.CreateProjectile(transform, 10);
+        ProjectileManager.Instance.CreateMeleeProjectile(transform, 10);
 
         yield return new WaitForSeconds(0.1f);
               
         isAttacking = false;
         animator.SetBool("IsAttacking", false);
-        ProjectileManager.Instance.DestroyProjectile(transform);
+        ProjectileManager.Instance.DestroyMeleeProjectile(transform);
 
         // 공격 종료 후 방향키가 여전히 눌려있다면 속도 복원
         if (inputVec.x != 0)
@@ -213,6 +283,15 @@ public class ControllerPlayer : MonoBehaviour
 
         StartCoroutine(IgnorePlatformCollision(false));
         isIgnoringCollision = false;
+    }
+
+    IEnumerator InvincibleEffect()
+    {
+        while (isInvincible)
+        {
+            spriteRenderer.color = new Color(1f, 1f, 1f, 0.3f);
+            yield return null;
+        }
     }
         
 }

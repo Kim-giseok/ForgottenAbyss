@@ -3,31 +3,27 @@ using UnityEngine;
 
 public class RootNode : Node
 {
-    private Node child;
-
     public RootNode(Node node)
     {
         node.SetParent(this);
-        child = node;
+        children.Add(node);
     }
 
     public override void Update()
     {
-        btMachine.SetNode(child);
+        btMachine.SetNode(children[0]);
     }
 
     // 어떤 상태가 들어오든 다시 시작
     public override void GetStatus(Status newStatus, Node caller)
     {
-        Debug.Log("restart");
-        btMachine.SetNode(child);    
+        btMachine.SetNode(children[0]);    
     }
 }
 
-public class Sequence : Node
+public class SequenceNode : Node
 {
-    private List<Node> children = new();
-    public Sequence(params Node[] nodes)
+    public SequenceNode(params Node[] nodes)
     {
         foreach (Node child in nodes)
         {
@@ -45,7 +41,6 @@ public class Sequence : Node
     {
         if (newStatus == Status.Fail)
         {
-            Debug.Log("fail from sequence");
             SetStatus(Status.Fail);
             return;
         }
@@ -57,17 +52,14 @@ public class Sequence : Node
             return;
         }
         
-        Debug.Log("success from here");
         SetStatus(Status.Success);
         return;
     }
 }
 
-public class Selector : Node
+public class SelectorNode : Node
 {
-    private List<Node> children = new();
-    
-    public Selector(params Node[] nodes)
+    public SelectorNode(params Node[] nodes)
     {
         foreach(Node child in nodes)
         {
@@ -87,11 +79,9 @@ public class Selector : Node
         {
             int currIndex = children.IndexOf(caller);
             
-            Debug.Log(currIndex);
             if (currIndex < children.Count - 1)
             {
                 btMachine.SetNode(children[currIndex + 1]);
-                Debug.Log(children[currIndex + 1]);
                 return;
             }
             
@@ -101,5 +91,34 @@ public class Selector : Node
         }
         
         SetStatus(Status.Success);
+    }
+}
+
+public class ParallelNode : Node
+{
+    public ParallelNode(params Node[] nodes)
+    {
+        children.AddRange(nodes);
+    }
+
+    public override void Start()
+    {
+    }
+
+    public override void Update()
+    {
+    }
+
+    public override void End()
+    {
+    }
+}
+
+
+public class DecoratorNode : Node
+{
+    public DecoratorNode(Node child)
+    {
+        children.Add(child);
     }
 }

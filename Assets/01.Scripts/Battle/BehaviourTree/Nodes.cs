@@ -33,8 +33,6 @@ public class IdleNode : Node
             SetStatus(Status.Success);
             return;
         }
-        
-        Debug.Log("idle");
     }
 }
 
@@ -53,7 +51,9 @@ public class PatrolNode : Node
     {
         currTime = 0;
         direction = Random.Range(0, 10) <= 5 ? Vector2.left : Vector2.right;
+
         controller.Flip(direction == Vector2.right);
+        controller.animationHandler.Set(EnemyAnimationHandler.Run, true);
     }
 
     public override void Update()
@@ -74,63 +74,171 @@ public class PatrolNode : Node
         }
         
         controller.rigidbody.velocity = new Vector2(direction.x, controller.rigidbody.velocity.y);
-        Debug.Log("Patrol");
+    }
+
+    public override void End()
+    {
+        controller.animationHandler.Set(EnemyAnimationHandler.Run, false);
     }
 }
 
 public class TracingNode : Node
 {
+    public override void Start()
+    {
+        Vector2 distance = (controller.agent.player.transform.position - controller.transform.position);
+        if (controller.agent.stoppingDistance > distance.magnitude) // 바로 공격으로 진입
+        {
+            SetStatus(Status.Success);
+            return;
+        }
+        
+        controller.animationHandler.Set(EnemyAnimationHandler.Run, true);
+    }
+    
     public override void Update()
     {
         Vector2 distance = (controller.agent.player.transform.position - controller.transform.position);
-        controller.Flip(distance.normalized.x > 0);
         
         if (controller.agent.detectedDistance < distance.magnitude)
         {
-            Debug.Log("fail");
             SetStatus(Status.Fail);
             return;
         }
         
         if (controller.agent.stoppingDistance > distance.magnitude)
         {
-            Debug.Log("success");
             SetStatus(Status.Success);
            return;
         }
-        
+
+        controller.Flip(distance.normalized.x > 0);
         controller.rigidbody.velocity = new Vector2(distance.normalized.x * controller.agent.tracingSpeed, controller.rigidbody.velocity.y);
-        Debug.Log("tracing");
+    }
+    
+    public override void End()
+    {
+        controller.animationHandler.Set(EnemyAnimationHandler.Run, false);
     }
 }
 
 // 무기가 Node를 결정할 수 있도록
-public class KnifeAttackNode : Node
+public class AttackNode : Node
 {
-    public override void Update()
+    public override void Start()
     {
-        float distance = (controller.transform.position - controller.agent.player.transform.position).magnitude;
+        controller.animationHandler.Set(EnemyAnimationHandler.Attack);
+    }
 
-        if (controller.agent.stoppingDistance < distance)
+    public override void OnAnimatedEvent(bool isFire)
+    {
+        if (isFire)
         {
-            SetStatus(Status.Fail);
-            return;
+            ProjectileManager.Instance.CreateMeleeProjectile(controller.transform, controller.attack);
         }
-        
-        Debug.Log("attack");
+        else
+        {
+            SetStatus(Status.Success);
+        }
+    }
+
+    public override void OnAnimated(AnimationStatus status, Animator animator)
+    {
+        // notice: 시작된 후 애니메이션이 변경되면서 바로 인식되는 문제 발생
+        if (status == AnimationStatus.End)
+        {
+        }
+    }
+
+    public override void End()
+    {
+        Debug.Log("End");
+        ProjectileManager.Instance.DestroyMeleeProjectile(controller.transform);
     }
 }
 
+public class RangeAttackNode : Node
+{
+    public override void Start()
+    {
+        controller.animationHandler.Set(EnemyAnimationHandler.Attack);
+    }
+
+    public override void OnAnimatedEvent(bool isFire)
+    {
+        if (isFire)
+        {
+            ProjectileManager.Instance.CreateProjectile(controller.transform, controller.attack);
+        }
+    }
+
+    public override void OnAnimated(AnimationStatus status, Animator animator) // 우선 인식되는 현상 발생
+    {
+        
+        // if (status == AnimationStatus.End)
+        // {
+            // SetStatus(Status.Success);
+        // }
+    }
+
+    public override void End()
+    {
+        // ProjectileManager.Instance.DestroyProjectile(controller.transform);
+    }
+}
+
+public class CombatIdleNode : Node
+{
+    private float currTime;
+    public float duration;
+
+    public CombatIdleNode(float duration)
+    {
+        this.duration = duration;
+    }
+
+    public override void Start()
+    {
+        currTime = 0;
+    }
+
+    public override void Update()
+    {
+        currTime += Time.deltaTime;
+        if (currTime >= duration)
+        {
+            SetStatus(Status.Success);
+        }
+    }
+}
+
+// knockBack이 들어갈 수도 있도록
 public class HitNode : Node
 {
     public override void Start()
     {
-        if (!controller.isHit)
+        // status - GOAP 를 위해 존재할 예정
+        if (!controller.statusHandler.isHit) 
         {
             SetStatus(Status.Fail);
             return;
         }
         
-        controller.isHit = false;
+        controller.animationHandler.Set(EnemyAnimationHandler.Hit);
+        
+        controller.statusHandler.isHit = false;
+        SetStatus(Status.Success);
     }
+
+    public override void OnAnimated(AnimationStatus status, Animator animator)
+    {
+        if (status == AnimationStatus.End)
+        {
+        }
+    }
+}
+
+public class DieNode : Node
+{
+    public override void Start() {}
 }

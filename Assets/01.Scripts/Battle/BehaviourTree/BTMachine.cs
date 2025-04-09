@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public class BTMachine
 {
     private EnemyController controller;
@@ -33,6 +35,7 @@ public class BTMachine
 
     public void OnAnimatedEvent(bool isFire)
     {
+        // Debug.Log(currNode);
         currNode?.OnAnimatedEvent(isFire);
     }
 
@@ -42,7 +45,7 @@ public class BTMachine
         SetNode(rootNode);
     }
 
-    public void Notify()
+    public void Notify() // 초기 노드로 이동 또는 특정 노드로 이동 기능 구현 필요
     {
         SetNode(rootNode);
     }
