@@ -23,6 +23,9 @@ public abstract class SkillExecutionSO : ScriptableObject
         {
             float damage = castData.CalculateDamage();
             enemy.GetDamage(damage);
+
+            Vector3 worldPos = target.transform.position + Vector3.up * 1f;
+            DamageTextManager.Instance.ShowDamage(worldPos, (int)damage);
         }
     }
 
