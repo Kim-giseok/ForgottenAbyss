@@ -1,13 +1,16 @@
 using System;
 using UnityEngine;
 
-public class GroundDetector : MonoBehaviour
+// EnemyDetectHandler
+public class EnemyDetectHandler : MonoBehaviour
 {
     private float RAY_DISTANCE = 1f;
     private float memoGravityScale;
 
     private Rigidbody2D rigidbody;
     private CircleCollider2D collider;
+    
+    private LayerMask currLayerMask;
     
     private void Awake()
     {
@@ -26,6 +29,11 @@ public class GroundDetector : MonoBehaviour
     {
         var ad  =Physics2D.OverlapCircle(new Vector2(this.transform.position.x, this.transform.position.y - collider.radius), RAY_DISTANCE);
         // Debug.Log(ad);
+    }
+
+    public void IsBlocked() // 앞쪽의 
+    {
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.right, RAY_DISTANCE, ~(1 << currLayerMask));
     }
     
     private void IsSlope()

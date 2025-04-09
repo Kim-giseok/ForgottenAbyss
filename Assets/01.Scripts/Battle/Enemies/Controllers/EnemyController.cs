@@ -13,6 +13,8 @@ public class EnemyController : MonoBehaviour, IDamagable
     public EnemyAnimationHandler animationHandler { get; private set; }
     public EnemyStatusHandler statusHandler { get; private set; }
     
+    public RespawnArea respawnArea { get; private set; }
+    
     
     private Transform pivot;
     public GameObject currWeapon; // 무기의 애니메이션이 발생할 수도 있음
@@ -32,11 +34,12 @@ public class EnemyController : MonoBehaviour, IDamagable
         btMachine.Define(
             new SelectorNode(
                 new SequenceNode(new HitNode()),
-                new SequenceNode(new TracingNode(), new AttackNode(), new CombatIdleNode(duration: 1f)),
+                new SequenceNode(new TracingNode(), new AttackNode(), new CombatIdleNode(duration: 0.5f)),
                 new SequenceNode(new IdleNode(duration: 1), new PatrolNode(duration: 1)))
         );
     }
 
+    // character controller
     public void Flip(bool isFlip)
     {
         transform.rotation = Quaternion.Euler(0, isFlip ? 0 : 180, 0);
@@ -45,8 +48,10 @@ public class EnemyController : MonoBehaviour, IDamagable
     public void GetDamage(float damage)
     {
         statusHandler.isHit = true;
-        health -= damage;
         btMachine.Notify();
+        health -= damage;
+        
+        if(health <= 0) Destroy(gameObject);
     }
 
     // 리워드 표시, 리스폰 아리어에서 제거
@@ -62,7 +67,6 @@ public class EnemyController : MonoBehaviour, IDamagable
 
     private void OnAnimatedEvent(int value)
     {
-        Debug.Log("animated event");
         btMachine.OnAnimatedEvent(value == 1);
     }
 }
