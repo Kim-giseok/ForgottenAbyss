@@ -27,7 +27,6 @@ public class NavSurface : MonoBehaviour
                 // 셀마다 충돌 체크
                 bool blocked = Physics2D.OverlapBox(center, Vector2.one * 0.9f, 0f);
 
-                Debug.Log(blocked);
             }
         }
     }

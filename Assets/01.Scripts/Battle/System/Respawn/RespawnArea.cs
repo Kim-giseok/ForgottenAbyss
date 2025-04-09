@@ -21,7 +21,7 @@ public class RespawnArea : MonoBehaviour
         var existEnemy = currEnemies.Find(enemy => enemy == selectedEnemy);
         if (!existEnemy)
         {
-            Debug.Log("respawnArea: enemy is not in area");
+            Debug.LogWarning("respawnArea: enemy is not in area");
             return;
         }
 

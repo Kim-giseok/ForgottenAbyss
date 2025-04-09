@@ -1,7 +1,6 @@
-using System;
 using UnityEngine;
 
-public class Projectile: MonoBehaviour
+public class GuidedProjectile: MonoBehaviour
 {
     private Rigidbody2D rigidbody;
     private Transform target;
@@ -30,8 +29,12 @@ public class Projectile: MonoBehaviour
             ProjectileManager.Instance.DestroyProjectile(gameObject);
             return;
         }
-        
+
+        var currDegree = ProjectileManager.Instance.GetDegreeByDirection((target.position - transform.position).normalized);
+        var nextRotation = Quaternion.Euler(0, 0 , currDegree - 90);
+        transform.rotation = Quaternion.Slerp(transform.rotation, nextRotation, Time.deltaTime * 2f);
+
 
         rigidbody.velocity = transform.up * speed;
-    }
+    } 
 }

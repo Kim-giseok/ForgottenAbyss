@@ -12,29 +12,28 @@ public class EnemyAgent : MonoBehaviour
     public float stoppingDistance;
     public float tracingSpeed;
     
-    public Tilemap tilemap; // 추후 동적으로 찾도록 처리
+    // public Tilemap tilemap; // 추후 동적으로 찾도록 처리
 
     private void Awake()
     {
         player = GameObject.FindGameObjectWithTag("Player");
 
         // agent에서 체크할 수 없으니 surface에서 등록 필요
-        BoundsInt bounds = tilemap.cellBounds;
-        TileBase[] allTiles = tilemap.GetTilesBlock(bounds);
-        foreach (Vector3Int position in bounds.allPositionsWithin)
-        {
-            TileBase tile = tilemap.GetTile(position);
-
-            if (tile)
-            {
-                Vector3Int abovePosition = position + Vector3Int.up;
-                TileBase tileAbove = tilemap.GetTile(abovePosition);
-                if (tileAbove)
-                {
-                    // Debug.Log("위쪽에 타일이 존재하여, 이 타일을 제외합니다: " + position);
-                }
-            }
-        }
+        // BoundsInt bounds = tilemap.cellBounds;
+        // TileBase[] allTiles = tilemap.GetTilesBlock(bounds);
+        // foreach (Vector3Int position in bounds.allPositionsWithin)
+        // {
+        //     TileBase tile = tilemap.GetTile(position);
+        //
+        //     if (tile)
+        //     {
+        //         Vector3Int abovePosition = position + Vector3Int.up;
+        //         TileBase tileAbove = tilemap.GetTile(abovePosition);
+        //         if (tileAbove)
+        //         {
+        //         }
+        //     }
+        // }
     }
 
     public float GetDistance()

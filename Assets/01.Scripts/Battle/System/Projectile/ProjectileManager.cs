@@ -1,14 +1,24 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ProjectileManager : Singleton<ProjectileManager>
+// direction to degree 같은 것이 필요 할 듯
+// 빌더 패턴으로 관리해보면 어떨까? 아무튼 조합의 형태를 띄어야 함
+public class ProjectileManager : Singleton<ProjectileManager> // 단위 미사일
 {
     public GameObject meleeProjectile;
     public List<GameObject> projectileList;
+    
     public List<(int index, GameObject instance)> currProjectiles = new();
+    public List<(GameObject owner, HitBox hitBox)> currMeleeProjectiles = new();
+    
+    public float GetDegreeByDirection(Vector2 direction)
+    {
+        return Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+    }
 
     // ReSharper disable Unity.PerformanceAnalysis
-    public void CreateMeleeProjectile(Transform parent, float power, Vector2 startPos = default)
+    // do: 사이즈의 조절, 모양의 변경 등의 관리 필요
+    public void CreateMeleeProjectile(Transform parent, float power, Vector2 startPos = default, Vector2 size = default)
     {
         var instance = parent.GetComponentInChildren<HitBox>(true)?.gameObject; // 찾는 방법 필요
         
@@ -19,11 +29,14 @@ public class ProjectileManager : Singleton<ProjectileManager>
             instance.transform.localPosition = transform.right;
         }
         
-        instance.SetActive(true);
+        instance.transform.localScale = Vector3.one; // 사이즈 지정이 따로 있다면 적용
         
         HitBox hitBox = instance.GetComponent<HitBox>();
         hitBox.SetDamage(power);
         hitBox.SetOwner(parent);
+        
+        instance.SetActive(true);
+
     }
 
     // 비용 문제에 고민해보기
@@ -35,8 +48,9 @@ public class ProjectileManager : Singleton<ProjectileManager>
     }
     
     // 사이즈 포함
+    // 반사 또는 유도
     // ReSharper disable Unity.PerformanceAnalysis
-    public void CreateProjectile(Transform parent, float power, Vector2 startPos = default, int index = 0) // melee attack인 경우 우연히 두번 켜지는 현상 방지 필요
+    public void CreateProjectile(Transform parent, float power, Vector2 startPos = default, int index = 0, float degree = 0) // melee attack인 경우 우연히 두번 켜지는 현상 방지 필요
     {
         var instance = currProjectiles.Find(projectile => projectile.index == index && !projectile.instance.activeSelf).instance;
         if (!instance)
@@ -53,7 +67,7 @@ public class ProjectileManager : Singleton<ProjectileManager>
         hitBox.SetDamage(power);
         hitBox.SetOwner(parent);
         
-        instance.transform.localRotation = Quaternion.Euler(0, 0, -90); // 방향 계산 필요 -90 이 오른쪽
+        instance.transform.localRotation = Quaternion.Euler(0, 0, degree - 90); // 화살이 현재 위를 보고 있는 상황이라 방향 계산 필요 -90 이 오른쪽
         instance.transform.localPosition = new Vector2(parent.position.x + startPos.x, parent.position.y + startPos.y);
     }
 
