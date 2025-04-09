@@ -50,6 +50,7 @@ public class MemorySkillExecutionSO : SkillExecutionSO
                 {
                     DealDamageToTarget(hit.gameObject, castData);
                     CameraShake.Instance.Shake(0.05f, 0.1f);
+                    KnockbackUtil.ApplyKnockback(hit.gameObject, castData.caster.transform.position, 1f);
                 }
             }
 
