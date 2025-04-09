@@ -998,6 +998,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5122716401588370429}
   - component: {fileID: 5612593576441115409}
+  - component: {fileID: 6110450174999154851}
   m_Layer: 0
   m_Name: MonsterManager
   m_TagString: Untagged
@@ -1032,9 +1033,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 607881c967f830647b23c3f6afc77d9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetMachine: {fileID: 2140804774002791276}
-  laberAnim: {fileID: 0}
+  targetMachine: {fileID: 1390567955029351407}
+  laberAnim: {fileID: 6110450174999154851}
   enemies: []
+--- !u!95 &6110450174999154851
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5573860476506684069}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 234be6d3b1a043d4a9161c8a0b27a7ec, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &6231914796294710614
 GameObject:
   m_ObjectHideFlags: 0
@@ -1220,11 +1242,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8853770928741369288, guid: 875e7e41d6292aa4080737ef77de8bdb, type: 3}
       propertyPath: recieveNum
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8853770928741369288, guid: 875e7e41d6292aa4080737ef77de8bdb, type: 3}
       propertyPath: recieveItem.Array.size
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8853770928741369288, guid: 875e7e41d6292aa4080737ef77de8bdb, type: 3}
       propertyPath: recieveItem.Array.data[0]
@@ -1305,16 +1327,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2200350032846286578, guid: 48de69252ef3ce94f9f97f5961a0241c, type: 3}
       propertyPath: m_Layer
-      value: 0
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 7035314710040318383, guid: 48de69252ef3ce94f9f97f5961a0241c, type: 3}
       propertyPath: m_Layer
-      value: 0
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 7752986986216209212, guid: 48de69252ef3ce94f9f97f5961a0241c, type: 3}
       propertyPath: targetMachine
       value: 
-      objectReference: {fileID: 1390567955029351407}
+      objectReference: {fileID: 2140804774002791276}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1411,10 +1433,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Portal
       objectReference: {fileID: 0}
-    - target: {fileID: 2113587801728021610, guid: 19ca1b0d068e303408e7013c00c88c47, type: 3}
-      propertyPath: m_Layer
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 3050901875184515690, guid: 19ca1b0d068e303408e7013c00c88c47, type: 3}
       propertyPath: m_LocalPosition.x
       value: 11.5
@@ -1453,10 +1471,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3050901875184515690, guid: 19ca1b0d068e303408e7013c00c88c47, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3621104216260672573, guid: 19ca1b0d068e303408e7013c00c88c47, type: 3}
-      propertyPath: m_Layer
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
