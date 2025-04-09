@@ -1,32 +1,90 @@
-using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class NavSurface : MonoBehaviour
 {
-    private BoxCollider2D collider;
+    public Vector2Int area;
+    private float cellSize = 1f;
+    
+    private List<(Vector2 position, bool isWall)> cells = new();
+    private List<(Vector2 position, bool isWall)> upperCells = new();
+    public LayerMask layerMask;
+
+    void ScanArea()
+    {
+        for (int coordY = -(area.y / 2) ; coordY < (area.y / 2); coordY++)
+        {
+            for (int coordX = -(area.x / 2); coordX < (area.x / 2); coordX++)
+            {
+                var point = new Vector2(transform.position.x + coordX + 0.5f, transform.position.y + coordY + 0.5f);
+                
+                var hit = Physics2D.OverlapBox(point, new Vector2(0.9f, 0.9f), 0f, layerMask); 
+                if (hit)
+                {
+                    var upper = cells.Find(upper => Mathf.Approximately(upper.position.x, point.x) && Mathf.Approximately(upper.position.y, point.y + 1));
+                    if (upper.isWall)
+                    {
+                        cells.Add((point, false));
+                    } 
+                    else {
+                        cells.Add((point, true));
+                    }
+                }
+                else
+                {
+                    cells.Add((point, false));
+                }
+            }
+        }
+        
+        
+        foreach (var current in cells)
+        {
+            var upper = cells.Find(cell => 
+                Mathf.Approximately(cell.position.x, current.position.x) && 
+                Mathf.Approximately(cell.position.y, current.position.y + 1));
+
+            if (upper.isWall && current.isWall)
+            {
+                upperCells.Add((current.position, false));
+            }
+            else
+            {
+                // upperCells.Add(current);
+            }
+        }
+    }
 
     private void Awake()
     {
-        collider = GetComponent<BoxCollider2D>();
+        cells.Clear();
+        ScanArea();
     }
     
-    private void Start()
+    void OnDrawGizmos()
     {
-        Bounds bounds = collider.bounds;
-        int minX = Mathf.FloorToInt(bounds.min.x);
-        int maxX = Mathf.CeilToInt(bounds.max.x);
-        int minY = Mathf.FloorToInt(bounds.min.y);
-        int maxY = Mathf.CeilToInt(bounds.max.y);
+        
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireCube(transform.position, new Vector3(area.x, area.y, 1));
 
-        for (int x = minX; x < maxX; x++)
+        foreach (var cell in cells)
         {
-            for (int y = minY; y < maxY; y++)
+            // Gizmos.color = cell.isWall ? Color.red : Color.green;
+            // Gizmos.DrawWireCube(cell.position, Vector2.one);
+
+            if (cell.isWall)
             {
-                Vector2 center = new Vector2(x + 0.5f, y + 0.5f);
-
-                // 셀마다 충돌 체크
-                bool blocked = Physics2D.OverlapBox(center, Vector2.one * 0.9f, 0f);
-
+                Gizmos.color = Color.red;
+                Gizmos.DrawSphere(cell.position, 0.1f);
+            }
+        }
+        
+        foreach (var cell in upperCells)
+        {
+            if (cell.isWall)
+            {
+                Gizmos.color = Color.green;
+                Gizmos.DrawSphere(cell.position, 0.1f);
             }
         }
     }

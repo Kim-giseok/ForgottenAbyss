@@ -13,6 +13,7 @@ public class EnemyController : MonoBehaviour, IDamagable
     public EnemyAgent agent { get; private set; }
     public EnemyAnimationHandler animationHandler { get; private set; }
     public EnemyStatusHandler statusHandler { get; private set; }
+    public EnemyRewardHandler rewardHandler { get; private set; }
     
     public RespawnArea respawnArea { get; private set; }
     
@@ -24,6 +25,7 @@ public class EnemyController : MonoBehaviour, IDamagable
     {
         agent = GetComponent<EnemyAgent>();
         rigidbody = GetComponent<Rigidbody2D>();
+        rewardHandler = GetComponent<EnemyRewardHandler>();
 
         animationHandler = new EnemyAnimationHandler(GetComponent<Animator>());
         statusHandler = new EnemyStatusHandler();
@@ -44,7 +46,7 @@ public class EnemyController : MonoBehaviour, IDamagable
         btMachine.Notify();
         health -= damage;
         
-        if(health <= 0) Destroy(gameObject);
+        if(health <= 0) Die();
     }
 
     private void FixedUpdate()
@@ -61,5 +63,10 @@ public class EnemyController : MonoBehaviour, IDamagable
     public void Die()
     {
         Destroy(gameObject);
+
+        if (respawnArea != null)
+        {
+            Instantiate(rewardHandler.GetRewardItem(), transform.position, Quaternion.identity);
+        }
     }
 }

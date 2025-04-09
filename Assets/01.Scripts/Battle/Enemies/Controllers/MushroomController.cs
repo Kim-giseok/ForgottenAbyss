@@ -6,7 +6,7 @@ public class MushroomController: EnemyController
             new SelectorNode(
                 new SelectorNode(
                     new SequenceNode(new HitNode()),
-                    new SequenceNode(new RangeToTargetNode(), new CombatIdleNode(duration: 0.5f))))
+                    new SequenceNode(new RangeToTargetNode(), new CombatIdleNode(duration: 1f))))
         );
     }
 }
