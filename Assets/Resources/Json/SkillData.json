@@ -7,6 +7,7 @@
             "CoolTime": 0.5,
             "DamageMultiplier": 1.0,
             "VisualSOName": "Sword_Attack_Visual",
+            "ExecutionSOName": "Sword_Attack_Execution",
             "Type": 0
         },
         {
@@ -16,6 +17,7 @@
             "CoolTime": 5.0,
             "DamageMultiplier": 2.0,
             "VisualSOName": "Sword_Skill01_Visual",
+            "ExecutionSOName": "Sword_Skill01_Execution",
             "Type": 1
         },
         {
@@ -25,7 +27,18 @@
             "CoolTime": 10.0,
             "DamageMultiplier": 4.0,
             "VisualSOName": "Sword_Skill02_Visual",
+            "ExecutionSOName": "Sword_Skill02_Execution",
             "Type": 2
+        },
+        {
+            "Id": 900,
+            "Name": "Memory_Skill01",
+            "Description": "보스 기억 스킬 1",
+            "CoolTime": 60.0,
+            "DamageMultiplier": 3.0,
+            "VisualSOName": "Memory_Skill_Visual",
+            "ExecutionSOName": "Memory_Skill_Execution",
+            "Type": 3
         }
     ]
 }

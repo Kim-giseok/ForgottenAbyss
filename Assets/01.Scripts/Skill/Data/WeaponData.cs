@@ -17,8 +17,8 @@ public class WeaponData
     public string Description;
     public int Damage;
     public float Range;
+    public int basicAttackID;
     public int Skill1Id;
     public int Skill2Id;
-    public string IconPath;
     public WeaponType Type;
 }

@@ -86,6 +86,13 @@ public class TracingNode : Node
 {
     public override void Start()
     {
+        Vector2 distance = (controller.agent.player.transform.position - controller.transform.position);
+        if (controller.agent.stoppingDistance > distance.magnitude) // 바로 공격으로 진입
+        {
+            SetStatus(Status.Success);
+            return;
+        }
+        
         controller.animationHandler.Set(EnemyAnimationHandler.Run, true);
     }
     
@@ -123,42 +130,29 @@ public class AttackNode : Node
         controller.animationHandler.Set(EnemyAnimationHandler.Attack);
     }
 
-    public override void Update()
-    {
-        // 공격 도중 멀어지는 점을 굳이 계산하지 않는다. 
-
-        // float distance = (controller.transform.position - controller.agent.player.transform.position).magnitude;
-        // if (controller.agent.stoppingDistance < distance)
-        // {
-        //     SetStatus(Status.Fail);
-        //     return;
-        // }
-    }
-
     public override void OnAnimatedEvent(bool isFire)
     {
         if (isFire)
         {
             ProjectileManager.Instance.CreateMeleeProjectile(controller.transform, controller.attack);
-            Debug.Log(1);
         }
         else
         {
-            ProjectileManager.Instance.DestroyMeleeProjectile(controller.transform);
+            SetStatus(Status.Success);
         }
     }
 
     public override void OnAnimated(AnimationStatus status, Animator animator)
     {
+        // notice: 시작된 후 애니메이션이 변경되면서 바로 인식되는 문제 발생
         if (status == AnimationStatus.End)
         {
-            Debug.Log(animator + "end attack animation");
-            SetStatus(Status.Success);
         }
     }
 
     public override void End()
     {
+        Debug.Log("End");
         ProjectileManager.Instance.DestroyMeleeProjectile(controller.transform);
     }
 }
@@ -174,7 +168,6 @@ public class RangeAttackNode : Node
     {
         if (isFire)
         {
-            Debug.Log("fire");
             ProjectileManager.Instance.CreateProjectile(controller.transform, controller.attack);
         }
     }
@@ -219,6 +212,7 @@ public class CombatIdleNode : Node
     }
 }
 
+// knockBack이 들어갈 수도 있도록
 public class HitNode : Node
 {
     public override void Start()
@@ -233,13 +227,18 @@ public class HitNode : Node
         controller.animationHandler.Set(EnemyAnimationHandler.Hit);
         
         controller.statusHandler.isHit = false;
+        SetStatus(Status.Success);
     }
 
     public override void OnAnimated(AnimationStatus status, Animator animator)
     {
         if (status == AnimationStatus.End)
         {
-            SetStatus(Status.Success);
         }
     }
+}
+
+public class DieNode : Node
+{
+    public override void Start() {}
 }

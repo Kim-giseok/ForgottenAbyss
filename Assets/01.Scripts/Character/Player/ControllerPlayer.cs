@@ -172,13 +172,13 @@ public class ControllerPlayer : MonoBehaviour
 
         yield return new WaitForSeconds(0.4f);
 
-        ProjectileManager.Instance.CreateProjectile(transform, 10);
+        ProjectileManager.Instance.CreateMeleeProjectile(transform, 10);
 
         yield return new WaitForSeconds(0.1f);
               
         isAttacking = false;
         animator.SetBool("IsAttacking", false);
-        ProjectileManager.Instance.DestroyProjectile(transform);
+        ProjectileManager.Instance.DestroyMeleeProjectile(transform);
 
         // 공격 종료 후 방향키가 여전히 눌려있다면 속도 복원
         if (inputVec.x != 0)

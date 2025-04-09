@@ -25,11 +25,11 @@ public class EnemyAgent : MonoBehaviour
         {
             TileBase tile = tilemap.GetTile(position);
 
-            if (tile != null)
+            if (tile)
             {
                 Vector3Int abovePosition = position + Vector3Int.up;
                 TileBase tileAbove = tilemap.GetTile(abovePosition);
-                if (tileAbove != null)
+                if (tileAbove)
                 {
                     // Debug.Log("위쪽에 타일이 존재하여, 이 타일을 제외합니다: " + position);
                 }

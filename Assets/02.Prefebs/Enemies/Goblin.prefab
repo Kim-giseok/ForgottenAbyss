@@ -163,9 +163,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68e4352b8584b49edb0f5da93bdaf397, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 0
+  health: 30
   attack: 0
-  isHit: 0
   currWeapon: {fileID: 0}
 --- !u!114 &3023884308349430780
 MonoBehaviour:
@@ -181,7 +180,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   detectedDistance: 5
   stoppingDistance: 2
-  tracingSpeed: 1
+  tracingSpeed: 3
   tilemap: {fileID: 0}
 --- !u!95 &6035181614651369542
 Animator:
@@ -193,7 +192,7 @@ Animator:
   m_GameObject: {fileID: 8916920570164031079}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 22100000, guid: a2874c94cf77d4d47a17ebca24f17476, type: 2}
+  m_Controller: {fileID: 9100000, guid: 2f9bbaf05b8c44896818a969d34c1bb7, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
