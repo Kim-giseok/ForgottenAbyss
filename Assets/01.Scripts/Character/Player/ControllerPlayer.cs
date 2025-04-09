@@ -17,11 +17,12 @@ public class ControllerPlayer : MonoBehaviour
     private bool isDashing = false; //대쉬 여부
     private bool isAttacking = false; //공격 여부
     private bool isIgnoringCollision = false; //콜라이더 충돌 무시 여부
-    
+    private bool isInvincible = false; //무적 상태 여부
 
     Rigidbody2D rigid;
     Animator animator;
     Collider2D playerCollider;
+    SpriteRenderer spriteRenderer;
 
     PlayerInteraction interaction;
 
@@ -31,6 +32,7 @@ public class ControllerPlayer : MonoBehaviour
         interaction = GetComponent<PlayerInteraction>();
         animator = GetComponent<Animator>();
         playerCollider = GetComponent<Collider2D>();
+        spriteRenderer = GetComponentInChildren<SpriteRenderer>();
     }
 
     private void FixedUpdate()
@@ -64,7 +66,7 @@ public class ControllerPlayer : MonoBehaviour
 
     void OnDash(InputValue value) //대쉬 키 입력
     {
-        if (value.isPressed && !isDashing && isGround && !isAttacking)
+        if (value.isPressed && !isDashing && isGround && !isAttacking && inputVec.x != 0)
         {
             StartCoroutine(Dash());
         }
@@ -146,13 +148,31 @@ public class ControllerPlayer : MonoBehaviour
             StartCoroutine(IgnorePlatformCollision(false));
             isIgnoringCollision = false;
         }
-             
+
+    }
+
+    private void SetInvincibility(bool isInvincible)
+    {
+        this.isInvincible = isInvincible;
+
+        // 무적 상태를 시각적으로 표현 (투명도 조절)
+        if (isInvincible)
+        {
+            StartCoroutine(InvincibleEffect());
+        }
+        else
+        {
+            // 무적 해제 시 원래 상태로 복귀
+            spriteRenderer.color = new Color(1f, 1f, 1f, 1f);
+        }
+
     }
 
     IEnumerator Dash()
     {
         isDashing = true; //대쉬 시작
-        
+        SetInvincibility(true); //무적 상태 시작
+
         Vector2 dashDirection = new Vector2(inputVec.x, 0); //현재 이동 방향
         rigid.velocity = new Vector2(dashDirection.x * dashDistance / dashTime, rigid.velocity.y);
 
@@ -160,6 +180,8 @@ public class ControllerPlayer : MonoBehaviour
         yield return new WaitForSeconds(dashTime);
         
         isDashing = false; //대쉬 종료
+        SetInvincibility(false); //무적 상태 종료
+
         rigid.velocity = new Vector2(inputVec.x * speed, rigid.velocity.y); //원래 속도로 복귀
     }
 
@@ -170,7 +192,7 @@ public class ControllerPlayer : MonoBehaviour
         animator.SetBool("IsRun", false);
         rigid.velocity = new Vector2(0, rigid.velocity.y);
 
-        yield return new WaitForSeconds(0.4f);
+        yield return new WaitForSeconds(0.35f);
 
         ProjectileManager.Instance.CreateMeleeProjectile(transform, 10);
 
@@ -213,6 +235,15 @@ public class ControllerPlayer : MonoBehaviour
 
         StartCoroutine(IgnorePlatformCollision(false));
         isIgnoringCollision = false;
+    }
+
+    IEnumerator InvincibleEffect()
+    {
+        while (isInvincible)
+        {
+            spriteRenderer.color = new Color(1f, 1f, 1f, 0.5f);
+            yield return null;
+        }
     }
         
 }
