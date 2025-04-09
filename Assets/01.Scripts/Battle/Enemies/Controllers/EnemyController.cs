@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class EnemyController : MonoBehaviour, IDamagable
 {
+    // SO로 추후 관리해도 좋을 듯
     [Header("Resource")]
     public float health;
     public float attack;
@@ -12,6 +13,7 @@ public class EnemyController : MonoBehaviour, IDamagable
     public EnemyAgent agent { get; private set; }
     public EnemyAnimationHandler animationHandler { get; private set; }
     public EnemyStatusHandler statusHandler { get; private set; }
+    public EnemyRewardHandler rewardHandler { get; private set; }
     
     public RespawnArea respawnArea { get; private set; }
     
@@ -23,21 +25,14 @@ public class EnemyController : MonoBehaviour, IDamagable
     {
         agent = GetComponent<EnemyAgent>();
         rigidbody = GetComponent<Rigidbody2D>();
+        rewardHandler = GetComponent<EnemyRewardHandler>();
 
         animationHandler = new EnemyAnimationHandler(GetComponent<Animator>());
         statusHandler = new EnemyStatusHandler();
         btMachine = new(this);
     }
 
-    public virtual void Start()
-    {
-        btMachine.Define(
-            new SelectorNode(
-                new SequenceNode(new HitNode()),
-                new SequenceNode(new TracingNode(), new AttackNode(), new CombatIdleNode(duration: 0.5f)),
-                new SequenceNode(new IdleNode(duration: 1), new PatrolNode(duration: 1)))
-        );
-    }
+    public virtual void Start() { }
 
     // character controller
     public void Flip(bool isFlip)
@@ -51,13 +46,7 @@ public class EnemyController : MonoBehaviour, IDamagable
         btMachine.Notify();
         health -= damage;
         
-        if(health <= 0) Destroy(gameObject);
-    }
-
-    // 리워드 표시, 리스폰 아리어에서 제거
-    public void Clear()
-    {
-        
+        if(health <= 0) Die();
     }
 
     private void FixedUpdate()
@@ -68,5 +57,16 @@ public class EnemyController : MonoBehaviour, IDamagable
     private void OnAnimatedEvent(int value)
     {
         btMachine.OnAnimatedEvent(value == 1);
+    }
+
+    // 리워드 표시, 리스폰 아리어에서 제거
+    public void Die()
+    {
+        Destroy(gameObject);
+
+        if (respawnArea != null)
+        {
+            Instantiate(rewardHandler.GetRewardItem(), transform.position, Quaternion.identity);
+        }
     }
 }

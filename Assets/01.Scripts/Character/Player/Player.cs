@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class Player : MonoBehaviour, IDamagable
 {
-    // ÀÏ¹Ý ½ºÅ³ ½½·Ô
-    // Æ¯¼ö ½ºÅ³ ½½·Ô
-    // ·¹º§ ¾÷ ½Ã½ºÅÛ
+    // ï¿½Ï¹ï¿½ ï¿½ï¿½Å³ ï¿½ï¿½ï¿½ï¿½
+    // Æ¯ï¿½ï¿½ ï¿½ï¿½Å³ ï¿½ï¿½ï¿½ï¿½
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ã½ï¿½ï¿½ï¿½
        
     PlayerStatus playerstatus;
 
@@ -20,9 +20,9 @@ public class Player : MonoBehaviour, IDamagable
     
     public void GetDamage(float damage)
     {
-        playerstatus.stats[StatType.HP] -= damage; //ÇÇ°Ý ½Ã µ¥¹ÌÁö
+        playerstatus.stats[StatType.HP] -= damage; //ï¿½Ç°ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
-        if (playerstatus.stats[StatType.HP] <= 0) //HP=0 µÇ¸é »ç¸Á
+        if (playerstatus.stats[StatType.HP] <= 0) //HP=0 ï¿½Ç¸ï¿½ ï¿½ï¿½ï¿½
         {
             isDead = true;
         }

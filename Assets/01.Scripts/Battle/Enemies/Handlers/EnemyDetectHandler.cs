@@ -1,52 +1,64 @@
-using System;
 using UnityEngine;
 
 // EnemyDetectHandler
 public class EnemyDetectHandler : MonoBehaviour
 {
-    private float RAY_DISTANCE = 1f;
-    private float memoGravityScale;
+    private float defaultRayDistance = 1f;
+    private float gravityScale;
+    public bool isWalkable { get; private set; } = true;
 
     private Rigidbody2D rigidbody;
-    private CircleCollider2D collider;
+    private Collider2D collider;
     
-    private LayerMask currLayerMask;
     
     private void Awake()
     {
         rigidbody = GetComponent<Rigidbody2D>();
-        collider = GetComponent<CircleCollider2D>();
+        collider = GetComponent<Collider2D>();
         
-        memoGravityScale = rigidbody.gravityScale;
+        gravityScale = rigidbody.gravityScale;
     }
 
     private void Update()
     {
-        IsGrounded();
+        IsWalkable();
+        // if (IsGrounded()) { rigidbody.gravityScale = 0; } else { rigidbody.gravityScale = gravityScale; }
     }
 
-    public void IsGrounded()
+    private void OnDrawGizmos()
     {
-        var ad  =Physics2D.OverlapCircle(new Vector2(this.transform.position.x, this.transform.position.y - collider.radius), RAY_DISTANCE);
-        // Debug.Log(ad);
+        
+        collider = GetComponent<Collider2D>();
+        Gizmos.color = Color.red;
+        Gizmos.DrawCube(new Vector2(collider.bounds.center.x, collider.bounds.min.y), new Vector2(collider.bounds.size.x, 0.1f));
     }
 
+    public bool IsGrounded()
+    {
+        return Physics2D.OverlapBox(new Vector2(collider.bounds.center.x, collider.bounds.min.y), new Vector2(collider.bounds.size.x, 0.1f), 0, ~(1 << gameObject.layer));
+    }
+
+    public void IsWalkable()
+    {
+        RaycastHit2D hit = Physics2D.Raycast(new Vector2(transform.rotation.eulerAngles.y == 0 ? collider.bounds.max.x : collider.bounds.min.x, collider.bounds.min.y), Vector2.down, defaultRayDistance, ~(1 << gameObject.layer));
+        Debug.DrawRay(new Vector2(transform.rotation.eulerAngles.y == 0 ? collider.bounds.max.x : collider.bounds.min.x, collider.bounds.min.y), Vector2.down * 1f, Color.yellow);
+    }
+    
     public void IsBlocked() // 앞쪽의 
     {
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.right, RAY_DISTANCE, ~(1 << currLayerMask));
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.right, defaultRayDistance, ~(1 << gameObject.layer));
+        Debug.DrawRay(transform.position, transform.right * defaultRayDistance, Color.red);
+        
+        if (hit)
+        {
+        }
+        
     }
     
     private void IsSlope()
     {
-        Vector2 rayStart = new Vector2(transform.position.x, transform.position.y - (collider.radius + 0.2f));
-        RaycastHit2D hit = Physics2D.Raycast(rayStart, Vector2.down, RAY_DISTANCE);
-
-        if (hit.collider)
-        {
-            if(hit.collider.gameObject.CompareTag("Player")) return; // Ground 레이어 마스크로 변경
-            var currDegree = Vector2.Angle(Vector2.up, hit.normal);
-            if(currDegree == 0) rigidbody.gravityScale = 0;
-            
-        }
+        RaycastHit2D hit = Physics2D.Raycast(new Vector2(collider.bounds.center.x, collider.bounds.min.y), Vector2.down, defaultRayDistance, ~(1 << gameObject.layer));
+        var currDegree = Vector2.Angle(Vector2.up, hit.normal);
+        var currDirection = Vector3.ProjectOnPlane(Vector3.right, hit.normal).normalized;
     }
 }

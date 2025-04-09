@@ -14,6 +14,7 @@ public class IdleNode : Node
     public override void Start()
     {
         currTime = 0;
+        controller.rigidbody.velocity = new Vector2(0, controller.rigidbody.velocity.y);
     }
 
     public override void Update()
@@ -25,7 +26,6 @@ public class IdleNode : Node
             SetStatus(Status.Fail);
             return;
         }
-
         
         currTime += Time.deltaTime;
         if (currTime >= duration)
@@ -87,6 +87,7 @@ public class TracingNode : Node
     public override void Start()
     {
         Vector2 distance = (controller.agent.player.transform.position - controller.transform.position);
+        
         if (controller.agent.stoppingDistance > distance.magnitude) // 바로 공격으로 진입
         {
             SetStatus(Status.Success);
@@ -111,7 +112,7 @@ public class TracingNode : Node
             SetStatus(Status.Success);
            return;
         }
-
+        
         controller.Flip(distance.normalized.x > 0);
         controller.rigidbody.velocity = new Vector2(distance.normalized.x * controller.agent.tracingSpeed, controller.rigidbody.velocity.y);
     }
@@ -152,7 +153,6 @@ public class AttackNode : Node
 
     public override void End()
     {
-        Debug.Log("End");
         ProjectileManager.Instance.DestroyMeleeProjectile(controller.transform);
     }
 }
@@ -175,15 +175,47 @@ public class RangeAttackNode : Node
     public override void OnAnimated(AnimationStatus status, Animator animator) // 우선 인식되는 현상 발생
     {
         
-        // if (status == AnimationStatus.End)
-        // {
-            // SetStatus(Status.Success);
-        // }
     }
 
     public override void End()
     {
-        // ProjectileManager.Instance.DestroyProjectile(controller.transform);
+    }
+}
+
+public class RangeToTargetNode : Node
+{
+
+    public float GetDegreeToTarget()
+    {
+        Vector2 direction = (controller.agent.player.transform.position - controller.transform.position).normalized;
+        return Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg; // 날라가는 방향 계산
+    }
+    
+    public override void Start()
+    {
+        controller.animationHandler.Set(EnemyAnimationHandler.Attack);
+    }
+
+    public override void OnAnimatedEvent(bool isFire)
+    {
+        if (isFire)
+        {
+            
+            ProjectileManager.Instance.CreateProjectile(controller.transform, controller.attack, degree: GetDegreeToTarget());
+        }
+        else
+        {
+            SetStatus(Status.Success);
+        }
+    }
+
+    public override void OnAnimated(AnimationStatus status, Animator animator) // 우선 인식되는 현상 발생
+    {
+        
+    }
+
+    public override void End()
+    {
     }
 }
 
@@ -224,6 +256,9 @@ public class HitNode : Node
             return;
         }
         
+        Vector2 direction = (controller.agent.player.transform.position - controller.transform.position).normalized;
+        controller.Flip(direction.x > 0);
+        
         controller.animationHandler.Set(EnemyAnimationHandler.Hit);
         
         controller.statusHandler.isHit = false;
@@ -240,5 +275,8 @@ public class HitNode : Node
 
 public class DieNode : Node
 {
-    public override void Start() {}
+    public override void Start()
+    {
+        controller.Die();
+    }
 }

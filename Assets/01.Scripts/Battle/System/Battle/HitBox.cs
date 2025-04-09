@@ -3,7 +3,7 @@ using UnityEngine;
 public class HitBox : MonoBehaviour // 1회 공격 당의 캐싱이 필요할 수 있음
 {
     private float damage;
-    private Transform owner;
+    private LayerMask ownerLayer;
     
     private Collider2D collider;
 
@@ -13,7 +13,7 @@ public class HitBox : MonoBehaviour // 1회 공격 당의 캐싱이 필요할 �
     }
     public void SetOwner(Transform owner)
     {
-        this.owner = owner;
+        this.ownerLayer = owner.gameObject.layer;
     }
 
     private void Awake()
@@ -34,7 +34,7 @@ public class HitBox : MonoBehaviour // 1회 공격 당의 캐싱이 필요할 �
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (!other.TryGetComponent(out IDamagable damagable) || owner == other.transform) return;
+        if (!other.TryGetComponent(out IDamagable damagable) || ownerLayer == other.gameObject.layer) return;
         damagable.GetDamage(damage);
     }
 }
