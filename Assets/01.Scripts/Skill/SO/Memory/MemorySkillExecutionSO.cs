@@ -5,8 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Memory_Skill_Execution", menuName = "SO/Skill/Execution/MemorySkill")]
 public class MemorySkillExecutionSO : SkillExecutionSO
 {
-    public float range = 10f;
-    public GameObject areaEffectPrefab;
+    public float range = 3f;
 
     public override void Execute(GameObject caster, GameObject target, SkillData data)
     {
@@ -24,10 +23,15 @@ public class MemorySkillExecutionSO : SkillExecutionSO
         }
 
         // 2. 범위 이펙트 생성 (시각적 효과)
-        if (areaEffectPrefab != null)
+        var visualSO = DataManager.Instance.GetSkillVisualSO(data.VisualSOName);
+        if (visualSO != null && !string.IsNullOrEmpty(visualSO.effectKey))
         {
-            GameObject effect = Instantiate(areaEffectPrefab, center, Quaternion.identity);
-            effect.transform.localScale = Vector3.one * (range * 2f); // 원이니까 지름
+            GameObject effect = EffectPool.Instance.SpawnEffect(visualSO.effectKey, center, Quaternion.identity);
+
+            if (effect != null)
+            {
+                effect.transform.localScale = Vector3.one * (range * 2f);
+            }
         }
 
         // 3. 로그 출력

@@ -10,6 +10,9 @@ public class WeaponManager : Singleton<WeaponManager>
     private WeaponDataSO currentWeaponSO;
     private WeaponData currentWeaponData;
 
+    private MemoryPieceData currentMemoryData;
+    private MemoryPieceSO currentMemorySO;
+
     public void EquipWeapon(WeaponDataSO selectedWeapon)
     {
         if (selectedWeapon == null)
@@ -38,6 +41,28 @@ public class WeaponManager : Singleton<WeaponManager>
         SkillManager.Instance.SetCurrentWeaponSkills(currentWeaponData.Id);
     }
 
+    public void EquipMemoryPiece(MemoryPieceSO memorySO)
+    {
+        if (memorySO == null)
+        {
+            Debug.LogWarning("기억 조각 데이터 없음");
+            return;
+        }
+
+        currentMemorySO = memorySO;
+        currentMemoryData = DataManager.Instance.GetMemoryPieceData(memorySO.currentMemoryPieceId);
+
+        if (currentMemoryData == null)
+        {
+            Debug.LogWarning($"MemoryPieceData not found for ID {memorySO.currentMemoryPieceId}");
+            return;
+        }
+
+        skillController.memorySkillId = memorySO.memorySkillVisualSO.skillId;
+
+        SkillManager.Instance.SetMemorySkill(currentMemorySO.memorySkillVisualSO.skillId);
+    }
+
     public float GetCurrentWeaponAttack()
     {
         return currentWeaponData != null ? currentWeaponData.Damage : 0f;
@@ -46,12 +71,22 @@ public class WeaponManager : Singleton<WeaponManager>
     public WeaponData GetCurrentWeaponData() => currentWeaponData;
     public WeaponDataSO GetCurrentWeaponSO() => currentWeaponSO;
 
+    public MemoryPieceData GetCurrentMemoryPieceData() => currentMemoryData;
+    public MemoryPieceSO GetCurrentMemoryPieceSO() => currentMemorySO;
+
 #if UNITY_EDITOR
     [ContextMenu("DEBUG: 기본 무기 장착")]
     private void Debug_EquipTestWeapon()
     {
-        var testWeaponSO = Resources.Load<WeaponDataSO>("Weapon/Sword_SO"); // 경로에 맞게 수정
+        var testWeaponSO = Resources.Load<WeaponDataSO>("Weapon/Sword_SO");
         EquipWeapon(testWeaponSO);
+    }
+
+    [ContextMenu("DEBUG: 기억 조각 장착")]
+    private void Debug_EquipTestMemoryPiece()
+    {
+        var testMemorySO = Resources.Load<MemoryPieceSO>("Weapon/MemoryPieceSO");
+        EquipMemoryPiece(testMemorySO);
     }
 #endif
 }

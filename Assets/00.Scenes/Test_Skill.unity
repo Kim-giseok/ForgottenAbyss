@@ -554,6 +554,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: SkillSystem
       objectReference: {fileID: 0}
+    - target: {fileID: 3622915880698505367, guid: 2cef33c320151574f914bdb408e62aab, type: 3}
+      propertyPath: effectList.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3622915880698505367, guid: 2cef33c320151574f914bdb408e62aab, type: 3}
+      propertyPath: effectList.Array.data[3].key
+      value: MemorySkill
+      objectReference: {fileID: 0}
+    - target: {fileID: 3622915880698505367, guid: 2cef33c320151574f914bdb408e62aab, type: 3}
+      propertyPath: effectList.Array.data[3].prefab
+      value: 
+      objectReference: {fileID: 1400255665468144947, guid: a899d01b2caac334abc7e1b1b9484e71, type: 3}
+    - target: {fileID: 3622915880698505367, guid: 2cef33c320151574f914bdb408e62aab, type: 3}
+      propertyPath: effectList.Array.data[3].initialSize
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8218525754157547995, guid: 2cef33c320151574f914bdb408e62aab, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
