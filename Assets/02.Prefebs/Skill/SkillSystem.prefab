@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5660962680461697657}
   - component: {fileID: 1524514876729645651}
   - component: {fileID: 3622915880698505367}
+  - component: {fileID: 497392018163810730}
   m_Layer: 0
   m_Name: SkillSystem
   m_TagString: Untagged
@@ -50,9 +51,12 @@ MonoBehaviour:
     Skills: []
   weaponDataList:
     Weapons: []
+  memoryPieceDataList:
+    MemoryPieces: []
   skillVisualSOList: []
   skillExecutionSOList: []
   weaponSOList: []
+  memoryVisualSOList: []
 --- !u!114 &1524514876729645651
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -87,3 +91,20 @@ MonoBehaviour:
   - key: SwordSkill02
     prefab: {fileID: 1205478487176026167, guid: 1341b472ed220a64eae7777e5caf8078, type: 3}
     initialSize: 2
+  - key: MemorySkill
+    prefab: {fileID: 1400255665468144947, guid: a899d01b2caac334abc7e1b1b9484e71, type: 3}
+    initialSize: 1
+--- !u!114 &497392018163810730
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2714057563554896699}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7147cc85740d3947a25644c01bcf1ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skillController: {fileID: 0}
+  playerRenderer: {fileID: 0}

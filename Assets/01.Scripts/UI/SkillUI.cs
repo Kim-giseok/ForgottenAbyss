@@ -4,6 +4,14 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
+public enum SkillSlotType
+{
+    Memory = 0,
+    Basic = 1,
+    Skill01 = 2,
+    Skill02 = 3
+}
+
 public class SkillUI : MonoBehaviour
 {
 
@@ -11,6 +19,7 @@ public class SkillUI : MonoBehaviour
     public GameObject[] textPros;
     public TextMeshProUGUI[] hideSkillTimeTexts;
     public Image[] hideSkillImages;
+    public Image[] skillIcons;
     private bool[] isHideSkills = { false, false, false, false};
     private float[] skillTimes = { 12, 9, 9, 9 };
     private float[] getSkillTimes = { 0,0,0,0 };
@@ -29,16 +38,17 @@ public class SkillUI : MonoBehaviour
 
     void Update()
     {
-        HideSkillCheck(); // 매 프레임마다 모든ㄴ 스킬의 쿨타임 체크
+       // HideSkillCheck(); // 매 프레임마다 모든ㄴ 스킬의 쿨타임 체크 < 두번체크되서 뺏음
     }
 
     //스킬 버튼을 활성화하고, 쿨타임 시작
-    public void HideSkillSetting(int skillNum)
+    public void HideSkillSetting(int skillNum, float coolTime)
     {
         if (!isHideSkills[skillNum]) //이미 활성화된 스킬에 대해 중복 설정 방지
         {
             hideSkillButtons[skillNum].SetActive(true); // 버튼 할성화
-            getSkillTimes[skillNum] = skillTimes[skillNum]; //쿨타임 설정
+            getSkillTimes[skillNum] = coolTime; // 쿨타임 설정 (외부에서 받은 값)
+            skillTimes[skillNum] = coolTime;    // 총 쿨타임 기록도 갱신
             isHideSkills[skillNum] = true; // 스킬이 활성화됨
 
             // 해당 설정에 대한 코루틴 실행
@@ -73,7 +83,7 @@ public class SkillUI : MonoBehaviour
             hideSkillButtons[skillNum].SetActive(false); // 버튼 비활성화
         }
         // 남은 쿨타임 텍스트 업데이트
-        hideSkillTimeTexts[skillNum].text = getSkillTimes[skillNum].ToString("00");
+        hideSkillTimeTexts[skillNum].text = getSkillTimes[skillNum].ToString("0.0");
 
         //쿨타임을 비율로 계산해 이미지 갱신
         float time = getSkillTimes[skillNum] / skillTimes[skillNum];
@@ -88,5 +98,19 @@ public class SkillUI : MonoBehaviour
             yield return null; // 한 프래임 대기
             UpdateSkillUI(skillNum); //uI갱신
         }
+    }
+
+    public void SetSkillIcon(SkillSlotType slot, Sprite icon)
+    {
+        int idx = (int)slot;
+        if (skillIcons[idx] != null)
+            skillIcons[idx].sprite = icon;
+    }
+
+    public void SetSkillCooldownTime(SkillSlotType slot, float cooldown)
+    {
+        int idx = (int)slot;
+        if (idx >= 0 && idx < skillTimes.Length)
+            skillTimes[idx] = cooldown;
     }
 }

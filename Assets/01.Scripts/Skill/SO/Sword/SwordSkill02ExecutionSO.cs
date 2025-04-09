@@ -14,8 +14,10 @@ public class SwordSkill02ExecutionSO : SkillExecutionSO
     public LayerMask targetLayer;
     public LayerMask obstacleLayer;
 
-    public override void Execute(GameObject caster, GameObject target)
+    public override void Execute(GameObject caster, GameObject target, SkillData data)
     {
+        SkillCastData castData = PrepareCastData(caster, target, data);
+
         float facingDir = caster.transform.eulerAngles.y == 180f ? -1f : 1f; // 방향보정
         Vector3 dashDir = Vector3.right * facingDir;
 
@@ -25,15 +27,11 @@ public class SwordSkill02ExecutionSO : SkillExecutionSO
         float rayLength = dashDistance - 0.1f;
 
         float actualDistance = dashDistance;
-        float minDashDistance = dashDistance;
-
         RaycastHit2D hit = Physics2D.Raycast(rayStartPos, dashDir, rayLength, obstacleLayer);
 
         if (hit.collider != null)
         {
-            actualDistance = hit.distance - 0.1f;
-            actualDistance = Mathf.Max(0f, actualDistance);
-            minDashDistance = actualDistance;
+            actualDistance = Mathf.Max(0f, hit.distance - 0.1f);
         }
 
         Vector3 targetPos = startPos + dashDir * actualDistance;
@@ -42,19 +40,39 @@ public class SwordSkill02ExecutionSO : SkillExecutionSO
         if (casterCollider != null)
             casterCollider.enabled = false;
 
-        // DOTween으로 돌진
-        //caster.transform.DOMove(targetPos, dashDuration)
-        //    .SetEase(Ease.OutQuad)
-        //    .OnComplete(() =>
-        //    {
-        //        if (casterCollider != null)
-        //            casterCollider.enabled = true;
-
-        //        caster.GetComponent<MonoBehaviour>().StartCoroutine(DelayedHitCoroutine(startPos, targetPos));
-        //    });
+        MonoBehaviour mono = caster.GetComponent<MonoBehaviour>();
+        if (mono != null)
+        {
+            mono.StartCoroutine(DashCoroutine(caster, startPos, targetPos, casterCollider, () =>
+            {
+                mono.StartCoroutine(DelayedHitCoroutine(startPos, targetPos, castData));
+            }));
+        }
     }
 
-    private IEnumerator DelayedHitCoroutine(Vector3 start, Vector3 end)
+    private IEnumerator DashCoroutine(GameObject caster, Vector3 startPos, Vector3 targetPos, Collider2D casterCollider, System.Action onComplete)
+    {
+        float elapsed = 0f;
+
+        while (elapsed < dashDuration)
+        {
+            elapsed += Time.deltaTime;
+            float t = Mathf.Clamp01(elapsed / dashDuration);
+            float easeT = 1f - Mathf.Pow(1f - t, 2f); // Ease.OutQuad
+
+            caster.transform.position = Vector3.Lerp(startPos, targetPos, easeT);
+            yield return null;
+        }
+
+        caster.transform.position = targetPos;
+
+        if (casterCollider != null)
+            casterCollider.enabled = true;
+
+        onComplete?.Invoke();
+    }
+
+    private IEnumerator DelayedHitCoroutine(Vector3 start, Vector3 end, SkillCastData castData)
     {
         yield return new WaitForSeconds(damageDelay);
 
@@ -66,27 +84,11 @@ public class SwordSkill02ExecutionSO : SkillExecutionSO
 
         foreach (var hit in hits)
         {
+            DealDamageToTarget(hit.gameObject, castData);
             Debug.Log($"Hit {hit.name}");
             CameraShake.Instance.Shake(0.05f, 0.1f);
         }
 
-        DebugDrawBox(center, size, angle, Color.red, 0.5f);
-    }
-
-    private void DebugDrawBox(Vector2 center, Vector2 size, float angle, Color color, float duration)
-    {
-        Quaternion rot = Quaternion.Euler(0, 0, angle);
-        Vector2 halfSize = size / 2f;
-
-        Vector2[] corners = new Vector2[4];
-        corners[0] = center + (Vector2)(rot * new Vector3(-halfSize.x, -halfSize.y));
-        corners[1] = center + (Vector2)(rot * new Vector3(-halfSize.x, halfSize.y));
-        corners[2] = center + (Vector2)(rot * new Vector3(halfSize.x, halfSize.y));
-        corners[3] = center + (Vector2)(rot * new Vector3(halfSize.x, -halfSize.y));
-
-        Debug.DrawLine(corners[0], corners[1], color, duration);
-        Debug.DrawLine(corners[1], corners[2], color, duration);
-        Debug.DrawLine(corners[2], corners[3], color, duration);
-        Debug.DrawLine(corners[3], corners[0], color, duration);
+        DebugDrawUtil.DrawBox(center, size, angle, Color.red, 0.5f);
     }
 }
