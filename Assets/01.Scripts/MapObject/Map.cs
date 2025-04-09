@@ -6,6 +6,7 @@ using UnityEngine;
 public class Map : MonoBehaviour
 {
     [SerializeField] Transform startP;
+    public MonsterManager monsterManager { get; private set; }
 
     public void MapStart()
     {
@@ -18,5 +19,7 @@ public class Map : MonoBehaviour
         {
             Debug.Log(e.Message);
         }
+
+        monsterManager = GetComponentInChildren<MonsterManager>();
     }
 }

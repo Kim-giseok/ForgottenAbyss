@@ -5,7 +5,7 @@ using UnityEngine;
 public class MapSpawnManager : Singleton<MapSpawnManager>
 {
     [SerializeField] private Map[] maps;
-    Map curMap;
+    public Map CurMap { get; private set; }
 
     private void Awake()
     {
@@ -19,10 +19,10 @@ public class MapSpawnManager : Singleton<MapSpawnManager>
 
     public void SpawnRandomMap()
     {
-        if (curMap != null)
-            Destroy(curMap.gameObject);
+        if (CurMap != null)
+            Destroy(CurMap.gameObject);
 
-        curMap = Instantiate(maps[Random.Range(0, maps.Length)]);
-        curMap.MapStart();
+        CurMap = Instantiate(maps[Random.Range(0, maps.Length)]);
+        CurMap.MapStart();
     }
 }
