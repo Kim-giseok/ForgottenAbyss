@@ -14,8 +14,10 @@ public class SwordSkill02ExecutionSO : SkillExecutionSO
     public LayerMask targetLayer;
     public LayerMask obstacleLayer;
 
-    public override void Execute(GameObject caster, GameObject target)
+    public override void Execute(GameObject caster, GameObject target, SkillData data)
     {
+        SkillCastData castData = PrepareCastData(caster, target, data);
+
         float facingDir = caster.transform.eulerAngles.y == 180f ? -1f : 1f; // 방향보정
         Vector3 dashDir = Vector3.right * facingDir;
 
@@ -41,11 +43,14 @@ public class SwordSkill02ExecutionSO : SkillExecutionSO
         MonoBehaviour mono = caster.GetComponent<MonoBehaviour>();
         if (mono != null)
         {
-            mono.StartCoroutine(DashCoroutine(caster, startPos, targetPos, casterCollider));
+            mono.StartCoroutine(DashCoroutine(caster, startPos, targetPos, casterCollider, () =>
+            {
+                mono.StartCoroutine(DelayedHitCoroutine(startPos, targetPos, castData));
+            }));
         }
     }
 
-    private IEnumerator DashCoroutine(GameObject caster, Vector3 startPos, Vector3 targetPos, Collider2D casterCollider)
+    private IEnumerator DashCoroutine(GameObject caster, Vector3 startPos, Vector3 targetPos, Collider2D casterCollider, System.Action onComplete)
     {
         float elapsed = 0f;
 
@@ -64,13 +69,10 @@ public class SwordSkill02ExecutionSO : SkillExecutionSO
         if (casterCollider != null)
             casterCollider.enabled = true;
 
-        // 데미지 판정 코루틴 시작
-        MonoBehaviour mono = caster.GetComponent<MonoBehaviour>();
-        if (mono != null)
-            mono.StartCoroutine(DelayedHitCoroutine(startPos, targetPos));
+        onComplete?.Invoke();
     }
 
-    private IEnumerator DelayedHitCoroutine(Vector3 start, Vector3 end)
+    private IEnumerator DelayedHitCoroutine(Vector3 start, Vector3 end, SkillCastData castData)
     {
         yield return new WaitForSeconds(damageDelay);
 
@@ -82,6 +84,7 @@ public class SwordSkill02ExecutionSO : SkillExecutionSO
 
         foreach (var hit in hits)
         {
+            DealDamageToTarget(hit.gameObject, castData);
             Debug.Log($"Hit {hit.name}");
             CameraShake.Instance.Shake(0.05f, 0.1f);
         }

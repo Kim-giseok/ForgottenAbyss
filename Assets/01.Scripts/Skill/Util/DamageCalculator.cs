@@ -2,8 +2,8 @@ using UnityEngine;
 
 public static class DamageCalculator
 {
-    public static float CalculateDamage(float baseAttack, float weaponAttack, float skillMultiplier)
+    public static float CalculateDamage(SkillCastData castData)
     {
-        return (baseAttack + weaponAttack) * skillMultiplier;
+        return (castData.baseAttack + castData.weaponAttack) * castData.skillMultiplier;
     }
 }

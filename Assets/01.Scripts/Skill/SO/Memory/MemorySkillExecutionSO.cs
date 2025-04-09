@@ -2,17 +2,35 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MemorySkillExecutionSO : MonoBehaviour
+[CreateAssetMenu(fileName = "Memory_Skill_Execution", menuName = "SO/Skill/Execution/MemorySkill")]
+public class MemorySkillExecutionSO : SkillExecutionSO
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public float range = 10f;
+    public GameObject areaEffectPrefab;
 
-    // Update is called once per frame
-    void Update()
+    public override void Execute(GameObject caster, GameObject target, SkillData data)
     {
-        
+        Vector3 center = caster.transform.position;
+
+        // SkillCastData 준비
+        SkillCastData castData = PrepareCastData(caster, target, data);
+
+        // 1. 범위 내 적 탐색
+        Collider2D[] hits = GetEnemiesInRange(center, range, LayerMask.GetMask("Enemy"));
+
+        foreach (var hit in hits)
+        {
+            DealDamageToTarget(hit.gameObject, castData);
+        }
+
+        // 2. 범위 이펙트 생성 (시각적 효과)
+        if (areaEffectPrefab != null)
+        {
+            GameObject effect = Instantiate(areaEffectPrefab, center, Quaternion.identity);
+            effect.transform.localScale = Vector3.one * (range * 2f); // 원이니까 지름
+        }
+
+        // 3. 로그 출력
+        Debug.Log($"Memory Skill executed. Hit {hits.Length} enemies.");
     }
 }

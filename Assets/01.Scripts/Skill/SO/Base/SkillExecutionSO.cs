@@ -3,14 +3,31 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "SkillExecutionSO", menuName = "SO/Skill/Execution")]
-public class SkillExecutionSO : ScriptableObject
+public abstract class SkillExecutionSO : ScriptableObject
 {
     [TextArea]
     public string description;
 
     // 스킬 실행
-    public virtual void Execute(GameObject caster, GameObject target)
+    public abstract void Execute(GameObject caster, GameObject target, SkillData data);
+
+    protected SkillCastData PrepareCastData(GameObject caster, GameObject target, SkillData data)
     {
-        Debug.Log($"[SkillExecutionSO] {name} 실행됨");
+        return SkillCastData.Create(caster, target, data);
+    }
+
+    protected void DealDamageToTarget(GameObject target, SkillCastData castData)
+    {
+        var enemy = target.GetComponent<EnemyController>();
+        if (enemy != null)
+        {
+            float damage = castData.CalculateDamage();
+            enemy.GetDamage(damage);
+        }
+    }
+
+    protected Collider2D[] GetEnemiesInRange(Vector3 center, float range, LayerMask layer)
+    {
+        return Physics2D.OverlapCircleAll(center, range, layer);
     }
 }

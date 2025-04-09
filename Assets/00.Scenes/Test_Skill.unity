@@ -150,6 +150,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3427308728366334025, guid: 87fb7fc5c0cbfd44d9a7317919f38764, type: 3}
   m_PrefabInstance: {fileID: 755754955}
   m_PrefabAsset: {fileID: 0}
+--- !u!212 &384172742 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 8454641274516878333, guid: 87fb7fc5c0cbfd44d9a7317919f38764, type: 3}
+  m_PrefabInstance: {fileID: 755754955}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &572027069
 GameObject:
   m_ObjectHideFlags: 0
@@ -232,7 +237,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 2.142857, y: 2.142857}
+    oldSize: {x: 4.1666665, y: 4.1666665}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -364,6 +369,10 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 8454641274516878333, guid: 87fb7fc5c0cbfd44d9a7317919f38764, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 4723107735738678597, guid: 77ba605bbd83f4448bc8683510c3155e, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -372,6 +381,25 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 384172723}
   m_SourcePrefab: {fileID: 100100000, guid: 87fb7fc5c0cbfd44d9a7317919f38764, type: 3}
+--- !u!1 &1207191504 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2714057563554896699, guid: 2cef33c320151574f914bdb408e62aab, type: 3}
+  m_PrefabInstance: {fileID: 3541397332522354261}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1207191509
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1207191504}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7147cc85740d3947a25644c01bcf1ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skillController: {fileID: 384172723}
+  playerRenderer: {fileID: 384172742}
 --- !u!1001 &1756980717
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -569,7 +597,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2714057563554896699, guid: 2cef33c320151574f914bdb408e62aab, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1207191509}
   m_SourcePrefab: {fileID: 100100000, guid: 2cef33c320151574f914bdb408e62aab, type: 3}
 --- !u!1001 &4362323574144947629
 PrefabInstance:

@@ -10,31 +10,33 @@ public class SwordSkill01ExecutionSO : SkillExecutionSO
     public float delayBetweenHits = 0.1f;
     public string effectKey = "SwordSkill01";
 
-    public override void Execute(GameObject caster, GameObject target)
+    public override void Execute(GameObject caster, GameObject target, SkillData data)
     {
+        var castData = PrepareCastData(caster, target, data);
         // 타격 코루틴 실행
-        caster.GetComponent<MonoBehaviour>().StartCoroutine(HitTwiceCoroutine(caster));
+        caster.GetComponent<MonoBehaviour>().StartCoroutine(HitTwiceCoroutine(caster, castData));
     }
 
-    private IEnumerator HitTwiceCoroutine(GameObject caster)
+    private IEnumerator HitTwiceCoroutine(GameObject caster, SkillCastData castData)
     {
-        HitEnemies(caster);
+        HitEnemies(caster, castData);
         yield return new WaitForSeconds(delayBetweenHits);
-        HitEnemies(caster);
+        HitEnemies(caster, castData);
     }
 
-    private void HitEnemies(GameObject caster)
+    private void HitEnemies(GameObject caster, SkillCastData castData)
     {
-        DebugDrawCircle(caster.transform.position, range, Color.red);
-
-        var center = caster.transform.position;
-        var hits = Physics2D.OverlapCircleAll(center, range, targetLayer);
+        Vector2 center = caster.transform.position;
+        Collider2D[] hits = GetEnemiesInRange(center, range, targetLayer);
 
         foreach (var hit in hits)
         {
             Debug.Log($"Hit {hit.name}");
             CameraShake.Instance.Shake(0.05f, 0.1f);
+            DealDamageToTarget(hit.gameObject, castData);
         }
+
+        DebugDrawCircle(center, range, Color.red);
     }
 
     private void DebugDrawCircle(Vector3 center, float radius, Color color, float duration = 0.5f)
