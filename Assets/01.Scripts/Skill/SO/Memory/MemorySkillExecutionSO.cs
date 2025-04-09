@@ -16,7 +16,7 @@ public class MemorySkillExecutionSO : SkillExecutionSO
         SkillCastData castData = PrepareCastData(caster, target, data);
 
         // 1. 범위 내 적 탐색
-        Collider2D[] hits = GetEnemiesInRange(center, range, LayerMask.GetMask("Water"));
+        Collider2D[] hits = GetEnemiesInRange(center, range, LayerMask.GetMask("Enemy"));
 
         // 2. 범위 이펙트 생성 (시각적 효과)
         var visualSO = DataManager.Instance.GetSkillVisualSO(data.VisualSOName);
