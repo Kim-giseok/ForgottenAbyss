@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DebugDrawUtil : MonoBehaviour
+public static class DebugDrawUtil
 {
     public static void DrawCircle(Vector3 center, float radius, Color color, float duration = 0.5f, int segments = 30)
     {
