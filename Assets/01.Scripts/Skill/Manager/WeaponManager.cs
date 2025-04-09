@@ -13,6 +13,14 @@ public class WeaponManager : Singleton<WeaponManager>
     private MemoryPieceData currentMemoryData;
     private MemoryPieceSO currentMemorySO;
 
+    private SkillUI skillUI;
+
+    private void Awake()
+    {
+        if (skillUI == null)
+            skillUI = FindObjectOfType<SkillUI>();
+    }
+
     public void EquipWeapon(WeaponDataSO selectedWeapon)
     {
         if (selectedWeapon == null)
@@ -39,6 +47,21 @@ public class WeaponManager : Singleton<WeaponManager>
         skillController.skill02Id = selectedWeapon.skill02SO.skillId;
 
         SkillManager.Instance.SetCurrentWeaponSkills(currentWeaponData.Id);
+
+        if (skillUI == null)
+            skillUI = FindObjectOfType<SkillUI>();
+
+        skillUI.SetSkillIcon(SkillSlotType.Basic, selectedWeapon.basicAttack.skillIcon);
+        skillUI.SetSkillIcon(SkillSlotType.Skill01, selectedWeapon.skill01SO.skillIcon);
+        skillUI.SetSkillIcon(SkillSlotType.Skill02, selectedWeapon.skill02SO.skillIcon);
+
+        var basicData = DataManager.Instance.GetSkillData(selectedWeapon.basicAttack.skillId);
+        var skill01Data = DataManager.Instance.GetSkillData(selectedWeapon.skill01SO.skillId);
+        var skill02Data = DataManager.Instance.GetSkillData(selectedWeapon.skill02SO.skillId);
+
+        skillUI.SetSkillCooldownTime(SkillSlotType.Basic, basicData.CoolTime);
+        skillUI.SetSkillCooldownTime(SkillSlotType.Skill01, skill01Data.CoolTime);
+        skillUI.SetSkillCooldownTime(SkillSlotType.Skill02, skill02Data.CoolTime);
     }
 
     public void EquipMemoryPiece(MemoryPieceSO memorySO)
@@ -61,6 +84,15 @@ public class WeaponManager : Singleton<WeaponManager>
         skillController.memorySkillId = memorySO.memorySkillVisualSO.skillId;
 
         SkillManager.Instance.SetMemorySkill(currentMemorySO.memorySkillVisualSO.skillId);
+
+        if (skillUI == null)
+            skillUI = FindObjectOfType<SkillUI>();
+
+        skillUI.SetSkillIcon(SkillSlotType.Memory, memorySO.memorySkillVisualSO.skillIcon);
+
+        var memoryData = DataManager.Instance.GetSkillData(memorySO.memorySkillVisualSO.skillId);
+
+        skillUI.SetSkillCooldownTime(SkillSlotType.Memory, memoryData.CoolTime);
     }
 
     public float GetCurrentWeaponAttack()

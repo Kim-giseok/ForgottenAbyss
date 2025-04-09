@@ -8,6 +8,8 @@ public class SkillManager : Singleton<SkillManager>
     private List<int> currentWeaponSkillIds = new List<int>();
     private int currentMemorySkillId = -1;
 
+    public SkillUI skillUI;
+
     // 무기 장착 시 호출
     public void SetCurrentWeaponSkills(int weaponId)
     {
@@ -100,5 +102,21 @@ public class SkillManager : Singleton<SkillManager>
 
         // 5. 쿨타임 갱신
         nextAvailableTimes[skillId] = Time.time + skillData.CoolTime;
+
+        int slotIndex = GetSlotIndexBySkillId(skillId);
+        if (slotIndex != -1)
+        {
+            skillUI.HideSkillSetting(slotIndex, skillData.CoolTime);
+        }
+    }
+
+    private int GetSlotIndexBySkillId(int skillId)
+    {
+        var sc = WeaponManager.Instance.skillController;
+        if (skillId == sc.basicAttackSkillId) return 1;
+        if (skillId == sc.skill01Id) return 2;
+        if (skillId == sc.skill02Id) return 3;
+        if (skillId == sc.memorySkillId) return 0;
+        return -1;
     }
 }
