@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 522394515444416918}
   - component: {fileID: 3336336218724594547}
   - component: {fileID: 2796516333006488116}
+  - component: {fileID: 7497508017735061541}
   m_Layer: 0
   m_Name: DmagableLaber
   m_TagString: Untagged
@@ -47,7 +48,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetMachine: {fileID: 0}
-  laberAnim: {fileID: 9079759598699955294}
+  laberAnim: {fileID: 7497508017735061541}
   damageCut: 0
 --- !u!61 &2796516333006488116
 BoxCollider2D:
@@ -94,6 +95,27 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!95 &7497508017735061541
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2200350032846286578}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 22100000, guid: 47adf0e16287eac48a26edfb813554cc, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &7035314710040318383
 GameObject:
   m_ObjectHideFlags: 0
@@ -104,7 +126,6 @@ GameObject:
   m_Component:
   - component: {fileID: 27271908401129838}
   - component: {fileID: 7822760281104899675}
-  - component: {fileID: 9079759598699955294}
   m_Layer: 0
   m_Name: Sprite
   m_TagString: Untagged
@@ -179,24 +200,3 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!95 &9079759598699955294
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7035314710040318383}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 22100000, guid: 47adf0e16287eac48a26edfb813554cc, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
