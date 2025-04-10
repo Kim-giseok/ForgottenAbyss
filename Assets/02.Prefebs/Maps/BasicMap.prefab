@@ -1034,7 +1034,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 607881c967f830647b23c3f6afc77d9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetMachine: {fileID: 2140804774002791276}
+  targetMachines:
+  - {fileID: 2140804774002791276}
   laberAnim: {fileID: 6110450174999154851}
   enemies: []
 --- !u!95 &6110450174999154851
@@ -1400,6 +1401,14 @@ PrefabInstance:
       propertyPath: targetMachine
       value: 
       objectReference: {fileID: 1390567955029351407}
+    - target: {fileID: 7752986986216209212, guid: 48de69252ef3ce94f9f97f5961a0241c, type: 3}
+      propertyPath: targetMachines.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7752986986216209212, guid: 48de69252ef3ce94f9f97f5961a0241c, type: 3}
+      propertyPath: targetMachines.Array.data[0]
+      value: 
+      objectReference: {fileID: 1390567955029351407}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1420,7 +1429,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 522394515444416918, guid: 2930c3e27c06a0a49ab1cb87baec020a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -6
+      value: -6.5
       objectReference: {fileID: 0}
     - target: {fileID: 522394515444416918, guid: 2930c3e27c06a0a49ab1cb87baec020a, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1468,6 +1477,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3336336218724594547, guid: 2930c3e27c06a0a49ab1cb87baec020a, type: 3}
       propertyPath: targetMachine
+      value: 
+      objectReference: {fileID: 4366998566080459540}
+    - target: {fileID: 3336336218724594547, guid: 2930c3e27c06a0a49ab1cb87baec020a, type: 3}
+      propertyPath: targetMachines.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3336336218724594547, guid: 2930c3e27c06a0a49ab1cb87baec020a, type: 3}
+      propertyPath: targetMachines.Array.data[0]
       value: 
       objectReference: {fileID: 4366998566080459540}
     - target: {fileID: 7035314710040318383, guid: 2930c3e27c06a0a49ab1cb87baec020a, type: 3}
