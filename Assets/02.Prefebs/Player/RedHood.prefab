@@ -225,12 +225,29 @@ MonoBehaviour:
   dashDistance: 2
   dashTime: 0.24
   jumplimit: 2
+  currentJumpCount: 0
   platformLayerMask:
     serializedVersion: 2
     m_Bits: 1024
   invincibilityLayerMask:
     serializedVersion: 2
     m_Bits: 512
+  wallLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  wallDistance: 0
+  isWallDetected: 0
+  isWallClimbing: 0
+  isGround: 0
+  isDashing: 0
+  isAttacking: 0
+  isIgnoringCollision: 0
+  isInvincible: 0
+  rigid: {fileID: 0}
+  animator: {fileID: 0}
+  playerCollider: {fileID: 0}
+  spriteRenderer: {fileID: 0}
+  interaction: {fileID: 0}
 --- !u!114 &7695836731054088730
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -283,7 +300,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39a5f5a0c2370ae4d8d16db0febae4fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  comboAttack: {fileID: 0}
+  comboAttack: {fileID: 4415495858370617319}
+  combatId: 0
   skill01Id: 0
   skill02Id: 0
   memorySkillId: 0
