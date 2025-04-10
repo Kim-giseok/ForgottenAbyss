@@ -1,17 +1,18 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "WeaponSO", menuName = "SO/Weapon")]
 public class WeaponDataSO : ScriptableObject
 {
-    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½id
+    // ¿¬°áÇÒ ¹«±âid
     public int currentWeaponId = 0;
 
-    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Å³ SO
-    public SkillVisualSO basicAttack;
+    // ¿¬°áÇÒ ½ºÅ³ SO
+    public ComboAttackSO comboAttackData;
     public SkillVisualSO skill01SO;
     public SkillVisualSO skill02SO;
 
-    // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    // ¹«±â ¾ÆÀÌÄÜ
     public Sprite weaponIcon;
-    public Sprite playerSprite;
 }

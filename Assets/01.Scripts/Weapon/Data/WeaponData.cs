@@ -5,8 +5,7 @@ using UnityEngine;
 public enum WeaponType
 {
     Sword,
-    Staff,
-    Gun
+    Bow
 }
 
 [System.Serializable]
@@ -17,7 +16,7 @@ public class WeaponData
     public string Description;
     public int Damage;
     public float Range;
-    public int basicAttackID;
+    public int ComboAttack;
     public int Skill1Id;
     public int Skill2Id;
     public WeaponType Type;
