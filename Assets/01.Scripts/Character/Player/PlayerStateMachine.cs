@@ -9,7 +9,8 @@ public enum PlayerState
     Jump,
     Dash,
     Attack,
-    Interaction
+    Interaction,
+    Climb
 }
 
 public abstract class PlayerStateMachine 

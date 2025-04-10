@@ -16,7 +16,14 @@ public class ControllerPlayer : MonoBehaviour
     public int currentJumpCount; //현재 점프 횟수
     public LayerMask platformLayerMask; //점프 중 무시할 플랫폼 레이어
     public LayerMask invincibilityLayerMask; //무적 상태에서 무시할 레이어
-    
+
+    public LayerMask wallLayer; //벽 감지 레이어
+    public float wallDistance; //벽 감지 거리
+
+    public bool isWallDetected; //벽 감지 여부
+    public bool isWallClimbing; //등반 가능한 벽인지 여부
+    public RaycastHit2D wallHit;
+
     public bool isGround; //땅 밟고 있는지 여부
     public bool isDashing = false; //대쉬 여부
     public bool isAttacking = false; //공격 여부
@@ -55,6 +62,7 @@ public class ControllerPlayer : MonoBehaviour
         states.Add(PlayerState.Dash, new DashState(this));
         //states.Add(PlayerState.Attack, new AttackState(this));
         states.Add(PlayerState.Interaction, new InteractionState(this));
+        states.Add(PlayerState.Climb, new ClimbState(this));
 
         // 초기 상태 설정
         ChangeState(PlayerState.Idle);
@@ -95,6 +103,8 @@ public class ControllerPlayer : MonoBehaviour
         {
             animator.SetBool("IsFall", false);
         }
+
+        CheckWall();
     }
     private void FixedUpdate()
     {
@@ -330,6 +340,19 @@ public class ControllerPlayer : MonoBehaviour
         }
     }
 
+    public void CheckWall()
+    {
+        Vector2 direction = transform.right;
+        wallHit = Physics2D.Raycast(transform.position, direction, wallDistance, wallLayer);
+
+        Debug.DrawRay(transform.position, direction * wallDistance, Color.green);
+
+        if(isWallDetected = wallHit.collider != null)
+        {
+            Debug.Log("벽감지"); 
+        }
+    }
+
     //public IEnumerator Dash()
     //{
     //    isDashing = true; //대쉬 시작
@@ -340,7 +363,7 @@ public class ControllerPlayer : MonoBehaviour
 
 
     //    yield return new WaitForSeconds(dashTime);
-        
+
     //    isDashing = false; //대쉬 종료
     //    SetInvincibility(false); //무적 상태 종료
 

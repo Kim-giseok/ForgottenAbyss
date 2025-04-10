@@ -15,7 +15,7 @@ public class JumpState : PlayerStateMachine
             player.isGround = false;
             player.currentJumpCount = 1;
 
-            // 플랫폼 콜라이더 무시 설정 (첫 점프에서만)
+            // 플랫폼 콜라이더 무시 설정
             player.StartCoroutine(player.IgnorePlatformCollision(true));
             player.StartCoroutine(player.ResetIgnoreCollision(0.5f));
         }
@@ -23,6 +23,7 @@ public class JumpState : PlayerStateMachine
         {
             // 더블 점프 (또는 추가 점프)
             player.currentJumpCount++;
+            
         }
 
         // 공통 점프 로직
@@ -42,7 +43,7 @@ public class JumpState : PlayerStateMachine
         {
             // 현재 상태를 유지하면서 Enter() 메서드만 다시 호출
             Enter();
-            Debug.Log("11");
+
         }
     }
     public override void OnAttack()
@@ -61,6 +62,16 @@ public class JumpState : PlayerStateMachine
             {
                 player.ChangeState(PlayerState.Idle);
             }
+        }
+    }
+    public override void Update()
+    {
+        // 벽 감지 및 입력 조건 확인
+        if (player.isWallDetected )
+        {
+            
+            player.ChangeState(PlayerState.Climb);
+            Debug.Log("Climb");
         }
     }
 }

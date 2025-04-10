@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class Player : MonoBehaviour, IDamagable
 {
+    
     Animator animator;
     SpriteRenderer spriteRenderer;
        
     PlayerStatus playerstatus;
-    //Rigidbody2D rigidbody;
-
+    
     private bool isDead = false;
-
+    
     public void Awake()
     {
         playerstatus = GetComponent<PlayerStatus>();
@@ -42,6 +42,7 @@ public class Player : MonoBehaviour, IDamagable
             isDead = true;
         }
     }
+
 
     IEnumerator TestGetDamage() //피격 판정 테스트용 
     {
