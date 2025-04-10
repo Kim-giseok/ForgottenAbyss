@@ -4,23 +4,24 @@ using UnityEngine;
 
 public class ItemData : MonoBehaviour
 {
-    public static ItemData itemDataInstance;
+    public Item[] allItems; // 게임 내 아이템 데이터 목록
+    public GameObject fieldItemPrefab; // 필드에 배치할 아이템 프리팹
+    public Vector3[] spawnPositions; // 아이템 배치 위치들
 
-    private void Awake()
+    void Start()
     {
-        itemDataInstance = this;
+        SpawnItems();
     }
-    public List<Item> itemData = new List<Item>();
 
-    public GameObject fieldItemPrefab;
-    public Vector3[] pos; // 아이템 위치 배열
-
-    private void Start()
+    // 필드에 아이템 배치
+    void SpawnItems()
     {
-        for (int i = 0; i < 2; i++)
+        for (int i = 0; i < spawnPositions.Length; i++)
         {
-            GameObject spawnedItem =  Instantiate(fieldItemPrefab, pos[i], Quaternion.identity); // 아이템 생성
-            spawnedItem.GetComponent<FieldItem>().SetItem(itemData[Random.Range(0, 1)]);
+            var item = allItems[Random.Range(0, allItems.Length)]; // 아이템 랜덤 선택
+            GameObject spawnedItem = Instantiate(fieldItemPrefab, spawnPositions[i], Quaternion.identity);
+            FieldItem fieldItem = spawnedItem.GetComponent<FieldItem>();
+            fieldItem.SetItem(item); // 아이템을 필드에 설정
         }
     }
 }

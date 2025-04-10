@@ -2,63 +2,51 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using static UnityEditor.Progress;
 using UnityEngine.EventSystems;
 
 public class Slot : MonoBehaviour, IDropHandler
 {
-    public Item item;
-    public Image itemicon;
-    public Item currentItem;
-    public Image slotImage;
-    private ItemUI itemUI; // 슬롯 내에 아이템 UI를 담을 변수
+    public Item currentItem; // 슬롯에 들어있는 아이템
+    public Image iconImage; // 아이콘 이미지
+    public ItemUI itemUI; // 아이템 UI
 
-    void Awake()
-    {
-        itemUI = GetComponentInChildren<ItemUI>(); // Slot의 자식에서 ItemUI를 찾아 연결
-    }
-
-    // 필드에 떨어진 아이템 드랍
-    public void UpdateSlotUI()
-    {
-        itemicon.sprite = item.itemIcon;
-        itemicon.gameObject.SetActive(true);
-    }
-    public void ReMoveSlot()
-    {
-        item = null;
-        itemicon.gameObject.SetActive(false);
-    }
-
-    // 슬롯에 아이템을 추가하거나 제거하는 메소드
-    public void AddItem(Item item)
+    // 아이템 설정
+    public void SetItem(Item item)
     {
         currentItem = item;
-        slotImage.sprite = item?.itemIcon;  // 아이템이 없으면 기본값으로 처리
+        iconImage.sprite = item.itemIcon;
+        iconImage.enabled = true;
+
         if (itemUI != null)
-        {
-            itemUI.item = item;  // 아이템 UI의 아이템 설정
-        }
+            itemUI.SetItem(item); // UI 연결
     }
 
-    public void RemoveItem()
+    // 슬롯 비우기
+    public void ClearSlot()
     {
         currentItem = null;
-        slotImage.sprite = null;
+        iconImage.sprite = null;
+        iconImage.enabled = false;
+
         if (itemUI != null)
+            itemUI.RemoveItem();
+    }
+
+    // 드래그 앤 드롭 처리
+    public void OnDrop(PointerEventData eventData)
+    {
+        var dragged = eventData.pointerDrag?.GetComponent<ItemUI>();
+        if (dragged != null && dragged.item != null)
         {
-            itemUI.item = null;  // 아이템 UI 초기화
+            SetItem(dragged.item); // 아이템 배치
         }
     }
 
-    // 드래그 앤 드롭 기능 처리
-    public void OnDrop(PointerEventData eventData)
+    public void UseItem()
     {
-        var draggedItemUI = eventData.pointerDrag?.GetComponent<ItemUI>();
-        if (draggedItemUI != null && draggedItemUI.item != null)
+        if (currentItem != null)
         {
-            AddItem(draggedItemUI.item); // 드래그한 아이템을 슬롯에 추가
-            draggedItemUI.RemoveItem();  // 아이템 UI에서 아이템 제거
+            currentItem.Use(); // 아아템 사용
         }
     }
 }

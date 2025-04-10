@@ -4,62 +4,46 @@ using UnityEngine;
 
 public class Inventory : MonoBehaviour
 {
-    public static Inventory invenInstance; // 인벤토리 싱글톤
-    
-    public delegate void OnSlotCountChange(int val); // 슬롯 개수가 변한 것을 알리기 위한 델리게이트
-    public OnSlotCountChange onSlotCountChange;
+    public static Inventory Instance; // 싱글톤
+    public List<Item> items = new List<Item>(); // 아이템 목록
+    public int maxSlots = 20; // 최대 슬롯 개수
 
-    public delegate void OnChangeItem();
-    public OnChangeItem onChangeItem;
+    // 슬롯 개수 변경 시 호출될 델리게이트
+    public delegate void OnItemChanged();
+    public event OnItemChanged onItemChanged;
 
-    public List<Item> item = new List<Item>();
-    
-    private int slotCount; // 슬롯 개수
-    public int SlotCount
+    void Awake()
     {
-        get => slotCount;
-        set
+        // 싱글톤 인스턴스 설정
+        if (Instance == null)
         {
-            slotCount = value;
-            onSlotCountChange?.Invoke(slotCount); // 델리게이트 호출
+            Instance = this;
         }
-    }
-
-    private void Awake()
-    {
-        if (invenInstance != null)
+        else
         {
             Destroy(gameObject);
-            return;
         }
-        invenInstance = this;
     }
 
-    void Start()
+    // 아이템 추가
+    public bool AddItem(Item item)
     {
-        slotCount = 4; // 초기 슬롯개수
-    }
-
-    public bool AddItem(Item _item)
-    {
-        if(item.Count < slotCount)
+        if (items.Count < maxSlots)
         {
-            item.Add(_item); // 인벤토리 리스트에 새 아이템 추가
-            if(onChangeItem != null)
-            onChangeItem.Invoke();
+            items.Add(item);
+            onItemChanged?.Invoke();  // 아이템 추가 후 UI 갱신
             return true;
         }
         return false;
     }
 
-    // 땅에 있는 아이템 줍기
-    private void OnTriggerEnter2D(Collider2D collision)
+    // 아이템 제거
+    public void RemoveItem(Item item)
     {
-        if (collision.CompareTag("FieldItem"))
+        if (items.Contains(item))
         {
-            FieldItem fieldItem =  collision.GetComponent<FieldItem>();
-            if(AddItem(fieldItem.GetItem()))
-                fieldItem.DestroyItem();
+            items.Remove(item);
+            onItemChanged?.Invoke();  // 아이템 제거 후 UI 갱신
         }
     }
 }

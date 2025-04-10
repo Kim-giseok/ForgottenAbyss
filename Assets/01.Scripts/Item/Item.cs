@@ -2,19 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum ItemType
+[CreateAssetMenu (menuName = "Item/ItemData")]
+public class Item : ScriptableObject
 {
-    Equipment,
-    Consumable,
-    SkillSlot
-}
-
-[System.Serializable]
-public class Item
-{
-    public ItemType itemType;
     public string itemName;
     public Sprite itemIcon;
+    // public ItemType itemType;
     public int skillId;
 
     public bool Use()

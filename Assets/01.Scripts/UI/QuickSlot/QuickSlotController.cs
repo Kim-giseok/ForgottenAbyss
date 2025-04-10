@@ -4,75 +4,32 @@ using UnityEngine;
 
 public class QuickSlotController : MonoBehaviour
 {
-    [SerializeField] private Slot[] quickSlots;
-    [SerializeField] private Transform quickSlotContent; //퀵슬롯 부모 오브젝트
-    [SerializeField] private GameObject SelectedSlotImg; //선택된 슬롯 이미지
-
-    private int selectedSlot; // 선택된 슬롯 인덱스
-    [SerializeField] private ItemManager itemManager; // 아이템매니저 참조
+    [SerializeField] private Slot[] quickSlots;  // 퀵슬롯 슬롯들
+    [SerializeField] private GameObject selectionIndicator;  // 선택된 슬롯 표시기
+    private int selectedIndex = 0;
 
     void Start()
     {
-        quickSlots = quickSlotContent.GetComponentsInChildren<Slot>();
-        selectedSlot = 0;
-
-
-        // 각 슬롯에 대한 아이템 UI 드래그 완료 이벤트 연결
-        foreach (var slot in quickSlots)
-        {
-            var itemUI = slot.GetComponentInChildren<ItemUI>(); // 슬롯의 자식에서 아이템 UI 찾기
-            if (itemUI != null)
-            {
-                itemUI.OnItemDropped += HandleItemDropped; // 아이템 드랍 이벤트 연결
-            }
-        }
+        SelectSlot(0);  // 시작시 첫 번째 슬롯 선택
     }
 
     void Update()
     {
-        TryInputNumber();
-    }
+        // 1,2번 키로 슬롯 변경
+        if (Input.GetKeyDown(KeyCode.Alpha1)) SelectSlot(0);
+        if (Input.GetKeyDown(KeyCode.Alpha2)) SelectSlot(1);
 
-    private void TryInputNumber()
-    {
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-            ChangeSlot(0);
-        else if (Input.GetKeyDown(KeyCode.Alpha2))
-            ChangeSlot(1);
-    }
-
-    private void ChangeSlot(int slotNum)
-    {
-        SelectedSlot(slotNum);
-    }
-
-    private void SelectedSlot(int slotNum)
-    {
-        selectedSlot = slotNum;
-        // 선택된 슬롯으로 이미지 이동
-        SelectedSlotImg.transform.position = quickSlots[selectedSlot].transform.position;
-    }
-
-    private void HandleItemDropped(ItemUI itemUI)
-    {
-        // 아이템이 드롭될 때마다 디버그 로그 출력
-        Debug.Log($"Item Dropped: {itemUI.item.itemName}");
-        var droppedItem = itemUI.item;
-        if (droppedItem != null)
+        // 아이템 사용
+        if (Input.GetKeyDown(KeyCode.U))
         {
-            AddItemToSlot(droppedItem, selectedSlot);
+            quickSlots[selectedIndex].UseItem(); // 현재 선택된 슬롯 아이템 사용
         }
     }
 
-    public void AddItemToSlot(Item item, int slotIndex)
+    // 슬롯 선택
+    void SelectSlot(int index)
     {
-        quickSlots[slotIndex].AddItem(item);
-        Debug.Log($"Item Added to Slot {slotIndex}: {item.itemName}");
-    }
-
-    public void RemoveItemFromSlot(int slotIndex)
-    {
-        quickSlots[slotIndex].RemoveItem();
-        Debug.Log($"Item Removed from Slot {slotIndex}");
+        selectedIndex = index;
+        selectionIndicator.transform.position = quickSlots[selectedIndex].transform.position;
     }
 }

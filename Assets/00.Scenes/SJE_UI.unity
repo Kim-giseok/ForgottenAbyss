@@ -173,11 +173,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e674a946fa83f243b2868deaeddab54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  item:
-    itemType: 0
-    itemName: 
-    itemIcon: {fileID: 0}
-    skillId: 0
+  item: {fileID: 0}
 --- !u!114 &22874078
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -758,18 +754,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee716497260bb5f40b5f16e8a9d7757a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  item:
-    itemType: 0
-    itemName: 
-    itemIcon: {fileID: 0}
-    skillId: 0
-  itemicon: {fileID: 0}
-  currentItem:
-    itemType: 0
-    itemName: 
-    itemIcon: {fileID: 0}
-    skillId: 0
-  slotImage: {fileID: 1138033595}
+  currentItem: {fileID: 0}
+  iconImage: {fileID: 0}
+  itemUI: {fileID: 0}
 --- !u!114 &164906113
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3049,10 +3036,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbdfa3cb341b9fc4b80a310624cc7962, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  quickSlots: []
-  quickSlotContent: {fileID: 581626050}
-  SelectedSlotImg: {fileID: 1138033593}
-  itemManager: {fileID: 0}
+  quickSlots:
+  - {fileID: 1427518964}
+  - {fileID: 1658220785}
+  - {fileID: 164906112}
+  - {fileID: 1010292669}
+  - {fileID: 2077405305}
+  - {fileID: 1254221646}
+  selectionIndicator: {fileID: 1138033593}
 --- !u!1 &586669368
 GameObject:
   m_ObjectHideFlags: 0
@@ -3592,6 +3583,51 @@ RectTransform:
   m_AnchoredPosition: {x: -5, y: 0}
   m_SizeDelta: {x: -20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &749852142
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 749852144}
+  - component: {fileID: 749852143}
+  m_Layer: 0
+  m_Name: UIManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &749852143
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 749852142}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d93ce9d09deb8f948b37bc99cc89bf52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inventoryUI: {fileID: 808600425}
+--- !u!4 &749852144
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 749852142}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1294.5846, y: 250.90608, z: -1.9678535}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &787310732
 GameObject:
   m_ObjectHideFlags: 0
@@ -3642,6 +3678,7 @@ GameObject:
   - component: {fileID: 808600422}
   - component: {fileID: 808600421}
   - component: {fileID: 808600425}
+  - component: {fileID: 808600426}
   m_Layer: 5
   m_Name: Inventory
   m_TagString: Untagged
@@ -3746,8 +3783,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inventoryPanel: {fileID: 586669368}
   closeButton: {fileID: 666719803}
-  slots: []
   slotHolder: {fileID: 2012527139}
+--- !u!114 &808600426
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 808600420}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d499e170877fc6d4e9da5c192590b652, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  items: []
+  maxSlots: 20
 --- !u!1 &816338531
 GameObject:
   m_ObjectHideFlags: 0
@@ -4149,11 +4199,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e674a946fa83f243b2868deaeddab54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  item:
-    itemType: 0
-    itemName: 
-    itemIcon: {fileID: 0}
-    skillId: 0
+  item: {fileID: 0}
 --- !u!114 &836322046
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4796,29 +4842,8 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 1451884482460979244, guid: ad1a05ea9f506a6438111c12db873e92, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1001069014}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ad1a05ea9f506a6438111c12db873e92, type: 3}
---- !u!1 &1001069013 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1451884482460979244, guid: ad1a05ea9f506a6438111c12db873e92, type: 3}
-  m_PrefabInstance: {fileID: 1001069012}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1001069014
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1001069013}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d499e170877fc6d4e9da5c192590b652, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  item: []
 --- !u!1 &1006753763
 GameObject:
   m_ObjectHideFlags: 0
@@ -4946,18 +4971,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee716497260bb5f40b5f16e8a9d7757a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  item:
-    itemType: 0
-    itemName: 
-    itemIcon: {fileID: 0}
-    skillId: 0
-  itemicon: {fileID: 0}
-  currentItem:
-    itemType: 0
-    itemName: 
-    itemIcon: {fileID: 0}
-    skillId: 0
-  slotImage: {fileID: 1138033595}
+  currentItem: {fileID: 0}
+  iconImage: {fileID: 0}
+  itemUI: {fileID: 0}
 --- !u!114 &1010292670
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6124,18 +6140,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee716497260bb5f40b5f16e8a9d7757a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  item:
-    itemType: 0
-    itemName: 
-    itemIcon: {fileID: 0}
-    skillId: 0
-  itemicon: {fileID: 0}
-  currentItem:
-    itemType: 0
-    itemName: 
-    itemIcon: {fileID: 0}
-    skillId: 0
-  slotImage: {fileID: 1138033595}
+  currentItem: {fileID: 0}
+  iconImage: {fileID: 0}
+  itemUI: {fileID: 0}
 --- !u!114 &1254221647
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6317,6 +6324,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1367326672}
   - component: {fileID: 1367326671}
+  - component: {fileID: 1367326674}
   m_Layer: 0
   m_Name: ItemData
   m_TagString: Untagged
@@ -6336,15 +6344,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c25e65bb0b2cc34798e1d7ba42aaa82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemData:
-  - itemType: 1
-    itemName: RedPotion
-    itemIcon: {fileID: 21300000, guid: 74e1f450cb7144e418b6b67b593469b6, type: 3}
-    skillId: 0
+  allItems:
+  - {fileID: 11400000, guid: 207079d93ee00ba4d8666508819a2dc5, type: 2}
   fieldItemPrefab: {fileID: 435848188464468061, guid: 89a29164690e6124daa6d9876918e658, type: 3}
-  pos:
-  - {x: 7, y: -3.5, z: 0}
-  - {x: -2, y: -1.8, z: 0}
+  spawnPositions:
+  - {x: 3.5, y: -3.7, z: 0}
+  - {x: -3, y: -1.8, z: 0}
 --- !u!4 &1367326672
 Transform:
   m_ObjectHideFlags: 0
@@ -6360,6 +6365,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1367326674
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1367326670}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecee23488daad34d861db0f6c8cb292, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  allItems:
+  - {fileID: 11400000, guid: 207079d93ee00ba4d8666508819a2dc5, type: 2}
 --- !u!1 &1373760639
 GameObject:
   m_ObjectHideFlags: 0
@@ -6598,18 +6617,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee716497260bb5f40b5f16e8a9d7757a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  item:
-    itemType: 0
-    itemName: 
-    itemIcon: {fileID: 0}
-    skillId: 0
-  itemicon: {fileID: 0}
-  currentItem:
-    itemType: 0
-    itemName: 
-    itemIcon: {fileID: 0}
-    skillId: 0
-  slotImage: {fileID: 1138033595}
+  currentItem: {fileID: 0}
+  iconImage: {fileID: 0}
+  itemUI: {fileID: 0}
 --- !u!1 &1435400711
 GameObject:
   m_ObjectHideFlags: 0
@@ -7764,11 +7774,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e674a946fa83f243b2868deaeddab54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  item:
-    itemType: 0
-    itemName: 
-    itemIcon: {fileID: 0}
-    skillId: 0
+  item: {fileID: 0}
 --- !u!114 &1561192747
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8214,11 +8220,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e674a946fa83f243b2868deaeddab54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  item:
-    itemType: 0
-    itemName: 
-    itemIcon: {fileID: 0}
-    skillId: 0
+  item: {fileID: 0}
 --- !u!114 &1625221443
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8307,11 +8309,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e674a946fa83f243b2868deaeddab54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  item:
-    itemType: 0
-    itemName: 
-    itemIcon: {fileID: 0}
-    skillId: 0
+  item: {fileID: 0}
 --- !u!114 &1626832410
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8578,18 +8576,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee716497260bb5f40b5f16e8a9d7757a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  item:
-    itemType: 0
-    itemName: 
-    itemIcon: {fileID: 0}
-    skillId: 0
-  itemicon: {fileID: 0}
-  currentItem:
-    itemType: 0
-    itemName: 
-    itemIcon: {fileID: 0}
-    skillId: 0
-  slotImage: {fileID: 1138033595}
+  currentItem: {fileID: 0}
+  iconImage: {fileID: 0}
+  itemUI: {fileID: 0}
 --- !u!114 &1658220786
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8628,37 +8617,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1658220783}
   m_CullTransparentMesh: 1
---- !u!1 &1659531811
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1659531812}
-  m_Layer: 0
-  m_Name: UIManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1659531812
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1659531811}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.47294626, y: -0.2769246, z: 0.020564094}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1696911559
 GameObject:
   m_ObjectHideFlags: 0
@@ -8745,11 +8703,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e674a946fa83f243b2868deaeddab54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  item:
-    itemType: 0
-    itemName: 
-    itemIcon: {fileID: 0}
-    skillId: 0
+  item: {fileID: 0}
 --- !u!114 &1735070191
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10427,18 +10381,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee716497260bb5f40b5f16e8a9d7757a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  item:
-    itemType: 0
-    itemName: 
-    itemIcon: {fileID: 0}
-    skillId: 0
-  itemicon: {fileID: 0}
-  currentItem:
-    itemType: 0
-    itemName: 
-    itemIcon: {fileID: 0}
-    skillId: 0
-  slotImage: {fileID: 1138033595}
+  currentItem: {fileID: 0}
+  iconImage: {fileID: 0}
+  itemUI: {fileID: 0}
 --- !u!114 &2077405306
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11111,8 +11056,8 @@ SceneRoots:
   - {fileID: 2097386646}
   - {fileID: 1619624240}
   - {fileID: 1454386447}
-  - {fileID: 1659531812}
-  - {fileID: 484397880}
   - {fileID: 808600424}
-  - {fileID: 1001069012}
   - {fileID: 1367326672}
+  - {fileID: 749852144}
+  - {fileID: 484397880}
+  - {fileID: 1001069012}

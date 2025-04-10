@@ -4,33 +4,13 @@ using UnityEngine;
 
 public class UIManager : MonoBehaviour
 {
-    private static UIManager UIinstance;
+    public InventoryUI inventoryUI;  // 인벤토리 UI
 
-    public static UIManager Instance
+    void Update()
     {
-        get
+        if (Input.GetKeyDown(KeyCode.I))  // 인벤토리 열기/닫기
         {
-            if (UIinstance == null)
-            {
-                UIinstance = FindObjectOfType<UIManager>();
-
-                if (UIinstance == null)
-                {
-                    Debug.LogError("UIManager가 인스턴스에 존재하지 않습니다.");
-                }
-            }
-            return UIinstance;
+            inventoryUI.ToggleInventory();
         }
-    }
-
-    private void Awake()
-    {
-        if (UIinstance == null)
-        {
-            UIinstance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-            Destroy(gameObject);
     }
 }
