@@ -1,6 +1,7 @@
 using Unity.VisualScripting;
 using UnityEngine;
 
+// notice: 단순 딜레이이며 조건 체크만 분리 필요
 public class IdleNode : Node
 {
     private float currTime;
@@ -13,7 +14,7 @@ public class IdleNode : Node
 
     public override void Start()
     {
-        currTime = 0;
+        currTime = 0; // notice 시간 자체를 BT에서 가져도 될 듯
         controller.rigidbody.velocity = new Vector2(0, controller.rigidbody.velocity.y);
     }
 
@@ -36,9 +37,10 @@ public class IdleNode : Node
     }
 }
 
+// do: 범위를 지정해두는 방법이 있음
 public class PatrolNode : Node
 {
-    private float currTime;
+    private float currTime; // notice: 공통으로 사용되는 경우 많음 - 차라리 BT에서 경과 시간을 가질 수 도 있을 듯
     public float duration;
     private Vector2 direction;
 
@@ -53,6 +55,7 @@ public class PatrolNode : Node
         direction = Random.Range(0, 10) <= 5 ? Vector2.left : Vector2.right;
 
         controller.Flip(direction == Vector2.right);
+        // fix: 갈 수 있는 곳 인지 체크 필요
         controller.animationHandler.Set(EnemyAnimationHandler.Run, true);
     }
 
@@ -86,6 +89,7 @@ public class TracingNode : Node
 {
     public override void Start()
     {
+        // fix: 중복 코드 발생하는 부분 해결 필요
         Vector2 distance = (controller.agent.player.transform.position - controller.transform.position);
         
         if (controller.agent.stoppingDistance > distance.magnitude) // 바로 공격으로 진입
@@ -139,19 +143,19 @@ public class AttackNode : Node
         }
         else
         {
-            SetStatus(Status.Success);
+            ProjectileManager.Instance.DestroyMeleeProjectile(controller.transform);
         }
     }
 
-    public override void OnAnimated(AnimationStatus status, Animator animator)
+    // fix: 의미 없는 호출이 발생할 수 있느 점에 대한 고려 필요
+    public override void OnAnimated(AnimationStatus status, AnimatorStateInfo animInfo)
     {
-        // notice: 시작된 후 애니메이션이 변경되면서 바로 인식되는 문제 발생
-        if (status == AnimationStatus.End)
-        {
-        }
+        if (!animInfo.IsName("Attack")) return;
+        if(status == AnimationStatus.End) SetStatus(Status.Success);
     }
 
-    public override void End()
+
+    public override void End() // notice: 공격 중 피격 당하는 경우
     {
         ProjectileManager.Instance.DestroyMeleeProjectile(controller.transform);
     }
@@ -168,14 +172,10 @@ public class RangeAttackNode : Node
     {
         if (isFire)
         {
-            ProjectileManager.Instance.CreateProjectile(controller.transform, controller.attack);
+            ProjectileManager.Instance.CreateProjectile(controller.transform, controller.attack, new []{ new StraightAttr()});
         }
     }
 
-    public override void OnAnimated(AnimationStatus status, Animator animator) // 우선 인식되는 현상 발생
-    {
-        
-    }
 
     public override void End()
     {
@@ -184,13 +184,6 @@ public class RangeAttackNode : Node
 
 public class RangeToTargetNode : Node
 {
-
-    public float GetDegreeToTarget()
-    {
-        Vector2 direction = (controller.agent.player.transform.position - controller.transform.position).normalized;
-        return Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg; // 날라가는 방향 계산
-    }
-    
     public override void Start()
     {
         controller.animationHandler.Set(EnemyAnimationHandler.Attack);
@@ -200,8 +193,7 @@ public class RangeToTargetNode : Node
     {
         if (isFire)
         {
-            
-            ProjectileManager.Instance.CreateProjectile(controller.transform, controller.attack, degree: GetDegreeToTarget());
+            ProjectileManager.Instance.CreateProjectile(controller.transform, controller.attack, new []{ new StraightAttr()}, degree: ProjectileManager.Instance.GetDegreeByDirection((controller.agent.player.transform.position - controller.transform.position).normalized));
         }
         else
         {
@@ -209,17 +201,14 @@ public class RangeToTargetNode : Node
         }
     }
 
-    public override void OnAnimated(AnimationStatus status, Animator animator) // 우선 인식되는 현상 발생
-    {
-        
-    }
 
     public override void End()
     {
     }
 }
 
-public class CombatIdleNode : Node
+// notice: Idle과 같은 상황 - 특수 목적 필요
+public class CombatIdleNode : Node 
 {
     private float currTime;
     public float duration;
@@ -236,6 +225,8 @@ public class CombatIdleNode : Node
 
     public override void Update()
     {
+        controller.LookPlayer();
+        
         currTime += Time.deltaTime;
         if (currTime >= duration)
         {
@@ -244,32 +235,46 @@ public class CombatIdleNode : Node
     }
 }
 
-// knockBack이 들어갈 수도 있도록
-public class HitNode : Node
+public class GuardNode : Node
 {
     public override void Start()
     {
-        // status - GOAP 를 위해 존재할 예정
-        if (!controller.statusHandler.isHit) 
+        controller.statusHandler.isDefense = true;
+    }
+
+    public override void End()
+    {
+        controller.statusHandler.isDefense = false;
+    }
+}
+
+// knockBack이 들어갈 수도 있도록
+public class HitNode : Node
+{
+    private bool isNockBack = false;
+    
+    public override void Start()
+    {
+        // notice: status - GOAP 를 위해 존재할 예정
+        // 조건 자체가 맨 앞에서 체크 필요
+        if (!controller.statusHandler.isHit) // do: 시퀀스를 통행 애초에 진입이 안되도록 노드 지정
         {
             SetStatus(Status.Fail);
             return;
         }
         
+        // 타격 받은 쪽으로 회전
         Vector2 direction = (controller.agent.player.transform.position - controller.transform.position).normalized;
         controller.Flip(direction.x > 0);
         
         controller.animationHandler.Set(EnemyAnimationHandler.Hit);
-        
         controller.statusHandler.isHit = false;
-        SetStatus(Status.Success);
     }
 
-    public override void OnAnimated(AnimationStatus status, Animator animator)
+    public override void OnAnimated(AnimationStatus status, AnimatorStateInfo animInfo)
     {
-        if (status == AnimationStatus.End)
-        {
-        }
+        if (!animInfo.IsName("Hit")) return;
+        if (status == AnimationStatus.End) SetStatus(Status.Success);
     }
 }
 

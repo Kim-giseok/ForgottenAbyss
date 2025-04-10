@@ -15,7 +15,9 @@ public abstract class Node
     public void Connect(EnemyController controller)
     {
         this.controller = controller;
-        this.btMachine = this.controller.btMachine;
+        btMachine = this.controller.btMachine;
+
+        btMachine.allNodes.Add((name: "asd", node: this));
     }
 
     public void SetParent(Node parent)
@@ -34,7 +36,7 @@ public abstract class Node
     public virtual void End() {}
 
     public virtual void OnAnimatedEvent(bool isFire) {}
-    public virtual void OnAnimated(AnimationStatus status, Animator animator) {}
+    public virtual void OnAnimated(AnimationStatus status, AnimatorStateInfo animInfo) {}
     
     public virtual void GetStatus(Status newStatus, Node caller) {}
 }

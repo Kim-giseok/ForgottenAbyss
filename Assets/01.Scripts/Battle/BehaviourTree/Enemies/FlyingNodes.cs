@@ -67,7 +67,10 @@ public class FlyingPatrolAttackNode : Node
     {
         if (isFire)
         {
-            ProjectileManager.Instance.CreateProjectile(controller.transform, controller.attack, degree: -90, index: 1);
+            ProjectileManager.Instance.CreateProjectile(controller.transform, controller.attack, attrs: new []{ new StraightAttr()}, degree: -90, index: 2);
+            ProjectileManager.Instance.CreateProjectile(controller.transform, controller.attack, attrs: new []{ new StraightAttr()}, degree: -80, index: 2);
+            ProjectileManager.Instance.CreateProjectile(controller.transform, controller.attack, attrs: new []{ new StraightAttr()}, degree: -100, index: 2);
+
         }
     }
 
