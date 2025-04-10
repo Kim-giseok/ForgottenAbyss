@@ -897,7 +897,7 @@ SpriteRenderer:
   m_SortingOrder: 0
   m_Sprite: {fileID: 377493787, guid: c6545fd68853535408c8a21d0885a162, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 0
+  m_FlipX: 1
   m_FlipY: 0
   m_DrawMode: 0
   m_Size: {x: 0.5625, y: 0.96875}
@@ -1023,6 +1023,7 @@ MonoBehaviour:
   invincibilityLayerMask:
     serializedVersion: 2
     m_Bits: 0
+  maxCombo: 6
 --- !u!114 &1319917732
 MonoBehaviour:
   m_ObjectHideFlags: 0

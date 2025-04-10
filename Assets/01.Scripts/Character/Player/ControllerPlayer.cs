@@ -23,6 +23,11 @@ public class ControllerPlayer : MonoBehaviour
     private bool isIgnoringCollision = false; //콜라이더 충돌 무시 여부
     private bool isInvincible = false; //무적 상태 여부
 
+    public int maxCombo = 6;  // 최대 콤보 수
+    private int attackIndex = 0; // 현재 공격 단계
+    private bool canNextCombo = false; // 다음 콤보 입력 가능 여부
+    private bool inputCombo = false;
+
     Rigidbody2D rigid;
     Animator animator;
     Collider2D playerCollider;
@@ -51,7 +56,7 @@ public class ControllerPlayer : MonoBehaviour
     void OnMove(InputValue value)
     {
         inputVec = value.Get<Vector2>();
-        animator.SetBool("IsRun", inputVec.x != 0);
+        animator.SetBool("isRun", inputVec.x != 0);
     }
 
     void OnJump(InputValue value)
@@ -62,7 +67,7 @@ public class ControllerPlayer : MonoBehaviour
                 rigid.velocity = new Vector2(rigid.velocity.x, 0); // y축 속도 초기화
                 rigid.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
                 isGround = false;
-                animator.SetBool("IsJump", true);
+                animator.SetBool("isJump", true);
                 currentJumpCount = 1;
                             
                 StartCoroutine(IgnorePlatformCollision(true));
@@ -84,13 +89,35 @@ public class ControllerPlayer : MonoBehaviour
         }
     }
 
-    public void OnAttack(InputValue value) //일반공격 키 입력
+    public void OnAttack(InputValue value)
     {
-        if (value.isPressed && !isDashing && !isAttacking )
+        if (value.isPressed)
         {
-            StartCoroutine (Attack());
+            if (isAttacking)
+            {
+                if (canNextCombo)
+                {
+                    inputCombo = true; // 다음 콤보 예약
+                }
+            }
+            else
+            {
+                isAttacking = true;
+                attackIndex = 1;
+                animator.SetTrigger("AttackTrigger");
+                animator.SetInteger("AttackCombo", attackIndex);
+            }
         }
     }
+
+
+    //public void OnAttack(InputValue value) //일반공격 키 입력
+    //{
+    //    if (value.isPressed && !isDashing && !isAttacking )
+    //    {
+    //        StartCoroutine (Attack());
+    //    }
+    //}
 
     void OnFirstSkill() //1번스킬 키 입력
     {
@@ -156,7 +183,8 @@ public class ControllerPlayer : MonoBehaviour
         if (collision.gameObject.CompareTag("Ground"))
         {
             isGround = true;
-            animator.SetBool("IsJump", false);
+            //animator.SetBool("IsJump", false);
+            animator.SetBool("isJump", false);
             currentJumpCount = 0;
 
             if (isIgnoringCollision) //땅에 닿으면 무시 상태 해제
@@ -219,6 +247,7 @@ public class ControllerPlayer : MonoBehaviour
     IEnumerator Dash()
     {
         isDashing = true; //대쉬 시작
+        animator.SetBool("isSlide", true);
         SetInvincibility(true); //무적 상태 시작
 
         Vector2 dashDirection = new Vector2(inputVec.x, 0); //현재 이동 방향
@@ -228,35 +257,89 @@ public class ControllerPlayer : MonoBehaviour
         yield return new WaitForSeconds(dashTime);
         
         isDashing = false; //대쉬 종료
+        animator.SetBool("isSlide", false);
         SetInvincibility(false); //무적 상태 종료
 
         rigid.velocity = new Vector2(inputVec.x * speed, rigid.velocity.y); //원래 속도로 복귀
     }
 
-    IEnumerator Attack()
+    void OnComboCheck(float bufferTime)
     {
-        isAttacking = true;
-        animator.SetBool("IsAttacking", true);
-        animator.SetBool("IsRun", false);
-        rigid.velocity = new Vector2(0, rigid.velocity.y);
+        canNextCombo = true;
+        StartCoroutine(ComboInputBuffer(bufferTime));
+    }
 
-        yield return new WaitForSeconds(0.35f);
+    IEnumerator ComboInputBuffer(float time)
+    {
+        yield return new WaitForSeconds(time);
+        canNextCombo = false;
+    }
 
-        ProjectileManager.Instance.CreateMeleeProjectile(transform, 10);
-
-        yield return new WaitForSeconds(0.1f);
-              
-        isAttacking = false;
-        animator.SetBool("IsAttacking", false);
-        ProjectileManager.Instance.DestroyMeleeProjectile(transform);
-
-        // 공격 종료 후 방향키가 여전히 눌려있다면 속도 복원
-        if (inputVec.x != 0)
+    void OnComboNext()
+    {
+        if (inputCombo && attackIndex < maxCombo)
         {
-            animator.SetBool("IsRun", true);
-            rigid.velocity = new Vector2(inputVec.x * speed, rigid.velocity.y);
+            inputCombo = false;
+            attackIndex++;
+            animator.Play("SwordAttack_" + attackIndex);
+        }
+        else
+        {
+            isAttacking = false;
+            attackIndex = 0;
+            inputCombo = false;
+            canNextCombo = false;
+
+            animator.Play("Idle");
         }
     }
+
+    void OnMoveForward(float distance)
+    {
+        StartCoroutine(MoveForwardCoroutine(distance));
+    }
+
+    IEnumerator MoveForwardCoroutine(float distance)
+    {
+        float moveTime = 0.1f; // 이동 시간 (0.1초 추천)
+        float elapsed = 0f;
+        Vector3 startPos = transform.position;
+        Vector3 targetPos = transform.position + (transform.right * distance);
+
+        while (elapsed < moveTime)
+        {
+            elapsed += Time.deltaTime;
+            transform.position = Vector3.Lerp(startPos, targetPos, elapsed / moveTime);
+            yield return null;
+        }
+
+        transform.position = targetPos; // 마지막 위치 보정
+    }
+
+    //IEnumerator Attack()
+    //{
+    //    isAttacking = true;
+    //    animator.SetBool("IsAttacking", true);
+    //    animator.SetBool("IsRun", false);
+    //    rigid.velocity = new Vector2(0, rigid.velocity.y);
+
+    //    yield return new WaitForSeconds(0.35f);
+
+    //    ProjectileManager.Instance.CreateMeleeProjectile(transform, 10);
+
+    //    yield return new WaitForSeconds(0.1f);
+
+    //    isAttacking = false;
+    //    animator.SetBool("IsAttacking", false);
+    //    ProjectileManager.Instance.DestroyMeleeProjectile(transform);
+
+    //    // 공격 종료 후 방향키가 여전히 눌려있다면 속도 복원
+    //    if (inputVec.x != 0)
+    //    {
+    //        animator.SetBool("IsRun", true);
+    //        rigid.velocity = new Vector2(inputVec.x * speed, rigid.velocity.y);
+    //    }
+    //}
 
     IEnumerator IgnorePlatformCollision(bool ignore) //플랫폼 콜라이더 무시
     {
