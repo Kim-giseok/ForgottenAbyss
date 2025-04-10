@@ -6,7 +6,7 @@ public class GoblinController: EnemyController
         btMachine.Define(
             new SelectorNode(
                 new SequenceNode(new HitNode()),
-                new SequenceNode(new TracingNode(), new AttackNode(), new CombatIdleNode(duration: 0.5f)),
+                new SequenceNode(new TracingNode(), new AttackNode(), new CombatIdleNode(duration: 2f)),
                 new SequenceNode(new IdleNode(duration: 1), new PatrolNode(duration: 1)))
         );
     }   

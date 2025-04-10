@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class Projectile: MonoBehaviour
 {
+    public Action OnUpdate;
+    
     private Rigidbody2D rigidbody;
     private Transform target;
 

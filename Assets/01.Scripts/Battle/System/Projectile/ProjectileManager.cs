@@ -8,7 +8,7 @@ public class ProjectileManager : Singleton<ProjectileManager> // 단위 미사�
     public GameObject meleeProjectile;
     public List<GameObject> projectileList;
     
-    public List<(int index, GameObject instance)> currProjectiles = new();
+    public List<(int index, GameObject instance)> currProjectiles = new(); // notice : HitBox를 가지고 있는 편이 비용 감소
     public List<(GameObject owner, HitBox hitBox)> currMeleeProjectiles = new();
     
     public float GetDegreeByDirection(Vector2 direction)
@@ -66,6 +66,7 @@ public class ProjectileManager : Singleton<ProjectileManager> // 단위 미사�
         HitBox hitBox = instance.GetComponent<HitBox>();
         hitBox.SetDamage(power);
         hitBox.SetOwner(parent);
+        
         
         instance.transform.localRotation = Quaternion.Euler(0, 0, degree - 90); // 화살이 현재 위를 보고 있는 상황이라 방향 계산 필요 -90 이 오른쪽
         instance.transform.localPosition = new Vector2(parent.position.x + startPos.x, parent.position.y + startPos.y);

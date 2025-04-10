@@ -7,6 +7,8 @@ public class BTMachine
 
     public bool isRunning = true;
     private Node rootNode;
+    
+    // currNode를 병렬으로 처리해서 노드 내 중복 코드 개선
     public Node currNode { get; private set; }
 
     public BTMachine(EnemyController controller)
@@ -24,18 +26,19 @@ public class BTMachine
     public void SetNode(Node newNode)
     {
         isRunning = false;
-        
+
         currNode?.End();
+        
         currNode = newNode;
         currNode.Connect(controller);
         currNode.Start();
+        currNode.currCycle = Node.Cycle.Started;
         
         isRunning = true;
     }
 
     public void OnAnimatedEvent(bool isFire)
     {
-        // Debug.Log(currNode);
         currNode?.OnAnimatedEvent(isFire);
     }
 

@@ -8,8 +8,10 @@ public abstract class Node
     
     protected EnemyController controller; 
     protected BTMachine btMachine;
+    public Cycle currCycle = Cycle.Finished; 
     
     public enum Status { Success, Fail }
+    public enum Cycle { Started, Running, Finished }
     public enum AnimationStatus { Start, End }
 
     public void Connect(EnemyController controller)
@@ -34,7 +36,7 @@ public abstract class Node
     public virtual void End() {}
 
     public virtual void OnAnimatedEvent(bool isFire) {}
-    public virtual void OnAnimated(AnimationStatus status, Animator animator) {}
+    public virtual void OnAnimated(AnimationStatus status, AnimatorStateInfo animInfo) {}
     
     public virtual void GetStatus(Status newStatus, Node caller) {}
 }
