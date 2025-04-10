@@ -7,6 +7,8 @@ using UnityEngine.EventSystems;
 
 public class Slot : MonoBehaviour, IDropHandler
 {
+    public Item item;
+    public Image itemicon;
     public Item currentItem;
     public Image slotImage;
     private ItemUI itemUI; // 슬롯 내에 아이템 UI를 담을 변수
@@ -14,6 +16,18 @@ public class Slot : MonoBehaviour, IDropHandler
     void Awake()
     {
         itemUI = GetComponentInChildren<ItemUI>(); // Slot의 자식에서 ItemUI를 찾아 연결
+    }
+
+    // 필드에 떨어진 아이템 드랍
+    public void UpdateSlotUI()
+    {
+        itemicon.sprite = item.itemIcon;
+        itemicon.gameObject.SetActive(true);
+    }
+    public void ReMoveSlot()
+    {
+        item = null;
+        itemicon.gameObject.SetActive(false);
     }
 
     // 슬롯에 아이템을 추가하거나 제거하는 메소드

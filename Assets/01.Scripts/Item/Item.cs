@@ -5,7 +5,8 @@ using UnityEngine;
 public enum ItemType
 {
     Equipment,
-    Consumable
+    Consumable,
+    SkillSlot
 }
 
 [System.Serializable]
