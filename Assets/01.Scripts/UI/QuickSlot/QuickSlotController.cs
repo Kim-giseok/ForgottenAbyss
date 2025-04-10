@@ -16,9 +16,6 @@ public class QuickSlotController : MonoBehaviour
         quickSlots = quickSlotContent.GetComponentsInChildren<Slot>();
         selectedSlot = 0;
 
-        // 디버그용 아이템 이름만 추가
-        Item testItem = new Item("Potion");
-        AddItemToSlot(testItem, 0);  // 첫 퀵슬롯에 아이템 추가
 
         // 각 슬롯에 대한 아이템 UI 드래그 완료 이벤트 연결
         foreach (var slot in quickSlots)

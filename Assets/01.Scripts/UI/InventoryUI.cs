@@ -81,12 +81,13 @@ public class InventoryUI : MonoBehaviour
     {
         for (int i = 0; i < slots.Length; i++)
         {
-            slots[i].ReMoveSlot();
+            slots[i].ReMoveSlot(); // 슬롯 초기화
         }
-        for (int i = 0; i < _inventory.item.Count; i++)
+
+        for (int i = 0; i < _inventory.item.Count && i < slots.Length; i++)
         {
             slots[i].item = _inventory.item[i];
-            slots[i].UpdateSlotUI();
+            slots[i].UpdateSlotUI(); // UI에 표시
         }
     }
 }
