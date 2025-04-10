@@ -5,7 +5,9 @@ using UnityEngine.InputSystem;
 
 public class SkillController : MonoBehaviour
 {
-    public int basicAttackSkillId;
+    public ComboAttack comboAttack;
+
+    public int combatId;
     public int skill01Id;
     public int skill02Id;
     public int memorySkillId;
@@ -14,7 +16,7 @@ public class SkillController : MonoBehaviour
 
     void OnAttack(InputValue value)
     {
-        SkillManager.Instance.TryUseSkill(basicAttackSkillId, skillSpawnPoint);
+        comboAttack.HandleAttackInput();
         Debug.Log("A: 일반공격");
     }
 
