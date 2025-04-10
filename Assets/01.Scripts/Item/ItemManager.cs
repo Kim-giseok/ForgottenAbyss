@@ -4,15 +4,15 @@ using UnityEngine;
 
 public class ItemManager : MonoBehaviour
 {
-    [SerializeField] private Item[] allItems;  // 게임 내에서 사용할 아이템들
+    public Item[] allItems;  // 게임 내 아이템 목록
 
+    // 아이템 데이터 얻기
     public Item GetItem(int index)
     {
-        return allItems[index];
-    }
-
-    public void AddItemToSlot(Item item, int slotIndex, QuickSlotController quickSlotController)
-    {
-        quickSlotController.AddItemToSlot(item, slotIndex);
+        if (index >= 0 && index < allItems.Length)
+        {
+            return allItems[index];
+        }
+        return null;
     }
 }

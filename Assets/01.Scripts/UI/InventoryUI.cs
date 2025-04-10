@@ -1,77 +1,50 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Security.Cryptography;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class InventoryUI : MonoBehaviour
 {
-    Inventory inven;
-
-    [SerializeField] private GameObject inventoryPanel; // 인벤토리 ui
-    public Button closeButton; // 인벤 닫기 버튼
-
-    bool activeInventory = false;
-
-    public Slot[] slots;
-    public Transform slotHolder;
-
-    private void Awake()
-    {
-        inven = Inventory.invenInstance; // Inventory 싱글톤 초기화
-        // slotHolder가 유효한지 체크 후 초기화
-        if (slotHolder != null)
-        {
-            slots = slotHolder.GetComponentsInChildren<Slot>(); // 슬롯 배열 초기화
-        }
-        else
-        {
-            Debug.LogError("slotHolder is not assigned!"); // slotHolder가 할당되지 않으면
-        }
-    }
+    public GameObject inventoryPanel; // 인벤토리 패널
+    public Button closeButton; // 닫기 버튼
+    public Transform slotHolder; // 슬롯 부모
+    private Slot[] slots; // 슬롯 배열
 
     private void Start()
     {
-        inven.onSlotCountChange += SlotChange; // 슬롯 개수 변화시 호출될 메서드
-        inventoryPanel.SetActive(activeInventory); // 인벤창 상태 초기화
-        closeButton.onClick.AddListener(CloseInventory); // 인벤창 닫기버튼 이벤트
+        slots = slotHolder.GetComponentsInChildren<Slot>(); // 슬롯 UI 초기화
+        Inventory.Instance.onItemChanged += UpdateUI; // 아이템이 변경될 때마다 UI 갱신
+
+        closeButton.onClick.AddListener(CloseInventory); // 닫기 버튼 이벤트
+        inventoryPanel.SetActive(false); // 처음엔 비활성화
     }
 
-    private void SlotChange(int val)
+    // UI 갱신
+    private void UpdateUI()
     {
         for (int i = 0; i < slots.Length; i++)
         {
-            if (i < inven.SlotCount)
-                slots[i].GetComponent<Button>().interactable = true; // 슬롯 활성화 버튼
+            if (i < Inventory.Instance.items.Count)
+            {
+                slots[i].SetItem(Inventory.Instance.items[i]);  // 슬롯에 아이템 설정
+            }
             else
-                slots[i].GetComponent<Button>().interactable = false; // 슬롯 활성화 버튼
+            {
+                slots[i].ClearSlot();  // 슬롯 비우기
+            }
         }
     }
 
-    private void Update()
+    // 인벤토리 활성화/비활성화
+    public void ToggleInventory()
     {
-        if (Input.GetKeyDown(KeyCode.I))
-            ActiveInventory();
+        inventoryPanel.SetActive(!inventoryPanel.activeSelf);
     }
 
-    // 인벤 활성화/ 비활성화 함수
-    void ActiveInventory()
+    // 인벤토리 닫기
+    private void CloseInventory()
     {
-        activeInventory = !activeInventory;
-        inventoryPanel.SetActive(activeInventory);
-    }
-
-    // 인벤 닫기 ㅎ함수
-    void CloseInventory()
-    {
-        activeInventory = false;
-        inventoryPanel.SetActive(activeInventory);
-    }
-
-    public void AddSlot()
-    {
-        inven.SlotCount++; // 슬롯 추가
+        inventoryPanel.SetActive(false);
     }
 }
