@@ -21,7 +21,7 @@ public class ProjectileManager : Singleton<ProjectileManager> // 단위 미사�
 
     // ReSharper disable Unity.PerformanceAnalysis
     // do: 사이즈의 조절, 모양의 변경 등의 관리 필요
-    public void CreateMeleeProjectile(Transform parent, float power, Vector2 startPos = default, Vector2 size = default)
+    public void CreateMeleeProjectile(Transform parent, float power, Vector2? startPos = null, Vector2? size = null)
     {
         var instance = parent.GetComponentInChildren<HitBox>(true)?.gameObject; // 찾는 방법 필요
         
@@ -29,14 +29,18 @@ public class ProjectileManager : Singleton<ProjectileManager> // 단위 미사�
         {
             instance = Instantiate(meleeProjectile, parent);
             instance.transform.SetParent(parent);
-            instance.transform.localPosition = transform.right;
         }
+        
+        // if (startPos == null) instance.transform.localPosition = transform.right;
+        instance.transform.localPosition = startPos ?? transform.right;
         
         instance.transform.localScale = Vector3.one; // 사이즈 지정이 따로 있다면 적용
         
         HitBox hitBox = instance.GetComponent<HitBox>();
         hitBox.SetDamage(power);
         hitBox.SetOwner(parent);
+
+        instance.transform.localScale = size ?? Vector3.one;
         
         instance.SetActive(true);
 
@@ -53,7 +57,7 @@ public class ProjectileManager : Singleton<ProjectileManager> // 단위 미사�
     // 사이즈 포함
     // 반사 또는 유도
     // ReSharper disable Unity.PerformanceAnalysis
-    public void CreateProjectile(Transform parent, float power, Vector2 startPos = default, int index = 0, float degree = 0) // melee attack인 경우 우연히 두번 켜지는 현상 방지 필요
+    public void CreateProjectile(Transform parent, float power, ProjectileAttr[] attrs, Vector2 startPos = default,  int index = 0, float degree = 0) // melee attack인 경우 우연히 두번 켜지는 현상 방지 필요
     {
         var instance = currProjectiles.Find(projectile => projectile.index == index && !projectile.instance.activeSelf).instance;
         if (!instance)
@@ -69,6 +73,10 @@ public class ProjectileManager : Singleton<ProjectileManager> // 단위 미사�
         HitBox hitBox = instance.GetComponent<HitBox>(); // notice: HitBox 자체를 저장하도록 변경 필요
         hitBox.SetDamage(power);
         hitBox.SetOwner(parent);
+        
+        Projectile projectile = instance.GetComponent<Projectile>(); // notice: 프로젝타일도 매번 파악하는 현상 발생
+        // projectile.AddAttribute(new StraightAttr());
+        projectile.AddAttribute(attrs);
         
         
         instance.transform.localRotation = Quaternion.Euler(0, 0, degree - 90); // 화살이 현재 위를 보고 있는 상황이라 방향 계산 필요 -90 이 오른쪽
@@ -94,7 +102,7 @@ public class ProjectileManager : Singleton<ProjectileManager> // 단위 미사�
     public void CreateEnemyProjectile(Transform parent, string skillNodeName)
     {
         var currProjectile = enemyProjectileList[0];
-        currProjectile.isSummoned = true;
+        currProjectile.isAwake = false;
         currProjectile.SkillNodeName = skillNodeName;
         Instantiate(enemyProjectileList[0].gameObject, parent.transform.position, Quaternion.identity);
     }

@@ -79,8 +79,17 @@ public class JumpAttack : Node
         {
             Physics2D.IgnoreCollision(controller.collider, controller.agent.player.transform.GetComponent<Collider2D>(), false);
             ProjectileManager.Instance.DestroyMeleeProjectile(controller.transform);
+            
+            ProjectileManager.Instance.CreateProjectile(controller.transform, controller.attack, attrs: new []{ new ParabolaAttr(new Vector2(1, 2), 2)}, degree: -100, index: 2);
+            ProjectileManager.Instance.CreateProjectile(controller.transform, controller.attack, attrs: new []{ new ParabolaAttr(new Vector2(-1, 2), 2)}, degree: -100, index: 2);
+
             SetStatus(Status.Success);
         }
+    }
+
+    public override void End() // 애니메이션 끝나지 않았는데 공격 당하는 경우
+    {
+        ProjectileManager.Instance.DestroyMeleeProjectile(controller.transform);
     }
 }
 

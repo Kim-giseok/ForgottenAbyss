@@ -172,7 +172,7 @@ public class RangeAttackNode : Node
     {
         if (isFire)
         {
-            ProjectileManager.Instance.CreateProjectile(controller.transform, controller.attack);
+            ProjectileManager.Instance.CreateProjectile(controller.transform, controller.attack, new []{ new StraightAttr()});
         }
     }
 
@@ -193,7 +193,7 @@ public class RangeToTargetNode : Node
     {
         if (isFire)
         {
-            ProjectileManager.Instance.CreateProjectile(controller.transform, controller.attack, degree: ProjectileManager.Instance.GetDegreeByDirection((controller.agent.player.transform.position - controller.transform.position).normalized));
+            ProjectileManager.Instance.CreateProjectile(controller.transform, controller.attack, new []{ new StraightAttr()}, degree: ProjectileManager.Instance.GetDegreeByDirection((controller.agent.player.transform.position - controller.transform.position).normalized));
         }
         else
         {

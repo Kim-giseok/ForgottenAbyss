@@ -7,5 +7,7 @@ public class FlyingController : EnemyController
                 new SelectorNode(new SequenceNode(new HitNode()), 
                 new SequenceNode(new FlyingIdleNode(duration: 1f), new FlyingPatrolAttackNode(duration: 1f)))
             );
+        
+        base.Start();
     }
 }

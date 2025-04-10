@@ -38,6 +38,7 @@ public class EnemyDetectHandler : MonoBehaviour
         return Physics2D.OverlapBox(new Vector2(collider.bounds.center.x, collider.bounds.min.y), new Vector2(collider.bounds.size.x, 0.1f), 0, ~(1 << gameObject.layer));
     }
 
+    // movementHandler를 통해서 같이 적용해야하는 걸까?
     public void IsWalkable()
     {
         RaycastHit2D hit = Physics2D.Raycast(new Vector2(transform.rotation.eulerAngles.y == 0 ? collider.bounds.max.x : collider.bounds.min.x, collider.bounds.min.y), Vector2.down, defaultRayDistance, ~(1 << gameObject.layer));

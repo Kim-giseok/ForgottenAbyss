@@ -8,5 +8,7 @@ public class MushroomController: EnemyController
                     new SequenceNode(new HitNode()),
                     new SequenceNode(new RangeToTargetNode(), new CombatIdleNode(duration: 1f))))
         );
+        
+        base.Start();
     }
 }

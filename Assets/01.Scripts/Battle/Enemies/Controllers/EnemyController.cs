@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class EnemyController : MonoBehaviour, IDamagable
 {
@@ -8,11 +9,12 @@ public class EnemyController : MonoBehaviour, IDamagable
     public float health;
     public float attack;
 
-    public bool isSummoned = false;
-    public string SkillNodeName;
+    [HideInInspector] public bool isAwake = true;
+    [HideInInspector] public string SkillNodeName;
 
     public Rigidbody2D rigidbody { get; private set; }
     public Collider2D collider { get; private set; }
+    public SpriteRenderer spriteRenderer { get; private set; }
     
     public BTMachine btMachine { get; private set; }
     public EnemyAgent agent { get; private set; }
@@ -31,6 +33,8 @@ public class EnemyController : MonoBehaviour, IDamagable
         agent = GetComponent<EnemyAgent>();
         rigidbody = GetComponent<Rigidbody2D>();
         collider = GetComponent<Collider2D>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        
         rewardHandler = GetComponent<EnemyRewardHandler>();
 
         animationHandler = new EnemyAnimationHandler(GetComponent<Animator>());
@@ -43,7 +47,11 @@ public class EnemyController : MonoBehaviour, IDamagable
         try { MapSpawnManager.Instance.SpawnedMap.monsterManager.AddList(this); }
         catch { Debug.Log("there is no MapspawnManager"); }
 
-        if (isSummoned) { PlayOneShot(); }
+        if (!isAwake)
+        {
+            Debug.Log(123);
+            PlayOneShot();
+        }
     }
 
     // character controller
@@ -52,8 +60,12 @@ public class EnemyController : MonoBehaviour, IDamagable
         transform.rotation = Quaternion.Euler(0, isFlip ? 0 : 180, 0);
     }
 
-    public void GetDamage(float damage)
+    public void GetDamage(float damage) // notice: 잔상인 경우
     {
+        
+        Vector3 textPosition = transform.position + Vector3.up * 1f;
+        DamageTextManager.Instance.ShowDamage(textPosition, (int)damage);
+        
         statusHandler.isHit = true;
         btMachine.Notify();
         health -= damage;
@@ -63,7 +75,7 @@ public class EnemyController : MonoBehaviour, IDamagable
 
     private void FixedUpdate()
     {
-        if (isSummoned) return;
+        if (!isAwake) return;
         btMachine.Run();
     }
 
@@ -84,10 +96,8 @@ public class EnemyController : MonoBehaviour, IDamagable
             Destroy(gameObject);
         }
 
-        if (respawnArea)
-        {
-            Instantiate(rewardHandler.GetRewardItem(), transform.position, Quaternion.identity);
-        }
+        if (rewardHandler) { Instantiate(rewardHandler.GetRewardItem(), transform.position, Quaternion.identity); }
+        
     }
 
     public void LookPlayer()
@@ -102,6 +112,7 @@ public class EnemyController : MonoBehaviour, IDamagable
         var currNode = NodeManager.allNodes.Find(node => node.name == SkillNodeName).node;
         btMachine.Play(Activator.CreateInstance(currNode) as Node, Die);
 
-        isSummoned = false;
+        spriteRenderer.color = Color.black;
+        isAwake = true;
     }
 }
