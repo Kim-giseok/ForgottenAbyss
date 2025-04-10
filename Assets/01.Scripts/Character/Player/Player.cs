@@ -4,9 +4,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour, IDamagable
 {
-    // �Ϲ� ��ų ����
-    // Ư�� ��ų ����
-    // ���� �� �ý���
+    Animator animator;
        
     PlayerStatus playerstatus;
 
@@ -15,18 +13,38 @@ public class Player : MonoBehaviour, IDamagable
     public void Awake()
     {
         playerstatus = GetComponent<PlayerStatus>();
+        animator = GetComponent<Animator>();
     }
 
-    
+    public void Update()
+    {
+        StartCoroutine(TestGetDamage());
+
+        if (isDead)
+        {
+            animator.SetBool("IsDead", true);
+        }
+    }
+
     public void GetDamage(float damage)
     {
-        playerstatus.stats[StatType.HP] -= damage; //�ǰ� �� ������
+        playerstatus.stats[StatType.HP] -= damage; 
 
-        if (playerstatus.stats[StatType.HP] <= 0) //HP=0 �Ǹ� ���
+        if (playerstatus.stats[StatType.HP] <= 0) 
         {
             isDead = true;
         }
     }
 
+    IEnumerator TestGetDamage()
+    {
+        if (Input.GetKeyDown(KeyCode.N))
+        {
+            GetDamage(10);
+            animator.SetBool("IsDamaged", true);
+            yield return new WaitForSeconds(0.5f);
+            animator.SetBool("IsDamaged", false);
+        }
+    }
 
 }

@@ -13,10 +13,10 @@ public class ControllerPlayer : MonoBehaviour
     public float dashDistance; //대쉬거리
     public float dashTime; //대쉬지속시간
     public int jumplimit; //점프 가능 횟수
-    private int currentJumpCount; //현재 점프 횟수
+    [HideInInspector]public int currentJumpCount; //현재 점프 횟수
     public LayerMask platformLayerMask; //점프 중 무시할 플랫폼 레이어
     public LayerMask invincibilityLayerMask; //무적 상태에서 무시할 레이어
-
+    
     private bool isGround; //땅 밟고 있는지 여부
     private bool isDashing = false; //대쉬 여부
     private bool isAttacking = false; //공격 여부
@@ -39,6 +39,18 @@ public class ControllerPlayer : MonoBehaviour
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
     }
 
+    private void Update()
+    {
+        if(rigid.velocity.y < 0 )
+        {
+            Debug.Log("down");
+            animator.SetBool("IsFall", true);
+        }
+        else
+        {
+            animator.SetBool("IsFall", false);
+        }
+    }
     private void FixedUpdate()
     {
         if (!isDashing && !isAttacking)
@@ -46,6 +58,7 @@ public class ControllerPlayer : MonoBehaviour
             rigid.velocity = new Vector2(inputVec.x * speed, rigid.velocity.y);
             UpdateDirection();
         }
+        
     }
 
     void OnMove(InputValue value)
@@ -64,7 +77,7 @@ public class ControllerPlayer : MonoBehaviour
                 isGround = false;
                 animator.SetBool("IsJump", true);
                 currentJumpCount = 1;
-                            
+                                              
                 StartCoroutine(IgnorePlatformCollision(true));
                 StartCoroutine(ResetIgnoreCollision(0.5f));
             }
