@@ -4,23 +4,25 @@ using UnityEngine;
 
 public class LaberBase : MonoBehaviour
 {
-    [SerializeField] Machine targetMachine;
+    [SerializeField] Machine[] targetMachines;
     [SerializeField] Animator laberAnim;
     protected bool isSwitched = false;
 
     protected virtual void SwitchMachine()
     {
-        if (isSwitched || targetMachine == null) return;
+        if (isSwitched) return;
         laberAnim?.SetFloat("Active", 1);
-        targetMachine.Active();
+        foreach (var targetMachine in targetMachines)
+            targetMachine.Active();
         isSwitched = true;
     }
 
     protected virtual void DisSwitchMachine()
     {
-        if (!isSwitched || targetMachine == null) return;
+        if (!isSwitched) return;
         laberAnim?.SetFloat("Active", -1);
-        targetMachine.UnActive();
+        foreach (var targetMachine in targetMachines)
+            targetMachine.UnActive();
         isSwitched = false;
     }
 }

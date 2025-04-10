@@ -2,6 +2,7 @@ public class MushroomController: EnemyController
 {
     public override void Start()
     {
+        base.Start();
         btMachine.Define(
             new SelectorNode(
                 new SelectorNode(
