@@ -8,16 +8,16 @@ public abstract class Node
     
     protected EnemyController controller; 
     protected BTMachine btMachine;
-    public Cycle currCycle = Cycle.Finished; 
     
     public enum Status { Success, Fail }
-    public enum Cycle { Started, Running, Finished }
     public enum AnimationStatus { Start, End }
 
     public void Connect(EnemyController controller)
     {
         this.controller = controller;
-        this.btMachine = this.controller.btMachine;
+        btMachine = this.controller.btMachine;
+
+        btMachine.allNodes.Add((name: "asd", node: this));
     }
 
     public void SetParent(Node parent)

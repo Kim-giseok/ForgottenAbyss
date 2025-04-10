@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class BTMachine
@@ -10,6 +13,7 @@ public class BTMachine
     
     // currNode를 병렬으로 처리해서 노드 내 중복 코드 개선
     public Node currNode { get; private set; }
+    public List<(string name, Node Node)> allNodes = new();
 
     public BTMachine(EnemyController controller)
     {
@@ -32,8 +36,6 @@ public class BTMachine
         currNode = newNode;
         currNode.Connect(controller);
         currNode.Start();
-        currNode.currCycle = Node.Cycle.Started;
-        
         isRunning = true;
     }
 
@@ -50,6 +52,12 @@ public class BTMachine
 
     public void Notify() // 초기 노드로 이동 또는 특정 노드로 이동 기능 구현 필요
     {
+        SetNode(rootNode);
+    }
+
+    public void Play(Node newNode, Action OnFinish)
+    {
+        rootNode = new RootNode(newNode).WhenLooped(OnFinish);
         SetNode(rootNode);
     }
 }

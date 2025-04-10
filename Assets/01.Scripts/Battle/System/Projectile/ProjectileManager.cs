@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 // direction to degree 같은 것이 필요 할 듯
@@ -7,6 +9,7 @@ public class ProjectileManager : Singleton<ProjectileManager> // 단위 미사�
 {
     public GameObject meleeProjectile;
     public List<GameObject> projectileList;
+    public List<EnemyController> enemyProjectileList;
     
     public List<(int index, GameObject instance)> currProjectiles = new(); // notice : HitBox를 가지고 있는 편이 비용 감소
     public List<(GameObject owner, HitBox hitBox)> currMeleeProjectiles = new();
@@ -63,13 +66,18 @@ public class ProjectileManager : Singleton<ProjectileManager> // 단위 미사�
             instance.SetActive(true);
         }
 
-        HitBox hitBox = instance.GetComponent<HitBox>();
+        HitBox hitBox = instance.GetComponent<HitBox>(); // notice: HitBox 자체를 저장하도록 변경 필요
         hitBox.SetDamage(power);
         hitBox.SetOwner(parent);
         
         
         instance.transform.localRotation = Quaternion.Euler(0, 0, degree - 90); // 화살이 현재 위를 보고 있는 상황이라 방향 계산 필요 -90 이 오른쪽
         instance.transform.localPosition = new Vector2(parent.position.x + startPos.x, parent.position.y + startPos.y);
+    }
+
+    public void Repeat()
+    {
+        
     }
 
     public void DestroyProjectile(Transform transform)
@@ -82,5 +90,12 @@ public class ProjectileManager : Singleton<ProjectileManager> // 단위 미사�
     {
         instance.SetActive(false);
     }
-    
+
+    public void CreateEnemyProjectile(Transform parent, string skillNodeName)
+    {
+        var currProjectile = enemyProjectileList[0];
+        currProjectile.isSummoned = true;
+        currProjectile.SkillNodeName = skillNodeName;
+        Instantiate(enemyProjectileList[0].gameObject, parent.transform.position, Quaternion.identity);
+    }
 }

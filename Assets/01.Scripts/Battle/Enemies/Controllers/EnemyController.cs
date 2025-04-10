@@ -8,7 +8,12 @@ public class EnemyController : MonoBehaviour, IDamagable
     public float health;
     public float attack;
 
+    public bool isSummoned = false;
+    public string SkillNodeName;
+
     public Rigidbody2D rigidbody { get; private set; }
+    public Collider2D collider { get; private set; }
+    
     public BTMachine btMachine { get; private set; }
     public EnemyAgent agent { get; private set; }
     public EnemyAnimationHandler animationHandler { get; private set; }
@@ -20,11 +25,12 @@ public class EnemyController : MonoBehaviour, IDamagable
 
     private Transform pivot;
     public GameObject currWeapon; // 무기의 애니메이션이 발생할 수도 있음
-
+    
     public void Awake()
     {
         agent = GetComponent<EnemyAgent>();
         rigidbody = GetComponent<Rigidbody2D>();
+        collider = GetComponent<Collider2D>();
         rewardHandler = GetComponent<EnemyRewardHandler>();
 
         animationHandler = new EnemyAnimationHandler(GetComponent<Animator>());
@@ -34,14 +40,10 @@ public class EnemyController : MonoBehaviour, IDamagable
 
     public virtual void Start()
     {
-        try
-        {
-            MapSpawnManager.Instance.SpawnedMap.monsterManager.AddList(this);
-        }
-        catch
-        {
-            Debug.Log("there is no MapspawnManager");
-        }
+        try { MapSpawnManager.Instance.SpawnedMap.monsterManager.AddList(this); }
+        catch { Debug.Log("there is no MapspawnManager"); }
+
+        if (isSummoned) { PlayOneShot(); }
     }
 
     // character controller
@@ -61,6 +63,7 @@ public class EnemyController : MonoBehaviour, IDamagable
 
     private void FixedUpdate()
     {
+        if (isSummoned) return;
         btMachine.Run();
     }
 
@@ -81,9 +84,24 @@ public class EnemyController : MonoBehaviour, IDamagable
             Destroy(gameObject);
         }
 
-        if (respawnArea != null)
+        if (respawnArea)
         {
             Instantiate(rewardHandler.GetRewardItem(), transform.position, Quaternion.identity);
         }
+    }
+
+    public void LookPlayer()
+    {
+        var direction = (agent.player.transform.position - transform.position).normalized;
+        Flip(direction.x > 0);
+    }
+
+    public void PlayOneShot()
+    {
+        gameObject.layer = LayerMask.NameToLayer("Player");
+        var currNode = NodeManager.allNodes.Find(node => node.name == SkillNodeName).node;
+        btMachine.Play(Activator.CreateInstance(currNode) as Node, Die);
+
+        isSummoned = false;
     }
 }
