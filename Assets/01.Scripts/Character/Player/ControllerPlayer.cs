@@ -302,9 +302,11 @@ public class ControllerPlayer : MonoBehaviour
     {
         while (isInvincible)
         {
-            spriteRenderer.color = new Color(1f, 1f, 1f, 0.3f);
+            Debug.Log("1");
+            spriteRenderer.color = new Color(1f, 1f, 1f, 0.2f);
             yield return null;
         }
+        
     }
         
 }

@@ -7,6 +7,7 @@ public class Player : MonoBehaviour, IDamagable
     Animator animator;
        
     PlayerStatus playerstatus;
+    //Rigidbody2D rigidbody;
 
     private bool isDead = false;
 
@@ -14,11 +15,15 @@ public class Player : MonoBehaviour, IDamagable
     {
         playerstatus = GetComponent<PlayerStatus>();
         animator = GetComponent<Animator>();
+        //rigidbody = GetComponent<Rigidbody2D>();
     }
 
     public void Update()
     {
-        StartCoroutine(TestGetDamage());
+        if (Input.GetKeyDown(KeyCode.N))
+        {
+            StartCoroutine(TestGetDamage()); //테스트용
+        }
 
         if (isDead)
         {
@@ -28,23 +33,21 @@ public class Player : MonoBehaviour, IDamagable
 
     public void GetDamage(float damage)
     {
-        playerstatus.stats[StatType.HP] -= damage; 
-
+        playerstatus.stats[StatType.HP] -= damage;
+        
         if (playerstatus.stats[StatType.HP] <= 0) 
         {
             isDead = true;
         }
     }
 
-    IEnumerator TestGetDamage()
+    IEnumerator TestGetDamage() //피격 판정 테스트용 
     {
-        if (Input.GetKeyDown(KeyCode.N))
-        {
-            GetDamage(10);
-            animator.SetBool("IsDamaged", true);
-            yield return new WaitForSeconds(0.5f);
-            animator.SetBool("IsDamaged", false);
-        }
+        GetDamage(10);
+        animator.SetBool("IsDamaged", true);
+        yield return new WaitForSeconds(0.5f);
+        animator.SetBool("IsDamaged", false);
+       
     }
 
 }
