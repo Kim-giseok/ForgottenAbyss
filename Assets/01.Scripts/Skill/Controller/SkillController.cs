@@ -7,6 +7,7 @@ public class SkillController : MonoBehaviour
 {
     public ComboAttack comboAttack;
 
+    public int combatId;
     public int skill01Id;
     public int skill02Id;
     public int memorySkillId;

@@ -17,6 +17,9 @@ public class DataManager : Singleton<DataManager>
     public Dictionary<string, WeaponDataSO> weaponSODic = new Dictionary<string, WeaponDataSO>();
     public List<WeaponDataSO> weaponSOList;
 
+    public Dictionary<int, ComboAttackSO> comboAttackSODic = new Dictionary<int, ComboAttackSO>();
+    public List<ComboAttackSO> comboAttackSOList;
+
     public Dictionary<string, MemoryPieceSO> memoryVisualSODic = new Dictionary<string, MemoryPieceSO>();
     public List<MemoryPieceSO> memoryVisualSOList;
 
@@ -107,6 +110,15 @@ public class DataManager : Singleton<DataManager>
         var allWeaponSOs = Resources.LoadAll<WeaponDataSO>("Weapon");
         weaponSOList = new List<WeaponDataSO>(allWeaponSOs);
 
+        var allComboAttackSOs = Resources.LoadAll<ComboAttackSO>("Weapon");
+        comboAttackSOList = new List<ComboAttackSO>(allComboAttackSOs);
+
+        foreach (var so in allComboAttackSOs)
+        {
+            if (!comboAttackSODic.ContainsKey(so.id))
+                comboAttackSODic.Add(so.id, so);
+        }
+
         foreach (WeaponDataSO so in allWeaponSOs)
         {
             if (!weaponSODic.ContainsKey(so.name))
@@ -122,6 +134,11 @@ public class DataManager : Singleton<DataManager>
 
                 so.skill01SO = GetSkillVisualSO(skill01Data?.VisualSOName);
                 so.skill02SO = GetSkillVisualSO(skill02Data?.VisualSOName);
+
+                if (comboAttackSODic.TryGetValue(matchedData.ComboAttack, out var comboSO))
+                {
+                    so.comboAttackData = comboSO;
+                }
             }
             else
             {

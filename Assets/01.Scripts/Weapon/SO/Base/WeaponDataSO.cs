@@ -9,11 +9,10 @@ public class WeaponDataSO : ScriptableObject
     public int currentWeaponId = 0;
 
     // 연결할 스킬 SO
-    public ComboAttackData comboAttackData;
+    public ComboAttackSO comboAttackData;
     public SkillVisualSO skill01SO;
     public SkillVisualSO skill02SO;
 
     // 무기 아이콘
     public Sprite weaponIcon;
-    public Sprite playerSprite;
 }

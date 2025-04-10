@@ -2,9 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[System.Serializable]
-public class ComboAttackData
+[CreateAssetMenu(fileName = "NewComboAttackData", menuName = "SO/Combat/ComboAttackData")]
+public class ComboAttackSO : ScriptableObject
 {
+    public int id;
+    public string attackName;
+    public string description;
+    public Sprite icon;
     public List<ComboStep> comboSteps;
 }
 

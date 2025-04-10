@@ -19,6 +19,7 @@ GameObject:
   - component: {fileID: 5384723960413066390}
   - component: {fileID: 1976620441361161620}
   - component: {fileID: 447847266130749123}
+  - component: {fileID: 4415495858370617319}
   m_Layer: 8
   m_Name: RedHood
   m_TagString: Player
@@ -230,7 +231,6 @@ MonoBehaviour:
   invincibilityLayerMask:
     serializedVersion: 2
     m_Bits: 512
-  maxCombo: 6
 --- !u!114 &7695836731054088730
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -283,8 +283,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39a5f5a0c2370ae4d8d16db0febae4fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  basicAttackSkillId: 0
+  comboAttack: {fileID: 0}
   skill01Id: 0
   skill02Id: 0
   memorySkillId: 0
   skillSpawnPoint: {fileID: 3592222812765152639}
+--- !u!114 &4415495858370617319
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3741893359042678545}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb354eabd912cd44ca6ae06b6cae8fdd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 8708700905438549016}
+  maxCombo: 6

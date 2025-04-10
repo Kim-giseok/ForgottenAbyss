@@ -22,6 +22,7 @@ public class SkillManager : Singleton<SkillManager>
 
         currentWeaponSkillIds = new List<int>
         {
+        weaponData.ComboAttack,
         weaponData.Skill1Id,
         weaponData.Skill2Id
         };
@@ -83,7 +84,11 @@ public class SkillManager : Singleton<SkillManager>
             Vector3 effectPos = spawnPoint.position;
 
             if (visualSO.useEffectOffset)
-                effectPos += dir * visualSO.effectOffset;
+            {
+                effectPos += dir * visualSO.effectXOffset;
+                effectPos += Vector3.up * visualSO.effectYOffset;
+            }
+                
 
             EffectPool.Instance.SpawnEffect(visualSO.effectKey, effectPos, spawnPoint.rotation);
         }
@@ -112,6 +117,7 @@ public class SkillManager : Singleton<SkillManager>
     private int GetSlotIndexBySkillId(int skillId)
     {
         var sc = WeaponManager.Instance.skillController;
+        if (skillId == sc.combatId) return 1;
         if (skillId == sc.skill01Id) return 2;
         if (skillId == sc.skill02Id) return 3;
         if (skillId == sc.memorySkillId) return 0;

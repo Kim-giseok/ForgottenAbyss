@@ -5,7 +5,7 @@ using UnityEngine;
 public class WeaponManager : Singleton<WeaponManager>
 {
     public SkillController skillController;
-    public SpriteRenderer playerRenderer;
+    public ComboAttack comboAttack; 
 
     private WeaponDataSO currentWeaponSO;
     private WeaponData currentWeaponData;
@@ -38,9 +38,6 @@ public class WeaponManager : Singleton<WeaponManager>
             Debug.LogWarning($"WeaponData not found for ID {selectedWeapon.currentWeaponId}");
         }
 
-        // 스프라이트 변경
-        playerRenderer.sprite = selectedWeapon.playerSprite;
-
         // 스킬 ID 설정
         skillController.skill01Id = selectedWeapon.skill01SO.skillId;
         skillController.skill02Id = selectedWeapon.skill02SO.skillId;
@@ -58,6 +55,15 @@ public class WeaponManager : Singleton<WeaponManager>
 
         skillUI.SetSkillCooldownTime(SkillSlotType.Skill01, skill01Data.CoolTime);
         skillUI.SetSkillCooldownTime(SkillSlotType.Skill02, skill02Data.CoolTime);
+
+        if (skillController.comboAttack != null && selectedWeapon.comboAttackData != null)
+        {
+            skillController.comboAttack.SetComboData(selectedWeapon.comboAttackData);
+            if (skillUI != null)
+            {
+                skillUI.SetSkillIcon(SkillSlotType.Basic, selectedWeapon.comboAttackData.icon);
+            }
+        }
     }
 
     public void EquipMemoryPiece(MemoryPieceSO memorySO)
