@@ -4,7 +4,6 @@ using UnityEngine;
 
 public enum SkillType
 {
-    BasicAttack,
     Active1,
     Active2,
     Memory

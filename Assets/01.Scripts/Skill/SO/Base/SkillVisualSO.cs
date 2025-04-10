@@ -24,7 +24,8 @@ public class SkillVisualSO : ScriptableObject
 
     // 이펙트 위치 오프셋 사용 여부 + 값
     public bool useEffectOffset = false;
-    public float effectOffset = 0f;
+    public float effectXOffset = 0f;
+    public float effectYOffset = 0f;
 
     // 필요한 스탯 추가 (유지 시간, 사거리 이런거?)
 }
