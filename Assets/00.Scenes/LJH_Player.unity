@@ -1930,6 +1930,15 @@ MonoBehaviour:
   invincibilityLayerMask:
     serializedVersion: 2
     m_Bits: 512
+  isGround: 0
+  isDashing: 0
+  isAttacking: 0
+  isIgnoringCollision: 0
+  isInvincible: 0
+  rigid: {fileID: 0}
+  animator: {fileID: 0}
+  playerCollider: {fileID: 0}
+  spriteRenderer: {fileID: 0}
 --- !u!81 &5157770515905481004
 AudioListener:
   m_ObjectHideFlags: 0

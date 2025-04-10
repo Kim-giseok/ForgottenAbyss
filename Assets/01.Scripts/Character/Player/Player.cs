@@ -5,6 +5,7 @@ using UnityEngine;
 public class Player : MonoBehaviour, IDamagable
 {
     Animator animator;
+    SpriteRenderer spriteRenderer;
        
     PlayerStatus playerstatus;
     //Rigidbody2D rigidbody;
@@ -15,6 +16,7 @@ public class Player : MonoBehaviour, IDamagable
     {
         playerstatus = GetComponent<PlayerStatus>();
         animator = GetComponent<Animator>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
         //rigidbody = GetComponent<Rigidbody2D>();
     }
 
@@ -45,9 +47,11 @@ public class Player : MonoBehaviour, IDamagable
     {
         GetDamage(10);
         animator.SetBool("IsDamaged", true);
+        spriteRenderer.color = new Color(1f, 0.2f, 0.2f, 1f);
         yield return new WaitForSeconds(0.5f);
         animator.SetBool("IsDamaged", false);
-       
+        spriteRenderer.color = new Color(1f, 1f, 1f, 1f);
+
     }
 
 }
