@@ -22,7 +22,6 @@ public class SkillManager : Singleton<SkillManager>
 
         currentWeaponSkillIds = new List<int>
         {
-        weaponData.basicAttackID,
         weaponData.Skill1Id,
         weaponData.Skill2Id
         };
@@ -113,7 +112,6 @@ public class SkillManager : Singleton<SkillManager>
     private int GetSlotIndexBySkillId(int skillId)
     {
         var sc = WeaponManager.Instance.skillController;
-        if (skillId == sc.basicAttackSkillId) return 1;
         if (skillId == sc.skill01Id) return 2;
         if (skillId == sc.skill02Id) return 3;
         if (skillId == sc.memorySkillId) return 0;

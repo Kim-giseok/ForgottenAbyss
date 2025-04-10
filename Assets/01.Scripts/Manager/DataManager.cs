@@ -117,11 +117,9 @@ public class DataManager : Singleton<DataManager>
             WeaponData matchedData = weaponDataList.Weapons.Find(w => w.Id == so.currentWeaponId);
             if (matchedData != null)
             {
-                var basicData = GetSkillData(matchedData.basicAttackID);
                 var skill01Data = GetSkillData(matchedData.Skill1Id);
                 var skill02Data = GetSkillData(matchedData.Skill2Id);
 
-                so.basicAttack = GetSkillVisualSO(basicData?.VisualSOName);
                 so.skill01SO = GetSkillVisualSO(skill01Data?.VisualSOName);
                 so.skill02SO = GetSkillVisualSO(skill02Data?.VisualSOName);
             }

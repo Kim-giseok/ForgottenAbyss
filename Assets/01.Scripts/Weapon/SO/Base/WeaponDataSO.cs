@@ -9,7 +9,7 @@ public class WeaponDataSO : ScriptableObject
     public int currentWeaponId = 0;
 
     // 연결할 스킬 SO
-    public SkillVisualSO basicAttack;
+    public ComboAttackData comboAttackData;
     public SkillVisualSO skill01SO;
     public SkillVisualSO skill02SO;
 

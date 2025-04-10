@@ -3,18 +3,41 @@ using UnityEngine;
 
 public class ComboAttack : MonoBehaviour
 {
-    Animator animator;
+    [SerializeField] private Animator animator;
+    [SerializeField] private int maxCombo = 6;
+
     int attackIndex = 0;
     bool canNextCombo = false;
     bool inputCombo = false;
-    int maxCombo = 6;
 
     public bool isAttacking { get; private set; } = false;
 
-    public ComboAttack(Animator animator)
+    public void Init(Animator animator)
     {
         this.animator = animator;
     }
+
+    public void HandleAttackInput()
+    {
+        if (isAttacking)
+        {
+            if (canNextCombo)
+                inputCombo = true;
+        }
+        else
+        {
+            StartComboAttack();
+        }
+    }
+
+    private void StartComboAttack()
+    {
+        isAttacking = true;
+        attackIndex = 1;
+        animator.SetTrigger("AttackTrigger");
+        animator.SetInteger("AttackCombo", attackIndex);
+    }
+   
 
     void OnComboCheck(float bufferTime)
     {
@@ -38,13 +61,17 @@ public class ComboAttack : MonoBehaviour
         }
         else
         {
-            isAttacking = false;
-            attackIndex = 0;
-            inputCombo = false;
-            canNextCombo = false;
-
-            animator.Play("Idle");
+            EndComboAttack();
         }
+    }
+
+    private void EndComboAttack()
+    {
+        isAttacking = false;
+        attackIndex = 0;
+        inputCombo = false;
+        canNextCombo = false;
+        animator.Play("Idle");
     }
 
     void OnMoveForward(float distance)
@@ -66,23 +93,5 @@ public class ComboAttack : MonoBehaviour
         }
 
         transform.position = targetPos; // 마지막 위치 보정
-    }
-
-    void Check()
-    {
-        if (isAttacking)
-        {
-            if (canNextCombo)
-            {
-                inputCombo = true;
-            }
-        }
-        else
-        {
-            isAttacking = true;
-            attackIndex = 1;
-            animator.SetTrigger("AttackTrigger");
-            animator.SetInteger("AttackCombo", attackIndex);
-        }
     }
 }
