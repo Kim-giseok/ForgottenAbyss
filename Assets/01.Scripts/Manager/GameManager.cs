@@ -15,7 +15,8 @@ public class GameManager : Singleton<GameManager>
         player = FindObjectOfType<Player>();
 
         mainCamera = Camera.main;
-        if (mainCamera.TryGetComponent<CinemachineBrain>(out var component))
+        if (!mainCamera.TryGetComponent<CinemachineBrain>(out var component))
             component = mainCamera.AddComponent<CinemachineBrain>();
+        component.m_DefaultBlend.m_Time = 0f;
     }
 }
