@@ -915,6 +915,11 @@ MonoBehaviour:
   - {fileID: 9066055968734839108}
   - {fileID: 6844981036311232204}
   - {fileID: 4609124550192678861}
+  skillIcons:
+  - {fileID: 4886965087662942620}
+  - {fileID: 6634603416455825744}
+  - {fileID: 6593438160994137558}
+  - {fileID: 2892118617521787854}
 --- !u!114 &4347861838401236696
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1140,10 +1145,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e674a946fa83f243b2868deaeddab54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  item:
-    itemName: 
-    itemIcon: {fileID: 0}
-    skillId: 0
+  item: {fileID: 0}
 --- !u!1 &2234499586147866719
 GameObject:
   m_ObjectHideFlags: 0
@@ -1232,10 +1234,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e674a946fa83f243b2868deaeddab54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  item:
-    itemName: 
-    itemIcon: {fileID: 0}
-    skillId: 0
+  item: {fileID: 0}
 --- !u!1 &2629132525468841283
 GameObject:
   m_ObjectHideFlags: 0
@@ -1297,7 +1296,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.13207549, g: 0.13207549, b: 0.13207549, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1471,10 +1470,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e674a946fa83f243b2868deaeddab54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  item:
-    itemName: 
-    itemIcon: {fileID: 0}
-    skillId: 0
+  item: {fileID: 0}
 --- !u!1 &3046379867634478982
 GameObject:
   m_ObjectHideFlags: 0
@@ -1930,11 +1926,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee716497260bb5f40b5f16e8a9d7757a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentItem:
-    itemName: 
-    itemIcon: {fileID: 0}
-    skillId: 0
-  slotImage: {fileID: 4342903045417132252}
+  currentItem: {fileID: 0}
+  iconImage: {fileID: 0}
+  itemUI: {fileID: 0}
 --- !u!1 &3495987096907961490
 GameObject:
   m_ObjectHideFlags: 0
@@ -1996,7 +1990,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.13207549, g: 0.13207549, b: 0.13207549, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -2143,7 +2137,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.13207549, g: 0.13207549, b: 0.13207549, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -2290,7 +2284,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.13207549, g: 0.13207549, b: 0.13207549, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -2484,7 +2478,7 @@ MonoBehaviour:
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
-  m_FillAmount: 1
+  m_FillAmount: 0
   m_FillClockwise: 0
   m_FillOrigin: 2
   m_UseSpriteMesh: 0
@@ -2894,11 +2888,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee716497260bb5f40b5f16e8a9d7757a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentItem:
-    itemName: 
-    itemIcon: {fileID: 0}
-    skillId: 0
-  slotImage: {fileID: 4342903045417132252}
+  currentItem: {fileID: 0}
+  iconImage: {fileID: 0}
+  itemUI: {fileID: 0}
 --- !u!1 &5404627001190622787
 GameObject:
   m_ObjectHideFlags: 0
@@ -2988,11 +2980,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee716497260bb5f40b5f16e8a9d7757a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentItem:
-    itemName: 
-    itemIcon: {fileID: 0}
-    skillId: 0
-  slotImage: {fileID: 4342903045417132252}
+  currentItem: {fileID: 0}
+  iconImage: {fileID: 0}
+  itemUI: {fileID: 0}
 --- !u!1 &5562040736495427664
 GameObject:
   m_ObjectHideFlags: 0
@@ -3209,9 +3199,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   quickSlots: []
-  quickSlotContent: {fileID: 5986175910538551662}
-  SelectedSlotImg: {fileID: 959765268175648087}
-  itemManager: {fileID: 0}
+  selectionIndicator: {fileID: 0}
 --- !u!1 &6097528747926797353
 GameObject:
   m_ObjectHideFlags: 0
@@ -3489,11 +3477,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee716497260bb5f40b5f16e8a9d7757a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentItem:
-    itemName: 
-    itemIcon: {fileID: 0}
-    skillId: 0
-  slotImage: {fileID: 4342903045417132252}
+  currentItem: {fileID: 0}
+  iconImage: {fileID: 0}
+  itemUI: {fileID: 0}
 --- !u!1 &6639356101773486303
 GameObject:
   m_ObjectHideFlags: 0
@@ -3671,10 +3657,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e674a946fa83f243b2868deaeddab54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  item:
-    itemName: 
-    itemIcon: {fileID: 0}
-    skillId: 0
+  item: {fileID: 0}
 --- !u!1 &7058645098303212876
 GameObject:
   m_ObjectHideFlags: 0
@@ -4175,11 +4158,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee716497260bb5f40b5f16e8a9d7757a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentItem:
-    itemName: 
-    itemIcon: {fileID: 0}
-    skillId: 0
-  slotImage: {fileID: 4342903045417132252}
+  currentItem: {fileID: 0}
+  iconImage: {fileID: 0}
+  itemUI: {fileID: 0}
 --- !u!1 &8094024430882165798
 GameObject:
   m_ObjectHideFlags: 0
@@ -4251,7 +4232,7 @@ MonoBehaviour:
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
-  m_FillAmount: 1
+  m_FillAmount: 0
   m_FillClockwise: 0
   m_FillOrigin: 2
   m_UseSpriteMesh: 0
@@ -4610,10 +4591,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e674a946fa83f243b2868deaeddab54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  item:
-    itemName: 
-    itemIcon: {fileID: 0}
-    skillId: 0
+  item: {fileID: 0}
 --- !u!1 &8494343799265535308
 GameObject:
   m_ObjectHideFlags: 0
@@ -4685,7 +4663,7 @@ MonoBehaviour:
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
-  m_FillAmount: 1
+  m_FillAmount: 0
   m_FillClockwise: 0
   m_FillOrigin: 2
   m_UseSpriteMesh: 0
