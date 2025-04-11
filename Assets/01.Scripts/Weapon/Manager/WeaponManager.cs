@@ -56,13 +56,19 @@ public class WeaponManager : Singleton<WeaponManager>
         skillUI.SetSkillCooldownTime(SkillSlotType.Skill01, skill01Data.CoolTime);
         skillUI.SetSkillCooldownTime(SkillSlotType.Skill02, skill02Data.CoolTime);
 
-        if (skillController.comboAttack != null && selectedWeapon.comboAttackData != null)
+        if (currentWeaponData.Type == WeaponType.Sword && selectedWeapon.comboAttackData != null)
         {
+            skillController.combatId = selectedWeapon.comboAttackData.id;
             skillController.comboAttack.SetComboData(selectedWeapon.comboAttackData);
             if (skillUI != null)
-            {
                 skillUI.SetSkillIcon(SkillSlotType.Basic, selectedWeapon.comboAttackData.icon);
-            }
+        }
+        else if (currentWeaponData.Type == WeaponType.Bow && selectedWeapon.rangedAttackData != null)
+        {
+            skillController.combatId = selectedWeapon.rangedAttackData.id;
+            skillController.rangedAttack.SetRangedAttackData(selectedWeapon.rangedAttackData);
+            if (skillUI != null)
+                skillUI.SetSkillIcon(SkillSlotType.Basic, selectedWeapon.rangedAttackData.icon);
         }
     }
 
@@ -113,6 +119,13 @@ public class WeaponManager : Singleton<WeaponManager>
     private void Debug_EquipTestWeapon()
     {
         var testWeaponSO = Resources.Load<WeaponDataSO>("Weapon/Sword_SO");
+        EquipWeapon(testWeaponSO);
+    }
+
+    [ContextMenu("DEBUG: È° ÀåÂø")]
+    private void Debug_EquipTestBow()
+    {
+        var testWeaponSO = Resources.Load<WeaponDataSO>("Weapon/Bow_SO");
         EquipWeapon(testWeaponSO);
     }
 

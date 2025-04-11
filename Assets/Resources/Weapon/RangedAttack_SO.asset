@@ -14,13 +14,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 1
   attackName: "\uD65C \uAE30\uBCF8 \uACF5\uACA9"
-  description: "\uCC28\uC9D5\uC774 \uAC00\uB2A5\uD558\uB2E4 \uCC28\uC9C0\uB41C \uD654\uC0B4\uC758
-    \uACF5\uACA9\uB825\uC774 \uC99D\uAC00\uD55C\uB2E4"
+  description: "3\uB2E8 \uACF5\uACA9\uC774 \uAC00\uB2A5\uD558\uB2E4 \uBC1C\uC0AC\uC218\uAC00
+    \uC99D\uAC00\uD55C"
   icon: {fileID: 0}
-  chargeStartAnim: BowCharge_start
-  chargeLoopAnim: BowCharge_loop
-  chargeReleaseAnim: BowCharge_release
-  maxChargeTime: 2
-  minPower: 1
-  maxPower: 2
-  projectilePrefab: {fileID: 3076448791720184735, guid: a3c3b642859394232904c59dad73b970, type: 3}
+  comboSteps:
+  - animationName: BowAttack
+    projectilePrefab: {fileID: 2562934970777424423, guid: d25d49ec691fd1948ad3e2cb45cfeeb2, type: 3}
+    projectileCount: 1
+    fireDelay: 0
+    firePower: 1
+    isSpread: 0
+    spreadAngle: 15
+  - animationName: BowAttack
+    projectilePrefab: {fileID: 2562934970777424423, guid: d25d49ec691fd1948ad3e2cb45cfeeb2, type: 3}
+    projectileCount: 2
+    fireDelay: 0.15
+    firePower: 1.5
+    isSpread: 0
+    spreadAngle: 15
+  - animationName: BowAttack
+    projectilePrefab: {fileID: 2562934970777424423, guid: d25d49ec691fd1948ad3e2cb45cfeeb2, type: 3}
+    projectileCount: 3
+    fireDelay: 0.3
+    firePower: 2
+    isSpread: 1
+    spreadAngle: 20

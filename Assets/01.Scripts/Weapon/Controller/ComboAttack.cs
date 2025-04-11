@@ -71,6 +71,7 @@ public class ComboAttack : MonoBehaviour
         {
             inputCombo = false;
             attackIndex++;
+            animator.SetInteger("AttackCombo", attackIndex);
             animator.Play(comboData.comboSteps[attackIndex - 1].animationName);
         }
         else
@@ -83,6 +84,7 @@ public class ComboAttack : MonoBehaviour
     {
         isAttacking = false;
         attackIndex = 0;
+        animator.SetInteger("AttackCombo", 0);
         inputCombo = false;
         canNextCombo = false;
         animator.Play("Idle");

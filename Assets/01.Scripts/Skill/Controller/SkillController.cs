@@ -17,7 +17,18 @@ public class SkillController : MonoBehaviour
 
     void OnAttack(InputValue value)
     {
-        comboAttack.HandleAttackInput();
+        if (WeaponManager.Instance.GetCurrentWeaponData().Type == WeaponType.Sword)
+        {
+            comboAttack?.HandleAttackInput();
+        }
+        else if (WeaponManager.Instance.GetCurrentWeaponData().Type == WeaponType.Bow)
+        {
+            if (value.isPressed)
+                rangedAttack?.HandleAttackInput();
+            else
+                rangedAttack?.HandleAttackInput();
+        }
+
         Debug.Log("A: 일반공격");
     }
 
