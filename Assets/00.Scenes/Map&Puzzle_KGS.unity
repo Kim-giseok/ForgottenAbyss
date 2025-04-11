@@ -233,6 +233,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4885126945345622558, guid: ad1a05ea9f506a6438111c12db873e92, type: 3}
+      propertyPath: playerCollider
+      value: 
+      objectReference: {fileID: 929313428}
+    - target: {fileID: 4885126945345622558, guid: ad1a05ea9f506a6438111c12db873e92, type: 3}
       propertyPath: invincibilityLayerMask.m_Bits
       value: 0
       objectReference: {fileID: 0}
@@ -427,6 +431,11 @@ Transform:
   - {fileID: 1920426442}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!70 &929313428 stripped
+CapsuleCollider2D:
+  m_CorrespondingSourceObject: {fileID: 3422376118861005998, guid: ad1a05ea9f506a6438111c12db873e92, type: 3}
+  m_PrefabInstance: {fileID: 392350941}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1049774201
 GameObject:
   m_ObjectHideFlags: 0
