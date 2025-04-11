@@ -10,7 +10,8 @@ public enum PlayerState
     Dash,
     Attack,
     Interaction,
-    Climb
+    Climb,
+    Slide
 }
 
 public abstract class PlayerStateMachine 
@@ -31,5 +32,9 @@ public abstract class PlayerStateMachine
     public virtual void OnAttack() { }
     public virtual void OnInteraction() { }
     public virtual void OnCollisionEnter(Collision2D collision) { }
+    public virtual void OnCollisionExit(Collision2D collision) { }
+    public virtual void OnTriggerEnter(Collider2D collision) { }
+    public virtual void OnTriggerExit(Collider2D collision) { }
+    public virtual void OnTriggerStay(Collider2D collision) { }
     public virtual void OnMove(Vector2 inputVec) { }
 }

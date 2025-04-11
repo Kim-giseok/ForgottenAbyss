@@ -6,48 +6,102 @@ using UnityEngine.InputSystem;
 public class ClimbState : PlayerStateMachine
 {
     public float climbSpeed = 5f;
+    public float originalGravity;
     public ClimbState(ControllerPlayer player) : base(player) { }
 
     public override void Enter()
     {
-        //중력 무시(선택적)
-        //player.rigid.gravityScale = 1;
+        originalGravity = player.rigid.gravityScale;
+
+        // 현재 접촉 중인 WallClimb 레이어의 트리거 찾기
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(player.transform.position, 1f);
+        Collider2D Collider = null;
+
+        foreach (Collider2D collider in colliders)
+        {
+            if (collider.gameObject.layer == LayerMask.NameToLayer("Climb"))
+            {
+                Collider = collider;
+                break;
+            }
+        }
+
+        // 트리거가 있다면 플레이어를 중앙으로 이동
+        if (Collider != null)
+        {
+            // 트리거의 중앙 X 위치 계산
+            Vector2 centerPosition = Collider.bounds.center;
+
+            // 플레이어의 X 위치만 트리거의 중앙으로 변경
+            Vector3 newPosition = player.transform.position;
+            newPosition.x = centerPosition.x;
+            player.transform.position = newPosition;
+        }
 
         // 수평 속도 0으로 설정
-        player.rigid.velocity = new Vector2(0, player.rigid.velocity.y);
+        player.rigid.velocity = new Vector2(0, 0);
+        player.rigid.gravityScale = 0;
     }
 
+    public override void Update()
+    {
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(player.transform.position, 1f);
+        Collider2D Collider = null;
+
+        foreach (Collider2D collider in colliders)
+        {
+            if (collider.gameObject.layer == LayerMask.NameToLayer("Climb"))
+            {
+                Collider = collider;
+                break;
+            }
+        }
+
+        if (player.inputVec.y > 0 && player.transform.position.y >= Collider.bounds.max.y - 0.5f)
+        {
+            // 사다리 꼭대기에 도달했을 때 자동으로 위로 올라가기
+            Vector3 topPosition = new Vector3(Collider.bounds.center.x,
+                Collider.bounds.max.y +  0.5f, 0 );
+
+            player.transform.position = topPosition;
+            player.ChangeState(PlayerState.Idle);
+            return;
+        }
+    }
     public override void FixedUpdate()
     {
-        //// Y축 입력에 따라 상하 이동
+        // Y축 입력에 따라 상하 이동
         player.rigid.velocity = new Vector2(0, player.inputVec.y * climbSpeed);
         
     }
-    public override void Update()
-    {
-        // 벽에서 떨어졌는지 체크
-        if (!player.isWallDetected)
-        {
-            player.ChangeState(PlayerState.Idle);
-            player.rigid.velocity = new Vector2(0, 0);
-            player.transform.position += new Vector3(-1, 1, 0);
-            return;
-        }
 
-        // 점프 키 입력 시 벽에서 튕겨나가는 점프 가능
+    public override void Exit()
+    {
+        player.rigid.gravityScale = originalGravity;
     }
+
     public override void OnJump()
     {
-        // 벽에서 반대 방향으로 점프
-        Vector2 jumpDirection = new Vector2(-player.transform.right.x * 15f, 12f); // 반대 방향으로 더 강하게
-
-        player.rigid.velocity = Vector2.zero;
-        player.rigid.AddForce(jumpDirection.normalized * 100f, ForceMode2D.Impulse);
-        player.isWallDetected = false;
-
-
-
         player.ChangeState(PlayerState.Jump);
+    }
+    public override void OnCollisionExit(Collision2D collision)
+    {
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Climb"))
+        {
+            // 원래 상태로 돌아가기
+            player.ChangeState(PlayerState.Idle);
+        }
 
     }
+    public override void OnTriggerExit(Collider2D collision)
+    {
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Climb"))
+        {
+            // 원래 상태로 돌아가기
+            player.ChangeState(PlayerState.Idle);
+        }
+    }
+
 }
+    
+
