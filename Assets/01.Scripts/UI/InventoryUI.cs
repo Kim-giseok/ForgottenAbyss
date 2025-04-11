@@ -6,14 +6,15 @@ using UnityEngine.UI;
 
 public class InventoryUI : MonoBehaviour
 {
+    [Header("UI Components")]
     public GameObject inventoryPanel; // 인벤토리 패널
     public Button closeButton; // 닫기 버튼
     public Transform slotHolder; // 슬롯 부모
-    private Slot[] slots; // 슬롯 배열
+    public InventorySlot[] slots; // 슬롯 배열
 
     private void Start()
     {
-        slots = slotHolder.GetComponentsInChildren<Slot>(); // 슬롯 UI 초기화
+        slots = slotHolder.GetComponentsInChildren<InventorySlot>(); // 슬롯 UI 초기화
         Inventory.Instance.onItemChanged += UpdateUI; // 아이템이 변경될 때마다 UI 갱신
 
         closeButton.onClick.AddListener(CloseInventory); // 닫기 버튼 이벤트
@@ -39,7 +40,8 @@ public class InventoryUI : MonoBehaviour
     // 인벤토리 활성화/비활성화
     public void ToggleInventory()
     {
-        inventoryPanel.SetActive(!inventoryPanel.activeSelf);
+        bool isActive = inventoryPanel.activeSelf;
+        inventoryPanel.SetActive(!isActive);
     }
 
     // 인벤토리 닫기

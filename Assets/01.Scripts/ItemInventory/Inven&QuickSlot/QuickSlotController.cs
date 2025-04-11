@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class QuickSlotController : MonoBehaviour
 {
-    [SerializeField] private Slot[] quickSlots;  // Äü½½·Ô ½½·Ôµé
-    [SerializeField] private GameObject selectionIndicator;  // ¼±ÅÃµÈ ½½·Ô Ç¥½Ã±â
+    [SerializeField] private QuickSlot[] quickSlots; // Äü½½·Ô ½½·Ôµé
+    [SerializeField] private GameObject selectionIndicator; // ¼±ÅÃµÈ ½½·Ô Ç¥½Ã
+
     private int selectedIndex = 0;
 
     void Start()
