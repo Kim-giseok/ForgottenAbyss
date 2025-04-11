@@ -19,4 +19,6 @@ public class ComboStep
     public float damageMultiplier;  // 데미지 배율
     public float moveDistance;      // 공격 시 앞으로 이동할 거리
     public float inputBufferTime;   // 다음 입력을 받을 수 있는 시간
+    public float radius;
+    public float angle;
 }

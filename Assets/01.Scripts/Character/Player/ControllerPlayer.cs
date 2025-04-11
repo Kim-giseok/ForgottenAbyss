@@ -92,10 +92,10 @@ public class ControllerPlayer : MonoBehaviour
         if (states.ContainsKey(currentState))
         {
             states[currentState].Update();
-            Debug.Log($"{states[currentState]}");
+            //Debug.Log($"{states[currentState]}");
         }
 
-        if (rigid.velocity.y < 0 )
+        if (!isGround && rigid.velocity.y < -0.1f)
         {
             animator.SetBool("IsFall", true);
         }

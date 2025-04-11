@@ -33,4 +33,16 @@ public abstract class SkillExecutionSO : ScriptableObject
     {
         return Physics2D.OverlapCircleAll(center, range, layer);
     }
+
+    protected IEnumerator PlayFastAnimation(GameObject caster, string animationName, float speed, float duration)
+    {
+        var animator = caster.GetComponent<Animator>();
+        if (animator == null) yield break;
+
+        float originalSpeed = animator.speed;
+        animator.speed = speed;
+        animator.Play(animationName);
+        yield return new WaitForSeconds(duration);
+        animator.speed = originalSpeed;
+    }
 }
