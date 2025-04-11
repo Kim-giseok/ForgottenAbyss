@@ -96,9 +96,10 @@ public class ControllerPlayer : MonoBehaviour
         if (states.ContainsKey(currentState))
         {
             states[currentState].Update();
-            Debug.Log($"{states[currentState]}");
+            //Debug.Log($"{states[currentState]}");
         }
-
+                
+        
         //if (rigid.velocity.y < 0 )
         //{
         //    animator.SetBool("IsFall", true);
@@ -452,7 +453,7 @@ public class ControllerPlayer : MonoBehaviour
 
         foreach (Collider2D platformCollider in platformColliders) //콜라이더 무시
         {
-            if (rigid.velocity.y <= 0)
+            if (rigid.velocity.y < 0)
             {
                 Physics2D.IgnoreCollision(playerCollider, platformCollider, false);
             }

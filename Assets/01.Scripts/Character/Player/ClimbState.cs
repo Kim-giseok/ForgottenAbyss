@@ -57,11 +57,14 @@ public class ClimbState : PlayerStateMachine
             }
         }
 
-        if (player.inputVec.y > 0 && player.transform.position.y >= Collider.bounds.max.y - 0.5f)
+        if (player.inputVec.y > 0 && player.transform.position.y >= Collider.bounds.max.y - 1f)
         {
             // 사다리 꼭대기에 도달했을 때 자동으로 위로 올라가기
+            //Vector3 topPosition = new Vector3(Collider.bounds.center.x,
+            //    Collider.transform.position.y + Collider.bounds.extents.y + player.playerCollider.bounds.extents.y, 0 );
+            
             Vector3 topPosition = new Vector3(Collider.bounds.center.x,
-                Collider.bounds.max.y +  0.5f, 0 );
+                Collider.bounds.max.y + player.playerCollider.bounds.extents.y - 0.7f, 0 );
 
             player.transform.position = topPosition;
             player.ChangeState(PlayerState.Idle);
@@ -82,7 +85,7 @@ public class ClimbState : PlayerStateMachine
 
     public override void OnJump()
     {
-        player.ChangeState(PlayerState.Jump);
+        player.ChangeState(PlayerState.Idle);
     }
     public override void OnCollisionExit(Collision2D collision)
     {

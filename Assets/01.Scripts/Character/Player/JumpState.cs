@@ -18,7 +18,7 @@ public class JumpState : PlayerStateMachine
             // 플랫폼 콜라이더 무시 설정
             //player.StartCoroutine(player.IgnorePlatformCollision(true));
             //player.StartCoroutine(player.ResetIgnoreCollision(0.5f));
-            
+        
         }
         else
         {
@@ -36,6 +36,7 @@ public class JumpState : PlayerStateMachine
     {
         player.rigid.velocity = new Vector2(player.inputVec.x * player.speed, player.rigid.velocity.y);
         player.UpdateDirection();
+        player.IgnorePlatformCollision();
     }
 
     public override void OnJump()
