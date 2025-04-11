@@ -98,16 +98,16 @@ public class ControllerPlayer : MonoBehaviour
             states[currentState].Update();
             //Debug.Log($"{states[currentState]}");
         }
-                
-        
-        //if (rigid.velocity.y < 0 )
-        //{
-        //    animator.SetBool("IsFall", true);
-        //}
-        //else
-        //{
-        //    animator.SetBool("IsFall", false);
-        //}
+
+
+        if (!isGround && rigid.velocity.y < -0.1f)
+        {
+            animator.SetBool("IsFall", true);
+        }
+        else
+        {
+            animator.SetBool("IsFall", false);
+        }
 
         //CheckWall();
     }
@@ -232,6 +232,7 @@ public class ControllerPlayer : MonoBehaviour
 
     void OnOtherWeapon() //무기변환 키 입력
     {
+        WeaponManager.Instance.SwapWeapon();
         Debug.Log("Z: 다른무기로 변환");
     }
 
