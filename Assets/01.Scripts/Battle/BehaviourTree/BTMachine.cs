@@ -13,7 +13,8 @@ public class BTMachine
     
     // currNode를 병렬으로 처리해서 노드 내 중복 코드 개선
     public Node currNode { get; private set; }
-    public List<(string name, Node Node)> allNodes = new();
+    public List<Node> currNods = new();
+    // public List<(string name, Node Node)> allNodes = new();
 
     public BTMachine(EnemyController controller)
     {

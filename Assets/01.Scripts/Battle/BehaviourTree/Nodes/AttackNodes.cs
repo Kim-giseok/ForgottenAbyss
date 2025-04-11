@@ -100,9 +100,9 @@ public class ParallelShotNode : Node
     public float duration;
     private Vector2 direction;
 
-    public ParallelShotNode(float duration)
+    public ParallelShotNode()
     {
-        this.duration = duration;
+        // this.duration = duration;
     }
 
     public override void Start()
@@ -115,7 +115,8 @@ public class ParallelShotNode : Node
 
         for (int degree = 0; degree < 360; degree += 40)
         {
-            ProjectileManager.Instance.CreateProjectile(controller.transform, controller.attack, attrs: new []{ new StraightAttr()}, degree: degree, index: 3);
+            ProjectileManager.Instance.CreateProjectile(controller.transform, controller.attack, attrs: new []{ new ReflectAttr()}, degree: degree, index: 3);
+            // ProjectileManager.Instance.CreateProjectile(controller.transform, controller.attack, attrs: new []{ new StraightAttr()}, degree: degree, index: 3);
         }
 
     }
@@ -125,7 +126,7 @@ public class ParallelShotNode : Node
         Vector2 distance = (controller.agent.player.transform.position - controller.transform.position);
     
         currTime += Time.deltaTime;
-        if (currTime >= duration)
+        if (currTime >= 2f)
         {
             SetStatus(Status.Success);
             return;

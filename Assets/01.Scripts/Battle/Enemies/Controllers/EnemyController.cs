@@ -10,7 +10,7 @@ public class EnemyController : MonoBehaviour, IDamagable
     public float attack;
 
     // notice: 소환 기술을 위한 정보들
-    [HideInInspector] public bool isAwake = true;
+    public bool isAwake = true;
     [HideInInspector] public string SkillNodeName;
 
     public Rigidbody2D rigidbody { get; private set; }
@@ -47,6 +47,7 @@ public class EnemyController : MonoBehaviour, IDamagable
 
     public virtual void Start()
     {
+        Debug.Log(isAwake);
         Init();
         
         try { MapSpawnManager.Instance.SpawnedMap.monsterManager.AddList(this); }
@@ -60,7 +61,7 @@ public class EnemyController : MonoBehaviour, IDamagable
         transform.rotation = Quaternion.Euler(0, isFlip ? 0 : 180, 0);
     }
 
-    public void GetDamage(float damage) // notice: 잔상인 경우
+    public void GetDamage(float damage) // notice: 잔상인 경우 제외
     {
         
         Vector3 textPosition = transform.position + Vector3.up * 1f;
@@ -119,11 +120,33 @@ public class EnemyController : MonoBehaviour, IDamagable
 
     public void PlayOneShot()
     {
+        Debug.Log(1);
+        // notice: 플레이어 이동이 필요한 경우
+        agent.player.GetComponent<SpriteRenderer>().enabled = false;
+        agent.player.GetComponent<Collider2D>().enabled = false;
+        agent.player.GetComponent<Rigidbody2D>().gravityScale = 0;
+        
+        // collider.enabled = false; // notice: 환영인 경우 피격 무시 - 바닥 인식 안되는 현상 발생
+        
+        spriteRenderer.color = Color.black;
+        
         gameObject.layer = LayerMask.NameToLayer("Player");
         var currNode = NodeManager.allNodes.Find(node => node.name == SkillNodeName).node;
-        btMachine.Play(Activator.CreateInstance(currNode) as Node, Die);
+        btMachine.Play(Activator.CreateInstance(currNode) as Node, () =>
+        {
+            // 조건에 따라 그 쪽으로 이동
+            agent.player.transform.position = transform.position;
+            
+            // fix: 정리 필요 - 또한 몬스터가 사라지는 동안 오류 발생할 수 있음
+            agent.player.GetComponent<SpriteRenderer>().enabled = true;
+            agent.player.GetComponent<Collider2D>().enabled = true;
+            agent.player.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+            agent.player.GetComponent<Rigidbody2D>().gravityScale = 2f;
 
-        spriteRenderer.color = Color.black;
+            
+            Destroy(gameObject);
+        });
+
         isAwake = true;
     }
 }
