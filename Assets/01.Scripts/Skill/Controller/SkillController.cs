@@ -14,6 +14,7 @@ public class SkillController : MonoBehaviour
     public int memorySkillId;
 
     public Transform skillSpawnPoint;
+    public Transform skillSpawnPoint2;
 
     private bool isSkillPlaying = false;
 
@@ -69,7 +70,15 @@ public class SkillController : MonoBehaviour
     {
         isSkillPlaying = true;
 
-        SkillManager.Instance.TryUseSkill(skillId, skillSpawnPoint);
+        if (WeaponManager.Instance.GetCurrentWeaponData().Type == WeaponType.Sword)
+        {
+            SkillManager.Instance.TryUseSkill(skillId, skillSpawnPoint);
+        }
+
+        else if(WeaponManager.Instance.GetCurrentWeaponData().Type == WeaponType.Bow)
+        {
+            SkillManager.Instance.TryUseSkill(skillId, skillSpawnPoint2);
+        }
 
         yield return new WaitForSeconds(1.0f); //스킬 연출 시간
 

@@ -19,6 +19,11 @@ public class SkillVisualSO : ScriptableObject
     // 사운드 추가 시
     public AudioClip skillSound;
 
+    // 연결 애니메이션
+    public string animationName;
+    public float animationSpeed;
+    public float resetTime;
+
     // 이펙트 풀 키값
     public string effectKey;
 
@@ -26,6 +31,9 @@ public class SkillVisualSO : ScriptableObject
     public bool useEffectOffset = false;
     public float effectXOffset = 0f;
     public float effectYOffset = 0f;
+
+    // 이펙트 딜레이 시간
+    public float effectDelay;
 
     // 필요한 스탯 추가 (유지 시간, 사거리 이런거?)
 }

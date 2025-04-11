@@ -16,7 +16,7 @@ public class SwordSkill02ExecutionSO : SkillExecutionSO
 
     public override void Execute(GameObject caster, GameObject target, SkillData data)
     {
-        caster.GetComponent<MonoBehaviour>().StartCoroutine(PlayFastAnimation(caster, "SwordAttack_3", 1.5f, 0.5f));
+        //caster.GetComponent<MonoBehaviour>().StartCoroutine(PlayFastAnimation(caster, "SwordAttack_3", 1.5f, 0.5f));
 
         SkillCastData castData = PrepareCastData(caster, target, data);
 
