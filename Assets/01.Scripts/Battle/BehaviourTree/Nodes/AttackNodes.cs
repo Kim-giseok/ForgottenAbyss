@@ -112,17 +112,12 @@ public class ParallelShotNode : Node
 
         controller.Flip(direction == Vector2.right);
         controller.animationHandler.Set(EnemyAnimationHandler.Run, true);
-    
-        // ProjectileManager.Instance.CreateProjectile(controller.transform, controller.attack, attrs: new []{ new StraightAttr()}, degree: -80, index: 3);
-        // ProjectileManager.Instance.CreateProjectile(controller.transform, controller.attack, attrs: new []{ new StraightAttr()}, degree: -70, index: 3);
-        // ProjectileManager.Instance.CreateProjectile(controller.transform, controller.attack, attrs: new []{ new StraightAttr()}, degree: -90, index: 3);
-        // ProjectileManager.Instance.CreateProjectile(controller.transform, controller.attack, attrs: new []{ new StraightAttr()}, degree: -100, index: 3);
-        // ProjectileManager.Instance.CreateProjectile(controller.transform, controller.attack, attrs: new []{ new StraightAttr()}, degree: -110, index: 3);
 
-        ProjectileManager.Instance.CreateProjectile(controller.transform, controller.attack, attrs: new []{ new GuidedAttr()}, degree: -80, index: 3);
-        ProjectileManager.Instance.CreateProjectile(controller.transform, controller.attack, attrs: new []{ new GuidedAttr()}, degree: -70, index: 3);
-        ProjectileManager.Instance.CreateProjectile(controller.transform, controller.attack, attrs: new []{ new GuidedAttr()}, degree: -90, index: 3);
-        ProjectileManager.Instance.CreateProjectile(controller.transform, controller.attack, attrs: new []{ new GuidedAttr()}, degree: -100, index: 3);
+        for (int degree = 0; degree < 360; degree += 40)
+        {
+            ProjectileManager.Instance.CreateProjectile(controller.transform, controller.attack, attrs: new []{ new StraightAttr()}, degree: degree, index: 3);
+        }
+
     }
 
     public override void Update()

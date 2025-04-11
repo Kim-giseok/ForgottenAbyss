@@ -56,8 +56,9 @@ public class ProjectileManager : Singleton<ProjectileManager> // 단위 미사�
     
     // 사이즈 포함
     // 반사 또는 유도
+    // 빌더 패턴으로 조립 필요
     // ReSharper disable Unity.PerformanceAnalysis
-    public void CreateProjectile(Transform parent, float power, ProjectileAttr[] attrs, Vector2 startPos = default,  int index = 0, float degree = 0) // melee attack인 경우 우연히 두번 켜지는 현상 방지 필요
+    public void CreateProjectile(Transform parent, float power, ProjectileAttr[] attrs, Vector2 startPos = default,  int index = 0, float degree = 0, bool isLocalPosition = true) // melee attack인 경우 우연히 두번 켜지는 현상 방지 필요
     {
         var instance = currProjectiles.Find(projectile => projectile.index == index && !projectile.instance.activeSelf).instance;
         if (!instance)

@@ -9,6 +9,7 @@ public class EnemyController : MonoBehaviour, IDamagable
     public float health;
     public float attack;
 
+    // notice: 소환 기술을 위한 정보들
     [HideInInspector] public bool isAwake = true;
     [HideInInspector] public string SkillNodeName;
 
@@ -23,7 +24,7 @@ public class EnemyController : MonoBehaviour, IDamagable
     public EnemyRewardHandler rewardHandler { get; private set; }
 
     public RespawnArea respawnArea { get; private set; }
-
+    
 
     private Transform pivot;
     public GameObject currWeapon; // 무기의 애니메이션이 발생할 수도 있음
@@ -41,17 +42,16 @@ public class EnemyController : MonoBehaviour, IDamagable
         statusHandler = new EnemyStatusHandler();
         btMachine = new(this);
     }
+    
+    public virtual void Init() {}
 
     public virtual void Start()
     {
+        Init();
+        
         try { MapSpawnManager.Instance.SpawnedMap.monsterManager.AddList(this); }
         catch { Debug.Log("there is no MapspawnManager"); }
-
-        if (!isAwake)
-        {
-            Debug.Log(123);
-            PlayOneShot();
-        }
+        if (!isAwake) { PlayOneShot(); }
     }
 
     // character controller
@@ -66,9 +66,20 @@ public class EnemyController : MonoBehaviour, IDamagable
         Vector3 textPosition = transform.position + Vector3.up * 1f;
         DamageTextManager.Instance.ShowDamage(textPosition, (int)damage);
         
-        statusHandler.isHit = true;
-        btMachine.Notify();
         health -= damage;
+        statusHandler.stamina -= 1;
+
+        if (statusHandler.stamina <= 0)
+        {
+            statusHandler.stamina = 3;
+            Debug.Log("knock out");
+        }
+
+        if (!statusHandler.isIgnoreHitAction)
+        {
+            statusHandler.isHit = true;
+            btMachine.Notify();
+        }
 
         if (health <= 0) Die();
     }

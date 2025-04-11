@@ -3,15 +3,17 @@ using UnityEngine;
 
 public class GoblinController: EnemyController
 {
+    public EnemySkillNodes skill = new();
     public override void Start()
     {
         Debug.LogWarning("Goblin controller start");
         btMachine.Define(
             new SelectorNode(
                 new SequenceNode(new HitNode()),
-                new SequenceNode(new TracingNode(), 
+                new SequenceNode(new TracingNode(),
+                    skill.doubleAttack,
                     // new AttackNode(),
-                    new DashAttack(),
+                    // new DashAttack(),
                     // new JumpAttack(),
                     new CombatIdleNode(duration: 0.5f)),
                 new SequenceNode(new IdleNode(duration: 1), new PatrolNode(duration: 1)))
