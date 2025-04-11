@@ -94,7 +94,56 @@ public class JumpAttack : Node
 }
 
 // 동시 다발적으로 발사하는 경우
-public class ParallelShotNode: Node {}
+public class ParallelShotNode : Node
+{
+    private float currTime;
+    public float duration;
+    private Vector2 direction;
+
+    public ParallelShotNode(float duration)
+    {
+        this.duration = duration;
+    }
+
+    public override void Start()
+    {
+        currTime = 0;
+        direction = Random.Range(0, 10) <= 5 ? Vector2.left : Vector2.right;
+
+        controller.Flip(direction == Vector2.right);
+        controller.animationHandler.Set(EnemyAnimationHandler.Run, true);
+    
+        // ProjectileManager.Instance.CreateProjectile(controller.transform, controller.attack, attrs: new []{ new StraightAttr()}, degree: -80, index: 3);
+        // ProjectileManager.Instance.CreateProjectile(controller.transform, controller.attack, attrs: new []{ new StraightAttr()}, degree: -70, index: 3);
+        // ProjectileManager.Instance.CreateProjectile(controller.transform, controller.attack, attrs: new []{ new StraightAttr()}, degree: -90, index: 3);
+        // ProjectileManager.Instance.CreateProjectile(controller.transform, controller.attack, attrs: new []{ new StraightAttr()}, degree: -100, index: 3);
+        // ProjectileManager.Instance.CreateProjectile(controller.transform, controller.attack, attrs: new []{ new StraightAttr()}, degree: -110, index: 3);
+
+        ProjectileManager.Instance.CreateProjectile(controller.transform, controller.attack, attrs: new []{ new GuidedAttr()}, degree: -80, index: 3);
+        ProjectileManager.Instance.CreateProjectile(controller.transform, controller.attack, attrs: new []{ new GuidedAttr()}, degree: -70, index: 3);
+        ProjectileManager.Instance.CreateProjectile(controller.transform, controller.attack, attrs: new []{ new GuidedAttr()}, degree: -90, index: 3);
+        ProjectileManager.Instance.CreateProjectile(controller.transform, controller.attack, attrs: new []{ new GuidedAttr()}, degree: -100, index: 3);
+    }
+
+    public override void Update()
+    {
+        Vector2 distance = (controller.agent.player.transform.position - controller.transform.position);
+    
+        currTime += Time.deltaTime;
+        if (currTime >= duration)
+        {
+            SetStatus(Status.Success);
+            return;
+        }
+    
+        controller.rigidbody.velocity = new Vector2(direction.x, controller.rigidbody.velocity.y);
+    }
+
+    public override void End()
+    {
+        controller.animationHandler.Set(EnemyAnimationHandler.Run, false);
+    }
+}
 
 // 순차적으로 발생하는 경우
 public class SequentialShotNode : Node { }
