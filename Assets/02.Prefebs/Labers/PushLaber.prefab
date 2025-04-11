@@ -47,7 +47,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b57cc27332bb82a4c90d51850cbb8349, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetMachine: {fileID: 0}
+  targetMachines: []
   laberAnim: {fileID: 6826977418641068788}
 --- !u!61 &2796516333006488116
 BoxCollider2D:
@@ -167,7 +167,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

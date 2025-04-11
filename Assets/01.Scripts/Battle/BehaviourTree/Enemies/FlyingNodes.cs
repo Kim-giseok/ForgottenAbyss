@@ -47,6 +47,8 @@ public class FlyingPatrolAttackNode : Node
 
         controller.Flip(direction == Vector2.right);
         controller.animationHandler.Set(EnemyAnimationHandler.Run, true);
+        
+        ProjectileManager.Instance.CreateProjectile(controller.transform, controller.attack, attrs: new []{ new StraightAttr()}, degree: -90, index: 3);
     }
 
     public override void Update()

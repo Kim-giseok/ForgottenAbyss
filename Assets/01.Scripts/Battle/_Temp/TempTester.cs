@@ -6,8 +6,13 @@ public class TempTester: MonoBehaviour
    {
       if (Input.GetKeyDown(KeyCode.K))
       {
-         Debug.Log("pressed");
-         ProjectileManager.Instance.CreateEnemyProjectile(transform, "DashAttack");
+         // ProjectileManager.Instance.CreateEnemyProjectile(transform, "DashAttack", 0);
+         ProjectileManager.Instance.CreateEnemyProjectile(transform, "ParallelShotNode", 2);
+      }
+      
+      if (Input.GetKeyDown(KeyCode.L))
+      {
+         ProjectileManager.Instance.CreateEnemyProjectile(transform, "DashAttack", 0);
       }
       
       if (Input.GetKeyDown(KeyCode.J))

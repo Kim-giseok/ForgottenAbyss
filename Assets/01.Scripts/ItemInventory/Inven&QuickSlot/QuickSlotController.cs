@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class QuickSlotController : MonoBehaviour
 {
-    [SerializeField] private Slot[] quickSlots;  // Äü½½·Ô ½½·Ôµé
-    [SerializeField] private GameObject selectionIndicator;  // ¼±ÅÃµÈ ½½·Ô Ç¥½Ã±â
+    [SerializeField] private QuickSlot[] quickSlots; // Äü½½·Ô ½½·Ôµé
     private int selectedIndex = 0;
 
     void Start()
@@ -18,6 +17,10 @@ public class QuickSlotController : MonoBehaviour
         // 1,2¹ø Å°·Î ½½·Ô º¯°æ
         if (Input.GetKeyDown(KeyCode.Alpha1)) SelectSlot(0);
         if (Input.GetKeyDown(KeyCode.Alpha2)) SelectSlot(1);
+        if (Input.GetKeyDown(KeyCode.Alpha3)) SelectSlot(2);
+        if (Input.GetKeyDown(KeyCode.Alpha4)) SelectSlot(3);
+        if (Input.GetKeyDown(KeyCode.Alpha5)) SelectSlot(4);
+        if (Input.GetKeyDown(KeyCode.Alpha6)) SelectSlot(5);
 
         // ¾ÆÀÌÅÛ »ç¿ë
         if (Input.GetKeyDown(KeyCode.U))
@@ -30,6 +33,10 @@ public class QuickSlotController : MonoBehaviour
     void SelectSlot(int index)
     {
         selectedIndex = index;
-        selectionIndicator.transform.position = quickSlots[selectedIndex].transform.position;
+        
+        for (int i = 0; i < quickSlots.Length; i++)
+        {
+            quickSlots[i].SetSelected(i == selectedIndex);
+        }
     }
 }

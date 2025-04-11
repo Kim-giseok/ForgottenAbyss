@@ -113,18 +113,24 @@ public class ParallelNode : Node
 
     public override void Start()
     {
+        // 복수로 등록
+        // btMachine.SetNode(children);
     }
 
-    public override void Update()
+    // notice: 복수 실행 자체는 BTMachine에서 처리하며 조건 감지만 이곳에서 처리
+    public override void GetStatus(Status newStatus, Node caller)
     {
-    }
-
-    public override void End()
-    {
+        // notice: 하나의 노드에서 응답 받은 경우, 상위 노드에게 바로 전달
+        SetStatus(newStatus);
     }
 }
 
+public class RandomNode : Node
+{
+    
+}
 
+// 어떻게 데코할 것인가?
 public class DecoratorNode : Node
 {
     public DecoratorNode(Node child)

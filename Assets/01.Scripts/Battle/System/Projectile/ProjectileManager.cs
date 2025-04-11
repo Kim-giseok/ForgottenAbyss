@@ -12,7 +12,7 @@ public class ProjectileManager : Singleton<ProjectileManager> // 단위 미사�
     public List<EnemyController> enemyProjectileList;
     
     public List<(int index, GameObject instance)> currProjectiles = new(); // notice : HitBox를 가지고 있는 편이 비용 감소
-    public List<(GameObject owner, HitBox hitBox)> currMeleeProjectiles = new();
+    public List<(GameObject owner, HitBox hitBox)> currMeleeProjectiles = new(); // 만약 여기서 등록하는 경우, 몬스터가 죽으면 함께 제거 필요
     
     public float GetDegreeByDirection(Vector2 direction)
     {
@@ -56,18 +56,15 @@ public class ProjectileManager : Singleton<ProjectileManager> // 단위 미사�
     
     // 사이즈 포함
     // 반사 또는 유도
+    // 빌더 패턴으로 조립 필요
     // ReSharper disable Unity.PerformanceAnalysis
-    public void CreateProjectile(Transform parent, float power, ProjectileAttr[] attrs, Vector2 startPos = default,  int index = 0, float degree = 0) // melee attack인 경우 우연히 두번 켜지는 현상 방지 필요
+    public void CreateProjectile(Transform parent, float power, ProjectileAttr[] attrs, Vector2 startPos = default,  int index = 0, float degree = 0, bool isLocalPosition = true) // melee attack인 경우 우연히 두번 켜지는 현상 방지 필요
     {
         var instance = currProjectiles.Find(projectile => projectile.index == index && !projectile.instance.activeSelf).instance;
         if (!instance)
         {
-            instance  = Instantiate(projectileList[index], Vector2.zero, Quaternion.identity, transform); // 발사체는 프로젝타일 매니저에서 관리
+            instance  = Instantiate(projectileList[index], Vector2.zero, Quaternion.identity, transform); // 발사체는 프로젝타일 매니저에서 관리 - 생성되고 바로 발사되선 안됨
             currProjectiles.Add((index, instance));
-        }
-        else
-        {
-            instance.SetActive(true);
         }
 
         HitBox hitBox = instance.GetComponent<HitBox>(); // notice: HitBox 자체를 저장하도록 변경 필요
@@ -81,6 +78,9 @@ public class ProjectileManager : Singleton<ProjectileManager> // 단위 미사�
         
         instance.transform.localRotation = Quaternion.Euler(0, 0, degree - 90); // 화살이 현재 위를 보고 있는 상황이라 방향 계산 필요 -90 이 오른쪽
         instance.transform.localPosition = new Vector2(parent.position.x + startPos.x, parent.position.y + startPos.y);
+        
+        instance.SetActive(true);
+
     }
 
     public void Repeat()
@@ -99,11 +99,12 @@ public class ProjectileManager : Singleton<ProjectileManager> // 단위 미사�
         instance.SetActive(false);
     }
 
-    public void CreateEnemyProjectile(Transform parent, string skillNodeName)
+    public void CreateEnemyProjectile(Transform parent, string skillNodeName, int index)
     {
-        var currProjectile = enemyProjectileList[0];
+        var currProjectile = enemyProjectileList[index];
         currProjectile.isAwake = false;
         currProjectile.SkillNodeName = skillNodeName;
-        Instantiate(enemyProjectileList[0].gameObject, parent.transform.position, Quaternion.identity);
+        
+        Instantiate(enemyProjectileList[index].gameObject, parent.transform.position, Quaternion.identity);
     }
 }

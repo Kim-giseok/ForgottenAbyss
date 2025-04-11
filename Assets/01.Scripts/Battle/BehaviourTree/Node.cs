@@ -16,8 +16,6 @@ public abstract class Node
     {
         this.controller = controller;
         btMachine = this.controller.btMachine;
-
-        btMachine.allNodes.Add((name: "asd", node: this));
     }
 
     public void SetParent(Node parent)
