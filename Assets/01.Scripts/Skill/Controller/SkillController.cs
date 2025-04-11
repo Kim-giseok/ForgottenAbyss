@@ -40,6 +40,8 @@ public class SkillController : MonoBehaviour
     void OnFirstSkill(InputValue value)
     {
         if (isSkillPlaying) return;
+        if (comboAttack != null && comboAttack.IsAttacking) return;
+        if (rangedAttack != null && rangedAttack.IsAttacking) return;
 
         StartCoroutine(UseSkillRoutine(skill01Id));
         Debug.Log("S: 스킬1");
@@ -48,6 +50,8 @@ public class SkillController : MonoBehaviour
     void OnSecondSkill(InputValue value)
     {
         if (isSkillPlaying) return;
+        if (comboAttack != null && comboAttack.IsAttacking) return;
+        if (rangedAttack != null && rangedAttack.IsAttacking) return;
 
         StartCoroutine(UseSkillRoutine(skill02Id));
         Debug.Log("D: 스킬2");
@@ -56,6 +60,8 @@ public class SkillController : MonoBehaviour
     void OnSpecialSkill(InputValue value) //특수스킬 키 입력
     {
         if (isSkillPlaying) return;
+        if (comboAttack != null && comboAttack.IsAttacking) return;
+        if (rangedAttack != null && rangedAttack.IsAttacking) return;
 
         StartCoroutine(UseSkillRoutine(memorySkillId));
         Debug.Log("R: 기억 스킬");

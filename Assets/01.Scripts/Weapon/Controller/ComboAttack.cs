@@ -12,7 +12,7 @@ public class ComboAttack : MonoBehaviour
     bool canNextCombo = false;
     bool inputCombo = false;
 
-    public bool isAttacking { get; private set; } = false;
+    public bool IsAttacking { get; private set; } = false;
 
     public void SetComboData(ComboAttackSO comboData)
     {
@@ -33,7 +33,7 @@ public class ComboAttack : MonoBehaviour
             return;
         }
 
-        if (isAttacking)
+        if (IsAttacking)
         {
             if (canNextCombo)
                 inputCombo = true;
@@ -46,7 +46,7 @@ public class ComboAttack : MonoBehaviour
 
     private void StartComboAttack()
     {
-        isAttacking = true;
+        IsAttacking = true;
         attackIndex = 1;
         animator.SetTrigger("AttackTrigger");
         animator.SetInteger("AttackCombo", attackIndex);
@@ -82,12 +82,17 @@ public class ComboAttack : MonoBehaviour
 
     private void EndComboAttack()
     {
-        isAttacking = false;
+        IsAttacking = false;
         attackIndex = 0;
         animator.SetInteger("AttackCombo", 0);
         inputCombo = false;
         canNextCombo = false;
         animator.Play("Idle");
+    }
+
+    void OnAttackReset()
+    {
+        EndComboAttack();
     }
 
     void OnMoveForward(float distance)

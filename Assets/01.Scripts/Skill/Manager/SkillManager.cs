@@ -85,6 +85,7 @@ public class SkillManager : Singleton<SkillManager>
             Animator anim = spawnPoint.GetComponentInParent<Animator>();
             if (anim != null)
             {
+                anim.SetBool("IsAttacking", true);
                 anim.speed = visualSO.animationSpeed;
 
                 if (!string.IsNullOrEmpty(visualSO.animationName))
@@ -157,6 +158,7 @@ public class SkillManager : Singleton<SkillManager>
     {
         yield return new WaitForSeconds(delay);
         anim.speed = 1.0f;
+        anim.SetBool("IsAttacking", false);
     }
 
     private IEnumerator PlayEffectWithDelay(SkillVisualSO visualSO, Transform spawnPoint)

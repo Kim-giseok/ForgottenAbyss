@@ -11,13 +11,14 @@ public class RangedAttack : MonoBehaviour
     private int attackIndex = 0;
     private bool canNextCombo = false;
     private bool inputCombo = false;
-    private bool isAttacking = false;
+
+    public bool IsAttacking { get; private set; } = false;
 
     public void SetRangedAttackData(RangedAttackSO data)
     {
         rangedData = data;
         attackIndex = 0;
-        isAttacking = false;
+        IsAttacking = false;
 
         if (rangedData != null && rangedData.comboSteps.Count > 0)
         {
@@ -30,7 +31,7 @@ public class RangedAttack : MonoBehaviour
     {
         if (rangedData == null) return;
 
-        if (isAttacking)
+        if (IsAttacking)
         {
             if (canNextCombo)
                 inputCombo = true;
@@ -43,7 +44,7 @@ public class RangedAttack : MonoBehaviour
 
     private void StartRangedAttack()
     {
-        isAttacking = true;
+        IsAttacking = true;
         attackIndex = 1;
         animator.SetTrigger("BowTrigger");
         animator.SetInteger("BowCombo", attackIndex);
@@ -80,6 +81,11 @@ public class RangedAttack : MonoBehaviour
         {
             EndRangedAttack();
         }
+    }
+
+    void OnRangedReset()
+    {
+        EndRangedAttack();
     }
 
     public void OnFireProjectile()
@@ -124,7 +130,7 @@ public class RangedAttack : MonoBehaviour
 
     private void EndRangedAttack()
     {
-        isAttacking = false;
+        IsAttacking = false;
         attackIndex = 0;
         inputCombo = false;
         canNextCombo = false;
