@@ -13,17 +13,8 @@ public abstract class SlotBase : MonoBehaviour, IDropHandler
     public virtual void SetItem(Item item)
     {
         currentItem = item;
-
-        if (item != null)
-        {
-            iconImage.sprite = item.itemIcon; //아이콘 이미지 바꾸기
-            iconImage.enabled = true; // 이미지 보이게
-        }
-        else
-        {
-            iconImage.sprite = null;
-            iconImage.enabled = false;
-        }
+        iconImage.sprite = item.itemIcon;
+        iconImage.enabled = true;
     }
 
     // 슬롯 비우는 함수

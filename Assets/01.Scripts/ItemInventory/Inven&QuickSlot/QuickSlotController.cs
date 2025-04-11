@@ -5,8 +5,6 @@ using UnityEngine;
 public class QuickSlotController : MonoBehaviour
 {
     [SerializeField] private QuickSlot[] quickSlots; // 퀵슬롯 슬롯들
-    [SerializeField] private GameObject selectionIndicator; // 선택된 슬롯 표시
-
     private int selectedIndex = 0;
 
     void Start()
@@ -19,6 +17,10 @@ public class QuickSlotController : MonoBehaviour
         // 1,2번 키로 슬롯 변경
         if (Input.GetKeyDown(KeyCode.Alpha1)) SelectSlot(0);
         if (Input.GetKeyDown(KeyCode.Alpha2)) SelectSlot(1);
+        if (Input.GetKeyDown(KeyCode.Alpha3)) SelectSlot(2);
+        if (Input.GetKeyDown(KeyCode.Alpha4)) SelectSlot(3);
+        if (Input.GetKeyDown(KeyCode.Alpha5)) SelectSlot(4);
+        if (Input.GetKeyDown(KeyCode.Alpha6)) SelectSlot(5);
 
         // 아이템 사용
         if (Input.GetKeyDown(KeyCode.U))
@@ -31,6 +33,10 @@ public class QuickSlotController : MonoBehaviour
     void SelectSlot(int index)
     {
         selectedIndex = index;
-        selectionIndicator.transform.position = quickSlots[selectedIndex].transform.position;
+        
+        for (int i = 0; i < quickSlots.Length; i++)
+        {
+            quickSlots[i].SetSelected(i == selectedIndex);
+        }
     }
 }

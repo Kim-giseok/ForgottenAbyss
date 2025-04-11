@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,45 +6,53 @@ using UnityEngine;
 public class Inventory : MonoBehaviour
 {
     public static Inventory Instance; // 싱글톤
-    public List<Item> items = new List<Item>(); // 아이템 목록
-    public int maxSlots = 20; // 최대 슬롯 개수
 
-    // 슬롯 개수 변경 시 호출될 델리게이트
-    public delegate void OnItemChanged();
-    public event OnItemChanged onItemChanged;
+    public List<Item> items = new List<Item>(); // 아이템 목록
+    public int capacity = 10;
+
+    public event Action onItemChanged; // 슬롯 개수 변경 시 호출
+
 
     void Awake()
     {
-        // 싱글톤 인스턴스 설정
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
+        if (Instance != null)
         {
             Destroy(gameObject);
+            return;
         }
+        Instance = this;
     }
 
     // 아이템 추가
     public bool AddItem(Item item)
     {
-        if (items.Count < maxSlots)
+        if (item == null)
         {
-            items.Add(item);
-            onItemChanged?.Invoke();  // 아이템 추가 후 UI 갱신
-            return true;
+            Debug.LogWarning("AddItem() 실패: item이 null입니다!");
+            return false;
         }
-        return false;
+
+        if (items.Count >= capacity)
+        {
+            Debug.LogWarning("AddItem() 실패: 인벤토리 가득 참!");
+            return false;
+        }
+
+        Debug.Log("아이템 추가됨: " + item.name);
+        items.Add(item);
+        onItemChanged?.Invoke();
+        return true;
     }
 
-    // 아이템 제거
-    public void RemoveItem(Item item)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (items.Contains(item))
+        if (collision.CompareTag("FieldItem"))
         {
-            items.Remove(item);
-            onItemChanged?.Invoke();  // 아이템 제거 후 UI 갱신
+            FieldItem fieldItem = collision.GetComponent<FieldItem>();
+            if (AddItem(fieldItem.GetItem()))
+            {
+                fieldItem.DestroyItem();
+            }
         }
     }
 }
