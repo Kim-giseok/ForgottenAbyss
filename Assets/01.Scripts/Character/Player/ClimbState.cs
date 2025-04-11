@@ -11,6 +11,7 @@ public class ClimbState : PlayerStateMachine
 
     public override void Enter()
     {
+        Debug.Log("트리거 진입");
         originalGravity = player.rigid.gravityScale;
 
         // 현재 접촉 중인 WallClimb 레이어의 트리거 찾기
@@ -57,7 +58,7 @@ public class ClimbState : PlayerStateMachine
             }
         }
 
-        if (player.inputVec.y > 0 && player.transform.position.y >= Collider.bounds.max.y - 1f)
+        if (player.inputVec.y > 0 && player.transform.position.y >= Collider.bounds.max.y - 1.1f)
         {
             // 사다리 꼭대기에 도달했을 때 자동으로 위로 올라가기
             //Vector3 topPosition = new Vector3(Collider.bounds.center.x,
