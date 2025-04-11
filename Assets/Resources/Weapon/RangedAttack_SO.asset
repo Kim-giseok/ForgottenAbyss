@@ -22,20 +22,20 @@ MonoBehaviour:
     projectilePrefab: {fileID: 2562934970777424423, guid: d25d49ec691fd1948ad3e2cb45cfeeb2, type: 3}
     projectileCount: 1
     fireDelay: 0
-    firePower: 1
+    multiplier: 0.5
     isSpread: 0
-    spreadAngle: 15
+    spreadAngle: 0
   - animationName: BowAttack
     projectilePrefab: {fileID: 2562934970777424423, guid: d25d49ec691fd1948ad3e2cb45cfeeb2, type: 3}
     projectileCount: 2
     fireDelay: 0.15
-    firePower: 1.5
+    multiplier: 0.5
     isSpread: 0
-    spreadAngle: 15
+    spreadAngle: 0
   - animationName: BowAttack
     projectilePrefab: {fileID: 2562934970777424423, guid: d25d49ec691fd1948ad3e2cb45cfeeb2, type: 3}
     projectileCount: 3
-    fireDelay: 0.3
-    firePower: 2
+    fireDelay: 0
+    multiplier: 1
     isSpread: 1
-    spreadAngle: 20
+    spreadAngle: 7

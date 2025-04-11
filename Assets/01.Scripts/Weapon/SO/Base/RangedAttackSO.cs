@@ -19,7 +19,7 @@ public class RangedComboStep
     public GameObject projectilePrefab; // 발사할 투사체 프리팹
     public int projectileCount = 1;     // 몇 개 발사할지
     public float fireDelay = 0.1f;      // 투사체 간 딜레이
-    public float firePower = 1f;        // 투사체 힘 (속도 등)
+    public float multiplier = 1f;        // 계수
     public bool isSpread = false;
     public float spreadAngle = 15f;
 }

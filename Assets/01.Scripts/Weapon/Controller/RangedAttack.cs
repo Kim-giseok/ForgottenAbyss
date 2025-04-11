@@ -99,7 +99,6 @@ public class RangedAttack : MonoBehaviour
         {
             Vector3 direction = baseDirection;
 
-            // 스프레드 로직은 3타에만 적용
             if (step.isSpread)
             {
                 float angle = step.spreadAngle * (i - (step.projectileCount - 1) / 2f);
@@ -119,7 +118,7 @@ public class RangedAttack : MonoBehaviour
         PlayerProjectile pp = projectile.GetComponent<PlayerProjectile>();
         if (pp != null)
         {
-            pp.Setup(direction); // 방향 세팅
+            pp.Setup(direction, caster: this.gameObject, rangedData.comboSteps[attackIndex-1].multiplier); // 방향 세팅
         }
     }
 

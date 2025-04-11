@@ -4,9 +4,10 @@ public class PlayerProjectile : MonoBehaviour
 {
     public float speed = 10f;
     public float duration = 2f;
-    public int damage = 10;
 
     private float timer;
+    private float comboMultiplier = 1f;
+    private GameObject caster;
     private Rigidbody2D rb;
 
     private void Awake()
@@ -17,7 +18,6 @@ public class PlayerProjectile : MonoBehaviour
     private void OnEnable()
     {
         timer = 0f;
-        rb.velocity = transform.right * speed;
     }
 
     private void Update()
@@ -33,19 +33,27 @@ public class PlayerProjectile : MonoBehaviour
     {
         if (other.CompareTag("Enemy"))
         {
-            // 여기에 데미지 처리 로직 삽입 (예시)
-            IDamagable damageable = other.GetComponent<IDamagable>();
-            if (damageable != null)
+            if (other.TryGetComponent<IDamagable>(out var damageable))
             {
+                var data = BasicAttackData.Create(
+                caster: caster,                      // 발사 주체 (플레이어)
+                target: other.gameObject,               // 맞은 대상
+                comboMultiplier: comboMultiplier// 타수에 따른 계수
+                );
+
+                float damage = data.CalculateDamage();
                 damageable.GetDamage(damage);
+                CameraShake.Instance.Shake(0.05f, 0.1f);
             }
 
             ReturnToPool();
         }
     }
 
-    public void Setup(Vector3 direction)
+    public void Setup(Vector3 direction, GameObject caster, float multiplier)
     {
+        this.caster = caster;
+        comboMultiplier = multiplier;
         rb.velocity = direction.normalized * speed;
     }
 
