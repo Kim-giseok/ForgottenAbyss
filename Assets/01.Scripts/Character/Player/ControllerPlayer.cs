@@ -225,8 +225,9 @@ public class ControllerPlayer : MonoBehaviour
         Debug.Log("Esc: 메뉴창 열기");
     }
 
-    void OnOtherWeapon() //무기변환 키 입력
+    void OnOtherWeapon(InputValue value) //무기변환 키 입력
     {
+        WeaponManager.Instance.SwapWeapon();
         Debug.Log("Z: 다른무기로 변환");
     }
 

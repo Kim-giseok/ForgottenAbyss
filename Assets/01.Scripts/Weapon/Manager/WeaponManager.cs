@@ -21,6 +21,24 @@ public class WeaponManager : Singleton<WeaponManager>
             skillUI = FindObjectOfType<SkillUI>();
     }
 
+    private void Update()
+    {
+#if UNITY_EDITOR
+        if (Input.GetKeyDown(KeyCode.Alpha8))
+        {
+            Debug_EquipTestWeapon();  // 검 장착
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha9))
+        {
+            Debug_EquipTestBow();     // 활 장착
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha0))
+        {
+            Debug_EquipTestMemoryPiece(); // 기억 조각 장착
+        }
+#endif
+    }
+
     public void EquipWeapon(WeaponDataSO selectedWeapon)
     {
         if (selectedWeapon == null)
@@ -113,6 +131,36 @@ public class WeaponManager : Singleton<WeaponManager>
 
     public MemoryPieceData GetCurrentMemoryPieceData() => currentMemoryData;
     public MemoryPieceSO GetCurrentMemoryPieceSO() => currentMemorySO;
+
+    public void SwapWeapon()
+    {
+        if (currentWeaponData == null)
+        {
+            Debug.LogWarning("현재 무기 데이터가 없습니다.");
+            return;
+        }
+
+        string nextWeaponPath = "";
+
+        switch (currentWeaponData.Type)
+        {
+            case WeaponType.Sword:
+                nextWeaponPath = "Weapon/Bow_SO";
+                break;
+            case WeaponType.Bow:
+                nextWeaponPath = "Weapon/Sword_SO";
+                break;
+            default:
+                Debug.LogWarning("스왑할 수 없는 무기 타입입니다.");
+                return;
+        }
+
+        var nextWeaponSO = Resources.Load<WeaponDataSO>(nextWeaponPath);
+        if (nextWeaponSO != null)
+            EquipWeapon(nextWeaponSO);
+        else
+            Debug.LogWarning($"경로에 무기 SO 없음: {nextWeaponPath}");
+    }
 
 #if UNITY_EDITOR
     [ContextMenu("DEBUG: 검 장착")]

@@ -159,7 +159,6 @@ public class ComboAttack : MonoBehaviour
 
     void OnAttackHit()
     {
-        Debug.Log("onattackhit호출");
         if (comboData == null || attackIndex <= 0 || attackIndex > comboData.comboSteps.Count)
         {
             Debug.LogWarning("잘못된 attackIndex 또는 comboData 없음");
