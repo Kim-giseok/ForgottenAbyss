@@ -17,17 +17,17 @@ public class ControllerPlayer : MonoBehaviour
     public LayerMask platformLayerMask; //점프 중 무시할 플랫폼 레이어
     public LayerMask invincibilityLayerMask; //무적 상태에서 무시할 레이어
 
-    public LayerMask wallLayer; //벽 감지 레이어
-    public float wallDistance; //벽 감지 거리
+    //public LayerMask wallLayer; //벽 감지 레이어
+    //public float wallDistance; //벽 감지 거리
 
-    public bool isWallDetected; //벽 감지 여부
-    public bool isWallClimbing; //등반 가능한 벽인지 여부
-    public RaycastHit2D wallHit;
+    //public bool isWallDetected; //벽 감지 여부
+    //public bool isWallClimbing; //등반 가능한 벽인지 여부
+    //public RaycastHit2D wallHit;
 
     public bool isGround; //땅 밟고 있는지 여부
     public bool isDashing = false; //대쉬 여부
     public bool isAttacking = false; //공격 여부
-    public bool isIgnoringCollision = false; //콜라이더 충돌 무시 여부
+    //public bool isIgnoringCollision = false; //콜라이더 충돌 무시 여부
     public bool isInvincible = false; //무적 상태 여부
 
     public Rigidbody2D rigid;
@@ -63,9 +63,13 @@ public class ControllerPlayer : MonoBehaviour
         //states.Add(PlayerState.Attack, new AttackState(this));
         states.Add(PlayerState.Interaction, new InteractionState(this));
         states.Add(PlayerState.Climb, new ClimbState(this));
+        states.Add(PlayerState.Slide, new SlideState(this));
 
         // 초기 상태 설정
-        ChangeState(PlayerState.Idle);
+        if (currentState == 0 || !states.ContainsKey(currentState))
+        {
+            ChangeState(PlayerState.Idle);
+        }
     }
 
     public void ChangeState(PlayerState newState)
@@ -92,19 +96,20 @@ public class ControllerPlayer : MonoBehaviour
         if (states.ContainsKey(currentState))
         {
             states[currentState].Update();
-            Debug.Log($"{states[currentState]}");
+            //Debug.Log($"{states[currentState]}");
         }
+                
+        
+        //if (rigid.velocity.y < 0 )
+        //{
+        //    animator.SetBool("IsFall", true);
+        //}
+        //else
+        //{
+        //    animator.SetBool("IsFall", false);
+        //}
 
-        if (rigid.velocity.y < 0 )
-        {
-            animator.SetBool("IsFall", true);
-        }
-        else
-        {
-            animator.SetBool("IsFall", false);
-        }
-
-        CheckWall();
+        //CheckWall();
     }
     private void FixedUpdate()
     {
@@ -282,18 +287,65 @@ public class ControllerPlayer : MonoBehaviour
             isGround = true;
             animator.SetBool("IsJump", false);
             currentJumpCount = 0;
+            rigid.velocity = Vector3.zero;
 
-            if (isIgnoringCollision)
-            {
-                StartCoroutine(IgnorePlatformCollision(false));
-                isIgnoringCollision = false;
-            }
+            //if (isIgnoringCollision)
+            //{
+            //    StartCoroutine(IgnorePlatformCollision(false));
+            //    isIgnoringCollision = false;
+            //}
         }
-        else if (isIgnoringCollision)
+        //else if (isIgnoringCollision)
+        //{
+        //StartCoroutine(IgnorePlatformCollision(false));
+        //isIgnoringCollision = false;
+        //}
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Wall"))
         {
-            StartCoroutine(IgnorePlatformCollision(false));
-            isIgnoringCollision = false;
+            Debug.Log("1");
+            ChangeState(PlayerState.Slide);
         }
+
+    }
+
+    public void OnCollisionStay2D(Collision2D collision)
+    {
+        //if (collision.gameObject.layer == LayerMask.NameToLayer("Wall"))
+        //{
+        //    ChangeState(PlayerState.Slide);
+        //}
+    }
+
+    public void OnCollisionExit2D(Collision2D collision)
+    {
+        // 현재 상태에 충돌 종료 이벤트 전달
+        if (states.ContainsKey(currentState))
+        {
+            states[currentState].OnCollisionExit(collision);
+        }
+        
+    }
+
+    public void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Climb") && inputVec.y > 0)
+        {
+            ChangeState(PlayerState.Climb);
+        }
+
+        if (states.ContainsKey(currentState))
+        {
+            states[currentState].OnTriggerStay(collision);
+        }
+
+    }
+    public void OnTriggerExit2D(Collider2D collision)
+    {
+        if (states.ContainsKey(currentState))
+        {
+            states[currentState].OnTriggerExit(collision);
+        }
+
     }
 
     public void SetInvincibility(bool isInvincible)
@@ -340,18 +392,18 @@ public class ControllerPlayer : MonoBehaviour
         }
     }
 
-    public void CheckWall()
-    {
-        Vector2 direction = transform.right;
-        wallHit = Physics2D.Raycast(transform.position, direction, wallDistance, wallLayer);
+    //public void CheckWall()
+    //{
+    //    Vector2 direction = transform.right;
+    //    wallHit = Physics2D.Raycast(transform.position, direction, wallDistance, wallLayer);
 
-        Debug.DrawRay(transform.position, direction * wallDistance, Color.green);
+    //    Debug.DrawRay(transform.position, direction * wallDistance, Color.green);
 
-        if(isWallDetected = wallHit.collider != null)
-        {
-            Debug.Log("벽감지"); 
-        }
-    }
+    //    if(isWallDetected = wallHit.collider != null)
+    //    {
+    //        Debug.Log("벽감지"); 
+    //    }
+    //}
 
     //public IEnumerator Dash()
     //{
@@ -395,32 +447,49 @@ public class ControllerPlayer : MonoBehaviour
         }
     }
 
-    public IEnumerator IgnorePlatformCollision(bool ignore) //플랫폼 콜라이더 무시
+    public void IgnorePlatformCollision()
     {
-        isIgnoringCollision = ignore;
-
-        //플랫폼 레이어의 모든 콜라이더 찾기
         Collider2D[] platformColliders = Physics2D.OverlapCircleAll(transform.position, 10f, platformLayerMask);
 
         foreach (Collider2D platformCollider in platformColliders) //콜라이더 무시
         {
-            if(platformCollider != null && platformCollider.CompareTag("Ground"))
+            if (rigid.velocity.y < 0)
             {
-                Physics2D.IgnoreCollision(playerCollider, platformCollider, ignore);
+                Physics2D.IgnoreCollision(playerCollider, platformCollider, false);
+            }
+            else
+            {
+                Physics2D.IgnoreCollision(playerCollider, platformCollider, true);
             }
         }
-
-        yield return null;
     }
 
-    public IEnumerator ResetIgnoreCollision(float delay) //콜라이더 무시 상태 초기화
-    {
-        yield return new WaitForSeconds(delay);
+    //public IEnumerator IgnorePlatformCollision(bool ignore) //플랫폼 콜라이더 무시
+    //{
+    //    isIgnoringCollision = ignore;
+
+    //    //플랫폼 레이어의 모든 콜라이더 찾기
+    //    Collider2D[] platformColliders = Physics2D.OverlapCircleAll(transform.position, 10f, platformLayerMask);
+
+    //    foreach (Collider2D platformCollider in platformColliders) //콜라이더 무시
+    //    {
+    //        if(platformCollider != null && platformCollider.CompareTag("Ground"))
+    //        {
+    //            Physics2D.IgnoreCollision(playerCollider, platformCollider, ignore);
+    //        }
+    //    }
+
+    //    yield return null;
+    //}
+
+    //public IEnumerator ResetIgnoreCollision(float delay) //콜라이더 무시 상태 초기화
+    //{
+    //    yield return new WaitForSeconds(delay);
 
 
-        StartCoroutine(IgnorePlatformCollision(false));
-        isIgnoringCollision = false;
-    }
+    //    StartCoroutine(IgnorePlatformCollision(false));
+    //    isIgnoringCollision = false;
+    //}
 
     public IEnumerator InvincibleEffect()
     {

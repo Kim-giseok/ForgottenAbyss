@@ -8,6 +8,7 @@ public class IdleState : PlayerStateMachine
 
     public override void Enter()
     {
+        //player.IgnorePlatformCollision();
         player.animator.SetBool("IsRun", false);
         player.animator.SetBool("IsJump", false);
         player.rigid.velocity = new Vector2(0, player.rigid.velocity.y);

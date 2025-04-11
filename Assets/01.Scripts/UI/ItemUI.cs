@@ -10,25 +10,29 @@ public class ItemUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
     public Item item; // 아이템 데이터
     private CanvasGroup canvasGroup; // 드래그할 때 UI 투명도 설정
     private RectTransform rectTransform; // 드래그 UI 위치 설정
+    private Image iconImage;
+
+    private void Awake()
+    {
+        canvasGroup = GetComponent<CanvasGroup>();
+        rectTransform = GetComponent<RectTransform>();
+        iconImage = GetComponent<Image>(); // 아이콘 변경용
+    }
 
     // 아이템 설정
     public void SetItem(Item newItem)
     {
         item = newItem;
-        GetComponent<Image>().sprite = item.itemIcon;  // 아이템 아이콘 표시
+        iconImage.sprite = item.itemIcon;
+        iconImage.enabled = true;
     }
 
     // 아이템 제거
     public void RemoveItem()
     {
         item = null;
-        GetComponent<Image>().sprite = null;  // 아이템 아이콘 제거
-    }
-
-    void Awake()
-    {
-        canvasGroup = GetComponent<CanvasGroup>();
-        rectTransform = GetComponent<RectTransform>();
+        iconImage.sprite = null;
+        iconImage.enabled = false;
     }
 
     // 드래그 시작

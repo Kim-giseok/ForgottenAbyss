@@ -47,11 +47,10 @@ public class Player : MonoBehaviour, IDamagable
     IEnumerator TestGetDamage() //피격 판정 테스트용 
     {
         GetDamage(10);
-        animator.SetBool("IsDamaged", true);
-        spriteRenderer.color = new Color(1f, 0.2f, 0.2f, 1f);
+        animator.SetBool("IsHit", true);
         yield return new WaitForSeconds(0.5f);
-        animator.SetBool("IsDamaged", false);
-        spriteRenderer.color = new Color(1f, 1f, 1f, 1f);
+        animator.SetBool("IsHit", false);
+        
 
     }
 
