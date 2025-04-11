@@ -10,6 +10,8 @@ public class WeaponDataSO : ScriptableObject
 
     // 연결할 스킬 SO
     public ComboAttackSO comboAttackData;
+    public RangedAttackSO rangedAttackData;
+
     public SkillVisualSO skill01SO;
     public SkillVisualSO skill02SO;
 

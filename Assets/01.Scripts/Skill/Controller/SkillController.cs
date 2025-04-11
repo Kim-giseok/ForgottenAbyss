@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 public class SkillController : MonoBehaviour
 {
     public ComboAttack comboAttack;
+    public RangedAttack rangedAttack;
 
     public int combatId;
     public int skill01Id;

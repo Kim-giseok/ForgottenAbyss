@@ -182,10 +182,10 @@ public class ControllerPlayer : MonoBehaviour
 
     public void OnAttack(InputValue value) //일반공격 키 입력
     {
-        if (value.isPressed && !isDashing && !isAttacking )
-        {
-            StartCoroutine (Attack());
-        }
+        //if (value.isPressed && !isDashing && !isAttacking )
+        //{
+        //    StartCoroutine (Attack());
+        //}
     }
 
     void OnFirstSkill() //1번스킬 키 입력

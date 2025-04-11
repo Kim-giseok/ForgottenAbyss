@@ -109,7 +109,7 @@ public class WeaponManager : Singleton<WeaponManager>
     public MemoryPieceSO GetCurrentMemoryPieceSO() => currentMemorySO;
 
 #if UNITY_EDITOR
-    [ContextMenu("DEBUG: 기본 무기 장착")]
+    [ContextMenu("DEBUG: 검 장착")]
     private void Debug_EquipTestWeapon()
     {
         var testWeaponSO = Resources.Load<WeaponDataSO>("Weapon/Sword_SO");
