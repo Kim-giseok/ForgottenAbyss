@@ -18,7 +18,7 @@ public class DashState : PlayerStateMachine
     public override void Update()
     {
         dashTimer += Time.deltaTime;
-        if (dashTimer >= player.dashTime)
+        if (dashTimer >= player.dashTime) //대쉬 종료
         {
             if (player.inputVec.x != 0)
                 player.ChangeState(PlayerState.Run);
@@ -28,7 +28,6 @@ public class DashState : PlayerStateMachine
     }
     public override void Exit()
     {
-        Debug.Log("Exit");
         player.SetInvincibility(false);
     }
 }

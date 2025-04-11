@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using Cinemachine;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class MapSpawnManager : Singleton<MapSpawnManager>
 {
     [SerializeField] private Map[] maps;
+    [SerializeField] CinemachineConfiner2D confiner2D;
     int mapIdx = 0;
     public Map SpawnedMap { get; private set; }
 
@@ -17,6 +19,8 @@ public class MapSpawnManager : Singleton<MapSpawnManager>
 
     private void Start()
     {
+        CinemachineVirtualCamera virtualCamera = confiner2D.GetComponent<CinemachineVirtualCamera>();
+        virtualCamera.Follow = GameManager.Instance.player.transform;
         SpawnRandomMap();
     }
 
@@ -33,5 +37,6 @@ public class MapSpawnManager : Singleton<MapSpawnManager>
 
         SpawnedMap = Instantiate(maps[mapIdx++]);
         SpawnedMap.MapStart();
+        confiner2D.m_BoundingShape2D = SpawnedMap.CameraCollider;
     }
 }

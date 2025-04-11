@@ -6,6 +6,7 @@ using UnityEngine;
 public class Map : MonoBehaviour
 {
     [SerializeField] Transform startP;
+    [field: SerializeField] public Collider2D CameraCollider { get; private set; }
     public MonsterManager monsterManager { get; private set; }
 
     public void MapStart()
