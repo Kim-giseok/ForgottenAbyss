@@ -4,16 +4,18 @@ using UnityEngine;
 public class EnemyDetectHandler : MonoBehaviour
 {
     private float defaultRayDistance = 1f;
-    private float gravityScale;
-    public bool isWalkable { get; private set; } = true;
 
     private Rigidbody2D rigidbody;
     private Collider2D collider;
+    private float gravityScale;
+    
+    private bool isGrounded = false;
+    public bool isWalkable { get; private set; } = true;
     
     
     private void Awake()
     {
-        rigidbody = GetComponent<Rigidbody2D>();
+        rigidbody = GetComponent<Rigidbody2D>(); // 중복 참조 발생
         collider = GetComponent<Collider2D>();
         
         gravityScale = rigidbody.gravityScale;
@@ -49,14 +51,9 @@ public class EnemyDetectHandler : MonoBehaviour
     {
         RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.right, defaultRayDistance, ~(1 << gameObject.layer));
         Debug.DrawRay(transform.position, transform.right * defaultRayDistance, Color.red);
-        
-        if (hit)
-        {
-        }
-        
     }
     
-    private void IsSlope()
+    private void IsSlope() // 경사 체크
     {
         RaycastHit2D hit = Physics2D.Raycast(new Vector2(collider.bounds.center.x, collider.bounds.min.y), Vector2.down, defaultRayDistance, ~(1 << gameObject.layer));
         var currDegree = Vector2.Angle(Vector2.up, hit.normal);

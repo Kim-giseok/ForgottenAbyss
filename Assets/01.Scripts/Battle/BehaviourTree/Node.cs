@@ -6,13 +6,14 @@ public abstract class Node
     protected Node parent;
     public List<Node> children { get; private set; } = new();
     
-    protected EnemyController controller; 
+    protected EnemyBaseController controller; 
     protected BTMachine btMachine;
+    public float currTime => btMachine.currTime;
     
     public enum Status { Success, Fail }
     public enum AnimationStatus { Start, End }
 
-    public void SetController(EnemyController controller)
+    public void SetController(EnemyBaseController controller)
     {
         this.controller = controller;
         btMachine = this.controller.btMachine;
@@ -37,4 +38,10 @@ public abstract class Node
     public virtual void OnAnimated(AnimationStatus status, AnimatorStateInfo animInfo) {}
     
     public virtual void GetStatus(Status newStatus, Node caller) {}
+    
+    // notice : EnemyDetectHandler 에서 앞으로 갈 수 있는 지 등의 정보를 전달
+    public virtual void OnDetected() {}
+    
+    // notice: 블랙보드에게 특정 정보를 받는 경우
+    public virtual void OnBlackBoard() {}
 }

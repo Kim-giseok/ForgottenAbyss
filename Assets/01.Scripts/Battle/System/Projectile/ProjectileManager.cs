@@ -8,8 +8,10 @@ using UnityEngine;
 public class ProjectileManager : Singleton<ProjectileManager> // 단위 미사일
 {
     public GameObject meleeProjectile;
-    public List<GameObject> projectileList;
+    public List<GameObject> projectileList; // sprite만 바뀌고 속성이 자유자제라면?
     public List<EnemyController> enemyProjectileList;
+    
+    public SummonController summonController;
     
     public List<(int index, GameObject instance)> currProjectiles = new(); // notice : HitBox를 가지고 있는 편이 비용 감소
     public List<(GameObject owner, HitBox hitBox)> currMeleeProjectiles = new(); // 만약 여기서 등록하는 경우, 몬스터가 죽으면 함께 제거 필요
@@ -101,9 +103,7 @@ public class ProjectileManager : Singleton<ProjectileManager> // 단위 미사�
 
     public void CreateEnemyProjectile(Transform parent, string skillNodeName, int index)
     {
-        var currProjectile = enemyProjectileList[index];
-        currProjectile.isAwake = false;
-        currProjectile.SkillNodeName = skillNodeName;
+        var currProjectile = enemyProjectileList[index]; // 이렇게 되면 프리팹 자체는 단일이며 행동과 애니메이션 주입만 필요
         
         Instantiate(enemyProjectileList[index].gameObject, parent.transform.position, Quaternion.identity);
     }

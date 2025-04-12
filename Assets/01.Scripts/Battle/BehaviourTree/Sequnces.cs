@@ -1,7 +1,4 @@
 using System;
-using System.Collections.Generic;
-using JetBrains.Annotations;
-using UnityEngine;
 
 public class RootNode : Node
 {
@@ -104,6 +101,7 @@ public class SelectorNode : Node
     }
 }
 
+// 추후 데코 노드 구현 필요
 public class ParallelNode : Node
 {
     public ParallelNode(params Node[] nodes)
@@ -111,10 +109,10 @@ public class ParallelNode : Node
         children.AddRange(nodes);
     }
 
+    // ReSharper disable Unity.PerformanceAnalysis
     public override void Start()
     {
-        // 복수로 등록
-        // btMachine.SetNode(children);
+        btMachine.SetNode(children.ToArray());
     }
 
     // notice: 복수 실행 자체는 BTMachine에서 처리하며 조건 감지만 이곳에서 처리
@@ -128,13 +126,4 @@ public class ParallelNode : Node
 public class RandomNode : Node
 {
     
-}
-
-// 어떻게 데코할 것인가?
-public class DecoratorNode : Node
-{
-    public DecoratorNode(Node child)
-    {
-        children.Add(child);
-    }
 }

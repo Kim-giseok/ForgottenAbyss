@@ -5,17 +5,17 @@ using UnityEngine;
 
 public class BTMachine
 {
-    private EnemyController controller;
-    private BlackBoard blackBoard = new();
+    private EnemyBaseController controller;
 
-    public bool isRunning = true;
-    private Node rootNode;
     
-    // currNode를 병렬으로 처리해서 노드 내 중복 코드 개선
-    public List<Node> currNodes { get; private set; }
-    // public List<(string name, Node Node)> allNodes = new(); // notice: 노드를 강제로 호출이 필요한 경우
+    public bool isRunning = true;
+    public float currTime { get; private set; }
 
-    public BTMachine(EnemyController controller)
+    private Node rootNode;
+    // currNode를 병렬으로 처리해서 노드 내 중복 코드 개선
+    public List<Node> currNodes { get; private set; } = new();
+
+    public BTMachine(EnemyBaseController controller)
     {
         this.controller = controller;
     }
@@ -24,21 +24,25 @@ public class BTMachine
     public void Run()
     {
         if (!isRunning) return;
-        currNodes.ForEach(node => node.Update());
+        
+        currTime += Time.fixedDeltaTime;
+        
+        var snapshot = new List<Node>(currNodes);
+        snapshot.ForEach(node => node.Update());
     }
 
     public void SetNode(params Node[] newNodes)
     {
         isRunning = false;
-
-        currNodes.ForEach(node => node?.End());
         
+        var snapshot = new List<Node>(currNodes);
+        // currNodes.ForEach(node => node.End());
+        
+        currTime = 0;
+        currNodes.Clear();
         currNodes.AddRange(newNodes);
-        currNodes.ForEach(node =>
-        {
-            // node.SetController(controller); // notice: 바뀔 일이 없으니 맨 처음에 한번 등록하도록 변경 필요
-            node.Start();
-        });
+        
+        snapshot.ForEach(node => node.Start());
         
         isRunning = true;
     }
@@ -61,7 +65,7 @@ public class BTMachine
         if (node.children.Count > 0) { node.children.ForEach(Connect); } // method group 기능
     }
 
-    public void Notify() // 초기 노드로 이동 또는 특정 노드로 이동 기능 구현 필요
+    public void Notify() // 특정 노드로 이동 기능 구현 필요
     {
         SetNode(rootNode);
     }
