@@ -4,7 +4,7 @@ using UnityEngine;
 public abstract class Node
 {
     protected Node parent;
-    protected List<Node> children = new();
+    public List<Node> children { get; private set; } = new();
     
     protected EnemyController controller; 
     protected BTMachine btMachine;
@@ -12,7 +12,7 @@ public abstract class Node
     public enum Status { Success, Fail }
     public enum AnimationStatus { Start, End }
 
-    public void Connect(EnemyController controller)
+    public void SetController(EnemyController controller)
     {
         this.controller = controller;
         btMachine = this.controller.btMachine;

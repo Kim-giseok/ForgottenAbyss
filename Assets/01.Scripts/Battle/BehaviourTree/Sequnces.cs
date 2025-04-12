@@ -91,7 +91,7 @@ public class SelectorNode : Node
             
             if (currIndex < children.Count - 1)
             {
-                btMachine.SetNode(children[currIndex + 1]);
+                btMachine.SetNode(children[currIndex + 1]); // notice: BtMachine 매번 호출하여 코드 길어짐
                 return;
             }
             
