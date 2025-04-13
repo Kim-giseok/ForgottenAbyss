@@ -6,8 +6,10 @@ using UnityEngine;
 public class BTMachine
 {
     private EnemyBaseController controller;
-
     public BTContext context = new();
+    
+    public Action OnLooped = delegate { };
+    
     public bool isPlaying { get; private set; } = false;
     public float currTime { get; private set; }
 
@@ -101,13 +103,6 @@ public class BTMachine
 
     public void Notify() // 특정 노드로 이동 기능 구현 필요
     {
-        SetNode(rootNode);
-    }
-
-    public void Play(Node newNode, Action OnFinish)
-    {
-        rootNode = new RootNode(newNode).WhenLooped(OnFinish);
-        // Connect(rootNode);
         SetNode(rootNode);
     }
 }

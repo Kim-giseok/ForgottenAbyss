@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class EnemyBaseController: MonoBehaviour
 {
-    public BTMachine btMachine { get; protected set; }
+    public BTMachine machine { get; protected set; }
     public Transform target { get; protected set; }
     
     public Collider2D collider { get; protected set; }
@@ -14,7 +14,7 @@ public class EnemyBaseController: MonoBehaviour
 
     protected virtual void Awake()
     {
-        btMachine = new(this);
+        machine = new(this);
 
         collider = GetComponent<Collider2D>();
         rigidbody = GetComponent<Rigidbody2D>();
@@ -26,12 +26,12 @@ public class EnemyBaseController: MonoBehaviour
     
     protected void FixedUpdate()
     {
-        btMachine.Run();
+        machine.Run();
     }
 
     protected void OnAnimatedEvent(int value) // notice: string과 enum으로 좀 더 다양하게 구현하도록 처리
     {
-        btMachine.OnAnimatedEvent(value == 1);
+        machine.OnAnimatedEvent(value == 1);
     }
 
     protected void OnASD(bool isWalkable)

@@ -3,17 +3,10 @@ using UnityEngine;
 
 public class RootNode : Node
 {
-    private Action OnLooped;
     public RootNode(Node node)
     {
         node.SetParent(this);
         children.Add(node);
-    }
-    
-    public RootNode WhenLooped(Action currEvent)
-    {
-        OnLooped += currEvent;
-        return this;
     }
 
     public override void Update()
@@ -24,7 +17,7 @@ public class RootNode : Node
     // 어떤 상태가 들어오든 다시 시작
     public override void GetStatus(Status newStatus, Node caller)
     {
-        OnLooped?.Invoke();
+        machine.OnLooped?.Invoke();
         machine.SetNode(children[0]);    
     }
 }

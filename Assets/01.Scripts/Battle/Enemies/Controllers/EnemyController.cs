@@ -32,8 +32,8 @@ public class EnemyController : EnemyBaseController, IDamagable
     {
         // animationHandler.SetController(EnemyAnimators.animators[name]);
         // 에러처리 필요
-        btMachine.Define(Enemies.Get(name).Node); // 각 개체별 생성되는 방식
-        btMachine.SetPlaying(true);
+        machine.Define(Enemies.Get(name).Node); // 각 개체별 생성되는 방식
+        machine.SetPlaying(true);
         
         try { MapSpawnManager.Instance.SpawnedMap.monsterManager.AddList(this); }
         catch { Debug.Log("there is no MapspawnManager"); }
@@ -52,7 +52,7 @@ public class EnemyController : EnemyBaseController, IDamagable
         if (statusHandler.stamina <= 0) { statusHandler.stamina = 3; }
 
         statusHandler.isHit = true;
-        btMachine.Notify();
+        machine.Notify();
 
         if (health <= 0) Die();
     }

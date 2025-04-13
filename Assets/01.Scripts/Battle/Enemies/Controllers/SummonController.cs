@@ -13,11 +13,10 @@ public class SummonController: EnemyBaseController
         // player.transform.position = transform.position;
         
         animationHandler.SetController(EnemyAnimators.animators[name]);
-        btMachine.Play(Enemies.Get(name).skills[skillName], () =>
-        {
-            Debug.Log(gameObject);
-            Destroy(gameObject);
-        });
-        btMachine.SetPlaying(true);
+
+
+        machine.OnLooped += () => { Destroy(gameObject); };
+        machine.Define(Enemies.Get(name).skills[skillName]);
+        machine.SetPlaying(true);
     }
 }

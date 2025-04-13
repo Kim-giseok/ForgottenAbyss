@@ -7,7 +7,7 @@ public class AnimationBehaviour: StateMachineBehaviour
     {
         if (!animator.TryGetComponent(out EnemyBaseController controller)) return;
         
-        var snapshot = new List<Node>(controller.btMachine.currNodes);
+        var snapshot = new List<Node>(controller.machine.currNodes);
         snapshot.ForEach(node =>
         {
             node.SetController(controller);
@@ -21,7 +21,7 @@ public class AnimationBehaviour: StateMachineBehaviour
         if (!animator.TryGetComponent(out EnemyBaseController controller)) return;
         
         // currNodes가 변경되면 문제 발생, snapshot은 비용이 발생
-        var snapshot = new List<Node>(controller.btMachine.currNodes);
+        var snapshot = new List<Node>(controller.machine.currNodes);
         snapshot.ForEach(node =>
         {
             node.SetController(controller);
