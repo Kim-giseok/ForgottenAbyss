@@ -2,15 +2,14 @@ using UnityEngine;
 
 public class EnemyBaseController: MonoBehaviour
 {
+    public EnemyAgent agent { get; private set; }
     public BTMachine machine { get; protected set; }
-    public Transform target { get; protected set; }
-    
     public Collider2D collider { get; protected set; }
     public Rigidbody2D rigidbody { get; protected set; }
     public SpriteRenderer spriteRenderer { get; protected set; }
     public EnemyAnimationHandler animationHandler { get; protected set; }
-    
     public EnemyCombatHandler combatHandler { get; protected set; }
+    public EnemyDetectHandler detectHandler { get; protected set; }
 
     protected virtual void Awake()
     {
@@ -22,6 +21,9 @@ public class EnemyBaseController: MonoBehaviour
         animationHandler = new EnemyAnimationHandler(GetComponent<Animator>());
 
         combatHandler = new EnemyCombatHandler();
+        detectHandler = GetComponent<EnemyDetectHandler>();
+        
+        agent = GetComponent<EnemyAgent>(); // 플레이어의 경우 주면 몬스터를 찾도록(혹은 새 클래스로 분리하기)
     }
     
     protected void FixedUpdate()
@@ -34,8 +36,14 @@ public class EnemyBaseController: MonoBehaviour
         machine.OnAnimatedEvent(value == 1);
     }
 
-    protected void OnASD(bool isWalkable)
+    public void OnDetected(EnemyDetectHandler.DetectType detectType, string value)
     {
+        machine.OnDetected(detectType, value);
+    }
+
+    public void OnAgentDetected(EnemyAgent.Status status)
+    {
+        machine.OnAgentDetected(status);
     }
 
     // character controller //
@@ -45,7 +53,7 @@ public class EnemyBaseController: MonoBehaviour
     }
     public void LookTarget()
     {
-        var direction = (target.position - transform.position).normalized;
+        var direction = (agent.target.transform.position - transform.position).normalized;
         Flip(direction.x > 0);
     }
 

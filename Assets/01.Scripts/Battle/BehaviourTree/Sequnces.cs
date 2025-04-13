@@ -11,14 +11,26 @@ public class RootNode : Node
 
     public override void Update()
     {
-        machine.SetNode(children[0]);
+
+        machine.SetPlaying(false);
+
+        machine.currNodes.Clear();
+        machine.currNodes.Add(children[0]);
+        
+        machine.Fetch();
     }
 
     // 어떤 상태가 들어오든 다시 시작
     public override void GetStatus(Status newStatus, Node caller)
     {
+        machine.SetPlaying(false);
+        
         machine.OnLooped?.Invoke();
-        machine.SetNode(children[0]);    
+        
+        machine.currNodes.Clear();
+        machine.currNodes.Add(children[0]);
+        
+        machine.Fetch();
     }
 }
 
@@ -35,7 +47,13 @@ public class SequenceNode : Node
 
     public override void Start()
     {
-        machine.SetNode(children[0]);
+        
+        machine.SetPlaying(false);
+
+        machine.currNodes.Remove(this);
+        machine.currNodes.Add(children[0]);
+        
+        machine.Fetch();
     }
 
     public override void GetStatus(Status newStatus , Node caller)
@@ -51,7 +69,13 @@ public class SequenceNode : Node
         
         if (currIndex < children.Count - 1)
         {
-            machine.SetNode(children[currIndex + 1]);
+            machine.SetPlaying(false);
+
+            machine.currNodes.Remove(children[currIndex]);
+            machine.currNodes.Add(children[currIndex + 1]);
+            
+            machine.Fetch();
+            
             return;
         }
         
@@ -73,7 +97,12 @@ public class SelectorNode : Node
     
     public override void Start()
     {
-        machine.SetNode(children[0]);
+        machine.SetPlaying(false);
+
+        machine.currNodes.Remove(this);
+        machine.currNodes.Add(children[0]);
+        
+        machine.Fetch();
     }
     
     public override void GetStatus(Status newStatus, Node caller)
@@ -84,7 +113,13 @@ public class SelectorNode : Node
             
             if (currIndex < children.Count - 1)
             {
-                machine.SetNode(children[currIndex + 1]); // notice: BtMachine 매번 호출하여 코드 길어짐
+                machine.SetPlaying(false);
+
+                machine.currNodes.Remove(children[currIndex]);
+                machine.currNodes.Add(children[currIndex + 1]);
+                
+                machine.Fetch();
+
                 return;
             }
             
@@ -97,7 +132,7 @@ public class SelectorNode : Node
     }
 }
 
-// 추후 데코 노드 구현 필요
+// 추후 데코 노드 구현 필요 - 시퀀스 안에서 또 병렬 노드라면 문제 발생
 public class ParallelNode : Node
 {
     public ParallelNode(params Node[] nodes)
@@ -109,21 +144,21 @@ public class ParallelNode : Node
         }
     }
     
-    // ReSharper disable Unity.PerformanceAnalysis
     public override void Start()
     {
-        machine.SetNode(children.ToArray());
+        machine.SetPlaying(false);
+        machine.currNodes.AddRange(children.ToArray());
+        machine.Fetch();
     }
 
     // notice: 복수 실행 자체는 BTMachine에서 처리하며 조건 감지만 이곳에서 처리
     public override void GetStatus(Status newStatus, Node caller)
     {
+        machine.SetPlaying(false);
+        foreach (Node child in children) { machine.currNodes.Remove(child); }
+        machine.Fetch();
+
         // notice: 하나의 노드에서 응답 받은 경우, 상위 노드에게 바로 전달
         SetStatus(newStatus);
     }
-}
-
-public class RandomNode : Node
-{
-    
 }

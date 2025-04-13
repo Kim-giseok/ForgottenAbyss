@@ -11,7 +11,6 @@ public class EnemyController : EnemyBaseController, IDamagable
     
     public string name; 
     
-    public EnemyAgent agent { get; private set; }
     public EnemyResourceHandler resourceHandler { get; private set; }
     public EnemyStatusHandler statusHandler { get; private set; }
     public EnemyRewardHandler rewardHandler { get; private set; }
@@ -20,9 +19,6 @@ public class EnemyController : EnemyBaseController, IDamagable
     {
         base.Awake();
         
-        target = GameObject.FindGameObjectWithTag("Player").transform; // 에이전트
-        agent = GetComponent<EnemyAgent>();
-
         resourceHandler = GetComponent<EnemyResourceHandler>();
         statusHandler = new EnemyStatusHandler();
         rewardHandler = GetComponent<EnemyRewardHandler>();
@@ -33,7 +29,6 @@ public class EnemyController : EnemyBaseController, IDamagable
         // animationHandler.SetController(EnemyAnimators.animators[name]);
         // 에러처리 필요
         machine.Define(Enemies.Get(name).Node); // 각 개체별 생성되는 방식
-        machine.SetPlaying(true);
         
         try { MapSpawnManager.Instance.SpawnedMap.monsterManager.AddList(this); }
         catch { Debug.Log("there is no MapspawnManager"); }
@@ -42,7 +37,6 @@ public class EnemyController : EnemyBaseController, IDamagable
 
     public void GetDamage(float damage) // notice: summon은 제외
     {
-        Debug.Log(1);
         // Vector3 textPosition = transform.position + Vector3.up * 1f;
         // DamageTextManager.Instance.ShowDamage(textPosition, (int)damage);
         

@@ -12,12 +12,12 @@ public class IdleNode : Node
 
     public override void Start()
     {
-        
         controller.rigidbody.velocity = new Vector2(0, controller.rigidbody.velocity.y);
     }
 
     public override void Update()
     {
+        Debug.Log("idle");
         if (currTime >= duration) { SetStatus(Status.Success); }
     }
 }
@@ -32,68 +32,58 @@ public class PatrolMove : Node
     public override void Start()
     {
         Vector2 direction = Random.Range(0, 10) <= 5 ? Vector2.left : Vector2.right;
-        
         context.Set("direction", direction);
         controller.Flip(direction == Vector2.right);
         
+        if (!controller.detectHandler.isWalkable) { SetStatus(Status.Fail); return; }
         controller.animationHandler.Set(EnemyAnimationHandler.Run, true);
     }
 
     public override void Update()
     {
+        Debug.Log(currTime);
         if (currTime >= duration) { SetStatus(Status.Success); return; }
-     
-        // 갈 수 없는 곳 체크 필요
+        
         controller.rigidbody.velocity = new Vector2(context.Get<Vector2>("direction").x, controller.rigidbody.velocity.y);
     }
-
-    public override void OnDetected(EnemyDetectHandler.DetectType grounded, bool b) { }
-
-    public override void End()
-    {
-        controller.animationHandler.Set(EnemyAnimationHandler.Run, false);
-    }
+    
+    // public override void OnPhysicsDetected(EnemyDetectHandler.DetectType detectType, string value)
+    // {
+    //     if (detectType == EnemyDetectHandler.DetectType.Walkable && !bool.Parse(value))
+    //     {
+    //         SetStatus(Status.Success);
+    //     }
+    // }
+    //
+    //
+    // public override void End()
+    // {
+    //     controller.animationHandler.Set(EnemyAnimationHandler.Run, false);
+    // }
 }
 
 public class TracingNode : Node
 {
     public override void Start()
     {
-        // fix: 중복 코드 발생하는 부분 해결 필요 - 이 로직 자체가 조건에 들어간다
-        // Vector2 distance = (controller.agent.player.transform.position - controller.transform.position);
-        
-        // if (controller.agent.stoppingDistance > distance.magnitude) // 바로 공격으로 진입
-        // {
-            // SetStatus(Status.Success);
-            // return;
-        // }
-        
+        if(controller.agent.status == EnemyAgent.Status.Tracked) { SetStatus(Status.Success); return; } // notice: 애초에 한번 더 분류하는 게 맞지 않을까?
         controller.animationHandler.Set(EnemyAnimationHandler.Run, true);
     }
     
     public override void Update()
     {
-        // Vector2 distance = (controller.agent.player.transform.position - controller.transform.position);
-        
-        // if (controller.agent.detectedDistance < distance.magnitude)
-        // {
-            // SetStatus(Status.Fail);
-            // return;
-        // }
-        
-        // if (controller.agent.stoppingDistance > distance.magnitude)
-        // {
-            // SetStatus(Status.Success);
-           // return;
-        // }
-        
         controller.LookTarget();
-        // controller.rigidbody.velocity = new Vector2(distance.normalized.x * controller.agent.tracingSpeed, controller.rigidbody.velocity.y);
+        controller.rigidbody.velocity = new Vector2(controller.agent.GetDirection().x * controller.agent.tracingSpeed, controller.rigidbody.velocity.y);
     }
     
     public override void End()
     {
         controller.animationHandler.Set(EnemyAnimationHandler.Run, false);
+    }
+
+    public override void OnAgentDetected(EnemyAgent.Status status)
+    {
+        if(status == EnemyAgent.Status.Tracked) { SetStatus(Status.Success); return; }
     }
 }
 

@@ -17,6 +17,5 @@ public class SummonController: EnemyBaseController
 
         machine.OnLooped += () => { Destroy(gameObject); };
         machine.Define(Enemies.Get(name).skills[skillName]);
-        machine.SetPlaying(true);
     }
 }

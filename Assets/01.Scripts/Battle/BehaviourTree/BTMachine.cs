@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -26,73 +27,67 @@ public class BTMachine
     public void Run()
     {
         if (!isPlaying) return;
-        
+
         currTime += Time.fixedDeltaTime;
         
-        var snapshot = new List<Node>(currNodes);
-        snapshot.ForEach(node =>
-        {
-            node.SetController(controller);
-            node.Update();
-        });
+        Modify(node => node.Update());
     }
 
     public void SetPlaying(bool isPlaying)
     {
         this.isPlaying = isPlaying;
     }
-
-    public void SetNode(params Node[] newNodes)
-    {
-        isPlaying = false;
+    
         
-        var snapshot = new List<Node>(newNodes);
+    // ReSharper disable Unity.PerformanceAnalysis
+    private void Modify(Action<Node> callback) // 비용 큰 점 고민 필요
+    {
+        // var snapshot = currNodes.ToList();
         currNodes.ForEach(node =>
         {
             node.SetController(controller);
-            node.End();
+            callback(node);
         });
+    }
+
+    // 변화 체크가 진행되지 않음
+    public void Fetch()
+    {
+        SetPlaying(false);
+
+        Modify(node => node.End()); // 없는 end도 결국 호출 발생
         
         currTime = 0;
-        currNodes.Clear();
-        currNodes.AddRange(newNodes);
         
-        snapshot = new List<Node>(newNodes);
-        snapshot.ForEach(node =>
-        {
-            node.SetController(controller);
-            node.Start();
-        });
-        
-        isPlaying = true;
+        Modify(node => node.Start());
+
+        SetPlaying(true);
     }
 
     public void OnAnimatedEvent(bool isFire)
     {
-        var snapshot = new List<Node>(currNodes); // 스냅샵 비용 발생
-        // 이 작업 자체를 추상화하기
-        snapshot.ForEach(node =>
-        {
-            node.SetController(controller); // 모든 이벤트마다 controller 등록이 발생함
-            node.OnAnimatedEvent(isFire);
-        });
+        Modify(node => node.OnAnimatedEvent(isFire));
     }
-
-    public void OnASD()
+    
+    // controller에서 한번 거칠 필요 있을까 의문 필요
+    public void OnDetected(EnemyDetectHandler.DetectType detectType, string value)
     {
-        var snapshot = new List<Node>(currNodes);
-        snapshot.ForEach(node =>
-        {
-            node.SetController(controller);
-            node.OnDetected(EnemyDetectHandler.DetectType.Grounded, true);
-        });
+        Modify(node => node.OnPhysicsDetected(detectType, value));
     }
+    
+    public void OnAgentDetected(EnemyAgent.Status status)
+    {
+        Modify(node => node.OnAgentDetected(status));
+    }
+    
 
     public void Define(Node newNode)    
     {
         rootNode = new RootNode(newNode);
-        // Connect(rootNode);
-        SetNode(rootNode);
+        currNodes.Clear();
+        currNodes.Add(rootNode);
+        
+        Fetch();
     }
 
     public void Connect(Node node)
@@ -103,6 +98,10 @@ public class BTMachine
 
     public void Notify() // 특정 노드로 이동 기능 구현 필요
     {
-        SetNode(rootNode);
+        SetPlaying(false);
+        
+        currNodes.Clear();
+        currNodes.Add(rootNode);
+        Fetch();
     }
 }
