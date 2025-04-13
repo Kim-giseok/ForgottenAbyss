@@ -9,8 +9,10 @@ public class EnemyBaseController: MonoBehaviour
     public Rigidbody2D rigidbody { get; protected set; }
     public SpriteRenderer spriteRenderer { get; protected set; }
     public EnemyAnimationHandler animationHandler { get; protected set; }
+    
+    public EnemyCombatHandler combatHandler { get; protected set; }
 
-    private void Awake()
+    protected virtual void Awake()
     {
         btMachine = new(this);
 
@@ -18,16 +20,22 @@ public class EnemyBaseController: MonoBehaviour
         rigidbody = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>(); 
         animationHandler = new EnemyAnimationHandler(GetComponent<Animator>());
+
+        combatHandler = new EnemyCombatHandler();
     }
     
-    private void FixedUpdate()
+    protected void FixedUpdate()
     {
         btMachine.Run();
     }
 
-    private void OnAnimatedEvent(int value) // notice: string과 enum으로 좀 더 다양하게 구현하도록 처리
+    protected void OnAnimatedEvent(int value) // notice: string과 enum으로 좀 더 다양하게 구현하도록 처리
     {
         btMachine.OnAnimatedEvent(value == 1);
+    }
+
+    protected void OnASD(bool isWalkable)
+    {
     }
 
     // character controller //

@@ -1,6 +1,6 @@
 public class EnemyStatusHandler
 {
-    public bool isIgnoreHitAction = true; // 원거리 친구만 false
+    public bool isIgnoreHitAction = false; // 원거리 친구만 false
     
     public bool isHit = false;
     public bool isDefense = false;

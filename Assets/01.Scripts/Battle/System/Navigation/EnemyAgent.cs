@@ -6,7 +6,7 @@ using UnityEngine.Tilemaps;
 // 좌우 값을 기준으로 이동 가능한지 아닌지 우선 체크
 public class EnemyAgent : MonoBehaviour
 {
-    public GameObject player { get; private set; }
+    public GameObject target { get; private set; }
     
     public float detectedDistance;
     public float stoppingDistance;
@@ -16,7 +16,7 @@ public class EnemyAgent : MonoBehaviour
 
     private void Awake()
     {
-        player = GameObject.FindGameObjectWithTag("Player");
+        target = GameObject.FindGameObjectWithTag("Player"); // 만약 서먼이 몬스터를 향한다면?
 
         // agent에서 체크할 수 없으니 surface에서 등록 필요
         // BoundsInt bounds = tilemap.cellBounds;
@@ -38,6 +38,6 @@ public class EnemyAgent : MonoBehaviour
 
     public float GetDistance()
     {
-        return (transform.position - player.transform.position).magnitude;
+        return (transform.position - target.transform.position).magnitude;
     }
 }

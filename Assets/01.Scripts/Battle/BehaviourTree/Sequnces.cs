@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 public class RootNode : Node
 {
@@ -17,14 +18,14 @@ public class RootNode : Node
 
     public override void Update()
     {
-        btMachine.SetNode(children[0]);
+        machine.SetNode(children[0]);
     }
 
     // 어떤 상태가 들어오든 다시 시작
     public override void GetStatus(Status newStatus, Node caller)
     {
         OnLooped?.Invoke();
-        btMachine.SetNode(children[0]);    
+        machine.SetNode(children[0]);    
     }
 }
 
@@ -41,7 +42,7 @@ public class SequenceNode : Node
 
     public override void Start()
     {
-        btMachine.SetNode(children[0]);
+        machine.SetNode(children[0]);
     }
 
     public override void GetStatus(Status newStatus , Node caller)
@@ -52,10 +53,12 @@ public class SequenceNode : Node
             return;
         }
         
+        // 복사본이 있다면 다음 인덱스로 인식하지 못하는 문제 발생
         int currIndex = children.IndexOf(caller);
+        
         if (currIndex < children.Count - 1)
         {
-            btMachine.SetNode(children[currIndex + 1]);
+            machine.SetNode(children[currIndex + 1]);
             return;
         }
         
@@ -77,7 +80,7 @@ public class SelectorNode : Node
     
     public override void Start()
     {
-        btMachine.SetNode(children[0]);
+        machine.SetNode(children[0]);
     }
     
     public override void GetStatus(Status newStatus, Node caller)
@@ -88,7 +91,7 @@ public class SelectorNode : Node
             
             if (currIndex < children.Count - 1)
             {
-                btMachine.SetNode(children[currIndex + 1]); // notice: BtMachine 매번 호출하여 코드 길어짐
+                machine.SetNode(children[currIndex + 1]); // notice: BtMachine 매번 호출하여 코드 길어짐
                 return;
             }
             
@@ -106,13 +109,17 @@ public class ParallelNode : Node
 {
     public ParallelNode(params Node[] nodes)
     {
-        children.AddRange(nodes);
+        foreach(Node child in nodes)
+        {
+            child.SetParent(this);
+            children.Add(child);
+        }
     }
-
+    
     // ReSharper disable Unity.PerformanceAnalysis
     public override void Start()
     {
-        btMachine.SetNode(children.ToArray());
+        machine.SetNode(children.ToArray());
     }
 
     // notice: 복수 실행 자체는 BTMachine에서 처리하며 조건 감지만 이곳에서 처리

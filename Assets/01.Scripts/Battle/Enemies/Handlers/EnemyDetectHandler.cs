@@ -3,8 +3,13 @@ using UnityEngine;
 // EnemyDetectHandler
 public class EnemyDetectHandler : MonoBehaviour
 {
-    private float defaultRayDistance = 1f;
+    public enum DetectType { Grounded }
+    
+    private float rayWallDistance = 1f;
+    private float rayGroundDistance = 0.2f;
 
+    private EnemyBaseController controller;
+    // 컨트롤러로 통일
     private Rigidbody2D rigidbody;
     private Collider2D collider;
     private float gravityScale;
@@ -15,16 +20,21 @@ public class EnemyDetectHandler : MonoBehaviour
     
     private void Awake()
     {
-        rigidbody = GetComponent<Rigidbody2D>(); // 중복 참조 발생
+        controller = GetComponent<EnemyBaseController>();
+        
+        rigidbody = GetComponent<Rigidbody2D>(); // 중복 참조 발생 - 컨트롤러 자체를 참조하도록 변경하기
         collider = GetComponent<Collider2D>();
         
         gravityScale = rigidbody.gravityScale;
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
-        IsWalkable();
-        // if (IsGrounded()) { rigidbody.gravityScale = 0; } else { rigidbody.gravityScale = gravityScale; }
+        if (isWalkable != IsWalkable())
+        {
+            isWalkable = IsWalkable();
+            // notify
+        }
     }
 
     private void OnDrawGizmos()
@@ -41,21 +51,25 @@ public class EnemyDetectHandler : MonoBehaviour
     }
 
     // movementHandler를 통해서 같이 적용해야하는 걸까?
-    public void IsWalkable()
+    public bool IsWalkable()
     {
-        RaycastHit2D hit = Physics2D.Raycast(new Vector2(transform.rotation.eulerAngles.y == 0 ? collider.bounds.max.x : collider.bounds.min.x, collider.bounds.min.y), Vector2.down, defaultRayDistance, ~(1 << gameObject.layer));
-        Debug.DrawRay(new Vector2(transform.rotation.eulerAngles.y == 0 ? collider.bounds.max.x : collider.bounds.min.x, collider.bounds.min.y), Vector2.down * 1f, Color.yellow);
+        var position = new Vector2(transform.rotation.eulerAngles.y == 0 ? collider.bounds.max.x : collider.bounds.min.x, collider.bounds.min.y);
+        RaycastHit2D hit = Physics2D.Raycast(position, Vector2.down,  rayGroundDistance, ~(1 << gameObject.layer));
+        
+        Debug.DrawRay(position, Vector2.down * rayGroundDistance, Color.yellow);
+        
+        return hit.collider;
     }
     
     public void IsBlocked() // 앞쪽의 
     {
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.right, defaultRayDistance, ~(1 << gameObject.layer));
-        Debug.DrawRay(transform.position, transform.right * defaultRayDistance, Color.red);
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.right, rayWallDistance, ~(1 << gameObject.layer));
+        Debug.DrawRay(transform.position, transform.right * rayWallDistance, Color.red);
     }
     
     private void IsSlope() // 경사 체크
     {
-        RaycastHit2D hit = Physics2D.Raycast(new Vector2(collider.bounds.center.x, collider.bounds.min.y), Vector2.down, defaultRayDistance, ~(1 << gameObject.layer));
+        RaycastHit2D hit = Physics2D.Raycast(new Vector2(collider.bounds.center.x, collider.bounds.min.y), Vector2.down, rayWallDistance, ~(1 << gameObject.layer));
         var currDegree = Vector2.Angle(Vector2.up, hit.normal);
         var currDirection = Vector3.ProjectOnPlane(Vector3.right, hit.normal).normalized;
     }

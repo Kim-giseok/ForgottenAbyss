@@ -14,7 +14,7 @@ public class AttackNode : Node
         if (isFire)
         {
             // 데미지나 사이즈등은 추상화로 접급
-            ProjectileManager.Instance.CreateMeleeProjectile(controller.transform, 3);
+            ProjectileManager.Instance.CreateMeleeProjectile(controller.transform, controller.combatHandler.power);
         }
         else
         {
@@ -25,8 +25,13 @@ public class AttackNode : Node
     // fix: 의미 없는 호출이 발생할 수 있느 점에 대한 고려 필요
     public override void OnAnimated(AnimationStatus status, AnimatorStateInfo animInfo)
     {
+        // Debug.Log(controller.gameObject.name + " : " + status);
+
         if (!animInfo.IsName("Attack")) return;
-        if (status == AnimationStatus.End) SetStatus(Status.Success);
+        if (status == AnimationStatus.End)
+        {
+            SetStatus(Status.Success);
+        }
     }
     
     public override void End() // notice: 공격 중 피격 당하는 경우
@@ -48,7 +53,7 @@ public class RangeAttackNode : Node
         // 콜백으로 공격 방식 추상화
         if (isFire)
         {
-            ProjectileManager.Instance.CreateProjectile(controller.transform, 3, new []{ new StraightAttr()});
+            ProjectileManager.Instance.CreateProjectile(controller.transform, 3);
         }
     }
 }

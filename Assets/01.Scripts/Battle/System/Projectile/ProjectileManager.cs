@@ -7,11 +7,12 @@ using UnityEngine;
 // 빌더 패턴으로 관리해보면 어떨까? 아무튼 조합의 형태를 띄어야 함
 public class ProjectileManager : Singleton<ProjectileManager> // 단위 미사일
 {
+    public enum ProjectileType { Linear, Guided, Reflection, Fuse, Parabola }
+    
     public GameObject meleeProjectile;
     public List<GameObject> projectileList; // sprite만 바뀌고 속성이 자유자제라면?
-    public List<EnemyController> enemyProjectileList;
     
-    public SummonController summonController;
+    public GameObject summon;
     
     public List<(int index, GameObject instance)> currProjectiles = new(); // notice : HitBox를 가지고 있는 편이 비용 감소
     public List<(GameObject owner, HitBox hitBox)> currMeleeProjectiles = new(); // 만약 여기서 등록하는 경우, 몬스터가 죽으면 함께 제거 필요
@@ -60,7 +61,7 @@ public class ProjectileManager : Singleton<ProjectileManager> // 단위 미사�
     // 반사 또는 유도
     // 빌더 패턴으로 조립 필요
     // ReSharper disable Unity.PerformanceAnalysis
-    public void CreateProjectile(Transform parent, float power, ProjectileAttr[] attrs, Vector2 startPos = default,  int index = 0, float degree = 0, bool isLocalPosition = true) // melee attack인 경우 우연히 두번 켜지는 현상 방지 필요
+    public void CreateProjectile(Transform parent, float power, Vector2 startPos = default,  int index = 0, float degree = 0, bool isLocalPosition = true) // melee attack인 경우 우연히 두번 켜지는 현상 방지 필요
     {
         var instance = currProjectiles.Find(projectile => projectile.index == index && !projectile.instance.activeSelf).instance;
         if (!instance)
@@ -73,9 +74,9 @@ public class ProjectileManager : Singleton<ProjectileManager> // 단위 미사�
         hitBox.SetDamage(power);
         hitBox.SetOwner(parent);
         
-        Projectile projectile = instance.GetComponent<Projectile>(); // notice: 프로젝타일도 매번 파악하는 현상 발생
+        // Projectile projectile = instance.GetComponent<Projectile>(); // notice: 프로젝타일도 매번 파악하는 현상 발생
         // projectile.AddAttribute(new StraightAttr());
-        projectile.AddAttribute(attrs);
+        // projectile.AddAttribute(attrs);
         
         
         instance.transform.localRotation = Quaternion.Euler(0, 0, degree - 90); // 화살이 현재 위를 보고 있는 상황이라 방향 계산 필요 -90 이 오른쪽
@@ -101,10 +102,9 @@ public class ProjectileManager : Singleton<ProjectileManager> // 단위 미사�
         instance.SetActive(false);
     }
 
-    public void CreateEnemyProjectile(Transform parent, string skillNodeName, int index)
+    public void CreateEnemyProjectile(Transform parent, string name, string skillNodeName)
     {
-        var currProjectile = enemyProjectileList[index]; // 이렇게 되면 프리팹 자체는 단일이며 행동과 애니메이션 주입만 필요
-        
-        Instantiate(enemyProjectileList[index].gameObject, parent.transform.position, Quaternion.identity);
+        GameObject instance = Instantiate(summon, parent.transform.position, Quaternion.identity);
+        instance.GetComponent<SummonController>().Set(name, skillNodeName);
     }
 }

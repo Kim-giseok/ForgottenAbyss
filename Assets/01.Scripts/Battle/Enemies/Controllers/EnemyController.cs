@@ -8,17 +8,19 @@ public class EnemyController : EnemyBaseController, IDamagable
     [Header("Resource")]
     public float health;
     public float attack;
-    public string monsterBehaviour; 
+    
+    public string name; 
     
     public EnemyAgent agent { get; private set; }
     public EnemyResourceHandler resourceHandler { get; private set; }
     public EnemyStatusHandler statusHandler { get; private set; }
     public EnemyRewardHandler rewardHandler { get; private set; }
     
-    private void Awake()
+    protected override void Awake()
     {
-        target = GameObject.FindGameObjectWithTag("Player").transform;
-
+        base.Awake();
+        
+        target = GameObject.FindGameObjectWithTag("Player").transform; // 에이전트
         agent = GetComponent<EnemyAgent>();
 
         resourceHandler = GetComponent<EnemyResourceHandler>();
@@ -26,10 +28,13 @@ public class EnemyController : EnemyBaseController, IDamagable
         rewardHandler = GetComponent<EnemyRewardHandler>();
     }
     
-    public virtual void Start()
+    public void Start()
     {
-        // 스킬 자체라면 스킬이름을 주입하면 됨
-        btMachine.Define(Enemies.behaviours["goblin"]);
+        // animationHandler.SetController(EnemyAnimators.animators[name]);
+        // 에러처리 필요
+        btMachine.Define(Enemies.Get(name).Node); // 각 개체별 생성되는 방식
+        btMachine.SetPlaying(true);
+        
         try { MapSpawnManager.Instance.SpawnedMap.monsterManager.AddList(this); }
         catch { Debug.Log("there is no MapspawnManager"); }
     }
@@ -37,24 +42,17 @@ public class EnemyController : EnemyBaseController, IDamagable
 
     public void GetDamage(float damage) // notice: summon은 제외
     {
+        Debug.Log(1);
         // Vector3 textPosition = transform.position + Vector3.up * 1f;
         // DamageTextManager.Instance.ShowDamage(textPosition, (int)damage);
         
         // resourceHandler에서 처리
         health -= damage;
         statusHandler.stamina -= 1;
+        if (statusHandler.stamina <= 0) { statusHandler.stamina = 3; }
 
-        if (statusHandler.stamina <= 0)
-        {
-            statusHandler.stamina = 3;
-            Debug.Log("knock out");
-        }
-
-        if (!statusHandler.isIgnoreHitAction)
-        {
-            statusHandler.isHit = true;
-            btMachine.Notify();
-        }
+        statusHandler.isHit = true;
+        btMachine.Notify();
 
         if (health <= 0) Die();
     }

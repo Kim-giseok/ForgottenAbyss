@@ -7,8 +7,8 @@ public class BTMachine
 {
     private EnemyBaseController controller;
 
-    
-    public bool isRunning = true;
+    public BTContext context = new();
+    public bool isPlaying { get; private set; } = false;
     public float currTime { get; private set; }
 
     private Node rootNode;
@@ -23,39 +23,73 @@ public class BTMachine
     // ReSharper disable Unity.PerformanceAnalysis
     public void Run()
     {
-        if (!isRunning) return;
+        if (!isPlaying) return;
         
         currTime += Time.fixedDeltaTime;
         
         var snapshot = new List<Node>(currNodes);
-        snapshot.ForEach(node => node.Update());
+        snapshot.ForEach(node =>
+        {
+            node.SetController(controller);
+            node.Update();
+        });
+    }
+
+    public void SetPlaying(bool isPlaying)
+    {
+        this.isPlaying = isPlaying;
     }
 
     public void SetNode(params Node[] newNodes)
     {
-        isRunning = false;
+        isPlaying = false;
         
-        var snapshot = new List<Node>(currNodes);
-        // currNodes.ForEach(node => node.End());
+        var snapshot = new List<Node>(newNodes);
+        currNodes.ForEach(node =>
+        {
+            node.SetController(controller);
+            node.End();
+        });
         
         currTime = 0;
         currNodes.Clear();
         currNodes.AddRange(newNodes);
         
-        snapshot.ForEach(node => node.Start());
+        snapshot = new List<Node>(newNodes);
+        snapshot.ForEach(node =>
+        {
+            node.SetController(controller);
+            node.Start();
+        });
         
-        isRunning = true;
+        isPlaying = true;
     }
 
     public void OnAnimatedEvent(bool isFire)
     {
-        currNodes.ForEach(node => node.OnAnimatedEvent(isFire));
+        var snapshot = new List<Node>(currNodes); // 스냅샵 비용 발생
+        // 이 작업 자체를 추상화하기
+        snapshot.ForEach(node =>
+        {
+            node.SetController(controller); // 모든 이벤트마다 controller 등록이 발생함
+            node.OnAnimatedEvent(isFire);
+        });
+    }
+
+    public void OnASD()
+    {
+        var snapshot = new List<Node>(currNodes);
+        snapshot.ForEach(node =>
+        {
+            node.SetController(controller);
+            node.OnDetected(EnemyDetectHandler.DetectType.Grounded, true);
+        });
     }
 
     public void Define(Node newNode)    
     {
         rootNode = new RootNode(newNode);
-        Connect(rootNode);
+        // Connect(rootNode);
         SetNode(rootNode);
     }
 
@@ -73,6 +107,7 @@ public class BTMachine
     public void Play(Node newNode, Action OnFinish)
     {
         rootNode = new RootNode(newNode).WhenLooped(OnFinish);
+        // Connect(rootNode);
         SetNode(rootNode);
     }
 }

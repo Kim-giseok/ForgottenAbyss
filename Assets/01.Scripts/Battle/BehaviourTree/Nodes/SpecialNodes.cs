@@ -19,22 +19,29 @@ public class GuardNode : Node
 // knockBack이 들어갈 수도 있도록
 public class HitNode : Node
 {
-    private bool isNockBack = false;
+    private bool isNockBack = false; // 내부 변수 불가능
     
     public override void Start()
     {
-        // if (!controller.statusHandler.isHit) // do: 시퀀스를 통행 애초에 진입이 안되도록 노드 지정
-        // {
-            // SetStatus(Status.Fail);
-            // return;
-        // }
+        if (controller is not EnemyController eController) return;
+        if (!eController.statusHandler.isHit) // do: 시퀀스를 통행 애초에 진입이 안되도록 노드 지정
+        {
+            SetStatus(Status.Fail);
+            return;
+        }
         
         // 타격 받은 쪽으로 회전
         // Vector2 direction = (controller.agent.player.transform.position - controller.transform.position).normalized;
         // controller.Flip(direction.x > 0);
         
-        controller.animationHandler.Set(EnemyAnimationHandler.Hit);
-        // controller.statusHandler.isHit = false;
+        if(eController.statusHandler.isIgnoreHitAction) eController.spriteRenderer.color = Color.red;
+        else
+        {
+            Debug.Log("animation start");
+            eController.animationHandler.Set(EnemyAnimationHandler.Hit);
+        }
+        
+        eController.statusHandler.isHit = false;
     }
 
     public override void OnAnimated(AnimationStatus status, AnimatorStateInfo animInfo)
