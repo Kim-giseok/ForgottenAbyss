@@ -5,6 +5,13 @@ using UnityEngine;
 
 public class MachineTrap : MachineLoop
 {
-    [SerializeField] int atk;
-    [SerializeField] LayerMask attackLayer;
+    [SerializeField] float atk;
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (!collision.TryGetComponent<IDamagable>(out IDamagable damaged)) return;
+
+        damaged.GetDamage(atk);
+        Debug.Log("Damaged");
+    }
 }
