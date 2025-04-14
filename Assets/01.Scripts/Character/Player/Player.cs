@@ -43,15 +43,10 @@ public class Player : MonoBehaviour, IDamagable
         }
     }
 
-
     IEnumerator TestGetDamage() //피격 판정 테스트용 
     {
         GetDamage(10);
-        animator.SetBool("IsHit", true);
+        animator.SetTrigger("HitTrigger");
         yield return new WaitForSeconds(0.5f);
-        animator.SetBool("IsHit", false);
-        
-
     }
-
 }

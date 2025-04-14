@@ -97,7 +97,7 @@ public class SkillManager : Singleton<SkillManager>
             }
 
             // ¿Ã∆Â∆Æ √≥∏Æ
-            if (visualSO.skillEffectPrefab != null && skillData.Type != SkillType.Memory)
+            if (visualSO.skillEffectPrefab != null && !visualSO.isTogether)
             {
                 StartCoroutine(PlayEffectWithDelay(visualSO, spawnPoint));
             }

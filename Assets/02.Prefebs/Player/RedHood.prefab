@@ -52,6 +52,7 @@ GameObject:
   - component: {fileID: 447847266130749123}
   - component: {fileID: 4415495858370617319}
   - component: {fileID: 8607925810357332777}
+  - component: {fileID: 4046284310909441350}
   m_Layer: 8
   m_Name: RedHood
   m_TagString: Player
@@ -265,16 +266,9 @@ MonoBehaviour:
   invincibilityLayerMask:
     serializedVersion: 2
     m_Bits: 512
-  wallLayer:
-    serializedVersion: 2
-    m_Bits: 0
-  wallDistance: 0
-  isWallDetected: 0
-  isWallClimbing: 0
   isGround: 0
   isDashing: 0
   isAttacking: 0
-  isIgnoringCollision: 0
   isInvincible: 0
   rigid: {fileID: 0}
   animator: {fileID: 0}
@@ -340,6 +334,7 @@ MonoBehaviour:
   skill02Id: 0
   memorySkillId: 0
   skillSpawnPoint: {fileID: 3592222812765152639}
+  skillSpawnPoint2: {fileID: 6279390733494535156}
 --- !u!114 &4415495858370617319
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -368,3 +363,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 8708700905438549016}
   firePoint: {fileID: 6279390733494535156}
+--- !u!114 &4046284310909441350
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3741893359042678545}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79fba0894687e9547b2b9859db700eaf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

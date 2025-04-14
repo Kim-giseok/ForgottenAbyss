@@ -188,6 +188,7 @@ public class ComboAttack : MonoBehaviour
         if (target != null)
         {
             var enemy = target.GetComponent<EnemyController>();
+
             if (enemy != null)
             {
                 Debug.Log("데미지 계산 실행");

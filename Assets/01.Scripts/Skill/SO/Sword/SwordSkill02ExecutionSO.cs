@@ -40,14 +40,10 @@ public class SwordSkill02ExecutionSO : SkillExecutionSO
         if (casterCollider != null)
             casterCollider.enabled = false;
 
-        MonoBehaviour mono = caster.GetComponent<MonoBehaviour>();
-        if (mono != null)
+        CoroutinRunner.Instance.StartCoroutine(DashCoroutine(caster, startPos, targetPos, casterCollider, () =>
         {
-            mono.StartCoroutine(DashCoroutine(caster, startPos, targetPos, casterCollider, () =>
-            {
-                mono.StartCoroutine(DelayedHitCoroutine(startPos, targetPos, castData));
-            }));
-        }
+            CoroutinRunner.Instance.StartCoroutine(DelayedHitCoroutine(startPos, targetPos, castData));
+        }));
     }
 
     private IEnumerator DashCoroutine(GameObject caster, Vector3 startPos, Vector3 targetPos, Collider2D casterCollider, System.Action onComplete)

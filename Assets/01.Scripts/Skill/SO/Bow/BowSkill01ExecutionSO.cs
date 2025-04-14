@@ -18,13 +18,6 @@ public class BowSkill01ExecutionSO : SkillExecutionSO
         Vector2 origin = (Vector2)caster.transform.position + direction * 2f;
 
         CoroutinRunner.Instance.RunCoroutine(ExecuteWithEffectDelay(caster, origin, direction, castData));
-        //// 관통 판정 (RaycastAll)
-        //RaycastHit2D[] hits = Physics2D.RaycastAll(origin, direction, range, hitMask);
-
-        //foreach (var hit in hits)
-        //{
-        //    DealDamageToTarget(hit.collider.gameObject, castData);
-        //}
     }
 
     private IEnumerator ExecuteWithEffectDelay(GameObject caster, Vector2 origin, Vector2 direction, SkillCastData castData)

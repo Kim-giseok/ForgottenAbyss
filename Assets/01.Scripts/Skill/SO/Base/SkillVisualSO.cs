@@ -35,5 +35,5 @@ public class SkillVisualSO : ScriptableObject
     // 이펙트 딜레이 시간
     public float effectDelay;
 
-    // 필요한 스탯 추가 (유지 시간, 사거리 이런거?)
+    public bool isTogether;
 }
