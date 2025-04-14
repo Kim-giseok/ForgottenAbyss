@@ -518,11 +518,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 63bc3666205fef141b9896ca69963514, type: 3}
---- !u!212 &1319917724 stripped
-SpriteRenderer:
-  m_CorrespondingSourceObject: {fileID: 6048227883838887976, guid: 6dc31ed564c18ca4b9568794c27595d7, type: 3}
-  m_PrefabInstance: {fileID: 6851509142293679293}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1319917727 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 447847266130749123, guid: 6dc31ed564c18ca4b9568794c27595d7, type: 3}
@@ -906,17 +901,6 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1162663201}
   m_SourcePrefab: {fileID: 100100000, guid: 6b9a15a9d4e3e29488105fece2a90797, type: 3}
---- !u!114 &1466530479 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1184184210302271473, guid: 496931f166799724294a74321c601b1e, type: 3}
-  m_PrefabInstance: {fileID: 1353389547}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dbdfa3cb341b9fc4b80a310624cc7962, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1756980717
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1100,17 +1084,9 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1319917735}
     - target: {fileID: 497392018163810730, guid: 2cef33c320151574f914bdb408e62aab, type: 3}
-      propertyPath: playerRenderer
-      value: 
-      objectReference: {fileID: 1319917724}
-    - target: {fileID: 497392018163810730, guid: 2cef33c320151574f914bdb408e62aab, type: 3}
       propertyPath: skillController
       value: 
       objectReference: {fileID: 1319917727}
-    - target: {fileID: 497392018163810730, guid: 2cef33c320151574f914bdb408e62aab, type: 3}
-      propertyPath: quickSlotController
-      value: 
-      objectReference: {fileID: 1466530479}
     - target: {fileID: 1524514876729645651, guid: 2cef33c320151574f914bdb408e62aab, type: 3}
       propertyPath: skillUI
       value: 
@@ -1118,34 +1094,6 @@ PrefabInstance:
     - target: {fileID: 2714057563554896699, guid: 2cef33c320151574f914bdb408e62aab, type: 3}
       propertyPath: m_Name
       value: SkillSystem
-      objectReference: {fileID: 0}
-    - target: {fileID: 3622915880698505367, guid: 2cef33c320151574f914bdb408e62aab, type: 3}
-      propertyPath: effectList.Array.size
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 3622915880698505367, guid: 2cef33c320151574f914bdb408e62aab, type: 3}
-      propertyPath: effectList.Array.data[4].key
-      value: BowSkill01
-      objectReference: {fileID: 0}
-    - target: {fileID: 3622915880698505367, guid: 2cef33c320151574f914bdb408e62aab, type: 3}
-      propertyPath: effectList.Array.data[5].key
-      value: BowSkill02
-      objectReference: {fileID: 0}
-    - target: {fileID: 3622915880698505367, guid: 2cef33c320151574f914bdb408e62aab, type: 3}
-      propertyPath: effectList.Array.data[4].prefab
-      value: 
-      objectReference: {fileID: 4883125216578259596, guid: 5fcd16738b4416042b5899739f594824, type: 3}
-    - target: {fileID: 3622915880698505367, guid: 2cef33c320151574f914bdb408e62aab, type: 3}
-      propertyPath: effectList.Array.data[5].prefab
-      value: 
-      objectReference: {fileID: 7023494829652142248, guid: d206c7f780630034a8969b45a6f23623, type: 3}
-    - target: {fileID: 3622915880698505367, guid: 2cef33c320151574f914bdb408e62aab, type: 3}
-      propertyPath: effectList.Array.data[4].initialSize
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 3622915880698505367, guid: 2cef33c320151574f914bdb408e62aab, type: 3}
-      propertyPath: effectList.Array.data[5].initialSize
-      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 8218525754157547995, guid: 2cef33c320151574f914bdb408e62aab, type: 3}
       propertyPath: m_LocalPosition.x
