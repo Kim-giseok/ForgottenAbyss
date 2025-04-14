@@ -5,9 +5,22 @@ using UnityEngine;
 
 public class QuickSlotController : MonoBehaviour
 {
+    public static QuickSlotController Instance {  get; private set; }
+
     [SerializeField] private QuickSlot[] quickSlots; // ƒ¸ΩΩ∑‘ ΩΩ∑‘µÈ
+    public int SelectedIndex => selectedIndex;
+
     private int selectedIndex = -1; // º±≈√µ» ΩΩ∑‘ æ¯¿Ω
 
+    private void Awake()
+    {
+        Instance = this;
+
+        for (int i = 0; i < quickSlots.Length; i++)
+        {
+            quickSlots[i].SetIndex(i); // ΩΩ∑‘∏∂¥Ÿ ¿Œµ¶Ω∫ √ﬂ∞°
+        }
+    }
 
     void Update()
     {
@@ -17,15 +30,9 @@ public class QuickSlotController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha3)) HandleSlotInput(2);
         if (Input.GetKeyDown(KeyCode.Alpha4)) HandleSlotInput(3);
         if (Input.GetKeyDown(KeyCode.Alpha5)) HandleSlotInput(4);
-
-        // æ∆¿Ã≈€ ªÁøÎ
-        if (Input.GetKeyDown(KeyCode.U) && selectedIndex >= 0)
-        {
-            quickSlots[selectedIndex].UseItem();
-        }
     }
 
-    void HandleSlotInput(int index)
+    private void HandleSlotInput(int index)
     {
         if (selectedIndex == index)
         {
@@ -35,6 +42,11 @@ public class QuickSlotController : MonoBehaviour
         {
             SelectSlot(index);
         }
+    }
+
+    public void SelectSlotFromOutside(int index)
+    {
+        SelectSlot(index);
     }
 
     // ΩΩ∑‘ º±≈√

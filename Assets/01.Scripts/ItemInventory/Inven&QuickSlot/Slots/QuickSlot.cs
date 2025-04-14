@@ -4,9 +4,16 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class QuickSlot : SlotBase
+public class QuickSlot : SlotBase, IPointerClickHandler
 {
     [SerializeField] private GameObject outlineObject; // 선택된 슬롯 테두리
+
+    private int slotIndex = -1;
+
+    public void SetIndex(int index)
+    {
+        slotIndex = index;
+    }
 
     public override void OnDrop(PointerEventData eventData)
     {
@@ -32,6 +39,20 @@ public class QuickSlot : SlotBase
         if (outlineObject != null)
         {
             outlineObject.SetActive(selected);
+        }
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if (slotIndex == -1) return;
+
+        if (QuickSlotController.Instance.SelectedIndex == slotIndex)
+        {
+            UseItem(); // 이미 선택된 슬롯이면 사용
+        }
+        else
+        {
+            QuickSlotController.Instance.SelectSlotFromOutside(slotIndex);
         }
     }
 }
