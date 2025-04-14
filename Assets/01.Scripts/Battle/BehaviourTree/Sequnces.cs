@@ -1,33 +1,28 @@
-using System;
-using System.Collections.Generic;
-using JetBrains.Annotations;
+
+// 시퀀스를 싱글 노드를 기준으로 해보기
+
 using UnityEngine;
 
 public class RootNode : Node
 {
-    private Action OnLooped;
     public RootNode(Node node)
     {
         node.SetParent(this);
         children.Add(node);
     }
-    
-    public RootNode WhenLooped(Action currEvent)
-    {
-        OnLooped += currEvent;
-        return this;
-    }
 
+    // 업데이트에서 할 경우 문제가 생길 수 있음
     public override void Update()
     {
-        btMachine.SetNode(children[0]);
+        machine.SetCurrentNode(children[0]);
+
     }
 
     // 어떤 상태가 들어오든 다시 시작
     public override void GetStatus(Status newStatus, Node caller)
     {
-        OnLooped?.Invoke();
-        btMachine.SetNode(children[0]);    
+        machine.OnLooped?.Invoke();
+        machine.SetCurrentNode(children[0]);
     }
 }
 
@@ -44,26 +39,27 @@ public class SequenceNode : Node
 
     public override void Start()
     {
-        btMachine.SetNode(children[0]);
+        machine.SetCurrentNode(children[0]);
     }
 
     public override void GetStatus(Status newStatus , Node caller)
     {
+
         if (newStatus == Status.Fail)
         {
             SetStatus(Status.Fail);
             return;
         }
         
+        // bug: 복사본이 있다면 다음 인덱스로 인식하지 못하는 문제 발생
         int currIndex = children.IndexOf(caller);
         if (currIndex < children.Count - 1)
         {
-            btMachine.SetNode(children[currIndex + 1]);
+            machine.SetCurrentNode(children[currIndex + 1]);
             return;
         }
-        
+
         SetStatus(Status.Success);
-        return;
     }
 }
 
@@ -80,22 +76,21 @@ public class SelectorNode : Node
     
     public override void Start()
     {
-        btMachine.SetNode(children[0]);
+        machine.SetCurrentNode(children[0]);
     }
     
     public override void GetStatus(Status newStatus, Node caller)
     {
+
         if (newStatus == Status.Fail)
         {
             int currIndex = children.IndexOf(caller);
-            
             if (currIndex < children.Count - 1)
             {
-                btMachine.SetNode(children[currIndex + 1]);
+                machine.SetCurrentNode(children[currIndex + 1]);
                 return;
             }
             
-                 
             SetStatus(Status.Fail);
             return;
         }
@@ -104,37 +99,45 @@ public class SelectorNode : Node
     }
 }
 
-public class ParallelNode : Node
-{
-    public ParallelNode(params Node[] nodes)
-    {
-        children.AddRange(nodes);
-    }
-
-    public override void Start()
-    {
-        // 복수로 등록
-        // btMachine.SetNode(children);
-    }
-
-    // notice: 복수 실행 자체는 BTMachine에서 처리하며 조건 감지만 이곳에서 처리
-    public override void GetStatus(Status newStatus, Node caller)
-    {
-        // notice: 하나의 노드에서 응답 받은 경우, 상위 노드에게 바로 전달
-        SetStatus(newStatus);
-    }
-}
-
-public class RandomNode : Node
-{
-    
-}
-
-// 어떻게 데코할 것인가?
-public class DecoratorNode : Node
-{
-    public DecoratorNode(Node child)
-    {
-        children.Add(child);
-    }
-}
+// 추후 데코 노드 구현 필요 - 시퀀스 안에서 또 병렬 노드라면 문제 발생
+// public class ParallelNode : Node
+// {
+//     public ParallelNode(params Node[] nodes)
+//     {
+//         foreach(Node child in nodes)
+//         {
+//             child.SetParent(this);
+//             children.Add(child);
+//         }
+//     }
+//     
+//     public override void Start()
+//     {
+//         machine.SetPlaying(false);
+//         
+//         machine.currNodes.AddRange(children.ToArray());
+//         machine.currTime = 0;
+//         foreach (var child in children)
+//         {
+//             child.SetController(controller);
+//             child.Start();
+//         }
+//         
+//         machine.SetPlaying(true);
+//     }
+//
+//     // notice: 복수 실행 자체는 BTMachine에서 처리하며 조건 감지만 이곳에서 처리
+//     public override void GetStatus(Status newStatus, Node caller)
+//     {
+//         machine.SetPlaying(false);
+//         foreach (Node child in children)
+//         {
+//             machine.currNodes.Remove(child);
+//             child.End();
+//         }
+//         machine.SetPlaying(true);
+//         
+//         // notice: 하나의 노드에서 응답 받은 경우, 상위 노드에게 바로 전달
+//         SetStatus(newStatus);
+//     }
+// }
