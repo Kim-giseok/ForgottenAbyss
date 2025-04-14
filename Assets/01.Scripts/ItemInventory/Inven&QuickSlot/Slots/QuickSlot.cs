@@ -21,6 +21,7 @@ public class QuickSlot : SlotBase
     {
         if (currentItem != null)
         {
+            Debug.Log("아이템 사용");
             currentItem.Use();
         }
 
