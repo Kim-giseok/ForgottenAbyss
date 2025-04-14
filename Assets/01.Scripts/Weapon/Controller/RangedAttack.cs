@@ -66,9 +66,13 @@ public class RangedAttack : MonoBehaviour
 
     public void OnRangedNext()
     {
+        Debug.Log($"[Ranged] OnRangedNext called. inputCombo: {inputCombo}, attackIndex: {attackIndex}");
+
+
         if (inputCombo && attackIndex < rangedData.comboSteps.Count)
         {
             attackIndex++;
+            Debug.Log("attackindec ++");
             inputCombo = false;
             PlayRangedAnimation();
         }

@@ -41,6 +41,8 @@ public class ControllerPlayer : MonoBehaviour
     private Dictionary<PlayerState, PlayerStateMachine> states = new Dictionary<PlayerState, PlayerStateMachine>();
     private PlayerState currentState;
 
+    private bool isFacingRight = true;
+
     private void Awake()
     {
         rigid = GetComponent<Rigidbody2D>();
@@ -238,13 +240,19 @@ public class ControllerPlayer : MonoBehaviour
 
     public void UpdateDirection() //방향 전환
     {
-        if(inputVec.x < 0)
+        if (inputVec.x < 0 && isFacingRight)
         {
+            // 오른쪽 → 왼쪽으로 바뀜
+            isFacingRight = false;
             transform.localEulerAngles = new Vector3(0, 180, 0);
+            animator.SetTrigger("TurnTrigger");
         }
-        else if(inputVec.x > 0)
+        else if (inputVec.x > 0 && !isFacingRight)
         {
+            // 왼쪽 → 오른쪽으로 바뀜
+            isFacingRight = true;
             transform.localEulerAngles = new Vector3(0, 0, 0);
+            animator.SetTrigger("TurnTrigger");
         }
     }
 

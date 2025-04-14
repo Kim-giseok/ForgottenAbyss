@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 57b275f6c70162047b26bdaf972d5878
+guid: 9dcb5d548df770e47ab2bd092b98a562
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -45,7 +45,7 @@ TextureImporter:
   compressionQuality: 50
   spriteMode: 2
   spriteExtrude: 1
-  spriteMeshType: 1
+  spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 32
@@ -136,10 +136,10 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: dash_01
+      name: itch dash sheet-Sheet_0
       rect:
         serializedVersion: 2
-        x: 20
+        x: 44
         y: 21
         width: 16
         height: 31
@@ -150,101 +150,17 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c499a39fdc67d56499c28505350ef0b4
-      internalID: -2066931289
+      spriteID: 198eaf1284679a749875dec20601a171
+      internalID: -877851176
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: dash_02
+      name: itch dash sheet-Sheet_1
       rect:
         serializedVersion: 2
-        x: 99
-        y: 21
-        width: 26
-        height: 20
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 4a9100859dcad954bb05afbd6eec4eca
-      internalID: 1665444364
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: dash_03
-      rect:
-        serializedVersion: 2
-        x: 179
-        y: 21
-        width: 26
-        height: 20
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: fd3846202dc136946a5fa6123e3ee4e0
-      internalID: -1683908276
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: dash_04
-      rect:
-        serializedVersion: 2
-        x: 259
-        y: 21
-        width: 26
-        height: 20
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: f3898e4c41fdef04e9904a0e190fe7fd
-      internalID: -315649744
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: dash_05
-      rect:
-        serializedVersion: 2
-        x: 339
-        y: 21
-        width: 27
-        height: 22
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 77f6e982ad46e7d4d8416d826535d826
-      internalID: 598032262
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: dash_06
-      rect:
-        serializedVersion: 2
-        x: 419
+        x: 118
         y: 21
         width: 23
         height: 23
@@ -255,17 +171,101 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 0128abedf90a5174bb8bc6583810d1fe
-      internalID: -960068773
+      spriteID: c0d9b61d1871760448ab90950fe57bc1
+      internalID: -1587894999
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: dash_07
+      name: itch dash sheet-Sheet_2
       rect:
         serializedVersion: 2
-        x: 500
+        x: 194
+        y: 21
+        width: 27
+        height: 22
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 23266b7edc282b44f929f62553501cbf
+      internalID: -1960468351
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: itch dash sheet-Sheet_3
+      rect:
+        serializedVersion: 2
+        x: 275
+        y: 21
+        width: 26
+        height: 20
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0328db8a27ee3c24dbb65cb249ea8658
+      internalID: 1509930607
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: itch dash sheet-Sheet_4
+      rect:
+        serializedVersion: 2
+        x: 355
+        y: 21
+        width: 26
+        height: 20
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f1e7af81bb308df499b98560617c8e1e
+      internalID: -61237429
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: itch dash sheet-Sheet_5
+      rect:
+        serializedVersion: 2
+        x: 435
+        y: 21
+        width: 26
+        height: 20
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4173eea6e9acb82489bc256234f7cecd
+      internalID: -106132351
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: itch dash sheet-Sheet_6
+      rect:
+        serializedVersion: 2
+        x: 524
         y: 21
         width: 16
         height: 31
@@ -276,8 +276,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 8895ec6d9f9b9a9449884434c4156a6c
-      internalID: 1227972345
+      spriteID: e183881bb21603b47b29367def3fbb17
+      internalID: -2051102440
       vertices: []
       indices: 
       edges: []
@@ -293,13 +293,13 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      dash_01: -2066931289
-      dash_02: 1665444364
-      dash_03: -1683908276
-      dash_04: -315649744
-      dash_05: 598032262
-      dash_06: -960068773
-      dash_07: 1227972345
+      itch dash sheet-Sheet_0: -877851176
+      itch dash sheet-Sheet_1: -1587894999
+      itch dash sheet-Sheet_2: -1960468351
+      itch dash sheet-Sheet_3: 1509930607
+      itch dash sheet-Sheet_4: -61237429
+      itch dash sheet-Sheet_5: -106132351
+      itch dash sheet-Sheet_6: -2051102440
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

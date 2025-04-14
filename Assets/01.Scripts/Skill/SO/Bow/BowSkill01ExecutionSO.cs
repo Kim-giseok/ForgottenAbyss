@@ -14,8 +14,8 @@ public class BowSkill01ExecutionSO : SkillExecutionSO
     {
         SkillCastData castData = PrepareCastData(caster, target, data);
 
-        Vector2 origin = (Vector2)caster.transform.position + new Vector2(2f, 0f);
-        Vector2 direction = caster.transform.right;
+        Vector2 direction = caster.transform.right.normalized;
+        Vector2 origin = (Vector2)caster.transform.position + direction * 2f;
 
         CoroutinRunner.Instance.RunCoroutine(ExecuteWithEffectDelay(caster, origin, direction, castData));
         //// 관통 판정 (RaycastAll)
@@ -31,14 +31,14 @@ public class BowSkill01ExecutionSO : SkillExecutionSO
     {
         yield return new WaitForSeconds(damageDelay);
 
-        float extraLength = 4f; // 범위 확장값
-        Vector2 dashDir = direction.normalized;
-        Vector2 extendedStart = (Vector2)origin - dashDir * (extraLength / 2f);
-        Vector2 extendedEnd = (Vector2)origin + dashDir * (range + extraLength / 2f);  // 기본 범위 + 확장
+        float extraLength = 3f; // 범위 확장값
+        Vector2 dir = direction.normalized;
 
-        Vector2 center = (extendedStart + extendedEnd) / 2f;
-        Vector2 size = new Vector2((extendedEnd - extendedStart).magnitude, hitRadius * 2f);  // hitRadius는 필요에 맞게 설정
-        float angle = Vector2.SignedAngle(Vector2.right, extendedEnd - extendedStart);
+        float totalRange = range + extraLength; // 전체 박스 길이
+
+        Vector2 center = origin + dir * (range / 2f); // origin 기준 앞으로 절반만큼 이동한 지점을 중심으로
+        Vector2 size = new Vector2(totalRange, hitRadius * 2f); // 박스 크기
+        float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
 
         // OverlapBox로 판정
         var hits = Physics2D.OverlapBoxAll(center, size, angle, hitMask);
