@@ -13,6 +13,8 @@ public class IdleNode : Node
     public override void Start()
     {
         controller.rigidbody.velocity = new Vector2(0, controller.rigidbody.velocity.y);
+        
+        controller.animationHandler.Play("Idle");
     }
 
     public override void Update()
@@ -46,8 +48,8 @@ public class PatrolMove : Node
             controller.Flip(direction != Vector2.right);
             SetStatus(Status.Fail); return;
         } 
-        
-        controller.animationHandler.Set(EnemyAnimationHandler.Run, true);
+     
+        controller.animationHandler.Play("Run");
     }
 
     public override void Update()
@@ -62,16 +64,10 @@ public class PatrolMove : Node
     
     public override void OnPhysicsDetected(EnemyDetectHandler.DetectType detectType, string value)
     {
-        Debug.Log(detectType + " : " + value);
         if (detectType == EnemyDetectHandler.DetectType.Walkable && !bool.Parse(value))
         {
             SetStatus(Status.Success);
         }
-    }
-    
-    public override void End()
-    {
-        controller.animationHandler.Set(EnemyAnimationHandler.Run, false);
     }
     
     public override void OnAgentDetected(EnemyAgent.Status status)
@@ -87,7 +83,8 @@ public class TracingNode : Node
         // 추적이 완료되면 무한 재귀 발생
         if(controller.agent.status == EnemyAgent.Status.None) { SetStatus(Status.Fail); return; }
         if(controller.agent.status == EnemyAgent.Status.Tracked) { SetStatus(Status.Success); return; }
-        controller.animationHandler.Set(EnemyAnimationHandler.Run, true);
+        
+        controller.animationHandler.Play("Run");
     }
     
     public override void Update()
@@ -97,11 +94,6 @@ public class TracingNode : Node
         controller.rigidbody.velocity = new Vector2(controller.agent.GetDirection().x * controller.agent.tracingSpeed, controller.rigidbody.velocity.y);
     }
     
-    public override void End()
-    {
-        controller.animationHandler.Set(EnemyAnimationHandler.Run, false);
-    }
-
     public override void OnAgentDetected(EnemyAgent.Status status)
     {
         if(status == EnemyAgent.Status.None) { SetStatus(Status.Fail); }
@@ -128,7 +120,7 @@ public class JumpNode : Node
 {
     public override void Start()
     {
-        controller.animationHandler.Set(EnemyAnimationHandler.Attack);
+        // controller.animationHandler.Set(EnemyAnimationHandler.Attack);
         // var currDirection = (controller.target.position - controller.transform.position).normalized;
         // var direction = currDirection.x < 0 ? -1 : 1; // 타깃이 몬스터라면 문제가 생김
         

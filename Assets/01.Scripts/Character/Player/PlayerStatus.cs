@@ -7,20 +7,20 @@ public class PlayerStatus : CharacterStatus
 {
     private void Start()
     {
-        stats[StatType.HP] = 100f; //ÃÊ±â HP
-        stats[StatType.MP] = 100f; //ÃÊ±â MP
-        stats[StatType.ATK] = 10f; //ÃÊ±â °ø°Ý·Â
-        stats[StatType.DEF] = 10f; //ÃÊ±â ¹æ¾î·Â
-        stats[StatType.LEVEL] = 1f; //ÃÊ±â ·¹º§
-        stats[StatType.EXP] = 0f; //ÃÊ±â °æÇèÄ¡
-        stats[StatType.GOLD] = 0f; //ÃÊ±â °ñµå
+        stats[StatType.HP] = 100f; //ï¿½Ê±ï¿½ HP
+        stats[StatType.MP] = 100f; //ï¿½Ê±ï¿½ MP
+        stats[StatType.ATK] = 10f; //ï¿½Ê±ï¿½ ï¿½ï¿½ï¿½Ý·ï¿½
+        stats[StatType.DEF] = 10f; //ï¿½Ê±ï¿½ ï¿½ï¿½ï¿½ï¿½
+        stats[StatType.LEVEL] = 1f; //ï¿½Ê±ï¿½ ï¿½ï¿½ï¿½ï¿½
+        stats[StatType.EXP] = 0f; //ï¿½Ê±ï¿½ ï¿½ï¿½ï¿½ï¿½Ä¡
+        stats[StatType.GOLD] = 0f; //ï¿½Ê±ï¿½ ï¿½ï¿½ï¿½
 
         Debug.Log($"HP: {stats[StatType.HP]}");
         Debug.Log($"MP: {stats[StatType.MP]}");
-        Debug.Log($"°ø°Ý·Â: {stats[StatType.ATK]}");
-        Debug.Log($"¹æ¾î·Â: {stats[StatType.DEF]}");
-        Debug.Log($"·¹º§: {stats[StatType.LEVEL]}");
-        Debug.Log($"°æÇèÄ¡: {stats[StatType.EXP]}");
-        Debug.Log($"°ñµå: {stats[StatType.GOLD]}");
+        Debug.Log($"ï¿½ï¿½ï¿½Ý·ï¿½: {stats[StatType.ATK]}");
+        Debug.Log($"ï¿½ï¿½ï¿½ï¿½: {stats[StatType.DEF]}");
+        Debug.Log($"ï¿½ï¿½ï¿½ï¿½: {stats[StatType.LEVEL]}");
+        Debug.Log($"ï¿½ï¿½ï¿½ï¿½Ä¡: {stats[StatType.EXP]}");
+        Debug.Log($"ï¿½ï¿½ï¿½: {stats[StatType.GOLD]}");
     }
 }

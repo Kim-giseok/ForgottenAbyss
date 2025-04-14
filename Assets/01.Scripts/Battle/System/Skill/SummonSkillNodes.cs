@@ -8,7 +8,7 @@ namespace Summon
         {
             if (controller is not SummonController sController) { SetStatus(Status.Fail); return; }
             
-            controller.animationHandler.Set(EnemyAnimationHandler.Attack);
+            // controller.animationHandler.Set(EnemyAnimationHandler.Attack);
             context.Set("direction", sController.tRigidbody.velocity.normalized);
             
             sController.Flip(Mathf.Approximately(sController.target.eulerAngles.y, 0));

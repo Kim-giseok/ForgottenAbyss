@@ -5,7 +5,6 @@ public class TempTester: MonoBehaviour
 
    private void Start()
    {
-      Debug.Log(Enemies.Enemy.NightBone.ToString());
    }
    
    private void Update()

@@ -35,8 +35,8 @@ public class HitNode : Node
         // controller.Flip(direction.x > 0);
         
         if(eController.statusHandler.isIgnoreHitAction) eController.spriteRenderer.color = Color.red;
-        else eController.animationHandler.Set(EnemyAnimationHandler.Hit);
-        
+        controller.animationHandler.Play("Hit");
+
         eController.statusHandler.isHit = false;
     }
 

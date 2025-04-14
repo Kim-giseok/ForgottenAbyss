@@ -18,7 +18,7 @@ public class EnemyBaseController: MonoBehaviour
         collider = GetComponent<Collider2D>();
         rigidbody = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>(); 
-        animationHandler = new EnemyAnimationHandler(GetComponent<Animator>());
+        animationHandler = GetComponent<EnemyAnimationHandler>();
 
         combatHandler = new EnemyCombatHandler();
         detectHandler = GetComponent<EnemyDetectHandler>();

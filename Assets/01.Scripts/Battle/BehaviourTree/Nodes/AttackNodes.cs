@@ -6,8 +6,8 @@ public class MeleeAttack : Node
 {
     public override void Start()
     {
-        controller.animationHandler.Set(EnemyAnimationHandler.Attack);
         controller.LookTarget();
+        controller.animationHandler.Play("Attack");
     }
 
     public override void OnAnimatedEvent(bool isFire)
@@ -41,7 +41,7 @@ public class RangeAttackNode : Node
 {
     public override void Start()
     {
-        controller.animationHandler.Set(EnemyAnimationHandler.Attack);
+        // controller.animationHandler.Set(EnemyAnimationHandler.Attack);
         controller.LookTarget();
     }
 
@@ -66,7 +66,7 @@ public class RangeToTargetNode : Node
 {
     public override void Start()
     {
-        controller.animationHandler.Set(EnemyAnimationHandler.Attack); // 공통 부분
+        // controller.animationHandler.Set(EnemyAnimationHandler.Attack); // 공통 부분
     }
 
     public override void OnAnimatedEvent(bool isFire)

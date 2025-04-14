@@ -35,6 +35,7 @@ public class AnimationPlayer : MonoBehaviour
 
     private void Start()
     {
+        // animator.Play("Idle");
         animator.Play("Explosion");
         // StartCoroutine(WaitForAnimation(0.2f)); // 3초 기다리기
     }
