@@ -88,8 +88,22 @@ public class SkillController : Singleton<SkillController>
             SkillManager.Instance.TryUseSkill(skillId, skillSpawnPoint2);
         }
 
-        yield return new WaitForSeconds(0.6f); //스킬 연출 시간
+        yield return new WaitForSeconds(GetAnimPlayTime(skillId));
 
         isSkillPlaying = false;
+    }
+
+    public float GetAnimPlayTime(int skillId)
+    {
+        SkillData skilldata = DataManager.Instance.GetSkillData(skillId);
+        SkillVisualSO skillVisual = DataManager.Instance.GetSkillVisualSO(skilldata.Name + "_Visual");
+
+        if (skillVisual == null || skillVisual.animationSpeed <= 0f)
+        {
+            Debug.LogWarning($"SkillVisualSO missing or invalid for skillId: {skillId}");
+            return 0.5f;
+        }
+
+        return skillVisual.animPlayTime / skillVisual.animationSpeed;
     }
 }

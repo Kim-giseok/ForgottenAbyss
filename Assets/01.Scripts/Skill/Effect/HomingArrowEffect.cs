@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class HomingArrowEffect : MonoBehaviour
 {
+    public string poolKey = "BowSkill02";
     public float speed = 5f;  // 화살 이동 속도
     public float rotationSpeed = 10f;  // 회전 속도
-    public float maxDistance = 50f;  // 최대 추적 거리
+    public float maxDistance = 10f;  // 최대 추적 거리
     public float stayDuration = 0.1f;  // 효과 유지 시간
-    public float hitRange = 0.5f;             // 타겟에게 도달한 거리로 간주하는 범위
+    public float hitRange = 0.3f;             // 타겟에게 도달한 거리로 간주하는 범위
     public float searchRadius = 10f;         // 타겟 탐색 범위
     public float preHomingTime = 0.2f;
 
@@ -23,6 +24,7 @@ public class HomingArrowEffect : MonoBehaviour
     private SkillData skillData;
 
     private TrailRenderer trailRenderer;
+    private AutoReleaseEffect autoReleaseEffect;
 
     private void Awake()
     {
@@ -31,6 +33,8 @@ public class HomingArrowEffect : MonoBehaviour
         {
             trailRenderer.Clear(); // 이펙트 재사용시 꼬리 초기화
         }
+
+        autoReleaseEffect = GetComponent<AutoReleaseEffect>();
     }
 
     // 이펙트를 초기화하고, 추적할 타겟을 설정하는 함수
@@ -71,7 +75,6 @@ public class HomingArrowEffect : MonoBehaviour
         float timer = 0f;
         Vector3 initialDirection = transform.forward;
 
-        // 1. 직선 이동 구간
         while (timer < preHomingTime)
         {
             transform.position += initialDirection * speed * Time.deltaTime;
@@ -79,7 +82,7 @@ public class HomingArrowEffect : MonoBehaviour
 
             if (Vector3.Distance(transform.position, startPosition) > maxDistance)
             {
-                gameObject.SetActive(false);
+                autoReleaseEffect.Release();
                 yield break;
             }
 
@@ -96,7 +99,13 @@ public class HomingArrowEffect : MonoBehaviour
             if (target != null)
             {
                 float distanceToTarget = Vector3.Distance(transform.position, target.position);
-                if (distanceToTarget < 0.5f || distanceToTarget > maxDistance)
+
+                if (distanceToTarget > maxDistance)
+                {
+                    target = null;
+                    continue;
+                }
+                else if (distanceToTarget < hitRange)
                 {
                     OnHitTarget();
                     yield break;
@@ -113,7 +122,7 @@ public class HomingArrowEffect : MonoBehaviour
 
                 if (Vector3.Distance(transform.position, startPosition) > maxDistance)
                 {
-                    gameObject.SetActive(false);
+                    autoReleaseEffect.Release();
                     yield break;
                 }
             }
@@ -152,7 +161,7 @@ public class HomingArrowEffect : MonoBehaviour
             if (skillExecutionSO == null)
             {
                 Debug.LogError($"SkillExecutionSO를 찾을 수 없습니다. 이름: {skillData.Name}");
-                gameObject.SetActive(false);
+                autoReleaseEffect.Release();
                 return;
             }
 
@@ -167,7 +176,7 @@ public class HomingArrowEffect : MonoBehaviour
     private IEnumerator DisableAfterDelay(float delay)
     {
         yield return new WaitForSeconds(delay);
-        gameObject.SetActive(false);
+        autoReleaseEffect.Release();
     }
 
     public void SetManualTarget(Transform manualTarget)

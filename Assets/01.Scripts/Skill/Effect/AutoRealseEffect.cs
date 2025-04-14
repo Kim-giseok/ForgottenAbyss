@@ -10,7 +10,7 @@ public class AutoReleaseEffect : MonoBehaviour
         Invoke(nameof(Release), lifeTime);
     }
 
-    private void Release()
+    public void Release()
     {
         EffectPool.Instance.ReleaseEffect(poolKey, gameObject);
     }

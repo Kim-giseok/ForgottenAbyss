@@ -23,6 +23,7 @@ public class SkillVisualSO : ScriptableObject
     public string animationName;
     public float animationSpeed;
     public float resetTime;
+    public float animPlayTime;
 
     // 이펙트 풀 키값
     public string effectKey;
