@@ -39,7 +39,14 @@ public class PatrolMove : Node
         context.Set("direction", direction);
         controller.Flip(direction == Vector2.right);
         
-        // if (!controller.detectHandler.isWalkable) { SetStatus(Status.Fail); return; } // 단일인 경우 문제 발생
+        // 단일인 경우 문제 발생
+        // Debug.Log(controller.detectHandler.isWalkable);
+        if (!controller.detectHandler.isWalkable)
+        {
+            controller.Flip(direction != Vector2.right);
+            SetStatus(Status.Fail); return;
+        } 
+        
         controller.animationHandler.Set(EnemyAnimationHandler.Run, true);
     }
 
@@ -55,8 +62,7 @@ public class PatrolMove : Node
     
     public override void OnPhysicsDetected(EnemyDetectHandler.DetectType detectType, string value)
     {
-        // 문제 생길수 있음
-        
+        Debug.Log(detectType + " : " + value);
         if (detectType == EnemyDetectHandler.DetectType.Walkable && !bool.Parse(value))
         {
             SetStatus(Status.Success);

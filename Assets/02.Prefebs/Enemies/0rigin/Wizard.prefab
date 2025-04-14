@@ -137,7 +137,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!70 &9012868368029913313
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -185,7 +185,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68e4352b8584b49edb0f5da93bdaf397, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 100
+  health: 30
   attack: 10
   name: Wizard
 --- !u!114 &-5581525008616595135
@@ -201,9 +201,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   status: 0
-  detectedDistance: 4
-  stoppingDistance: 2
-  tracingSpeed: 3
+  detectedDistance: 20
+  stoppingDistance: 18
+  tracingSpeed: 1
 --- !u!114 &-8640799702663394761
 MonoBehaviour:
   m_ObjectHideFlags: 0

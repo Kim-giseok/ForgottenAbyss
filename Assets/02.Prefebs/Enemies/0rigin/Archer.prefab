@@ -78,7 +78,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: -1933657924, guid: d53fcd4a326ab4053832d5d1f6ab261d, type: 3}
   m_Color: {r: 0.6981132, g: 0.6981132, b: 0.6981132, a: 1}
   m_FlipX: 0
@@ -185,7 +185,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68e4352b8584b49edb0f5da93bdaf397, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 300
+  health: 30
   attack: 10
   name: Archer
 --- !u!114 &4783053661208568393
@@ -201,9 +201,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   status: 0
-  detectedDistance: 4
-  stoppingDistance: 2
-  tracingSpeed: 3
+  detectedDistance: 12
+  stoppingDistance: 10
+  tracingSpeed: 1
 --- !u!114 &-4824796143244514407
 MonoBehaviour:
   m_ObjectHideFlags: 0

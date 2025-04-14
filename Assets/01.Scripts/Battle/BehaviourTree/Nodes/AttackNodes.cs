@@ -2,7 +2,7 @@ using UnityEngine;
 
 
 // 무기가 Node를 결정할 수 있도록
-public class AttackNode : Node
+public class MeleeAttack : Node
 {
     public override void Start()
     {
@@ -42,6 +42,7 @@ public class RangeAttackNode : Node
     public override void Start()
     {
         controller.animationHandler.Set(EnemyAnimationHandler.Attack);
+        controller.LookTarget();
     }
 
     public override void OnAnimatedEvent(bool isFire)
@@ -49,8 +50,14 @@ public class RangeAttackNode : Node
         // 콜백으로 공격 방식 추상화
         if (isFire)
         {
-            ProjectileManager.Instance.CreateProjectile(controller.transform, 3);
+            ProjectileManager.Instance.CreateProjectile(controller.transform, 3, degree: ProjectileManager.Instance.GetDegreeByDirection(controller.agent.GetDirection()));
         }
+    }
+    
+    public override void OnAnimated(AnimationStatus status, AnimatorStateInfo animInfo)
+    {
+        if (!animInfo.IsName("Attack")) return;
+        if (status == AnimationStatus.End) { SetStatus(Status.Success); }
     }
 }
 

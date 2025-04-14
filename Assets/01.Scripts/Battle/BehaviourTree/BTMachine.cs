@@ -14,7 +14,7 @@ public class BTMachine
     public bool isPlaying { get; private set; } = false;
     public float currTime = 0;
 
-    // currNode를 병렬으로 처리해서 노드 내 중복 코드 개선
+    public Node rootNode { get; private set; }
     public Node currNode { get; private set; }
 
     public BTMachine(EnemyBaseController controller)
@@ -71,8 +71,8 @@ public class BTMachine
 
     public void Define(Node newNode)    
     {
-        currNode = new RootNode(newNode);
-        SetPlaying(true);
+        rootNode = new RootNode(newNode);
+        SetCurrentNode(rootNode);
     }
 
     public void Connect(Node node)
@@ -83,10 +83,7 @@ public class BTMachine
 
     public void Notify() // 특정 노드로 이동 기능 구현 필요
     {
-        SetPlaying(false);
-        
-        currNode.SetController(controller);
-        SetPlaying(true);
+        SetCurrentNode(rootNode);
     }
     
 }

@@ -74,10 +74,6 @@ public class ProjectileManager : Singleton<ProjectileManager> // 단위 미사�
         hitBox.SetDamage(power);
         hitBox.SetOwner(parent);
         
-        // Projectile projectile = instance.GetComponent<Projectile>(); // notice: 프로젝타일도 매번 파악하는 현상 발생
-        // projectile.AddAttribute(new StraightAttr());
-        // projectile.AddAttribute(attrs);
-        
         
         instance.transform.localRotation = Quaternion.Euler(0, 0, degree - 90); // 화살이 현재 위를 보고 있는 상황이라 방향 계산 필요 -90 이 오른쪽
         instance.transform.localPosition = new Vector2(parent.position.x + startPos.x, parent.position.y + startPos.y);
@@ -104,7 +100,8 @@ public class ProjectileManager : Singleton<ProjectileManager> // 단위 미사�
 
     public void CreateEnemyProjectile(Transform parent, string name, string skillNodeName)
     {
-        GameObject instance = Instantiate(summon, parent.transform.position, Quaternion.identity);
+        // notice: 플레이어 위치로 인한 보정 필요
+        GameObject instance = Instantiate(summon, new Vector2(parent.transform.position.x, parent.transform.position.y + 1), Quaternion.identity);
         instance.GetComponent<SummonController>().Set(name, skillNodeName);
     }
 }

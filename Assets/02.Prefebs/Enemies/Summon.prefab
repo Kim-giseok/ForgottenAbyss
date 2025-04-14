@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 461575364635021559}
   - component: {fileID: 3390406899292494117}
   - component: {fileID: 2612509889921953904}
+  - component: {fileID: 3404792826332666430}
   m_Layer: 8
   m_Name: Summon
   m_TagString: Untagged
@@ -103,7 +104,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -183,3 +184,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dad8243314b44424950032541add5a39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &3404792826332666430
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7497637913887331557}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 142f7844dcda6496ab8ac1b9d52491a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  status: 0
+  detectedDistance: 0
+  stoppingDistance: 0
+  tracingSpeed: 0

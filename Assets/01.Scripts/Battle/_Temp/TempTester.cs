@@ -21,19 +21,7 @@ public class TempTester: MonoBehaviour
       
       if (Input.GetKeyDown(KeyCode.L))
       {
-         ProjectileManager.Instance.CreateEnemyProjectile(transform, "Goblin", "DashAttack");
-         // ProjectileManager.Instance.CreateEnemyProjectile(transform, "Mushroom", "JumpAttack");
-      }
-      
-      if (Input.GetKeyDown(KeyCode.J))
-      {
-         // ProjectileManager.Instance.CreateMeleeProjectile(transform, 10, startPos: Vector2.zero, size: new Vector2(3f, 3f));
-      }
-
-      if (Input.GetKeyUp(KeyCode.J))
-      {
-         
-         // ProjectileManager.Instance.DestroyMeleeProjectile(transform);
+         ProjectileManager.Instance.CreateEnemyProjectile(transform, "NightBone", "DashAttack");
       }
    }
 }

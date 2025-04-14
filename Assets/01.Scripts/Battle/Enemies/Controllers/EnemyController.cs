@@ -37,6 +37,8 @@ public class EnemyController : EnemyBaseController, IDamagable
 
     public void GetDamage(float damage) // notice: summon은 제외
     {
+        Debug.Log("get damage");
+        
         // Vector3 textPosition = transform.position + Vector3.up * 1f;
         // DamageTextManager.Instance.ShowDamage(textPosition, (int)damage);
         

@@ -10,10 +10,10 @@ public class _legacyBehaviours
         {"test", test}
     };
 
-    public static Node doubleAttack = new SequenceNode(new AttackNode(), new AttackNode());
+    public static Node doubleAttack = new SequenceNode(new MeleeAttack(), new MeleeAttack());
     public static Node MonsterNode = new SelectorNode(doubleAttack);
     
-    public static Node test = new SelectorNode(new SequenceNode(new IdleNode(1), new AttackNode()));
+    public static Node test = new SelectorNode(new SequenceNode(new IdleNode(1), new MeleeAttack()));
     
     private Node agis = new SelectorNode(new SequenceNode(new HitNode()),
         new SequenceNode(new ParallelShotNode()));
@@ -22,7 +22,7 @@ public class _legacyBehaviours
         new SequenceNode(new HitNode()),
         new SequenceNode(new TracingNode(),
             // skill.doubleAttack,
-            new AttackNode(),
+            new MeleeAttack(),
             // new DashAttack(),
             // new JumpAttack(),
             new IdleNode(duration: 0.5f)),

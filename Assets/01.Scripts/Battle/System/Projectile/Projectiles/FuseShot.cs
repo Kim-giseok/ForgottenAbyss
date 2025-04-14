@@ -1,4 +1,6 @@
-public class FuseShot
+using UnityEngine;
+
+public class FuseShot: MonoBehaviour
 {
         
 }

@@ -62,6 +62,7 @@ public class EnemyAgent : MonoBehaviour
 
     public Vector2 GetDirection()
     {
+        if (!target) return GameObject.FindWithTag("Player").transform.right; // enemy와 summon이 공통으로 사용하면서 문제가 발생함
         return (target.transform.position - transform.position).normalized;
     }
 }

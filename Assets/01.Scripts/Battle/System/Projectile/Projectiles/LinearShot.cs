@@ -1,25 +1,33 @@
 using UnityEngine;
 
-// line renderer 이용
 public class LinearShot: MonoBehaviour
 {
-    private LineRenderer lineRenderer;
-    private Transform target;
+    private Rigidbody2D rigidbody;
+
+    private float currTime;
+    public float duration;
+    public float speed;
+    
 
     private void Awake()
     {
-        lineRenderer = GetComponent<LineRenderer>();
-        target = GameObject.FindGameObjectWithTag("Player").transform;
+        rigidbody = GetComponent<Rigidbody2D>();
     }
 
-    public void Update()
+    private void OnEnable()
     {
-        Play(new(0, 0), new Vector2(target.position.x, target.position.y));
+        currTime = 0;
     }
 
-    private void Play(Vector2 startPos, Vector2 endPos)
+    public void FixedUpdate()
     {
-        lineRenderer.SetPosition(0, startPos);
-        lineRenderer.SetPosition(1, endPos);
+        currTime += Time.fixedDeltaTime;
+        if (currTime >= duration)
+        {
+            ProjectileManager.Instance.DestroyProjectile(gameObject);
+            return;
+        }
+        
+        rigidbody.velocity = transform.up * speed;
     }
 }

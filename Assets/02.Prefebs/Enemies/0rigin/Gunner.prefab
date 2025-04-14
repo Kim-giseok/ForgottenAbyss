@@ -185,7 +185,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68e4352b8584b49edb0f5da93bdaf397, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 100
+  health: 30
   attack: 10
   name: Gunner
 --- !u!114 &1771682308809192497
@@ -201,9 +201,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   status: 0
-  detectedDistance: 4
-  stoppingDistance: 2
-  tracingSpeed: 3
+  detectedDistance: 8
+  stoppingDistance: 6
+  tracingSpeed: 2
 --- !u!114 &8084692124541010571
 MonoBehaviour:
   m_ObjectHideFlags: 0
