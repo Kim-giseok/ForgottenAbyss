@@ -15,27 +15,6 @@ public class PlayerInteraction : MonoBehaviour
         Vector2 rayDirection = transform.right; // 오른쪽 방향으로 Raycast
 
         Debug.DrawRay(rayOrigin, rayDirection * interactionRange, Color.red);
-
-        RaycastHit2D hit = Physics2D.Raycast(rayOrigin, rayDirection, 1f, interactableLayer);
-
-        if (hit.collider != null && hit.collider.CompareTag("Npc"))
-        {
-            if (FindObjectOfType<TalkSystem>() != null)
-            {
-                npcText.SetActive(false); //대화창이 켜져 있으면 안내문구 비활성화
-                return;  
-            }
-            else
-            {
-                npcText.SetActive(true);
-            }
-
-        }
-        else
-        {
-            npcText.SetActive(false);
-        }
-
     }
 
     public void Interact(Vector2 origin, Vector2 direction)
