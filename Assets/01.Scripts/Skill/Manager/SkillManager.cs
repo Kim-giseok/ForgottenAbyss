@@ -99,27 +99,7 @@ public class SkillManager : Singleton<SkillManager>
             // ¿Ã∆Â∆Æ √≥∏Æ
             if (visualSO.skillEffectPrefab != null && skillData.Type != SkillType.Memory)
             {
-                //Vector3 dir = spawnPoint.right;
-                //Vector3 effectPos = spawnPoint.position;
-
-                //if (visualSO.useEffectOffset)
-                //{
-                //    effectPos += dir * visualSO.effectXOffset;
-                //    effectPos += Vector3.up * visualSO.effectYOffset;
-                //}
-
                 StartCoroutine(PlayEffectWithDelay(visualSO, spawnPoint));
-                //GameObject effect = EffectPool.Instance.SpawnEffect(visualSO.effectKey, effectPos, spawnPoint.rotation);
-
-                //WeaponType currentType = WeaponManager.Instance.GetCurrentWeaponData().Type;
-                //if (currentType == WeaponType.Bow)
-                //{
-                //    var pierceEffect = effect.GetComponent<PiercingArrowEffect>();
-                //    if (pierceEffect != null)
-                //    {
-                //        pierceEffect.Initialize(effectPos, dir);
-                //    }
-                //}
             }
         }
 

@@ -16,8 +16,6 @@ public class SwordSkill02ExecutionSO : SkillExecutionSO
 
     public override void Execute(GameObject caster, GameObject target, SkillData data)
     {
-        //caster.GetComponent<MonoBehaviour>().StartCoroutine(PlayFastAnimation(caster, "SwordAttack_3", 1.5f, 0.5f));
-
         SkillCastData castData = PrepareCastData(caster, target, data);
 
         float facingDir = caster.transform.eulerAngles.y == 180f ? -1f : 1f; // 방향보정
@@ -94,7 +92,7 @@ public class SwordSkill02ExecutionSO : SkillExecutionSO
         {
             DealDamageToTarget(hit.gameObject, castData);
             Debug.Log($"Hit {hit.name}");
-            CameraShake.Instance.Shake(0.05f, 0.1f);
+            CameraShake.Instance.Shake(0.1f, 0.2f);
         }
 
         DebugDrawUtil.DrawBox(center, size, angle, Color.red, 0.5f);

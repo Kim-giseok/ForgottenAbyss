@@ -80,7 +80,7 @@ public class ComboAttack : MonoBehaviour
         }
     }
 
-    private void EndComboAttack()
+    public void EndComboAttack()
     {
         IsAttacking = false;
         attackIndex = 0;
@@ -192,7 +192,7 @@ public class ComboAttack : MonoBehaviour
             {
                 Debug.Log("데미지 계산 실행");
                 enemy.GetDamage(damage);
-                CameraShake.Instance.Shake(0.05f, 0.1f);
+                CameraShake.Instance.Shake(0.1f, 0.2f);
 
                 Vector2 attackerPos = (Vector2)transform.position + Vector2.up * 0.5f;
                 KnockbackUtil.ApplyKnockback(target, attackerPos, 2f);

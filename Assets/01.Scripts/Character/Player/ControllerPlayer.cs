@@ -185,28 +185,28 @@ public class ControllerPlayer : MonoBehaviour
         }
     }
 
-    public void OnAttack(InputValue value) //일반공격 키 입력
-    {
-        if (value.isPressed && !isDashing && !isAttacking )
-        {
-            StartCoroutine (Attack());
-        }
-    }
+    //public void OnAttack(InputValue value) //일반공격 키 입력
+    //{
+    //    if (value.isPressed && !isDashing && !isAttacking )
+    //    {
+    //        StartCoroutine (Attack());
+    //    }
+    //}
 
-    void OnFirstSkill() //1번스킬 키 입력
-    {
-        Debug.Log("S: 스킬1");
-    }
+    //void OnFirstSkill() //1번스킬 키 입력
+    //{
+    //    Debug.Log("S: 스킬1");
+    //}
 
-    void OnSecondSkill() //2번스킬 키 입력
-    {
-        Debug.Log("D: 스킬2");
-    }
+    //void OnSecondSkill() //2번스킬 키 입력
+    //{
+    //    Debug.Log("D: 스킬2");
+    //}
 
-    void OnSpecialSkill() //특수스킬 키 입력
-    {
-        Debug.Log("R: 특수 스킬");
-    }
+    //void OnSpecialSkill() //특수스킬 키 입력
+    //{
+    //    Debug.Log("R: 특수 스킬");
+    //}
 
     void OnInteraction() //상호 작용 키 입력
     {

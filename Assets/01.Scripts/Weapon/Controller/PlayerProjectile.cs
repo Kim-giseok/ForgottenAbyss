@@ -4,11 +4,13 @@ public class PlayerProjectile : MonoBehaviour
 {
     public float speed = 10f;
     public float duration = 2f;
+    public float range = 5f;
 
     private float timer;
     private float comboMultiplier = 1f;
     private GameObject caster;
     private Rigidbody2D rb;
+    private Vector3 startPosition;
 
     private void Awake()
     {
@@ -18,10 +20,16 @@ public class PlayerProjectile : MonoBehaviour
     private void OnEnable()
     {
         timer = 0f;
+        startPosition = transform.position;
     }
 
     private void Update()
     {
+        if (Vector3.Distance(startPosition, transform.position) >= range)
+        {
+            ReturnToPool();
+        }
+
         timer += Time.deltaTime;
         if (timer >= duration)
         {
@@ -43,11 +51,11 @@ public class PlayerProjectile : MonoBehaviour
 
                 float damage = data.CalculateDamage();
                 damageable.GetDamage(damage);
-                CameraShake.Instance.Shake(0.05f, 0.1f);
+                CameraShake.Instance.Shake(0.1f, 0.2f);
             }
-
             ReturnToPool();
         }
+        else if (other.CompareTag("Ground")) ReturnToPool();
     }
 
     public void Setup(Vector3 direction, GameObject caster, float multiplier)

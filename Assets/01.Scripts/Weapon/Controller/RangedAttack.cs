@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class RangedAttack : MonoBehaviour
@@ -19,12 +20,6 @@ public class RangedAttack : MonoBehaviour
         rangedData = data;
         attackIndex = 0;
         IsAttacking = false;
-
-        if (rangedData != null && rangedData.comboSteps.Count > 0)
-        {
-            GameObject projectilePrefab = rangedData.comboSteps[0].projectilePrefab;
-            projectilePool = new GameObjectPool(projectilePrefab, 10);
-        }
     }
 
     public void HandleAttackInput()
@@ -117,7 +112,29 @@ public class RangedAttack : MonoBehaviour
         }
     }
 
-    void SpawnProjectile(Vector3 direction)
+    void onKnockBack(float distance)
+    {
+        StartCoroutine(MoveKnockBackCoroutine(distance));
+    }
+
+    IEnumerator MoveKnockBackCoroutine(float distance)
+    {
+        float moveTime = 0.1f; // 이동 시간 (0.1초 추천)
+        float elapsed = 0f;
+        Vector3 startPos = transform.position;
+        Vector3 targetPos = transform.position - (transform.right * distance);
+
+        while (elapsed < moveTime)
+        {
+            elapsed += Time.deltaTime;
+            transform.position = Vector3.Lerp(startPos, targetPos, elapsed / moveTime);
+            yield return null;
+        }
+
+        transform.position = targetPos; // 마지막 위치 보정
+    }
+
+        void SpawnProjectile(Vector3 direction)
     {
         GameObject projectile = ProjectilePool.Instance.Get(firePoint.position, Quaternion.LookRotation(Vector3.forward, direction));
 
@@ -128,7 +145,7 @@ public class RangedAttack : MonoBehaviour
         }
     }
 
-    private void EndRangedAttack()
+    public void EndRangedAttack()
     {
         IsAttacking = false;
         attackIndex = 0;

@@ -9,7 +9,7 @@ public class PlayerStatus : CharacterStatus
     {
         stats[StatType.HP] = 10000f; //초기 HP
         stats[StatType.MP] = 100f; //초기 MP
-        stats[StatType.ATK] = 1000f; //초기 공격력
+        stats[StatType.ATK] = 10f; //초기 공격력
         stats[StatType.DEF] = 10f; //초기 방어력
         stats[StatType.LEVEL] = 1f; //초기 레벨
         stats[StatType.EXP] = 0f; //초기 경험치

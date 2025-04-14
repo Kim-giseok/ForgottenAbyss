@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class SkillController : MonoBehaviour
+public class SkillController : Singleton<SkillController>
 {
     public ComboAttack comboAttack;
     public RangedAttack rangedAttack;
@@ -28,10 +28,7 @@ public class SkillController : MonoBehaviour
         }
         else if (WeaponManager.Instance.GetCurrentWeaponData().Type == WeaponType.Bow)
         {
-            if (value.isPressed)
-                rangedAttack?.HandleAttackInput();
-            else
-                rangedAttack?.HandleAttackInput();
+            rangedAttack?.HandleAttackInput();
         }
 
         Debug.Log("A: 일반공격");
@@ -72,6 +69,11 @@ public class SkillController : MonoBehaviour
         isSkillPlaying = value;
     }
 
+    public void OnSetSkillFalse()
+    {
+        isSkillPlaying = false;
+    }
+
     IEnumerator UseSkillRoutine(int skillId)
     {
         isSkillPlaying = true;
@@ -86,7 +88,7 @@ public class SkillController : MonoBehaviour
             SkillManager.Instance.TryUseSkill(skillId, skillSpawnPoint2);
         }
 
-        yield return new WaitForSeconds(1.0f); //스킬 연출 시간
+        yield return new WaitForSeconds(0.6f); //스킬 연출 시간
 
         isSkillPlaying = false;
     }

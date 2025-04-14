@@ -397,7 +397,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: SwordAttack_6
-  m_Speed: 1
+  m_Speed: 1.25
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 5042663797442207910}
@@ -507,7 +507,7 @@ AnimatorStateMachine:
     m_Position: {x: 510, y: -170, z: 0}
   - serializedVersion: 1
     m_StateMachine: {fileID: 4363073916345594504}
-    m_Position: {x: 240, y: -140, z: 0}
+    m_Position: {x: 270, y: -150, z: 0}
   m_AnyStateTransitions:
   - {fileID: 6398482896918439097}
   - {fileID: -7278176525586430364}
@@ -515,15 +515,6 @@ AnimatorStateMachine:
   - {fileID: 6331187603396799039}
   m_EntryTransitions: []
   m_StateMachineTransitions:
-  - first: {fileID: 4363073916345594504}
-    second:
-    - {fileID: 9168120431075470499}
-  - first: {fileID: -2991622747505723021}
-    second:
-    - {fileID: 2443580782592188840}
-  - first: {fileID: -5326344628761949546}
-    second:
-    - {fileID: -4199439747663657862}
   - first: {fileID: -1028714733772406262}
     second: []
   - first: {fileID: 5681260243800682697}
@@ -532,10 +523,19 @@ AnimatorStateMachine:
   - first: {fileID: 6697104592690033633}
     second:
     - {fileID: 517896026938548557}
+  - first: {fileID: -5326344628761949546}
+    second:
+    - {fileID: -4199439747663657862}
+  - first: {fileID: -2991622747505723021}
+    second:
+    - {fileID: 2443580782592188840}
+  - first: {fileID: 4363073916345594504}
+    second:
+    - {fileID: 9168120431075470499}
   m_StateMachineBehaviours: []
-  m_AnyStatePosition: {x: 470, y: -370, z: 0}
+  m_AnyStatePosition: {x: 480, y: -380, z: 0}
   m_EntryPosition: {x: 290, y: -380, z: 0}
-  m_ExitPosition: {x: 110, y: -370, z: 0}
+  m_ExitPosition: {x: 100, y: -380, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
   m_DefaultState: {fileID: 4803406452342163886}
 --- !u!1102 &-345899259893470627
@@ -752,7 +752,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: SwordAttack_5
-  m_Speed: 1
+  m_Speed: 1.25
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 2890439454827299137}
@@ -959,7 +959,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: SwordAttack_4
-  m_Speed: 1
+  m_Speed: 1.25
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -8464132633220369768}
@@ -1091,7 +1091,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: SwordAttack_3
-  m_Speed: 1
+  m_Speed: 1.25
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 4276217742882888659}
@@ -1357,7 +1357,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: SwordAttack_1
-  m_Speed: 1
+  m_Speed: 1.25
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -5355739387711129397}
@@ -1539,7 +1539,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: SwordAttack_2
-  m_Speed: 1
+  m_Speed: 1.25
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 5189859486684539441}
