@@ -17,7 +17,7 @@ public class MachineLoop : Machine
     public override void UnActive()
     {
         base.UnActive();
-        StartCoroutine(WaitAniTime(rootLaber.DisSwitchMachine, waitTime));
+        StartCoroutine(WaitAniTime(rootLaber.DisSwitchMachine));
     }
 
     IEnumerator WaitAniTime(Action action, float additionalWaitTime = 0f)
