@@ -4,11 +4,28 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class QuickSlot : SlotBase
+public class QuickSlot : SlotBase, IPointerClickHandler
 {
-    [SerializeField] private Image backgroundImage;
-    [SerializeField] private Color normalColor = Color.white;
-    [SerializeField] private Color selectedColor = Color.magenta;
+    [SerializeField] private GameObject outlineObject; // 선택된 슬롯 테두리
+    [SerializeField] private Image cooldownOverlay; // UI 위에 덮이는 반투명 이미지
+    [SerializeField] private float cooldownTime = 3f;
+
+    private float remainingCooldown = 0f;
+    private int slotIndex = -1;
+
+    private void Update()
+    {
+        if (remainingCooldown > 0)
+        {
+            remainingCooldown -= Time.deltaTime;
+            cooldownOverlay.fillAmount = remainingCooldown / cooldownTime;
+        }
+    }
+
+    public void SetIndex(int index)
+    {
+        slotIndex = index;
+    }
 
     public override void OnDrop(PointerEventData eventData)
     {
@@ -21,18 +38,48 @@ public class QuickSlot : SlotBase
 
     public void UseItem()
     {
-        if (currentItem != null)
+        if (currentItem != null && remainingCooldown <= 0)
         {
-            currentItem.Use();
+            currentItem.Use(); // 아이템 효과 실행
+            remainingCooldown = cooldownTime;
+
+            StartCoroutine(BlinkIcon());
         }
 
     }
 
     public void SetSelected(bool selected)
     {
-        if (backgroundImage != null)
+        if (outlineObject != null)
         {
-            backgroundImage.color = selected ? selectedColor : normalColor;
+            outlineObject.SetActive(selected);
+        }
+    }
+
+    // 슬롯 깜빡임
+    private IEnumerator BlinkIcon()
+    {
+        Image icon = GetComponent<Image>();
+        for (int i = 0; i < 4; i++)
+        {
+            icon.enabled = false;
+            yield return new WaitForSeconds(0.1f);
+            icon.enabled = true;
+            yield return new WaitForSeconds(0.1f);
+        }
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if (slotIndex == -1) return;
+
+        if (QuickSlotController.Instance.SelectedIndex == slotIndex)
+        {
+            UseItem(); // 이미 선택된 슬롯이면 사용
+        }
+        else
+        {
+            QuickSlotController.Instance.SelectSlotFromOutside(slotIndex);
         }
     }
 }

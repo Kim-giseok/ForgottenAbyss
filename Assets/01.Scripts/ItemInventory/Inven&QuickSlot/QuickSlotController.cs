@@ -1,39 +1,62 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Rendering;
 using UnityEngine;
 
 public class QuickSlotController : MonoBehaviour
 {
-    [SerializeField] private QuickSlot[] quickSlots; // 퀵슬롯 슬롯들
-    private int selectedIndex = 0;
+    public static QuickSlotController Instance {  get; private set; }
 
-    void Start()
+    [SerializeField] private QuickSlot[] quickSlots; // 퀵슬롯 슬롯들
+    public int SelectedIndex => selectedIndex;
+
+    private int selectedIndex = -1; // 선택된 슬롯 없음
+
+    private void Awake()
     {
-        SelectSlot(0);  // 시작시 첫 번째 슬롯 선택
+        Instance = this;
+
+        for (int i = 0; i < quickSlots.Length; i++)
+        {
+            quickSlots[i].SetIndex(i); // 슬롯마다 인덱스 추가
+        }
     }
 
     void Update()
     {
-        // 1,2번 키로 슬롯 변경
-        if (Input.GetKeyDown(KeyCode.Alpha1)) SelectSlot(0);
-        if (Input.GetKeyDown(KeyCode.Alpha2)) SelectSlot(1);
-        if (Input.GetKeyDown(KeyCode.Alpha3)) SelectSlot(2);
-        if (Input.GetKeyDown(KeyCode.Alpha4)) SelectSlot(3);
-        if (Input.GetKeyDown(KeyCode.Alpha5)) SelectSlot(4);
-        if (Input.GetKeyDown(KeyCode.Alpha6)) SelectSlot(5);
+        // 슬롯 변경
+        if (Input.GetKeyDown(KeyCode.Alpha1)) HandleSlotInput(0);
+        if (Input.GetKeyDown(KeyCode.Alpha2)) HandleSlotInput(1);
+        if (Input.GetKeyDown(KeyCode.Alpha3)) HandleSlotInput(2);
+        if (Input.GetKeyDown(KeyCode.Alpha4)) HandleSlotInput(3);
+        if (Input.GetKeyDown(KeyCode.Alpha5)) HandleSlotInput(4);
+    }
 
-        // 아이템 사용
-        if (Input.GetKeyDown(KeyCode.U))
+    private void HandleSlotInput(int index)
+    {
+        if (selectedIndex == index)
         {
-            quickSlots[selectedIndex].UseItem(); // 현재 선택된 슬롯 아이템 사용
+            // 같은 슬롯을 다시 누르면 아이템 사용
+            quickSlots[selectedIndex].UseItem();
         }
+        else
+        {
+            SelectSlot(index); // 다른 슬롯을 누르면 선택만 바뀜
+        }
+    }
+
+    // 마우스 클릭할때 사용
+    public void SelectSlotFromOutside(int index)
+    {
+        SelectSlot(index);
     }
 
     // 슬롯 선택
     void SelectSlot(int index)
     {
         selectedIndex = index;
-        
+
+        // 선택된 슬롯외에 나머지는 해제
         for (int i = 0; i < quickSlots.Length; i++)
         {
             quickSlots[i].SetSelected(i == selectedIndex);

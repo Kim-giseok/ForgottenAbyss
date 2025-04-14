@@ -17,15 +17,15 @@ public class ItemSpawner : MonoBehaviour
     {
         for (int i = 0; i < itemsToSpawn.Length && i < spawnPositions.Length; i++)
         {
-            GameObject go = Instantiate(fieldItemPrefab, spawnPositions[i], Quaternion.identity);
+            GameObject spawnedItemObject = Instantiate(fieldItemPrefab, spawnPositions[i], Quaternion.identity);
 
-            FieldItem fieldItem = go.GetComponent<FieldItem>();
+            FieldItem fieldItem = spawnedItemObject.GetComponent<FieldItem>();
             fieldItem.SetItem(itemsToSpawn[i]);
 
-            SpriteRenderer sr = go.GetComponent<SpriteRenderer>();
-            if (sr != null && itemsToSpawn[i].itemIcon != null)
+            SpriteRenderer itemRenderer = spawnedItemObject.GetComponent<SpriteRenderer>();
+            if (itemRenderer != null && itemsToSpawn[i].itemIcon != null)
             {
-                sr.sprite = itemsToSpawn[i].itemIcon; // 아이콘 설정
+                itemRenderer.sprite = itemsToSpawn[i].itemIcon; // 아이콘 설정
             }
         }
     }
