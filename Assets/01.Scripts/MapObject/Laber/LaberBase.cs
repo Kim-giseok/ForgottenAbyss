@@ -17,7 +17,7 @@ public class LaberBase : MonoBehaviour
         isSwitched = true;
     }
 
-    protected virtual void DisSwitchMachine()
+    public virtual void DisSwitchMachine()
     {
         if (!isSwitched) return;
         laberAnim?.SetFloat("Active", -1);
