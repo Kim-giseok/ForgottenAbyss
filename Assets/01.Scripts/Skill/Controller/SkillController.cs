@@ -74,6 +74,11 @@ public class SkillController : Singleton<SkillController>
         isSkillPlaying = false;
     }
 
+    public bool IsAttacking()
+    {
+        return comboAttack.IsAttacking || rangedAttack.IsAttacking || isSkillPlaying;
+    }
+
     IEnumerator UseSkillRoutine(int skillId)
     {
         isSkillPlaying = true;

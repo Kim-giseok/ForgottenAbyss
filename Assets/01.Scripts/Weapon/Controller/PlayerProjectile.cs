@@ -5,7 +5,7 @@ public class PlayerProjectile : MonoBehaviour
     public float speed = 10f;
     public float duration = 2f;
     public float range = 5f;
-
+    [SerializeField] private LayerMask targetLayer;
     private float timer;
     private float comboMultiplier = 1f;
     private GameObject caster;
@@ -39,7 +39,7 @@ public class PlayerProjectile : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Enemy"))
+        if ((targetLayer.value & (1 << other.gameObject.layer)) != 0)
         {
             if (other.TryGetComponent<IDamagable>(out var damageable))
             {
@@ -51,7 +51,11 @@ public class PlayerProjectile : MonoBehaviour
 
                 float damage = data.CalculateDamage();
                 damageable.GetDamage(damage);
-                CameraShake.Instance.Shake(0.1f, 0.2f);
+
+                if (other.CompareTag("Enemy"))
+                {
+                    CameraShake.Instance.Shake(0.1f, 0.2f);
+                }
             }
             ReturnToPool();
         }

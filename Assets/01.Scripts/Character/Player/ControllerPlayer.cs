@@ -39,7 +39,7 @@ public class ControllerPlayer : MonoBehaviour
 
     // FSM 관련 변수
     private Dictionary<PlayerState, PlayerStateMachine> states = new Dictionary<PlayerState, PlayerStateMachine>();
-    private PlayerState currentState;
+    public PlayerState currentState;
 
     private bool isFacingRight = true;
 
@@ -245,14 +245,14 @@ public class ControllerPlayer : MonoBehaviour
             // 오른쪽 → 왼쪽으로 바뀜
             isFacingRight = false;
             transform.localEulerAngles = new Vector3(0, 180, 0);
-            animator.SetTrigger("TurnTrigger");
+            //animator.SetTrigger("TurnTrigger");
         }
         else if (inputVec.x > 0 && !isFacingRight)
         {
             // 왼쪽 → 오른쪽으로 바뀜
             isFacingRight = true;
             transform.localEulerAngles = new Vector3(0, 0, 0);
-            animator.SetTrigger("TurnTrigger");
+            //animator.SetTrigger("TurnTrigger");
         }
     }
 

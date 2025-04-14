@@ -13,11 +13,20 @@ public class RunState : PlayerStateMachine
     {
         player.animator.SetBool("IsRun", false);
     }
+
     public override void FixedUpdate()
     {
-        player.rigid.velocity = new Vector2(player.inputVec.x * player.speed, player.rigid.velocity.y);
+        float currentSpeed = player.speed;
+
+        if (SkillController.Instance.IsAttacking())
+        {
+            currentSpeed *= 0.2f;
+        }
+
+        player.rigid.velocity = new Vector2(player.inputVec.x * currentSpeed, player.rigid.velocity.y);
         player.UpdateDirection();
     }
+
     public override void OnMove(Vector2 inputVec)
     {
         if (inputVec.x == 0)

@@ -9,6 +9,7 @@ public class Player : MonoBehaviour, IDamagable
     SpriteRenderer spriteRenderer;
        
     PlayerStatus playerstatus;
+    public ControllerPlayer controller;
     
     private bool isDead = false;
     
@@ -17,6 +18,7 @@ public class Player : MonoBehaviour, IDamagable
         playerstatus = GetComponent<PlayerStatus>();
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        controller = GetComponent<ControllerPlayer>();
         //rigidbody = GetComponent<Rigidbody2D>();
     }
 
