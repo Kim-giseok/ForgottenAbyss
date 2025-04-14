@@ -7,8 +7,20 @@ using UnityEngine.UI;
 public class QuickSlot : SlotBase, IPointerClickHandler
 {
     [SerializeField] private GameObject outlineObject; // 선택된 슬롯 테두리
+    [SerializeField] private Image cooldownOverlay; // UI 위에 덮이는 반투명 이미지
+    [SerializeField] private float cooldownTime = 3f;
 
+    private float remainingCooldown = 0f;
     private int slotIndex = -1;
+
+    private void Update()
+    {
+        if (remainingCooldown > 0)
+        {
+            remainingCooldown -= Time.deltaTime;
+            cooldownOverlay.fillAmount = remainingCooldown / cooldownTime;
+        }
+    }
 
     public void SetIndex(int index)
     {
@@ -26,10 +38,12 @@ public class QuickSlot : SlotBase, IPointerClickHandler
 
     public void UseItem()
     {
-        if (currentItem != null)
+        if (currentItem != null && remainingCooldown <= 0)
         {
-            Debug.Log("아이템 사용");
-            currentItem.Use();
+            currentItem.Use(); // 아이템 효과 실행
+            remainingCooldown = cooldownTime;
+
+            StartCoroutine(BlinkIcon());
         }
 
     }
@@ -39,6 +53,19 @@ public class QuickSlot : SlotBase, IPointerClickHandler
         if (outlineObject != null)
         {
             outlineObject.SetActive(selected);
+        }
+    }
+
+    // 슬롯 깜빡임
+    private IEnumerator BlinkIcon()
+    {
+        Image icon = GetComponent<Image>();
+        for (int i = 0; i < 4; i++)
+        {
+            icon.enabled = false;
+            yield return new WaitForSeconds(0.1f);
+            icon.enabled = true;
+            yield return new WaitForSeconds(0.1f);
         }
     }
 

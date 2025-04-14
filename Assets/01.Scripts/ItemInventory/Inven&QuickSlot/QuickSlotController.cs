@@ -36,14 +36,16 @@ public class QuickSlotController : MonoBehaviour
     {
         if (selectedIndex == index)
         {
+            // 같은 슬롯을 다시 누르면 아이템 사용
             quickSlots[selectedIndex].UseItem();
         }
         else
         {
-            SelectSlot(index);
+            SelectSlot(index); // 다른 슬롯을 누르면 선택만 바뀜
         }
     }
 
+    // 마우스 클릭할때 사용
     public void SelectSlotFromOutside(int index)
     {
         SelectSlot(index);
@@ -53,7 +55,8 @@ public class QuickSlotController : MonoBehaviour
     void SelectSlot(int index)
     {
         selectedIndex = index;
-        
+
+        // 선택된 슬롯외에 나머지는 해제
         for (int i = 0; i < quickSlots.Length; i++)
         {
             quickSlots[i].SetSelected(i == selectedIndex);
