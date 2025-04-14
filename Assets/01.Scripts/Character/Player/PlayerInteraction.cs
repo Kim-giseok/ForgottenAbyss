@@ -7,8 +7,7 @@ public class PlayerInteraction : MonoBehaviour
 {
     public float interactionRange; //상호작용 범위
     public LayerMask interactableLayer; //상호작용 가능한 오브젝트의 레이어
-    public GameObject npcText; //npc에게 다가가면 활성화 되는 안내문구
-
+    
     public void Update()
     {
         Vector2 rayOrigin = new Vector2(transform.position.x, transform.position.y + GetComponent<Collider2D>().bounds.extents.y); ; // Raycast 시작점
