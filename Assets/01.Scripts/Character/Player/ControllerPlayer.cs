@@ -41,6 +41,8 @@ public class ControllerPlayer : MonoBehaviour
     private Dictionary<PlayerState, PlayerStateMachine> states = new Dictionary<PlayerState, PlayerStateMachine>();
     private PlayerState currentState;
 
+    private bool isFacingRight = true;
+
     private void Awake()
     {
         rigid = GetComponent<Rigidbody2D>();
@@ -185,28 +187,28 @@ public class ControllerPlayer : MonoBehaviour
         }
     }
 
-    public void OnAttack(InputValue value) //일반공격 키 입력
-    {
-        if (value.isPressed && !isDashing && !isAttacking )
-        {
-            StartCoroutine (Attack());
-        }
-    }
+    //public void OnAttack(InputValue value) //일반공격 키 입력
+    //{
+    //    if (value.isPressed && !isDashing && !isAttacking )
+    //    {
+    //        StartCoroutine (Attack());
+    //    }
+    //}
 
-    void OnFirstSkill() //1번스킬 키 입력
-    {
-        Debug.Log("S: 스킬1");
-    }
+    //void OnFirstSkill() //1번스킬 키 입력
+    //{
+    //    Debug.Log("S: 스킬1");
+    //}
 
-    void OnSecondSkill() //2번스킬 키 입력
-    {
-        Debug.Log("D: 스킬2");
-    }
+    //void OnSecondSkill() //2번스킬 키 입력
+    //{
+    //    Debug.Log("D: 스킬2");
+    //}
 
-    void OnSpecialSkill() //특수스킬 키 입력
-    {
-        Debug.Log("R: 특수 스킬");
-    }
+    //void OnSpecialSkill() //특수스킬 키 입력
+    //{
+    //    Debug.Log("R: 특수 스킬");
+    //}
 
     void OnInteraction() //상호 작용 키 입력
     {
@@ -238,13 +240,19 @@ public class ControllerPlayer : MonoBehaviour
 
     public void UpdateDirection() //방향 전환
     {
-        if(inputVec.x < 0)
+        if (inputVec.x < 0 && isFacingRight)
         {
+            // 오른쪽 → 왼쪽으로 바뀜
+            isFacingRight = false;
             transform.localEulerAngles = new Vector3(0, 180, 0);
+            animator.SetTrigger("TurnTrigger");
         }
-        else if(inputVec.x > 0)
+        else if (inputVec.x > 0 && !isFacingRight)
         {
+            // 왼쪽 → 오른쪽으로 바뀜
+            isFacingRight = true;
             transform.localEulerAngles = new Vector3(0, 0, 0);
+            animator.SetTrigger("TurnTrigger");
         }
     }
 

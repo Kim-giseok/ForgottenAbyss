@@ -31,7 +31,7 @@ public class MemorySkillExecutionSO : SkillExecutionSO
         }
 
         // 3. 데미지 계산
-        caster.GetComponent<MonoBehaviour>().StartCoroutine(RepeatDamage(hits, castData));
+        CoroutinRunner.Instance.StartCoroutine(RepeatDamage(hits, castData));
 
         DebugDrawUtil.DrawCircle(center, range, Color.red);
         Debug.Log($"Memory Skill executed. Hit {hits.Length} enemies.");

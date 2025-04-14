@@ -8,6 +8,7 @@ public class DashState : PlayerStateMachine
     public DashState(ControllerPlayer player) : base(player) { }
     public override void Enter()
     {
+        player.animator.SetTrigger("DashTrigger");
         player.SetInvincibility(true);
         dashTimer = 0f;
 

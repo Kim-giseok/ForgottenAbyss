@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -78,19 +79,28 @@ public class SkillManager : Singleton<SkillManager>
 
         // 3. 비주얼 SO
         var visualSO = DataManager.Instance.GetSkillVisualSO(skillData.VisualSOName);
-        if (visualSO != null && visualSO.skillEffectPrefab != null && skillData.Type != SkillType.Memory)
+        if (visualSO != null)
         {
-            Vector3 dir = spawnPoint.right;
-            Vector3 effectPos = spawnPoint.position;
-
-            if (visualSO.useEffectOffset)
+            // 애니메이션 처리
+            Animator anim = spawnPoint.GetComponentInParent<Animator>();
+            if (anim != null)
             {
-                effectPos += dir * visualSO.effectXOffset;
-                effectPos += Vector3.up * visualSO.effectYOffset;
-            }
-                
+                anim.SetBool("IsAttacking", true);
+                anim.speed = visualSO.animationSpeed;
 
-            EffectPool.Instance.SpawnEffect(visualSO.effectKey, effectPos, spawnPoint.rotation);
+                if (!string.IsNullOrEmpty(visualSO.animationName))
+                {
+                    anim.Play(visualSO.animationName);
+                }
+
+                StartCoroutine(ResetAnimatorSpeed(anim, visualSO.resetTime));
+            }
+
+            // 이펙트 처리
+            if (visualSO.skillEffectPrefab != null && !visualSO.isTogether)
+            {
+                StartCoroutine(PlayEffectWithDelay(visualSO, spawnPoint));
+            }
         }
 
         // 4. 실행 SO
@@ -122,5 +132,39 @@ public class SkillManager : Singleton<SkillManager>
         if (skillId == sc.skill02Id) return 3;
         if (skillId == sc.memorySkillId) return 0;
         return -1;
+    }
+
+    private IEnumerator ResetAnimatorSpeed(Animator anim, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        anim.speed = 1.0f;
+        anim.SetBool("IsAttacking", false);
+    }
+
+    private IEnumerator PlayEffectWithDelay(SkillVisualSO visualSO, Transform spawnPoint)
+    {
+        if (visualSO.effectDelay > 0f)
+            yield return new WaitForSeconds(visualSO.effectDelay);
+
+        Vector3 dir = spawnPoint.right;
+        Vector3 effectPos = spawnPoint.position;
+
+        if (visualSO.useEffectOffset)
+        {
+            effectPos += dir * visualSO.effectXOffset;
+            effectPos += Vector3.up * visualSO.effectYOffset;
+        }
+
+        GameObject effect = EffectPool.Instance.SpawnEffect(visualSO.effectKey, effectPos, spawnPoint.rotation);
+
+        WeaponType currentType = WeaponManager.Instance.GetCurrentWeaponData().Type;
+        if (currentType == WeaponType.Bow)
+        {
+            var pierceEffect = effect.GetComponent<PiercingArrowEffect>();
+            if (pierceEffect != null)
+            {
+                pierceEffect.Initialize(effectPos, dir);
+            }
+        }
     }
 }

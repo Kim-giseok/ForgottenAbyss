@@ -11,6 +11,12 @@ public abstract class SkillExecutionSO : ScriptableObject
     // 스킬 실행
     public abstract void Execute(GameObject caster, GameObject target, SkillData data);
 
+    public void ExecuteSkill(GameObject caster, GameObject target, SkillData skillData)
+    {
+        SkillCastData castData = PrepareCastData(caster, target, skillData);
+        DealDamageToTarget(target, castData);
+    }
+
     protected SkillCastData PrepareCastData(GameObject caster, GameObject target, SkillData data)
     {
         return SkillCastData.Create(caster, target, data);
@@ -32,17 +38,5 @@ public abstract class SkillExecutionSO : ScriptableObject
     protected Collider2D[] GetEnemiesInRange(Vector3 center, float range, LayerMask layer)
     {
         return Physics2D.OverlapCircleAll(center, range, layer);
-    }
-
-    protected IEnumerator PlayFastAnimation(GameObject caster, string animationName, float speed, float duration)
-    {
-        var animator = caster.GetComponent<Animator>();
-        if (animator == null) yield break;
-
-        float originalSpeed = animator.speed;
-        animator.speed = speed;
-        animator.Play(animationName);
-        yield return new WaitForSeconds(duration);
-        animator.speed = originalSpeed;
     }
 }

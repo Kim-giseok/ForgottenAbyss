@@ -56,6 +56,8 @@ MonoBehaviour:
   skillVisualSOList: []
   skillExecutionSOList: []
   weaponSOList: []
+  comboAttackSOList: []
+  rangedAttackSOList: []
   memoryVisualSOList: []
 --- !u!114 &1524514876729645651
 MonoBehaviour:
@@ -69,6 +71,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c200e6942817124a924cfc608b67435, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  skillUI: {fileID: 0}
 --- !u!114 &3622915880698505367
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -94,6 +97,12 @@ MonoBehaviour:
   - key: MemorySkill
     prefab: {fileID: 1400255665468144947, guid: a899d01b2caac334abc7e1b1b9484e71, type: 3}
     initialSize: 1
+  - key: BowSkill01
+    prefab: {fileID: 4883125216578259596, guid: 5fcd16738b4416042b5899739f594824, type: 3}
+    initialSize: 5
+  - key: BowSkill02
+    prefab: {fileID: 7023494829652142248, guid: d206c7f780630034a8969b45a6f23623, type: 3}
+    initialSize: 6
 --- !u!114 &497392018163810730
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -107,4 +116,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   skillController: {fileID: 0}
-  playerRenderer: {fileID: 0}
+  comboAttack: {fileID: 0}

@@ -16,8 +16,6 @@ public class SwordSkill02ExecutionSO : SkillExecutionSO
 
     public override void Execute(GameObject caster, GameObject target, SkillData data)
     {
-        caster.GetComponent<MonoBehaviour>().StartCoroutine(PlayFastAnimation(caster, "SwordAttack_3", 1.5f, 0.5f));
-
         SkillCastData castData = PrepareCastData(caster, target, data);
 
         float facingDir = caster.transform.eulerAngles.y == 180f ? -1f : 1f; // 방향보정
@@ -42,14 +40,10 @@ public class SwordSkill02ExecutionSO : SkillExecutionSO
         if (casterCollider != null)
             casterCollider.enabled = false;
 
-        MonoBehaviour mono = caster.GetComponent<MonoBehaviour>();
-        if (mono != null)
+        CoroutinRunner.Instance.StartCoroutine(DashCoroutine(caster, startPos, targetPos, casterCollider, () =>
         {
-            mono.StartCoroutine(DashCoroutine(caster, startPos, targetPos, casterCollider, () =>
-            {
-                mono.StartCoroutine(DelayedHitCoroutine(startPos, targetPos, castData));
-            }));
-        }
+            CoroutinRunner.Instance.StartCoroutine(DelayedHitCoroutine(startPos, targetPos, castData));
+        }));
     }
 
     private IEnumerator DashCoroutine(GameObject caster, Vector3 startPos, Vector3 targetPos, Collider2D casterCollider, System.Action onComplete)
@@ -94,7 +88,7 @@ public class SwordSkill02ExecutionSO : SkillExecutionSO
         {
             DealDamageToTarget(hit.gameObject, castData);
             Debug.Log($"Hit {hit.name}");
-            CameraShake.Instance.Shake(0.05f, 0.1f);
+            CameraShake.Instance.Shake(0.1f, 0.2f);
         }
 
         DebugDrawUtil.DrawBox(center, size, angle, Color.red, 0.5f);

@@ -12,6 +12,8 @@ public class IdleState : PlayerStateMachine
         player.animator.SetBool("IsRun", false);
         player.animator.SetBool("IsJump", false);
         player.rigid.velocity = new Vector2(0, player.rigid.velocity.y);
+        SkillController.Instance.comboAttack.EndComboAttack();
+        SkillController.Instance.rangedAttack.EndRangedAttack();
     }
 
     public override void OnMove(Vector2 inputVec)
@@ -30,10 +32,10 @@ public class IdleState : PlayerStateMachine
         }
     }
 
-    public override void OnAttack()
-    {
-        player.ChangeState(PlayerState.Attack);
-    }
+    //public override void OnAttack()
+    //{
+    //    player.ChangeState(PlayerState.Attack);
+    //}
 
     public override void OnInteraction()
     {
