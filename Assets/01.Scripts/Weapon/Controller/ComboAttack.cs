@@ -51,7 +51,7 @@ public class ComboAttack : MonoBehaviour
         animator.SetTrigger("AttackTrigger");
         animator.SetInteger("AttackCombo", attackIndex);
     }
-   
+
 
     void OnComboCheck(float bufferTime)
     {
@@ -71,6 +71,7 @@ public class ComboAttack : MonoBehaviour
         {
             inputCombo = false;
             attackIndex++;
+            animator.SetInteger("AttackCombo", attackIndex);
             animator.Play(comboData.comboSteps[attackIndex - 1].animationName);
         }
         else
@@ -83,6 +84,7 @@ public class ComboAttack : MonoBehaviour
     {
         isAttacking = false;
         attackIndex = 0;
+        animator.SetInteger("AttackCombo", 0);
         inputCombo = false;
         canNextCombo = false;
         animator.Play("Idle");
@@ -153,5 +155,82 @@ public class ComboAttack : MonoBehaviour
         }
 
         transform.position = endPos;
+    }
+
+    void OnAttackHit()
+    {
+        if (comboData == null || attackIndex <= 0 || attackIndex > comboData.comboSteps.Count)
+        {
+            Debug.LogWarning("잘못된 attackIndex 또는 comboData 없음");
+            return;
+        }
+
+        float multiplier = comboData.comboSteps[attackIndex - 1].damageMultiplier;
+
+        // 타겟을 찾는 방법은 아래에서 설명
+        GameObject target = FindTargetInFront();
+        if (target == null) Debug.Log("타겟이 널입니다.");
+
+        var attackData = BasicAttackData.Create(
+            caster: gameObject,
+            target: target,
+            comboMultiplier: multiplier
+        );
+
+        float damage = attackData.CalculateDamage();
+        Debug.Log($"[근접] {attackIndex}타 데미지: {damage}");
+        
+        if (target != null)
+        {
+            var enemy = target.GetComponent<EnemyController>();
+            if (enemy != null)
+            {
+                Debug.Log("데미지 계산 실행");
+                enemy.GetDamage(damage);
+                CameraShake.Instance.Shake(0.05f, 0.1f);
+
+                Vector2 attackerPos = (Vector2)transform.position + Vector2.up * 0.5f;
+                KnockbackUtil.ApplyKnockback(target, attackerPos, 2f);
+            }
+        }
+    }
+
+    private GameObject FindTargetInFront()
+    {
+        var step = comboData.comboSteps[attackIndex-1];
+
+        float radius = step.radius;
+        float angle = step.angle;
+        Vector2 origin = (Vector2)transform.position + Vector2.up * 0.5f;
+        Vector2 forward = transform.right;
+
+        Collider2D[] hits = Physics2D.OverlapCircleAll(origin, radius, LayerMask.GetMask("Enemy"));
+
+        GameObject closest = null;
+        float minDistance = float.MaxValue;
+
+        foreach (var hit in hits)
+        {
+            Vector2 toTarget = ((Vector2)hit.transform.position - origin).normalized;
+            float dist = Vector2.Distance(origin, hit.transform.position);
+
+            // 마지막 타수면 angle 체크 없이 그냥 원형 판정
+            if (attackIndex == comboData.comboSteps.Count || Vector2.Angle(forward, toTarget) <= angle / 2f)
+            {
+                if (dist < minDistance)
+                {
+                    minDistance = dist;
+                    closest = hit.gameObject;
+                }
+            }
+        }
+
+        // 디버그 시각화: 막타는 원형, 나머지는 부채꼴
+        if (attackIndex == comboData.comboSteps.Count)
+            DebugDrawUtil.DrawCircle(origin, radius, Color.yellow);
+        else
+            DebugDrawUtil.DrawFan(origin, radius, angle, forward, Color.cyan);
+
+        return closest;
     }
 }

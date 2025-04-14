@@ -16,6 +16,8 @@ public class SwordSkill02ExecutionSO : SkillExecutionSO
 
     public override void Execute(GameObject caster, GameObject target, SkillData data)
     {
+        caster.GetComponent<MonoBehaviour>().StartCoroutine(PlayFastAnimation(caster, "SwordAttack_3", 1.5f, 0.5f));
+
         SkillCastData castData = PrepareCastData(caster, target, data);
 
         float facingDir = caster.transform.eulerAngles.y == 180f ? -1f : 1f; // 방향보정
@@ -76,9 +78,15 @@ public class SwordSkill02ExecutionSO : SkillExecutionSO
     {
         yield return new WaitForSeconds(damageDelay);
 
-        Vector2 center = (start + end) / 2f;
-        Vector2 size = new Vector2((end - start).magnitude, hitRadius * 2f);
-        float angle = Vector2.SignedAngle(Vector2.right, end - start);
+        float extraLength = 3f;
+        Vector2 dashDir = (end - start).normalized;
+
+        Vector2 extendedStart = (Vector2)start - dashDir * (extraLength / 2f);
+        Vector2 extendedEnd = (Vector2)end + dashDir * (extraLength / 2f);
+
+        Vector2 center = (extendedStart + extendedEnd) / 2f;
+        Vector2 size = new Vector2((extendedEnd - extendedStart).magnitude, hitRadius * 2f);
+        float angle = Vector2.SignedAngle(Vector2.right, extendedEnd - extendedStart);
 
         var hits = Physics2D.OverlapBoxAll(center, size, angle, targetLayer);
 

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Machine : MonoBehaviour
 {
-    [SerializeField] Animator machineAnim;
+    [SerializeField] protected Animator machineAnim;
     protected bool isActivated = false;
 
     public virtual void Active()

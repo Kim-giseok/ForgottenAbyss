@@ -51,7 +51,7 @@ public class JumpState : PlayerStateMachine
     }
     public override void OnAttack()
     {
-        player.ChangeState(PlayerState.Attack);
+        //player.ChangeState(PlayerState.Attack);
     }
     public override void OnCollisionEnter(Collision2D collision)
     {

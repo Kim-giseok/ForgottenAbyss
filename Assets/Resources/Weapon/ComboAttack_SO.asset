@@ -12,32 +12,44 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90b748fb8536de84599abae407bdcbfd, type: 3}
   m_Name: ComboAttack_SO
   m_EditorClassIdentifier: 
-  id: 1
+  id: 0
   attackName: "\uAC80 \uAE30\uBCF8 \uACF5\uACA9"
   description: "\uCF64\uBCF4\uB85C \uACF5\uACA9\uAC00\uB2A5\uD558\uB2E4 (\uCD1D 6\uD0C0)"
-  icon: {fileID: -779553751, guid: e05f4bec19d0e4a4585db292a5e39592, type: 3}
+  icon: {fileID: 21300000, guid: bd9c74b285862ad43b62f5e62d40d57b, type: 3}
   comboSteps:
   - animationName: SwordAttack_1
     damageMultiplier: 1
     moveDistance: 0
     inputBufferTime: 0.25
+    radius: 1
+    angle: 60
   - animationName: SwordAttack_2
     damageMultiplier: 1.1
     moveDistance: 0
     inputBufferTime: 0.25
+    radius: 1
+    angle: 60
   - animationName: SwordAttack_3
     damageMultiplier: 1.2
     moveDistance: 0
     inputBufferTime: 0.25
+    radius: 1
+    angle: 60
   - animationName: SwordAttack_4
     damageMultiplier: 1.5
     moveDistance: 0.2
     inputBufferTime: 0.25
+    radius: 1.2
+    angle: 60
   - animationName: SwordAttack_5
     damageMultiplier: 1.75
     moveDistance: 0.4
     inputBufferTime: 0.25
+    radius: 1.2
+    angle: 60
   - animationName: SwordAttack_6
     damageMultiplier: 2
     moveDistance: 0.6
     inputBufferTime: 0.25
+    radius: 1.4
+    angle: 0
