@@ -7,6 +7,11 @@ using UnityEngine;
 public class BowSkill02ExecutionSO : SkillExecutionSO
 {
     public string skillEffectKey;
+    
+    public int shotCount = 3;
+    public float angleBetweenShots = 10f;
+    public float delayBetweenShots = 0.05f;
+
     LayerMask targetLayer;
 
     public override void Execute(GameObject caster, GameObject target, SkillData data)
@@ -26,10 +31,6 @@ public class BowSkill02ExecutionSO : SkillExecutionSO
     {
         if (visualSO.effectDelay > 0f)
             yield return new WaitForSeconds(visualSO.effectDelay);
-
-        int shotCount = 3;
-        float angleBetweenShots = 10f;
-        float delayBetweenShots = 0.05f;
 
         List<Transform> enemies = FindEnemiesAround(spawnPoint.position, 10f);
 
