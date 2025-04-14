@@ -10,6 +10,11 @@ public class EnemyAnimationHandler
     
     public EnemyAnimationHandler(Animator animator) { this.animator = animator; }
 
+    public void SetController(RuntimeAnimatorController newController)
+    {
+        animator.runtimeAnimatorController = newController;
+    }
+
     public void Set(int triggerNameHash)
     {
         animator.SetTrigger(triggerNameHash);

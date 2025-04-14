@@ -199,7 +199,7 @@ Rigidbody2D:
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 2
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 637319122ddcb25428cbf37711dcbc73, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -265,16 +265,9 @@ MonoBehaviour:
   invincibilityLayerMask:
     serializedVersion: 2
     m_Bits: 512
-  wallLayer:
-    serializedVersion: 2
-    m_Bits: 0
-  wallDistance: 0
-  isWallDetected: 0
-  isWallClimbing: 0
   isGround: 0
   isDashing: 0
   isAttacking: 0
-  isIgnoringCollision: 0
   isInvincible: 0
   rigid: {fileID: 0}
   animator: {fileID: 0}
@@ -309,6 +302,7 @@ MonoBehaviour:
   interactableLayer:
     serializedVersion: 2
     m_Bits: 64
+  npcText: {fileID: 0}
 --- !u!114 &1976620441361161620
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -8,7 +8,8 @@ public class InteractionState : PlayerStateMachine
 
     public override void Enter()
     {
-        Vector2 origin = player.transform.position;
+        Vector2 origin = new Vector2(player.transform.position.x,
+            player.transform.position.y + player.playerCollider.bounds.extents.y);
         Vector2 direction = player.transform.right;
         player.interaction.Interact(origin, direction);
 
