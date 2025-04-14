@@ -98,10 +98,10 @@ public class ProjectileManager : Singleton<ProjectileManager> // 단위 미사�
         instance.SetActive(false);
     }
 
-    public void CreateEnemyProjectile(Transform parent, string name, string skillNodeName)
+    public void CreateEnemyProjectile(Transform parent, SummonSkillManager.Skill skill)
     {
         // notice: 플레이어 위치로 인한 보정 필요
-        GameObject instance = Instantiate(summon, new Vector2(parent.transform.position.x, parent.transform.position.y + 1), Quaternion.identity);
-        instance.GetComponent<SummonController>().Set(name, skillNodeName);
+        GameObject instance = Instantiate(summon, new Vector2(parent.transform.position.x, parent.transform.position.y + 0.8f), Quaternion.identity);
+        instance.GetComponent<SummonController>().Set(skill);
     }
 }

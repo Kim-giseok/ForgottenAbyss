@@ -1,6 +1,3 @@
-using System.Collections.Generic;
-using UnityEditor;
-using UnityEditor.Animations;
 using UnityEngine;
 
 public class TempTester: MonoBehaviour
@@ -8,7 +5,7 @@ public class TempTester: MonoBehaviour
 
    private void Start()
    {
-    
+      Debug.Log(Enemies.Enemy.NightBone.ToString());
    }
    
    private void Update()
@@ -21,7 +18,7 @@ public class TempTester: MonoBehaviour
       
       if (Input.GetKeyDown(KeyCode.L))
       {
-         ProjectileManager.Instance.CreateEnemyProjectile(transform, "NightBone", "DashAttack");
+         ProjectileManager.Instance.CreateEnemyProjectile(transform, SummonSkillManager.Skill.DashAttack);
       }
    }
 }

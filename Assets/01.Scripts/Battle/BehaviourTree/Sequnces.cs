@@ -113,31 +113,12 @@ public class SelectorNode : Node
 //     
 //     public override void Start()
 //     {
-//         machine.SetPlaying(false);
-//         
-//         machine.currNodes.AddRange(children.ToArray());
-//         machine.currTime = 0;
-//         foreach (var child in children)
-//         {
-//             child.SetController(controller);
-//             child.Start();
-//         }
-//         
-//         machine.SetPlaying(true);
+//         machine.SetCurrentNode(children[0]);
 //     }
 //
 //     // notice: 복수 실행 자체는 BTMachine에서 처리하며 조건 감지만 이곳에서 처리
 //     public override void GetStatus(Status newStatus, Node caller)
 //     {
-//         machine.SetPlaying(false);
-//         foreach (Node child in children)
-//         {
-//             machine.currNodes.Remove(child);
-//             child.End();
-//         }
-//         machine.SetPlaying(true);
-//         
-//         // notice: 하나의 노드에서 응답 받은 경우, 상위 노드에게 바로 전달
 //         SetStatus(newStatus);
 //     }
 // }

@@ -4,7 +4,7 @@ using UnityEngine;
 public class NavSurface : MonoBehaviour
 {
     public Vector2Int area;
-    private float cellSize = 1f;
+    // private float cellSize = 1f;
     
     private List<(Vector2 position, bool isWall)> cells = new();
     private List<(Vector2 position, bool isWall)> upperCells = new();

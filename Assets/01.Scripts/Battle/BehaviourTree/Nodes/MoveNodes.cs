@@ -114,14 +114,11 @@ public class DashNode : Node // 현재 방향이거나 타겟 방향
     private int direction;
     public override void Start()
     {
-        // 방향 계산 개념이 들어감, 이동에서 처리해줘야 하는 부분
-        // var currDirection = (controller.target.transform.position - controller.transform.position).normalized;
-        // direction = currDirection.x < 0 ? -1 : 1;
-        
     }
 
     public override void Update()
     {
+        if(currTime > 1) { SetStatus(Status.Success); return; }
         controller.rigidbody.velocity = new Vector2(controller.transform.localEulerAngles.y == 180 ? -2 : 2, controller.rigidbody.velocity.y);
     }
 }

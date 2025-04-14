@@ -8,8 +8,8 @@ public class EnemyController : EnemyBaseController, IDamagable
     [Header("Resource")]
     public float health;
     public float attack;
-    
-    public string name; 
+
+    public Enemies.Enemy name;
     
     public EnemyResourceHandler resourceHandler { get; private set; }
     public EnemyStatusHandler statusHandler { get; private set; }
@@ -28,7 +28,7 @@ public class EnemyController : EnemyBaseController, IDamagable
     {
         // animationHandler.SetController(EnemyAnimators.animators[name]);
         // 에러처리 필요
-        machine.Define(Enemies.Get(name).Node); // 각 개체별 생성되는 방식
+        machine.Define(Enemies.Get(name)); // 각 개체별 생성되는 방식
         
         try { MapSpawnManager.Instance.SpawnedMap.monsterManager.AddList(this); }
         catch { Debug.Log("there is no MapspawnManager"); }
@@ -37,8 +37,6 @@ public class EnemyController : EnemyBaseController, IDamagable
 
     public void GetDamage(float damage) // notice: summon은 제외
     {
-        Debug.Log("get damage");
-        
         // Vector3 textPosition = transform.position + Vector3.up * 1f;
         // DamageTextManager.Instance.ShowDamage(textPosition, (int)damage);
         

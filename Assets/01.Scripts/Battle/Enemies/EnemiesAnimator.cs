@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-public class EnemyAnimators
+public class EnemiesAnimator
 {
     public static Dictionary<string, AnimatorOverrideController> animators = new();
 
