@@ -53,8 +53,7 @@ public class EnemyBaseController: MonoBehaviour
     }
     public void LookTarget()
     {
-        var direction = (agent.target.transform.position - transform.position).normalized;
-        Flip(direction.x > 0);
+        Flip(agent.GetDirection().x > 0);
     }
 
 }

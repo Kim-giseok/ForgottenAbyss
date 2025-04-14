@@ -1,7 +1,4 @@
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Serialization;
-using UnityEngine.Tilemaps;
 
 // 좌우 값을 기준으로 이동 가능한지 아닌지 우선 체크
 public class EnemyAgent : MonoBehaviour
@@ -10,7 +7,7 @@ public class EnemyAgent : MonoBehaviour
     public GameObject target { get; private set; }
     
     public enum Status { None, Detected, Tracked }
-    public Status status = Status.None;
+    [HideInInspector] public Status status = Status.None;
     
     public float detectedDistance;
     public float stoppingDistance;
@@ -41,7 +38,7 @@ public class EnemyAgent : MonoBehaviour
         if (gameObject.layer == LayerMask.NameToLayer("Enemy"))
         {
             float currDistance = GetDistance();
-
+            
             if (currDistance < stoppingDistance) { SetStatus(Status.Tracked); return; }
             if (currDistance < detectedDistance) { SetStatus(Status.Detected); return; }
             SetStatus(Status.None);
@@ -52,6 +49,7 @@ public class EnemyAgent : MonoBehaviour
     {
         if (this.status == status) return;
         this.status = status;
+        
         controller.OnAgentDetected(status);
     }
     
@@ -59,11 +57,11 @@ public class EnemyAgent : MonoBehaviour
     public float GetDistance() // horizontal 체크만 필요할 수도 있음
     {
         if (!target) return 0;
-        return (transform.position - target.transform.position).magnitude;
+        return (target.transform.position - transform.position).magnitude;
     }
 
     public Vector2 GetDirection()
     {
-        return (transform.position - target.transform.position).normalized;
+        return (target.transform.position - transform.position).normalized;
     }
 }

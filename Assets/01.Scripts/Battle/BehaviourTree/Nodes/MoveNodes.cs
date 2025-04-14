@@ -17,8 +17,12 @@ public class IdleNode : Node
 
     public override void Update()
     {
-        Debug.Log("idle");
         if (currTime >= duration) { SetStatus(Status.Success); }
+    }
+
+    public override void OnAgentDetected(EnemyAgent.Status status)
+    {
+        if(status != EnemyAgent.Status.None) { SetStatus(Status.Fail); }
     }
 }
 
@@ -35,44 +39,55 @@ public class PatrolMove : Node
         context.Set("direction", direction);
         controller.Flip(direction == Vector2.right);
         
-        if (!controller.detectHandler.isWalkable) { SetStatus(Status.Fail); return; }
+        // if (!controller.detectHandler.isWalkable) { SetStatus(Status.Fail); return; } // 단일인 경우 문제 발생
         controller.animationHandler.Set(EnemyAnimationHandler.Run, true);
     }
 
     public override void Update()
     {
-        Debug.Log(currTime);
-        if (currTime >= duration) { SetStatus(Status.Success); return; }
+        if (currTime >= duration)
+        {
+            SetStatus(Status.Success); return;
+        }
         
         controller.rigidbody.velocity = new Vector2(context.Get<Vector2>("direction").x, controller.rigidbody.velocity.y);
     }
     
-    // public override void OnPhysicsDetected(EnemyDetectHandler.DetectType detectType, string value)
-    // {
-    //     if (detectType == EnemyDetectHandler.DetectType.Walkable && !bool.Parse(value))
-    //     {
-    //         SetStatus(Status.Success);
-    //     }
-    // }
-    //
-    //
-    // public override void End()
-    // {
-    //     controller.animationHandler.Set(EnemyAnimationHandler.Run, false);
-    // }
+    public override void OnPhysicsDetected(EnemyDetectHandler.DetectType detectType, string value)
+    {
+        // 문제 생길수 있음
+        
+        if (detectType == EnemyDetectHandler.DetectType.Walkable && !bool.Parse(value))
+        {
+            SetStatus(Status.Success);
+        }
+    }
+    
+    public override void End()
+    {
+        controller.animationHandler.Set(EnemyAnimationHandler.Run, false);
+    }
+    
+    public override void OnAgentDetected(EnemyAgent.Status status)
+    {
+        if(status != EnemyAgent.Status.None) { SetStatus(Status.Fail); }
+    }
 }
 
 public class TracingNode : Node
 {
     public override void Start()
     {
-        if(controller.agent.status == EnemyAgent.Status.Tracked) { SetStatus(Status.Success); return; } // notice: 애초에 한번 더 분류하는 게 맞지 않을까?
+        // 추적이 완료되면 무한 재귀 발생
+        if(controller.agent.status == EnemyAgent.Status.None) { SetStatus(Status.Fail); return; }
+        if(controller.agent.status == EnemyAgent.Status.Tracked) { SetStatus(Status.Success); return; }
         controller.animationHandler.Set(EnemyAnimationHandler.Run, true);
     }
     
     public override void Update()
     {
         controller.LookTarget();
+        // bug: 추적 방향이 위쪽이면 속도까지 줄어드는 문제 발생
         controller.rigidbody.velocity = new Vector2(controller.agent.GetDirection().x * controller.agent.tracingSpeed, controller.rigidbody.velocity.y);
     }
     
@@ -83,7 +98,8 @@ public class TracingNode : Node
 
     public override void OnAgentDetected(EnemyAgent.Status status)
     {
-        if(status == EnemyAgent.Status.Tracked) { SetStatus(Status.Success); return; }
+        if(status == EnemyAgent.Status.None) { SetStatus(Status.Fail); }
+        if(status == EnemyAgent.Status.Tracked) { SetStatus(Status.Success); }
     }
 }
 
@@ -96,12 +112,11 @@ public class DashNode : Node // 현재 방향이거나 타겟 방향
         // var currDirection = (controller.target.transform.position - controller.transform.position).normalized;
         // direction = currDirection.x < 0 ? -1 : 1;
         
-        controller.Flip(direction == 1);
     }
 
     public override void Update()
     {
-        controller.rigidbody.velocity = new Vector2(3f, controller.rigidbody.velocity.y);
+        controller.rigidbody.velocity = new Vector2(controller.transform.localEulerAngles.y == 180 ? -2 : 2, controller.rigidbody.velocity.y);
     }
 }
 

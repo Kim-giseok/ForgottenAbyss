@@ -35,11 +35,7 @@ public class HitNode : Node
         // controller.Flip(direction.x > 0);
         
         if(eController.statusHandler.isIgnoreHitAction) eController.spriteRenderer.color = Color.red;
-        else
-        {
-            Debug.Log("animation start");
-            eController.animationHandler.Set(EnemyAnimationHandler.Hit);
-        }
+        else eController.animationHandler.Set(EnemyAnimationHandler.Hit);
         
         eController.statusHandler.isHit = false;
     }
@@ -47,7 +43,10 @@ public class HitNode : Node
     public override void OnAnimated(AnimationStatus status, AnimatorStateInfo animInfo)
     {
         if (!animInfo.IsName("Hit")) return;
-        if (status == AnimationStatus.End) SetStatus(Status.Success);
+        if (status == AnimationStatus.End)
+        {
+            SetStatus(Status.Success);
+        }
     }
 }
 

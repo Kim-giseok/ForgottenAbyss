@@ -42,7 +42,7 @@ public class EnemyDetectHandler : MonoBehaviour
         if (isGrounded != currIsGrounded)
         {
             isGrounded = currIsGrounded;
-            rigidbody.gravityScale = isGrounded ? 0 : gravityScale; // 공중에 있을 때만 중력 개념 적용
+            // rigidbody.gravityScale = isGrounded ? 0 : gravityScale; // 공중에 있을 때만 중력 개념 적용 - 이동이 멈추면 가속도 붙음
         }
         
         // Vector3 currSlope = GetSlope();

@@ -7,6 +7,7 @@ public class AttackNode : Node
     public override void Start()
     {
         controller.animationHandler.Set(EnemyAnimationHandler.Attack);
+        controller.LookTarget();
     }
 
     public override void OnAnimatedEvent(bool isFire)
@@ -25,13 +26,8 @@ public class AttackNode : Node
     // fix: 의미 없는 호출이 발생할 수 있느 점에 대한 고려 필요
     public override void OnAnimated(AnimationStatus status, AnimatorStateInfo animInfo)
     {
-        // Debug.Log(controller.gameObject.name + " : " + status);
-
         if (!animInfo.IsName("Attack")) return;
-        if (status == AnimationStatus.End)
-        {
-            SetStatus(Status.Success);
-        }
+        if (status == AnimationStatus.End) { SetStatus(Status.Success); }
     }
     
     public override void End() // notice: 공격 중 피격 당하는 경우

@@ -14,7 +14,7 @@ public class SummonController: EnemyBaseController
         
         animationHandler.SetController(EnemyAnimators.animators[name]);
 
-
+        // notice: 머신도 제거되는 지 체크 후 이벤트 제거 필요
         machine.OnLooped += () => { Destroy(gameObject); };
         machine.Define(Enemies.Get(name).skills[skillName]);
     }
