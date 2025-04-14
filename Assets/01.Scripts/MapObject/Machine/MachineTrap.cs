@@ -12,6 +12,5 @@ public class MachineTrap : MachineLoop
         if (!collision.TryGetComponent<IDamagable>(out IDamagable damaged)) return;
 
         damaged.GetDamage(atk);
-        Debug.Log("Damaged");
     }
 }
