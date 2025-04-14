@@ -9,7 +9,7 @@ public class QuickSlotController : MonoBehaviour
 
     void Start()
     {
-        SelectSlot(0);  // 시작시 첫 번째 슬롯 선택
+        selectedIndex = -1; // 시작 시 슬롯 선택 안함
     }
 
     void Update()

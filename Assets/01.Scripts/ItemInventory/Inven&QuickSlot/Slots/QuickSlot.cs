@@ -6,9 +6,7 @@ using UnityEngine.UI;
 
 public class QuickSlot : SlotBase
 {
-    [SerializeField] private Image backgroundImage;
-    [SerializeField] private Color normalColor = Color.white;
-    [SerializeField] private Color selectedColor = Color.magenta;
+    [SerializeField] private GameObject outlineObject; // 선택된 슬롯 테두리
 
     public override void OnDrop(PointerEventData eventData)
     {
@@ -30,9 +28,9 @@ public class QuickSlot : SlotBase
 
     public void SetSelected(bool selected)
     {
-        if (backgroundImage != null)
+        if (outlineObject != null)
         {
-            backgroundImage.color = selected ? selectedColor : normalColor;
+            outlineObject.SetActive(selected);
         }
     }
 }
