@@ -4,7 +4,7 @@ using UnityEditor;
 using UnityEditor.U2D.Aseprite;
 using UnityEngine;
 
-[CustomEditor(typeof(LaberInteractive))]
+[CustomEditor(typeof(LaberDamagerble))]
 public class LaberTestUI : Editor
 {
     public override void OnInspectorGUI()
@@ -12,7 +12,7 @@ public class LaberTestUI : Editor
         DrawDefaultInspector();
         if (GUILayout.Button("레버 작동"))
         {
-            ((LaberInteractive)target).ActiveInteraction();
+            ((LaberDamagerble)target).GetDamage(10);
         }
     }
 }
