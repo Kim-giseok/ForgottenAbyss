@@ -2680,7 +2680,8 @@ GameObject:
   m_Component:
   - component: {fileID: 435964488}
   - component: {fileID: 435964490}
-  - component: {fileID: 435964489}
+  - component: {fileID: 435964491}
+  - component: {fileID: 435964492}
   m_Layer: 5
   m_Name: Weapon (1)
   m_TagString: Untagged
@@ -2707,7 +2708,27 @@ RectTransform:
   m_AnchoredPosition: {x: -144, y: 50}
   m_SizeDelta: {x: 150, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &435964489
+--- !u!222 &435964490
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 435964487}
+  m_CullTransparentMesh: 1
+--- !u!225 &435964491
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 435964487}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
+--- !u!114 &435964492
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2720,7 +2741,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.5803922}
+  m_Color: {r: 0, g: 0.1066619, b: 0.4867924, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -2737,14 +2758,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!222 &435964490
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 435964487}
-  m_CullTransparentMesh: 1
 --- !u!1001 &484397880
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3794,6 +3807,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inventoryUI: {fileID: 586669373}
   settingsMenu: {fileID: 1619624241}
+  weaponSwapper: {fileID: 1452431220}
 --- !u!4 &749852144
 Transform:
   m_ObjectHideFlags: 0
@@ -7428,6 +7442,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1452431219}
+  - component: {fileID: 1452431220}
   m_Layer: 5
   m_Name: WeaponSlot
   m_TagString: Untagged
@@ -7456,6 +7471,20 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 1, y: 0}
+--- !u!114 &1452431220
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1452431218}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cca926648c6fe9f4da6e13bf6e3a2a2e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  frontWeapon: {fileID: 1530133427}
+  backWeapon: {fileID: 435964488}
 --- !u!1 &1454386444
 GameObject:
   m_ObjectHideFlags: 0
@@ -8168,6 +8197,7 @@ GameObject:
   - component: {fileID: 1530133427}
   - component: {fileID: 1530133429}
   - component: {fileID: 1530133428}
+  - component: {fileID: 1530133430}
   m_Layer: 5
   m_Name: Weapon (2)
   m_TagString: Untagged
@@ -8207,7 +8237,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.005033799, g: 0.35632908, b: 0.381132, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -8232,6 +8262,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1530133426}
   m_CullTransparentMesh: 1
+--- !u!225 &1530133430
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1530133426}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &1530497662
 GameObject:
   m_ObjectHideFlags: 0
