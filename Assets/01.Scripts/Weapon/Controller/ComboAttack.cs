@@ -48,6 +48,7 @@ public class ComboAttack : MonoBehaviour
     {
         IsAttacking = true;
         attackIndex = 1;
+        animator.ResetTrigger("AttackTrigger");
         animator.SetTrigger("AttackTrigger");
         animator.SetInteger("AttackCombo", attackIndex);
     }
@@ -172,7 +173,6 @@ public class ComboAttack : MonoBehaviour
 
         float multiplier = comboData.comboSteps[attackIndex - 1].damageMultiplier;
 
-        // 타겟을 찾는 방법은 아래에서 설명
         GameObject target = FindTargetInFront();
         if (target == null) Debug.Log("타겟이 널입니다.");
 
@@ -183,7 +183,6 @@ public class ComboAttack : MonoBehaviour
         );
 
         float damage = attackData.CalculateDamage();
-        Debug.Log($"[근접] {attackIndex}타 데미지: {damage}");
         
         if (target != null)
         {
@@ -191,12 +190,19 @@ public class ComboAttack : MonoBehaviour
 
             if (enemy != null)
             {
-                Debug.Log("데미지 계산 실행");
                 enemy.GetDamage(damage);
                 CameraShake.Instance.Shake(0.1f, 0.2f);
 
                 Vector2 attackerPos = (Vector2)transform.position + Vector2.up * 0.5f;
                 KnockbackUtil.ApplyKnockback(target, attackerPos, 2f);
+            }
+
+            var laber = target.GetComponentInChildren<LaberDamagerble>();
+
+            if (laber != null)
+            {
+                Debug.Log("레버 타격!");
+                laber.GetDamage(damage);
             }
         }
     }

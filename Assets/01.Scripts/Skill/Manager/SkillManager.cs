@@ -166,5 +166,13 @@ public class SkillManager : Singleton<SkillManager>
                 pierceEffect.Initialize(effectPos, dir);
             }
         }
+        else if (currentType == WeaponType.Sword)
+        {
+            var dashEffect = effect.GetComponent<DashTrailEffect>();
+            if (dashEffect != null)
+            {
+                dashEffect.Initialize(effectPos, dir);
+            }
+        }
     }
 }

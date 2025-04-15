@@ -8,6 +8,7 @@ public class DashState : PlayerStateMachine
     public DashState(ControllerPlayer player) : base(player) { }
     public override void Enter()
     {
+        player.animator.SetBool("IsDash", true);
         player.animator.SetTrigger("DashTrigger");
         player.SetInvincibility(true);
         dashTimer = 0f;
@@ -25,10 +26,15 @@ public class DashState : PlayerStateMachine
                 player.ChangeState(PlayerState.Run);
             else
                 player.ChangeState(PlayerState.Idle);
+
+            player.rigid.velocity = new Vector2(player.inputVec.x * player.speed, player.rigid.velocity.y);
         }
     }
     public override void Exit()
     {
+        player.animator.SetBool("IsDash", false);
+        SkillController.Instance.comboAttack.EndComboAttack();
+        SkillController.Instance.rangedAttack.EndRangedAttack();
         player.SetInvincibility(false);
     }
 }

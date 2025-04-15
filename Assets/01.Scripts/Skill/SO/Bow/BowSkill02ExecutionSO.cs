@@ -19,7 +19,7 @@ public class BowSkill02ExecutionSO : SkillExecutionSO
         SkillCastData castData = PrepareCastData(caster, target, data);
 
         var visualSO = DataManager.Instance.GetSkillVisualSO(data.VisualSOName);
-
+        SkillController.Instance.isBowAttack = true;
         if (visualSO != null)
         {
             Transform spawnPoint = caster.transform; 
@@ -29,8 +29,12 @@ public class BowSkill02ExecutionSO : SkillExecutionSO
 
     private IEnumerator PlayEffectWithDelay(SkillVisualSO visualSO, Transform spawnPoint, SkillData data, SkillCastData castData)
     {
+        CameraZoom.Instance.ZoomIn(0.3f);
+        
         if (visualSO.effectDelay > 0f)
             yield return new WaitForSeconds(visualSO.effectDelay);
+
+        CameraZoom.Instance.ZoomOut();
 
         List<Transform> enemies = FindEnemiesAround(spawnPoint.position, 10f);
 
@@ -61,6 +65,7 @@ public class BowSkill02ExecutionSO : SkillExecutionSO
             }
             yield return new WaitForSeconds(delayBetweenShots);
         }
+        SkillController.Instance.isBowAttack = false;
     }
 
     private List<Transform> FindEnemiesAround(Vector3 center, float radius)

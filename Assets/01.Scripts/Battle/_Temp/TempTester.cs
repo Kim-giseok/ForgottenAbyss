@@ -1,6 +1,3 @@
-using System.Collections.Generic;
-using UnityEditor;
-using UnityEditor.Animations;
 using UnityEngine;
 
 public class TempTester: MonoBehaviour
@@ -8,20 +5,20 @@ public class TempTester: MonoBehaviour
 
    private void Start()
    {
-    
    }
    
    private void Update()
    {
       if (Input.GetKeyDown(KeyCode.K))
       {
-         // ProjectileManager.Instance.CreateEnemyProjectile(transform, "DashAttack", 0);
-         // ProjectileManager.Instance.CreateEnemyProjectile(transform, "ParallelShotNode", 2);
+         // direction 정보를 넘길 수 없음
+         ProjectileManager.Instance.CreateSummonProjectile(transform, SummonSkillManager.Skill.BossSkill2, false);
+         ProjectileManager.Instance.CreateSummonProjectile(transform, SummonSkillManager.Skill.BossSkill3, false);
       }
       
       if (Input.GetKeyDown(KeyCode.L))
       {
-         ProjectileManager.Instance.CreateEnemyProjectile(transform, "NightBone", "DashAttack");
+         ProjectileManager.Instance.CreateSummonProjectile(transform, SummonSkillManager.Skill.DashAttack, true);
       }
    }
 }

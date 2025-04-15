@@ -16,7 +16,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4186623940904166932
 Transform:
   m_ObjectHideFlags: 0
@@ -95,7 +95,10 @@ GameObject:
   - component: {fileID: 7678828189562424689}
   - component: {fileID: 7729261108934561572}
   - component: {fileID: 2096614423294542503}
+  - component: {fileID: 6993757856423584854}
   - component: {fileID: 1963007142685713099}
+  - component: {fileID: 3825623959735246852}
+  - component: {fileID: 8875142814207956858}
   m_Layer: 0
   m_Name: Agis
   m_TagString: Untagged
@@ -113,7 +116,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.68, y: 3.07, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.45, y: 0.45, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4186623940904166932}
@@ -181,7 +184,7 @@ Animator:
   m_GameObject: {fileID: 9056182808368914233}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 22100000, guid: c5fa0caf344f443ef888d434f9304c50, type: 2}
+  m_Controller: {fileID: 9100000, guid: 47c8b233b59a84be4ac3e84f5220f3e4, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -254,6 +257,21 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 0.84, y: 2.27}
   m_Direction: 0
+--- !u!114 &6993757856423584854
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9056182808368914233}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68e4352b8584b49edb0f5da93bdaf397, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 300
+  attack: 10
+  name: 0
 --- !u!114 &1963007142685713099
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -269,4 +287,31 @@ MonoBehaviour:
   status: 0
   detectedDistance: 10
   stoppingDistance: 2
+  boundaryDistance: 0
+  defenseDistance: 0
   tracingSpeed: 5
+  combatDuration: 0
+--- !u!114 &3825623959735246852
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9056182808368914233}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46c040b7a0f8f4dad9d0d516dc583541, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8875142814207956858
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9056182808368914233}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c4bb51360b54991a6817ec21e18b9d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

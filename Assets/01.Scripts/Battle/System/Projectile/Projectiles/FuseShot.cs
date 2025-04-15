@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class FuseShot: MonoBehaviour
+public class FuseShot: Projectile
 {
         
 }

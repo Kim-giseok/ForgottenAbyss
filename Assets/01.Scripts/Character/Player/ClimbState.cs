@@ -58,6 +58,9 @@ public class ClimbState : PlayerStateMachine
             }
         }
 
+        if (player.inputVec.y > 0)
+            player.animator.SetBool("IsLadder", true);
+
         if (player.inputVec.y > 0 && player.transform.position.y >= Collider.bounds.max.y - 1.1f)
         {
             // 사다리 꼭대기에 도달했을 때 자동으로 위로 올라가기
@@ -76,11 +79,11 @@ public class ClimbState : PlayerStateMachine
     {
         // Y축 입력에 따라 상하 이동
         player.rigid.velocity = new Vector2(0, player.inputVec.y * climbSpeed);
-        
     }
 
     public override void Exit()
     {
+        player.animator.SetBool("IsLadder", false);
         player.rigid.gravityScale = originalGravity;
     }
 

@@ -42,10 +42,11 @@ public class BTMachine
         SetPlaying(false);
         
         currNode?.End();
-
-        currTime = 0;
+        
         currNode = node;
         currNode.SetController(controller);
+        
+        currTime = 0;
         currNode.Start();
         
         SetPlaying(true);
@@ -58,7 +59,7 @@ public class BTMachine
     }
     
     // controller에서 한번 거칠 필요 있을까 의문 필요
-    public void OnDetected(EnemyDetectHandler.DetectType detectType, string value)
+    public void OnDetected(EnemyDetectHandler.DetectType detectType, bool value)
     {
         currNode.OnPhysicsDetected(detectType, value);
     }

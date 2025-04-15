@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class LaserShot: MonoBehaviour
+public class LaserShot: Projectile
 {
     private LineRenderer lineRenderer;
 

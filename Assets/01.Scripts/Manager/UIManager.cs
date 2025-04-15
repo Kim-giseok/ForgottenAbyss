@@ -6,6 +6,7 @@ public class UIManager : MonoBehaviour
 {
     public InventoryUI inventoryUI;  // 인벤토리
     public SettingsMenu settingsMenu; // 옵션창
+    public WeaponSwapper weaponSwapper;
 
     void Update()
     {
@@ -18,5 +19,11 @@ public class UIManager : MonoBehaviour
         {
             settingsMenu.ToggleSettingsMenu();
         }
+
+        if (Input.GetKeyDown(KeyCode.Tab)) // 무기 스왑
+        {
+            weaponSwapper.SwapWeapons();
+        }
+
     }
 }
