@@ -1093,6 +1093,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: SkillSystem
       objectReference: {fileID: 0}
+    - target: {fileID: 3622915880698505367, guid: 2cef33c320151574f914bdb408e62aab, type: 3}
+      propertyPath: effectList.Array.data[5].key
+      value: SwordSkill02_d
+      objectReference: {fileID: 0}
+    - target: {fileID: 3622915880698505367, guid: 2cef33c320151574f914bdb408e62aab, type: 3}
+      propertyPath: effectList.Array.data[5].prefab
+      value: 
+      objectReference: {fileID: 9100403619979767535, guid: 3f415a70aee30ff4ab35b797552fbc23, type: 3}
     - target: {fileID: 8218525754157547995, guid: 2cef33c320151574f914bdb408e62aab, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -1138,63 +1146,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2cef33c320151574f914bdb408e62aab, type: 3}
---- !u!1001 &3880427696556844483
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 5264371681372061162, guid: a1baa6c1d03af5d42b292db930e93fa5, type: 3}
-      propertyPath: m_Name
-      value: SwordSkill02_b
-      objectReference: {fileID: 0}
-    - target: {fileID: 7246987520792538157, guid: a1baa6c1d03af5d42b292db930e93fa5, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0.035381794
-      objectReference: {fileID: 0}
-    - target: {fileID: 7246987520792538157, guid: a1baa6c1d03af5d42b292db930e93fa5, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 1.87
-      objectReference: {fileID: 0}
-    - target: {fileID: 7246987520792538157, guid: a1baa6c1d03af5d42b292db930e93fa5, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -0.8751736
-      objectReference: {fileID: 0}
-    - target: {fileID: 7246987520792538157, guid: a1baa6c1d03af5d42b292db930e93fa5, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7246987520792538157, guid: a1baa6c1d03af5d42b292db930e93fa5, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7246987520792538157, guid: a1baa6c1d03af5d42b292db930e93fa5, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7246987520792538157, guid: a1baa6c1d03af5d42b292db930e93fa5, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7246987520792538157, guid: a1baa6c1d03af5d42b292db930e93fa5, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7246987520792538157, guid: a1baa6c1d03af5d42b292db930e93fa5, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7246987520792538157, guid: a1baa6c1d03af5d42b292db930e93fa5, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: a1baa6c1d03af5d42b292db930e93fa5, type: 3}
 --- !u!1001 &4362323574144947629
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1336,4 +1287,3 @@ SceneRoots:
   - {fileID: 1361478628}
   - {fileID: 6851509142293679293}
   - {fileID: 336052054}
-  - {fileID: 3880427696556844483}
