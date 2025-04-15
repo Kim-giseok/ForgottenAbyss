@@ -102,9 +102,12 @@ public class ControllerPlayer : MonoBehaviour
         }
 
 
-        if (!isGround && rigid.velocity.y < -0.1f)
+        if (!isGround &&  rigid.velocity.y < -0.1f)
         {
-            animator.SetBool("IsFall", true);
+            if (!animator.GetCurrentAnimatorStateInfo(0).IsTag("Attack"))
+            {
+                animator.SetBool("IsFall", true);
+            }
         }
         else
         {

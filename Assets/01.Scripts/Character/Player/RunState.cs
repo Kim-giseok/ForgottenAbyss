@@ -18,7 +18,8 @@ public class RunState : PlayerStateMachine
     {
         float currentSpeed = player.speed;
 
-        if (SkillController.Instance.IsAttacking())
+        AnimatorStateInfo stateInfo = player.animator.GetCurrentAnimatorStateInfo(0);
+        if (stateInfo.IsTag("Attack"))
         {
             currentSpeed *= 0.2f;
         }
@@ -47,9 +48,5 @@ public class RunState : PlayerStateMachine
         {
             player.ChangeState(PlayerState.Dash);
         }
-    }
-    public override void OnAttack()
-    {
-        player.ChangeState(PlayerState.Attack);
     }
 }

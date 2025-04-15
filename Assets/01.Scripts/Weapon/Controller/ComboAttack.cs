@@ -48,6 +48,7 @@ public class ComboAttack : MonoBehaviour
     {
         IsAttacking = true;
         attackIndex = 1;
+        animator.ResetTrigger("AttackTrigger");
         animator.SetTrigger("AttackTrigger");
         animator.SetInteger("AttackCombo", attackIndex);
     }

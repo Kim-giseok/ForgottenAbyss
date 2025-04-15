@@ -41,6 +41,7 @@ public class RangedAttack : MonoBehaviour
     {
         IsAttacking = true;
         attackIndex = 1;
+        animator.ResetTrigger("BowTrigger");
         animator.SetTrigger("BowTrigger");
         animator.SetInteger("BowCombo", attackIndex);
         PlayRangedAnimation();
