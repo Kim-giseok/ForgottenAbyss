@@ -10,6 +10,11 @@ public class MachineReciever : Machine
     public override void Active()
     {
         base.Active();
+        ActionAfterAnimation(RecieveObject);
+    }
+
+    void RecieveObject()
+    {
         if (recieveItem.Length <= 0) return;
         for (int i = 0; i < recieveNum; i++)
             Instantiate(recieveItem[Random.Range(0,recieveItem.Length)], transform.position, Quaternion.identity);
