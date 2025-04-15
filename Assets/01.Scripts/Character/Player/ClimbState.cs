@@ -11,6 +11,8 @@ public class ClimbState : PlayerStateMachine
 
     public override void Enter()
     {
+        player.animator.SetTrigger("LadderTrigger");
+        player.animator.SetBool("IsLadder", true);
         Debug.Log("트리거 진입");
         originalGravity = player.rigid.gravityScale;
 
@@ -42,6 +44,8 @@ public class ClimbState : PlayerStateMachine
         // 수평 속도 0으로 설정
         player.rigid.velocity = new Vector2(0, 0);
         player.rigid.gravityScale = 0;
+
+        player.animator.SetFloat("SpeedY", 0);
     }
 
     public override void Update()
@@ -58,8 +62,14 @@ public class ClimbState : PlayerStateMachine
             }
         }
 
-        if (player.inputVec.y > 0)
-            player.animator.SetBool("IsLadder", true);
+        if (player.inputVec.y == 0)
+        {
+            player.animator.SetFloat("SpeedY", 0);  // 수직 이동이 없을 때
+        }
+        else
+        {
+            player.animator.SetFloat("SpeedY", player.inputVec.y);  // 위/아래로 이동할 때
+        }
 
         if (player.inputVec.y > 0 && player.transform.position.y >= Collider.bounds.max.y - 1.1f)
         {
