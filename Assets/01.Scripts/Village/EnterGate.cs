@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class EnterGate : MonoBehaviour
 {
@@ -24,6 +25,12 @@ public class EnterGate : MonoBehaviour
         {
             confirmationUI.SetActive(false);
         }
+    }
+
+    public void OnClickEnter()
+    {
+        Debug.Log("¿‘¿Â");
+        //SceneManager.LoadScene(""); 
     }
 
     public void OnClickExit()

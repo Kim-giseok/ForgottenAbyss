@@ -71,14 +71,13 @@ public class SwordSkill02ExecutionSO : SkillExecutionSO
     private IEnumerator DelayedHitCoroutine(Vector3 start, Vector3 end, SkillCastData castData)
     {
         yield return new WaitForSeconds(damageDelay);
-
         float extraLength = 3f;
         Vector2 dashDir = (end - start).normalized;
 
         Vector2 extendedStart = (Vector2)start - dashDir * (extraLength / 2f);
-        Vector2 extendedEnd = (Vector2)end + dashDir * (extraLength / 2f);
+        Vector2 extendedEnd = (Vector2)end + dashDir * ((extraLength / 2f) - 1f);
 
-        Vector2 center = (extendedStart + extendedEnd) / 2f;
+        Vector2 center = (extendedStart + extendedEnd) / 2f + Vector2.up * 0.5f;
         Vector2 size = new Vector2((extendedEnd - extendedStart).magnitude, hitRadius * 2f);
         float angle = Vector2.SignedAngle(Vector2.right, extendedEnd - extendedStart);
 
@@ -88,9 +87,9 @@ public class SwordSkill02ExecutionSO : SkillExecutionSO
         {
             DealDamageToTarget(hit.gameObject, castData);
             Debug.Log($"Hit {hit.name}");
-            CameraShake.Instance.Shake(0.1f, 0.2f);
+            
         }
-
+        CameraShake.Instance.Shake(0.1f, 0.2f);
         DebugDrawUtil.DrawBox(center, size, angle, Color.red, 0.5f);
     }
 }

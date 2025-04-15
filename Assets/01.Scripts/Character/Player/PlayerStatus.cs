@@ -1,26 +1,143 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting.Antlr3.Runtime.Misc;
+using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 
 public class PlayerStatus : CharacterStatus
 {
-    private void Start()
-    {
-        stats[StatType.HP] = 100f; //ï¿½Ê±ï¿½ HP
-        stats[StatType.MP] = 100f; //ï¿½Ê±ï¿½ MP
-        stats[StatType.ATK] = 10f; //ï¿½Ê±ï¿½ ï¿½ï¿½ï¿½Ý·ï¿½
-        stats[StatType.DEF] = 10f; //ï¿½Ê±ï¿½ ï¿½ï¿½ï¿½ï¿½
-        stats[StatType.LEVEL] = 1f; //ï¿½Ê±ï¿½ ï¿½ï¿½ï¿½ï¿½
-        stats[StatType.EXP] = 0f; //ï¿½Ê±ï¿½ ï¿½ï¿½ï¿½ï¿½Ä¡
-        stats[StatType.GOLD] = 0f; //ï¿½Ê±ï¿½ ï¿½ï¿½ï¿½
+    // ·¹º§¾÷¿¡ ÇÊ¿äÇÑ °æÇèÄ¡ ¿ä±¸·®
+    private Dictionary<int, float> expRequiredForLevel = new Dictionary<int, float>();
+    // ·¹º§º° ½ºÅÈ Áõ°¡·®
+    private Dictionary<int, Dictionary<StatType, float>> levelStats = new Dictionary<int, Dictionary<StatType, float>>();
 
+    private int maxLevel = 999;
+    private void Awake()
+    {
+        InitializeStats();
+        InitializeLevelStats();
+        InitializeExpRequired();
+    }
+
+    private void Update()
+    {
+        TestExp();
+    }
+    private void InitializeStats()
+    {
+        stats[StatType.HP] = 100f; //ÃÊ±â HP
+        stats[StatType.MP] = 100f; //ÃÊ±â MP
+        stats[StatType.ATK] = 10f; //ÃÊ±â °ø°Ý·Â
+        stats[StatType.DEF] = 10f; //ÃÊ±â ¹æ¾î·Â
+        stats[StatType.LEVEL] = 1f; //ÃÊ±â ·¹º§
+        stats[StatType.EXP] = 0f; //ÃÊ±â °æÇèÄ¡
+        stats[StatType.GOLD] = 0f; //ÃÊ±â °ñµå
+    }
+
+    // ·¹º§º° ½ºÅÈ Áõ°¡·® ÃÊ±âÈ­
+    private void InitializeLevelStats()
+    {
+        // ·¹º§º° ½ºÅÈ Áõ°¡·® ¼³Á¤ (·¹º§ 2ºÎÅÍ ½ÃÀÛ)
+        for (int level = 2; level <= maxLevel; level++)
+        {
+            Dictionary<StatType, float> statIncreases = new Dictionary<StatType, float>();
+
+            // ·¹º§º° Áõ°¡·®
+            statIncreases[StatType.HP] = 20f;         // HP Áõ°¡·®
+            statIncreases[StatType.MP] = 15f;        // MP Áõ°¡·®
+            statIncreases[StatType.ATK] = 1f;     // °ø°Ý·Â Áõ°¡·®
+            statIncreases[StatType.DEF] = 1f;     // ¹æ¾î·Â Áõ°¡·®
+
+            levelStats[level] = statIncreases;
+        }
+    }
+
+    private void InitializeExpRequired()
+    {
+        // ·¹º§º° ÇÊ¿ä °æÇèÄ¡ ¼³Á¤
+        for (int level = 1; level <= maxLevel; level++)
+        {
+            // °æÇèÄ¡ °ø½Ä (¿¹: level^2 * 100)
+            expRequiredForLevel[level] = level * 100f;
+        }
+    }
+
+    // °æÇèÄ¡ È¹µæ ¸Þ¼­µå
+    public void GainExperience(float amount)
+    {
+        stats[StatType.EXP] += amount;
+        Debug.Log($"°æÇèÄ¡ È¹µæ: +{amount} (ÇöÀç: {stats[StatType.EXP]})");
+
+        CheckLevelUp();
+    }
+
+    private void CheckLevelUp()
+    {
+        int curLevel = (int)stats[StatType.LEVEL];
+
+        // ÃÖ´ë ·¹º§¿¡ µµ´ÞÇß´ÂÁö Ã¼Å©
+        if (curLevel >= maxLevel)
+        {
+            stats[StatType.EXP] = expRequiredForLevel[maxLevel]; // °æÇèÄ¡ Á¦ÇÑ
+            return;
+        }
+
+        // ÇöÀç ·¹º§¿¡¼­ ÇÊ¿äÇÑ °æÇèÄ¡¸¦ ³Ñ¾ú´ÂÁö Ã¼Å©
+        if (stats[StatType.EXP] >= expRequiredForLevel[curLevel])
+        {
+            LevelUp();
+
+            // ³²Àº °æÇèÄ¡°¡ ¶Ç ·¹º§¾÷¿¡ ÃæºÐÇÑÁö È®ÀÎ (¿¬¼Ó ·¹º§¾÷ Ã³¸®)
+            CheckLevelUp();
+        }
+    }
+
+    private void LevelUp()
+    {
+        int newLevel = (int)stats[StatType.LEVEL] + 1;
+
+        // °æÇèÄ¡ °è»ê
+        stats[StatType.EXP] -= expRequiredForLevel[(int)stats[StatType.LEVEL]];
+
+        // ·¹º§ Áõ°¡
+        stats[StatType.LEVEL] = newLevel;
+
+        // ·¹º§¿¡ µû¸¥ ½ºÅÈ Áõ°¡
+        ApplyLevelStats(newLevel);
+
+        Debug.Log($"ÇöÀç ·¹º§: {stats[StatType.LEVEL]}");
         Debug.Log($"HP: {stats[StatType.HP]}");
         Debug.Log($"MP: {stats[StatType.MP]}");
-        Debug.Log($"ï¿½ï¿½ï¿½Ý·ï¿½: {stats[StatType.ATK]}");
-        Debug.Log($"ï¿½ï¿½ï¿½ï¿½: {stats[StatType.DEF]}");
-        Debug.Log($"ï¿½ï¿½ï¿½ï¿½: {stats[StatType.LEVEL]}");
-        Debug.Log($"ï¿½ï¿½ï¿½ï¿½Ä¡: {stats[StatType.EXP]}");
-        Debug.Log($"ï¿½ï¿½ï¿½: {stats[StatType.GOLD]}");
+        Debug.Log($"ATK: {stats[StatType.ATK]}");
+        Debug.Log($"DEF: {stats[StatType.DEF]}");
+
+    }
+
+    // ·¹º§¿¡ µû¸¥ ½ºÅÈ Àû¿ë
+    private void ApplyLevelStats(int level)
+    {
+        if (levelStats.ContainsKey(level))
+        {
+            Dictionary<StatType, float> statIncreases = levelStats[level];
+
+            foreach (var statType in statIncreases.Keys)
+            {
+                stats[statType] += statIncreases[statType];
+                Debug.Log($"{statType} Áõ°¡: +{statIncreases[statType]}");
+            }
+        }
+    }
+
+    private void GetGold() //°ñµå È¹µæ 
+    {
+
+    }
+
+    private void TestExp() //Å×½ºÆ® °æÇèÄ¡ È¹µæ
+    {
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            GainExperience(50);
+        }
     }
 }

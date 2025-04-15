@@ -17,6 +17,7 @@ public class SkillController : Singleton<SkillController>
     public Transform skillSpawnPoint2;
 
     private bool isSkillPlaying = false;
+    public bool isBowAttack = false;
 
     void OnAttack(InputValue value)
     {
@@ -72,6 +73,11 @@ public class SkillController : Singleton<SkillController>
     public void OnSetSkillFalse()
     {
         isSkillPlaying = false;
+    }
+
+    public bool IsAttacking()
+    {
+        return comboAttack.IsAttacking || rangedAttack.IsAttacking || isSkillPlaying;
     }
 
     IEnumerator UseSkillRoutine(int skillId)

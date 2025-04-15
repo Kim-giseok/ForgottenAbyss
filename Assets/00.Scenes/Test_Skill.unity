@@ -191,6 +191,17 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &340148169 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1524361156589450195, guid: 6b9a15a9d4e3e29488105fece2a90797, type: 3}
+  m_PrefabInstance: {fileID: 1361478628}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45e653bab7fb20e499bda25e1b646fea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!20 &687352377 stripped
 Camera:
   m_CorrespondingSourceObject: {fileID: 3724353485988825919, guid: 0af13329df20ec049a4a87d33d568adf, type: 3}
@@ -225,20 +236,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 1319917730}
---- !u!114 &1003356253
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1003356248}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c88b2ba54af06864cade814817019fec, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  projectilePrefab: {fileID: 2562934970777424423, guid: d25d49ec691fd1948ad3e2cb45cfeeb2, type: 3}
-  poolSize: 10
 --- !u!1001 &1093258218
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -298,9 +295,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3530073967686969312, guid: 198547ce10f94224d9792fd58cd72a7f, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1003356251}
-    - targetCorrespondingSourceObject: {fileID: 3530073967686969312, guid: 198547ce10f94224d9792fd58cd72a7f, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1003356253}
   m_SourcePrefab: {fileID: 100100000, guid: 198547ce10f94224d9792fd58cd72a7f, type: 3}
 --- !u!1001 &1130249390
 PrefabInstance:
@@ -879,8 +873,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1547980462402758419, guid: 6b9a15a9d4e3e29488105fece2a90797, type: 3}
       propertyPath: maps.Array.size
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 1547980462402758419, guid: 6b9a15a9d4e3e29488105fece2a90797, type: 3}
+      propertyPath: maps.Array.data[2]
+      value: 
+      objectReference: {fileID: 3523219499257367131, guid: 144acfd897326124892987ae24ad45fd, type: 3}
     - target: {fileID: 2566844277215206678, guid: 6b9a15a9d4e3e29488105fece2a90797, type: 3}
       propertyPath: m_Name
       value: MapSpawnManager
@@ -1095,6 +1093,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: SkillSystem
       objectReference: {fileID: 0}
+    - target: {fileID: 3622915880698505367, guid: 2cef33c320151574f914bdb408e62aab, type: 3}
+      propertyPath: effectList.Array.data[5].key
+      value: SwordSkill02_b
+      objectReference: {fileID: 0}
+    - target: {fileID: 3622915880698505367, guid: 2cef33c320151574f914bdb408e62aab, type: 3}
+      propertyPath: effectList.Array.data[5].prefab
+      value: 
+      objectReference: {fileID: 5264371681372061162, guid: a1baa6c1d03af5d42b292db930e93fa5, type: 3}
     - target: {fileID: 8218525754157547995, guid: 2cef33c320151574f914bdb408e62aab, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -1152,6 +1158,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: CameraHolder
       objectReference: {fileID: 0}
+    - target: {fileID: 2740606270791819949, guid: 0af13329df20ec049a4a87d33d568adf, type: 3}
+      propertyPath: virtualCamera
+      value: 
+      objectReference: {fileID: 340148169}
     - target: {fileID: 2909823828734179398, guid: 0af13329df20ec049a4a87d33d568adf, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -1192,6 +1202,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5210997440172512097, guid: 0af13329df20ec049a4a87d33d568adf, type: 3}
+      propertyPath: virtualCam
+      value: 
+      objectReference: {fileID: 340148169}
+    - target: {fileID: 5210997440172512097, guid: 0af13329df20ec049a4a87d33d568adf, type: 3}
+      propertyPath: playerTransform
+      value: 
+      objectReference: {fileID: 1319917744}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
