@@ -23,7 +23,7 @@ public class BowSkill01ExecutionSO : SkillExecutionSO
 
     private IEnumerator ExecuteWithEffectDelay(GameObject caster, Vector2 origin, Vector2 direction, SkillCastData castData)
     {
-        CameraZoom.Instance.ZoomIn();
+        CameraZoom.Instance.ZoomIn(0.3f);
         yield return new WaitForSeconds(damageDelay);
         CameraZoom.Instance.ZoomOut();
         float extraLength = 3f; // 범위 확장값

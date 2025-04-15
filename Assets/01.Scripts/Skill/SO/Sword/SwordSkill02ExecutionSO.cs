@@ -48,6 +48,7 @@ public class SwordSkill02ExecutionSO : SkillExecutionSO
 
     private IEnumerator DashCoroutine(GameObject caster, Vector3 startPos, Vector3 targetPos, Collider2D casterCollider, System.Action onComplete)
     {
+        CameraZoom.Instance.ZoomIn(1f, 20f);
         float elapsed = 0f;
 
         while (elapsed < dashDuration)
@@ -71,14 +72,14 @@ public class SwordSkill02ExecutionSO : SkillExecutionSO
     private IEnumerator DelayedHitCoroutine(Vector3 start, Vector3 end, SkillCastData castData)
     {
         yield return new WaitForSeconds(damageDelay);
-
+        CameraZoom.Instance.ZoomOut();
         float extraLength = 3f;
         Vector2 dashDir = (end - start).normalized;
 
         Vector2 extendedStart = (Vector2)start - dashDir * (extraLength / 2f);
-        Vector2 extendedEnd = (Vector2)end + dashDir * (extraLength / 2f);
+        Vector2 extendedEnd = (Vector2)end + dashDir * ((extraLength / 2f) - 1f);
 
-        Vector2 center = (extendedStart + extendedEnd) / 2f;
+        Vector2 center = (extendedStart + extendedEnd) / 2f + Vector2.up * 0.5f;
         Vector2 size = new Vector2((extendedEnd - extendedStart).magnitude, hitRadius * 2f);
         float angle = Vector2.SignedAngle(Vector2.right, extendedEnd - extendedStart);
 

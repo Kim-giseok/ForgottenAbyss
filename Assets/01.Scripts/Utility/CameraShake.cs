@@ -5,16 +5,13 @@ using UnityEngine;
 
 public class CameraShake : Singleton<CameraShake>
 {
-    private CinemachineVirtualCamera virtualCamera;
+    [SerializeField] private CinemachineVirtualCamera virtualCamera;
+
     private CinemachineFramingTransposer framingTransposer;
     private Coroutine shakeCoroutine;
 
     void Awake()
     {
-        // Cinemachine 가상 카메라와 Perlin 노이즈 컴포넌트를 찾기
-        virtualCamera = FindObjectOfType<CinemachineVirtualCamera>();
-
-        // 찾은 VirtualCamera에서 Transposer 가져오기
         if (virtualCamera != null)
         {
             framingTransposer = virtualCamera.GetCinemachineComponent<CinemachineFramingTransposer>();
