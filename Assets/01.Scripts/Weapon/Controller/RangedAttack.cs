@@ -109,6 +109,7 @@ public class RangedAttack : MonoBehaviour
             {
                 float angle = step.spreadAngle * (i - (step.projectileCount - 1) / 2f);
                 direction = Quaternion.Euler(0, 0, angle) * baseDirection;
+                onKnockBack(0.2f);
             }
 
             SpawnProjectile(direction);
@@ -124,7 +125,7 @@ public class RangedAttack : MonoBehaviour
 
     IEnumerator MoveKnockBackCoroutine(float distance)
     {
-        float moveTime = 0.1f; // 이동 시간 (0.1초 추천)
+        float moveTime = 0.1f;
         float elapsed = 0f;
         Vector3 startPos = transform.position;
         Vector3 targetPos = transform.position - (transform.right * distance);

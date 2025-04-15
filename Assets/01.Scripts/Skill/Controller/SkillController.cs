@@ -17,6 +17,7 @@ public class SkillController : Singleton<SkillController>
     public Transform skillSpawnPoint2;
 
     private bool isSkillPlaying = false;
+    public bool isBowAttack = false;
 
     void OnAttack(InputValue value)
     {

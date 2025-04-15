@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Net.NetworkInformation;
+using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SocialPlatforms;
@@ -29,6 +30,7 @@ public class ControllerPlayer : MonoBehaviour
     public bool isAttacking = false; //공격 여부
     //public bool isIgnoringCollision = false; //콜라이더 충돌 무시 여부
     public bool isInvincible = false; //무적 상태 여부
+    private bool dashBuffered = false;
 
     public Rigidbody2D rigid;
     public Animator animator;
@@ -114,6 +116,20 @@ public class ControllerPlayer : MonoBehaviour
             animator.SetBool("IsFall", false);
         }
 
+        if (dashBuffered)
+        {
+            AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+            if (!stateInfo.IsTag("Turn"))
+            {
+                dashBuffered = false;
+
+                if (states.ContainsKey(currentState))
+                {
+                    states[currentState].OnDash();
+                }
+            }
+        }
+
         //CheckWall();
     }
     private void FixedUpdate()
@@ -176,16 +192,22 @@ public class ControllerPlayer : MonoBehaviour
 
     void OnDash(InputValue value) //대쉬 키 입력
     {
-        //if (value.isPressed && !isDashing && isGround && !isAttacking && inputVec.x != 0)
-        //{
-        //    StartCoroutine(Dash());
-        //}
+        AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+        bool isTurn = stateInfo.IsTag("Turn");
+
         if (value.isPressed)
         {
-            // 현재 상태에 대시 입력 전달
-            if (states.ContainsKey(currentState))
+            if (isTurn)
             {
-                states[currentState].OnDash();
+                dashBuffered = true;
+            }
+            else
+            {
+                // 턴 애니메이션이 아니면 바로 대시 실행
+                if (states.ContainsKey(currentState))
+                {
+                    states[currentState].OnDash();
+                }
             }
         }
     }
@@ -243,19 +265,29 @@ public class ControllerPlayer : MonoBehaviour
 
     public void UpdateDirection() //방향 전환
     {
-        if (inputVec.x < 0 && isFacingRight)
+        AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+
+        bool isLocomotion = stateInfo.IsTag("Locomotion");
+        bool isAttack = stateInfo.IsTag("Attack");
+        bool isMoving = Mathf.Abs(inputVec.x) > 0.01f;
+
+        if (inputVec.x < 0 && isFacingRight && !isAttack)
         {
             // 오른쪽 → 왼쪽으로 바뀜
             isFacingRight = false;
             transform.localEulerAngles = new Vector3(0, 180, 0);
-            //animator.SetTrigger("TurnTrigger");
+
+            if (isLocomotion && isMoving)
+                animator.SetTrigger("TurnTrigger");
         }
-        else if (inputVec.x > 0 && !isFacingRight)
+        else if (inputVec.x > 0 && !isFacingRight && !isAttack)
         {
             // 왼쪽 → 오른쪽으로 바뀜
             isFacingRight = true;
             transform.localEulerAngles = new Vector3(0, 0, 0);
-            //animator.SetTrigger("TurnTrigger");
+
+            if (isLocomotion && isMoving)
+                animator.SetTrigger("TurnTrigger");
         }
     }
 

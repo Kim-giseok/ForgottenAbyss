@@ -17,13 +17,15 @@ public class BowSkill01ExecutionSO : SkillExecutionSO
         Vector2 direction = caster.transform.right.normalized;
         Vector2 origin = (Vector2)caster.transform.position + direction * 2f;
 
+        SkillController.Instance.isBowAttack = true;
         CoroutinRunner.Instance.RunCoroutine(ExecuteWithEffectDelay(caster, origin, direction, castData));
     }
 
     private IEnumerator ExecuteWithEffectDelay(GameObject caster, Vector2 origin, Vector2 direction, SkillCastData castData)
     {
+        CameraZoom.Instance.ZoomIn();
         yield return new WaitForSeconds(damageDelay);
-
+        CameraZoom.Instance.ZoomOut();
         float extraLength = 3f; // 범위 확장값
         Vector2 dir = direction.normalized;
 
@@ -41,6 +43,7 @@ public class BowSkill01ExecutionSO : SkillExecutionSO
             DealDamageToTarget(hit.gameObject, castData);  // 데미지 처리
             Debug.Log($"Hit {hit.name}");
             CameraShake.Instance.Shake(0.1f, 0.2f);  // 카메라 쉐이크
+            SkillController.Instance.isBowAttack = false;
         }
 
         DebugDrawUtil.DrawBox(center, size, angle, Color.red, 0.5f);
