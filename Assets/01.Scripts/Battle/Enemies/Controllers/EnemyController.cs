@@ -8,8 +8,8 @@ public class EnemyController : EnemyBaseController, IDamagable
     [Header("Resource")]
     public float health;
     public float attack;
-    
-    public string name; 
+
+    public Enemies.Enemy name;
     
     public EnemyResourceHandler resourceHandler { get; private set; }
     public EnemyStatusHandler statusHandler { get; private set; }
@@ -28,7 +28,7 @@ public class EnemyController : EnemyBaseController, IDamagable
     {
         // animationHandler.SetController(EnemyAnimators.animators[name]);
         // 에러처리 필요
-        machine.Define(Enemies.Get(name).Node); // 각 개체별 생성되는 방식
+        machine.Define(Enemies.Get(name)); // 각 개체별 생성되는 방식
         
         try { MapSpawnManager.Instance.SpawnedMap.monsterManager.AddList(this); }
         catch { Debug.Log("there is no MapspawnManager"); }
@@ -37,8 +37,7 @@ public class EnemyController : EnemyBaseController, IDamagable
 
     public void GetDamage(float damage) // notice: summon은 제외
     {
-        Debug.Log("get damage");
-        
+        // hitBox 측에서 알려주는 것도 나쁘지 않을 듯
         // Vector3 textPosition = transform.position + Vector3.up * 1f;
         // DamageTextManager.Instance.ShowDamage(textPosition, (int)damage);
         
@@ -49,11 +48,10 @@ public class EnemyController : EnemyBaseController, IDamagable
 
         statusHandler.isHit = true;
         machine.Notify();
-
-        if (health <= 0) Die();
     }
 
     // 리워드 표시, 리스폰 아리어에서 제거
+    // ReSharper disable Unity.PerformanceAnalysis
     public void Die()
     {
         try { MapSpawnManager.Instance.SpawnedMap.monsterManager.RemoveEnemy(this); }

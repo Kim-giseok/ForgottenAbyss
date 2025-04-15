@@ -1,0 +1,83 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
+
+public class Enemies
+{
+    public enum Enemy { Agis, Archer, Ghost, GhostChild, Gunner, NightBone, SwordShadow, Wizard }
+    public static Node Get(Enemy enemy) => behaviour[enemy];
+
+    private static Dictionary<Enemy, Node> behaviour = new()
+    {
+        {
+          Enemy.Agis,
+          new SelectorNode(
+              new SequenceNode(new HitNode(), new DieNode()),
+              new SequenceNode(new IdleNode(3), new SummoningNode(), new IdleNode(1))
+              )
+        },
+        {
+            // 거리에 길수록 아처에게 유리해지도록 처리
+            // 너무 많이 다가오면 롤링
+            Enemy.Archer,
+            new SelectorNode(
+                new SequenceNode(new HitNode(), new DieNode()),
+                new SequenceNode(new TracingNode(), new StopNode(), new PlayRollingAnimation(), new ChargingNode(1f), new RangeMultiAttackNode(0)),
+                new SequenceNode(new IdleNode(1), new PatrolMove(1))
+                )
+        },
+        {
+            Enemy.Ghost,
+            new SelectorNode(
+                new SequenceNode(new HitNode(), new DieNode())
+            )
+        },
+        {
+            // 관통 + 튕기는 효과를 주로 다루는
+            Enemy.Gunner,
+            new SelectorNode(
+                new SequenceNode(new HitNode(), new DieNode()), 
+                new SequenceNode(new TracingNode(), 
+                    new ChargingNode(1f),
+                    new RandomNode(new()
+                    {
+                        // 연속 공격이 왜 안됨(애님메이션 관련 문제)
+                        (0.2f, new SequenceNode( new RangeAttackNode(1), new IdleNode(0.05f), new RangeAttackNode(1))),
+                        (1f, new RangeAttackNode(1))
+                    }),
+                    new CoolTimeNode(0.5f)), 
+                new SequenceNode(new IdleNode(1), new PatrolMove(1)))
+        },
+        {
+            // 탱커 - 폭팔 발생 시 도주 필요
+            Enemy.NightBone,
+            new SelectorNode(
+                new SequenceNode(new HitNode(), new DieNode()), 
+                new SequenceNode(new TracingNode(), new StopNode(), 
+                    new RandomNode(new()
+                    {
+                        (0.3f, new SequenceNode(new ChargingNode(2f), new ExplosionNode())),
+                        (1f, new SequenceNode(new MeleeAttack(), new IdleNode(0.5f)))
+                    })), 
+                new SequenceNode(new IdleNode(1), new PatrolMove(1)))
+        },
+        {
+            // 소드맨 - 속도가 빨라서 원거리 공격이 파훼법(방어가 필요할 듯)
+            Enemy.SwordShadow,
+            new SelectorNode(
+                new SequenceNode(new HitNode(), new DieNode()), 
+                new SequenceNode(
+                    new TracingNode(),
+                    new SSDashAttack("Combo1"),  new RandomCoolTimeNode(),
+                    new SSDashAttack("Combo2"), new RandomCoolTimeNode(),
+                    new SSDashAttack("Combo3"), new RandomCoolTimeNode() 
+                ),
+                new SequenceNode(new IdleNode(1), new PatrolMove(1)))
+        },
+        {
+            Enemy.Wizard,
+            new SelectorNode()
+        }
+    };
+}

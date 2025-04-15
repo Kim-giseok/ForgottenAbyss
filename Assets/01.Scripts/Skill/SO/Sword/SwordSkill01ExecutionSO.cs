@@ -12,11 +12,10 @@ public class SwordSkill01ExecutionSO : SkillExecutionSO
 
     public override void Execute(GameObject caster, GameObject target, SkillData data)
     {
-        caster.GetComponent<MonoBehaviour>().StartCoroutine(PlayFastAnimation(caster, "SwordAttack_4", 1.6f, 0.5f));
-
         var castData = PrepareCastData(caster, target, data);
 
-        caster.GetComponent<MonoBehaviour>().StartCoroutine(HitTwiceCoroutine(caster, castData));
+        //caster.GetComponent<MonoBehaviour>().StartCoroutine(HitTwiceCoroutine(caster, castData));
+        CoroutinRunner.Instance.StartCoroutine(HitTwiceCoroutine(caster, castData));
     }
 
     private IEnumerator HitTwiceCoroutine(GameObject caster, SkillCastData castData)
@@ -34,7 +33,7 @@ public class SwordSkill01ExecutionSO : SkillExecutionSO
         foreach (var hit in hits)
         {
             Debug.Log($"Hit {hit.name}");
-            CameraShake.Instance.Shake(0.05f, 0.1f);
+            CameraShake.Instance.Shake(0.1f, 0.2f);
             DealDamageToTarget(hit.gameObject, castData);
             KnockbackUtil.ApplyKnockback(hit.gameObject, caster.transform.position, 1f);
         }

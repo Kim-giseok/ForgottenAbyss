@@ -12,12 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 972e03dd77b293d4e8f841afa193bc57, type: 3}
   m_Name: Bow_Skill01_Visual
   m_EditorClassIdentifier: 
-  skillId: 0
-  executionSO: {fileID: 0}
-  skillIcon: {fileID: 0}
-  skillEffectPrefab: {fileID: 0}
+  skillId: 102
+  executionSO: {fileID: 11400000, guid: e98771c9edf80684fbca047ba11ce9ee, type: 2}
+  skillIcon: {fileID: 21300000, guid: c6a1354352318cf4bad0bbb50d921df7, type: 3}
+  skillEffectPrefab: {fileID: 4883125216578259596, guid: 5fcd16738b4416042b5899739f594824, type: 3}
   skillSound: {fileID: 0}
-  effectKey: 
-  useEffectOffset: 0
+  animationName: BowAttack_Skill01
+  animationSpeed: 1
+  resetTime: 0.5
+  animPlayTime: 0.45
+  effectKey: BowSkill01
+  useEffectOffset: 1
   effectXOffset: 0
   effectYOffset: 0
+  effectDelay: 0.5
+  isTogether: 0

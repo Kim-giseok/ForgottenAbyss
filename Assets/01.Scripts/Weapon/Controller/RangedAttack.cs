@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class RangedAttack : MonoBehaviour
@@ -11,26 +12,21 @@ public class RangedAttack : MonoBehaviour
     private int attackIndex = 0;
     private bool canNextCombo = false;
     private bool inputCombo = false;
-    private bool isAttacking = false;
+
+    public bool IsAttacking { get; private set; } = false;
 
     public void SetRangedAttackData(RangedAttackSO data)
     {
         rangedData = data;
         attackIndex = 0;
-        isAttacking = false;
-
-        if (rangedData != null && rangedData.comboSteps.Count > 0)
-        {
-            GameObject projectilePrefab = rangedData.comboSteps[0].projectilePrefab;
-            projectilePool = new GameObjectPool(projectilePrefab, 10);
-        }
+        IsAttacking = false;
     }
 
     public void HandleAttackInput()
     {
         if (rangedData == null) return;
 
-        if (isAttacking)
+        if (IsAttacking)
         {
             if (canNextCombo)
                 inputCombo = true;
@@ -43,8 +39,9 @@ public class RangedAttack : MonoBehaviour
 
     private void StartRangedAttack()
     {
-        isAttacking = true;
+        IsAttacking = true;
         attackIndex = 1;
+        animator.ResetTrigger("BowTrigger");
         animator.SetTrigger("BowTrigger");
         animator.SetInteger("BowCombo", attackIndex);
         PlayRangedAnimation();
@@ -70,9 +67,13 @@ public class RangedAttack : MonoBehaviour
 
     public void OnRangedNext()
     {
+        Debug.Log($"[Ranged] OnRangedNext called. inputCombo: {inputCombo}, attackIndex: {attackIndex}");
+
+
         if (inputCombo && attackIndex < rangedData.comboSteps.Count)
         {
             attackIndex++;
+            Debug.Log("attackindec ++");
             inputCombo = false;
             PlayRangedAnimation();
         }
@@ -80,6 +81,11 @@ public class RangedAttack : MonoBehaviour
         {
             EndRangedAttack();
         }
+    }
+
+    void OnRangedReset()
+    {
+        EndRangedAttack();
     }
 
     public void OnFireProjectile()
@@ -103,6 +109,7 @@ public class RangedAttack : MonoBehaviour
             {
                 float angle = step.spreadAngle * (i - (step.projectileCount - 1) / 2f);
                 direction = Quaternion.Euler(0, 0, angle) * baseDirection;
+                onKnockBack(0.2f);
             }
 
             SpawnProjectile(direction);
@@ -111,7 +118,29 @@ public class RangedAttack : MonoBehaviour
         }
     }
 
-    void SpawnProjectile(Vector3 direction)
+    void onKnockBack(float distance)
+    {
+        StartCoroutine(MoveKnockBackCoroutine(distance));
+    }
+
+    IEnumerator MoveKnockBackCoroutine(float distance)
+    {
+        float moveTime = 0.1f;
+        float elapsed = 0f;
+        Vector3 startPos = transform.position;
+        Vector3 targetPos = transform.position - (transform.right * distance);
+
+        while (elapsed < moveTime)
+        {
+            elapsed += Time.deltaTime;
+            transform.position = Vector3.Lerp(startPos, targetPos, elapsed / moveTime);
+            yield return null;
+        }
+
+        transform.position = targetPos; // 마지막 위치 보정
+    }
+
+        void SpawnProjectile(Vector3 direction)
     {
         GameObject projectile = ProjectilePool.Instance.Get(firePoint.position, Quaternion.LookRotation(Vector3.forward, direction));
 
@@ -122,9 +151,9 @@ public class RangedAttack : MonoBehaviour
         }
     }
 
-    private void EndRangedAttack()
+    public void EndRangedAttack()
     {
-        isAttacking = false;
+        IsAttacking = false;
         attackIndex = 0;
         inputCombo = false;
         canNextCombo = false;

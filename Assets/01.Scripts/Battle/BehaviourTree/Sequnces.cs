@@ -1,6 +1,7 @@
 
 // 시퀀스를 싱글 노드를 기준으로 해보기
 
+using System.Collections.Generic;
 using UnityEngine;
 
 public class RootNode : Node
@@ -21,7 +22,7 @@ public class RootNode : Node
     // 어떤 상태가 들어오든 다시 시작
     public override void GetStatus(Status newStatus, Node caller)
     {
-        machine.OnLooped?.Invoke();
+        machine.OnLooped?.Invoke(); // check: 삭제되도 계속 진행되는 지 체크
         machine.SetCurrentNode(children[0]);
     }
 }
@@ -99,6 +100,36 @@ public class SelectorNode : Node
     }
 }
 
+
+// 공통 노드로 가야할 듯
+public class RandomNode : Node
+{
+    private List<float> percentage = new();
+    public RandomNode(List<(float, Node)> children)
+    {
+        
+        foreach ((float percent, Node node) in children)
+        {
+            percentage.Add(percent);
+            node.SetParent(this);
+            this.children.Add(node);
+        }
+    }
+
+    public override void Start()
+    {
+        var random = Random.Range(0f, 1f);
+        var selected = percentage.Find(percent => percent >= random);
+        
+        machine.SetCurrentNode(children[percentage.IndexOf(selected)]);
+    }
+
+    public override void GetStatus(Status newStatus, Node caller)
+    {
+        SetStatus(newStatus);
+    }
+}
+
 // 추후 데코 노드 구현 필요 - 시퀀스 안에서 또 병렬 노드라면 문제 발생
 // public class ParallelNode : Node
 // {
@@ -113,31 +144,12 @@ public class SelectorNode : Node
 //     
 //     public override void Start()
 //     {
-//         machine.SetPlaying(false);
-//         
-//         machine.currNodes.AddRange(children.ToArray());
-//         machine.currTime = 0;
-//         foreach (var child in children)
-//         {
-//             child.SetController(controller);
-//             child.Start();
-//         }
-//         
-//         machine.SetPlaying(true);
+//         machine.SetCurrentNode(children[0]);
 //     }
 //
 //     // notice: 복수 실행 자체는 BTMachine에서 처리하며 조건 감지만 이곳에서 처리
 //     public override void GetStatus(Status newStatus, Node caller)
 //     {
-//         machine.SetPlaying(false);
-//         foreach (Node child in children)
-//         {
-//             machine.currNodes.Remove(child);
-//             child.End();
-//         }
-//         machine.SetPlaying(true);
-//         
-//         // notice: 하나의 노드에서 응답 받은 경우, 상위 노드에게 바로 전달
 //         SetStatus(newStatus);
 //     }
 // }

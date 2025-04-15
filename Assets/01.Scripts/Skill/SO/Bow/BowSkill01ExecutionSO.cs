@@ -2,17 +2,50 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BowSkill01ExecutionSO : MonoBehaviour
+[CreateAssetMenu(fileName = "Bow_Skill01_Execution", menuName = "SO/Skill/Execution/BowSkill01")]
+public class BowSkill01ExecutionSO : SkillExecutionSO
 {
-    // Start is called before the first frame update
-    void Start()
+    float range = 5f;
+    public LayerMask hitMask;
+    public float damageDelay;
+    public float hitRadius;
+
+    public override void Execute(GameObject caster, GameObject target, SkillData data)
     {
-        
+        SkillCastData castData = PrepareCastData(caster, target, data);
+
+        Vector2 direction = caster.transform.right.normalized;
+        Vector2 origin = (Vector2)caster.transform.position + direction * 2f;
+
+        SkillController.Instance.isBowAttack = true;
+        CoroutinRunner.Instance.RunCoroutine(ExecuteWithEffectDelay(caster, origin, direction, castData));
     }
 
-    // Update is called once per frame
-    void Update()
+    private IEnumerator ExecuteWithEffectDelay(GameObject caster, Vector2 origin, Vector2 direction, SkillCastData castData)
     {
-        
+        CameraZoom.Instance.ZoomIn(0.3f);
+        yield return new WaitForSeconds(damageDelay);
+        CameraZoom.Instance.ZoomOut();
+        float extraLength = 3f; // 범위 확장값
+        Vector2 dir = direction.normalized;
+
+        float totalRange = range + extraLength; // 전체 박스 길이
+
+        Vector2 center = origin + dir * (range / 2f); // origin 기준 앞으로 절반만큼 이동한 지점을 중심으로
+        Vector2 size = new Vector2(totalRange, hitRadius * 2f); // 박스 크기
+        float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+
+        // OverlapBox로 판정
+        var hits = Physics2D.OverlapBoxAll(center, size, angle, hitMask);
+
+        foreach (var hit in hits)
+        {
+            DealDamageToTarget(hit.gameObject, castData);  // 데미지 처리
+            Debug.Log($"Hit {hit.name}");
+            CameraShake.Instance.Shake(0.1f, 0.2f);  // 카메라 쉐이크
+            SkillController.Instance.isBowAttack = false;
+        }
+
+        DebugDrawUtil.DrawBox(center, size, angle, Color.red, 0.5f);
     }
 }
