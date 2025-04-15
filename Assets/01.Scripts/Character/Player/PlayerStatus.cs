@@ -23,4 +23,14 @@ public class PlayerStatus : CharacterStatus
         Debug.Log($"경험치: {stats[StatType.EXP]}");
         Debug.Log($"골드: {stats[StatType.GOLD]}");
     }
+
+    // UI 게이지바 테스트용
+    public void UITakeDamage(float damage)
+    {
+        if (stats.ContainsKey(StatType.HP))
+        {
+            stats[StatType.HP] = Mathf.Max(stats[StatType.HP] - damage, 0f);
+            Debug.Log($"플레이어 체력: {stats[StatType.HP]}");
+        }
+    }
 }

@@ -1772,6 +1772,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 302038125}
+  - component: {fileID: 302038126}
   m_Layer: 5
   m_Name: Bar
   m_TagString: Untagged
@@ -1800,6 +1801,21 @@ RectTransform:
   m_AnchoredPosition: {x: 499, y: -57}
   m_SizeDelta: {x: 640, y: 90}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &302038126
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 302038124}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7008aa1f18b8a344fab1bee1ff9a9414, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerStatus: {fileID: 360106124}
+  hpSlider: {fileID: 333554869}
+  maxHP: 100
 --- !u!1 &305444411
 GameObject:
   m_ObjectHideFlags: 0
@@ -2094,7 +2110,7 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 0.819
+  m_Value: 0.824
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -2239,6 +2255,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   items: []
   capacity: 10
+--- !u!114 &360106124 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1976620441361161620, guid: 6dc31ed564c18ca4b9568794c27595d7, type: 3}
+  m_PrefabInstance: {fileID: 427697865}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 360106119}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a426047b96f0a0247a130cbf4a69fe2e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &382025602
 PrefabInstance:
   m_ObjectHideFlags: 0
