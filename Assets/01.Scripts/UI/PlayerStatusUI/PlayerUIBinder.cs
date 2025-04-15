@@ -31,10 +31,5 @@ public class PlayerUIBinder : MonoBehaviour
 
             hpSlider.value = Mathf.Clamp01(normalizedHP);
         }
-
-        if (Input.GetKeyDown(KeyCode.U))
-        {
-            playerStatus.UITakeDamage(10f); // U키 누를 때마다 HP 10 감소
-        }
     }
 }

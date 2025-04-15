@@ -72,7 +72,7 @@ public class ItemUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
             var dropHandler = eventData.pointerEnter.GetComponentInParent<SlotBase>();
             if (dropHandler != null)
             {
-                Destroy(gameObject);
+                gameObject.SetActive(false);
                 return;
             }
         }
