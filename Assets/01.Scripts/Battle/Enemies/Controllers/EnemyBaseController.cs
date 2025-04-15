@@ -18,11 +18,12 @@ public class EnemyBaseController: MonoBehaviour
         collider = GetComponent<Collider2D>();
         rigidbody = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>(); 
-        animationHandler = new EnemyAnimationHandler(GetComponent<Animator>());
+        animationHandler = GetComponent<EnemyAnimationHandler>();
 
         combatHandler = new EnemyCombatHandler();
         detectHandler = GetComponent<EnemyDetectHandler>();
         
+        // summon에선 없도록 처리
         agent = GetComponent<EnemyAgent>(); // 플레이어의 경우 주면 몬스터를 찾도록(혹은 새 클래스로 분리하기)
     }
     
@@ -31,12 +32,13 @@ public class EnemyBaseController: MonoBehaviour
         machine.Run();
     }
 
+    // Destory된 이후에 발생한 경우 오류 발생
     protected void OnAnimatedEvent(int value) // notice: string과 enum으로 좀 더 다양하게 구현하도록 처리
     {
         machine.OnAnimatedEvent(value == 1);
     }
 
-    public void OnDetected(EnemyDetectHandler.DetectType detectType, string value)
+    public void OnDetected(EnemyDetectHandler.DetectType detectType, bool value)
     {
         machine.OnDetected(detectType, value);
     }

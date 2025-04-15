@@ -23,30 +23,24 @@ public class HitNode : Node
     
     public override void Start()
     {
+        // do: 시퀀스를 통행 애초에 진입이 안되도록 노드 지정
         if (controller is not EnemyController eController) return;
-        if (!eController.statusHandler.isHit) // do: 시퀀스를 통행 애초에 진입이 안되도록 노드 지정
-        {
-            SetStatus(Status.Fail);
-            return;
-        }
+        if (!eController.statusHandler.isHit) { SetStatus(Status.Fail); return; }
+        if(eController.health <= 0) { SetStatus(Status.Success); return; }
         
         // 타격 받은 쪽으로 회전
         // Vector2 direction = (controller.agent.player.transform.position - controller.transform.position).normalized;
         // controller.Flip(direction.x > 0);
         
         if(eController.statusHandler.isIgnoreHitAction) eController.spriteRenderer.color = Color.red;
-        else eController.animationHandler.Set(EnemyAnimationHandler.Hit);
-        
+        eController.animationHandler.Play("Hit");
         eController.statusHandler.isHit = false;
     }
 
     public override void OnAnimated(AnimationStatus status, AnimatorStateInfo animInfo)
     {
-        if (!animInfo.IsName("Hit")) return;
-        if (status == AnimationStatus.End)
-        {
-            SetStatus(Status.Success);
-        }
+        if (!animInfo.IsName("Hit") || status != AnimationStatus.End) return;
+        SetStatus(Status.Fail);
     }
 }
 
@@ -54,9 +48,13 @@ public class DieNode : Node
 {
     public override void Start()
     {
-        if (controller is EnemyController enemyController)
-        {
-            enemyController.Die();
-        }
+        if (controller is not EnemyController eController || eController.health > 0) { SetStatus(Status.Fail); return;}
+        eController.animationHandler.Play("Die");
+    }
+
+    public override void OnAnimated(AnimationStatus status, AnimatorStateInfo animInfo)
+    {
+        if (!animInfo.IsName("Die") || controller is not EnemyController eController || status != AnimationStatus.End) return;
+        eController.Die();
     }
 }

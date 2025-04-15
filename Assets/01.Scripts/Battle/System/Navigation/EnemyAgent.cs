@@ -5,13 +5,19 @@ public class EnemyAgent : MonoBehaviour
 {
     private EnemyBaseController controller;
     public GameObject target { get; private set; }
+    public Collider2D tCollider { get; private set; }
     
     public enum Status { None, Detected, Tracked }
     [HideInInspector] public Status status = Status.None;
     
     public float detectedDistance;
     public float stoppingDistance;
+    public float boundaryDistance;
+    public float defenseDistance;
+    
     public float tracingSpeed;
+
+    public float combatDuration; // 전
     
     // public Tilemap tilemap; // 추후 동적으로 찾도록 처리
 
@@ -23,17 +29,17 @@ public class EnemyAgent : MonoBehaviour
         if (gameObject.layer == LayerMask.NameToLayer("Enemy"))
         { 
             target = GameObject.FindGameObjectWithTag("Player"); // 만약 서먼이 몬스터를 향한다면?
+            tCollider = target.GetComponent<Collider2D>();
         }
     }
 
     private void Update()
     {
-        // notice: summon에서 monster를 역으로 추적하는 경우
+        // notice: summon에서 monster를 역으로 추적하는 경우 - 그냥 없도록 하기
         if (gameObject.layer == LayerMask.NameToLayer("Player") && Physics2D.OverlapCircle(transform.position, 3f, LayerMask.GetMask("Enemy")) is var hit && hit)
         {
             target = hit.gameObject;
         }
-
 
         if (gameObject.layer == LayerMask.NameToLayer("Enemy"))
         {
@@ -62,7 +68,7 @@ public class EnemyAgent : MonoBehaviour
 
     public Vector2 GetDirection()
     {
-        if (!target) return GameObject.FindWithTag("Player").transform.right; // enemy와 summon이 공통으로 사용하면서 문제가 발생함
-        return (target.transform.position - transform.position).normalized;
+        // if (!target) return GameObject.FindWithTag("Player").transform.right; // enemy와 summon이 공통으로 사용하면서 문제가 발생함
+        return (tCollider.bounds.center - transform.position).normalized;
     }
 }
