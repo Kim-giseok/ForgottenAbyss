@@ -8,7 +8,10 @@ public class LaberPush : LaberBase
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.transform.position.y - transform.position.y < pushCollider.offset.y * 2 * transform.localScale.y) return;
+        Vector2 direct = collision.transform.position - transform.position;
+        float projectionLength = Vector2.Dot(direct, transform.up);
+
+        if (projectionLength < pushCollider.offset.y * transform.localScale.y) return;
 
         SwitchMachine();
     }
