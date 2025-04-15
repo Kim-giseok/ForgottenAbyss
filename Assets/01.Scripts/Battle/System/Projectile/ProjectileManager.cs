@@ -17,7 +17,7 @@ public class ProjectileManager : Singleton<ProjectileManager> // 단위 미사�
     public List<(int index, GameObject instance)> currProjectiles = new(); // notice : HitBox를 가지고 있는 편이 비용 감소
     public List<(GameObject owner, HitBox hitBox)> currMeleeProjectiles = new(); // 만약 여기서 등록하는 경우, 몬스터가 죽으면 함께 제거 필요
     
-    public float GetDegreeByDirection(Vector2 direction)
+    public static float GetDegreeByDirection(Vector2 direction)
     {
         return Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
     }
@@ -76,8 +76,10 @@ public class ProjectileManager : Singleton<ProjectileManager> // 단위 미사�
         hitBox.SetOwner(parent);
         
         
-        instance.transform.localRotation = Quaternion.Euler(0, 0, degree - 90); // 화살이 현재 위를 보고 있는 상황이라 방향 계산 필요 -90 이 오른쪽
-        instance.transform.localPosition = new Vector2(parent.position.x + startPos.x, parent.position.y + startPos.y);
+        instance.transform.rotation = Quaternion.Euler(0, 0, degree);
+
+        instance.transform.position = parent.position;
+        instance.layer = parent.gameObject.layer;
         
         instance.SetActive(true);
 
@@ -96,7 +98,7 @@ public class ProjectileManager : Singleton<ProjectileManager> // 단위 미사�
     
     // 팩토리 패턴과 빌더 패턴을 합쳐서 사용하고 싶다. - summon도 재사용 개념이 필요한지 확인해보기
     // 각도로 넣어주기 
-    public void CreateEnemyProjectile(Transform parent, SummonSkillManager.Skill skill, bool isAttached = false)
+    public void CreateSummonProjectile(Transform parent, SummonSkillManager.Skill skill, bool isAttached = false)
     {
         // notice: 플레이어 위치로 인한 보정 필요
         GameObject instance = Instantiate(summon, new Vector2(parent.transform.position.x, parent.transform.position.y + 0.8f), Quaternion.identity);

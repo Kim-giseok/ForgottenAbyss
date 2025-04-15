@@ -83,7 +83,6 @@ public class TracingNode : Node
         // 추적이 완료되면 무한 재귀 발생
         if(controller.agent.status == EnemyAgent.Status.None) { SetStatus(Status.Fail); return; }
         if(controller.agent.status == EnemyAgent.Status.Tracked) { SetStatus(Status.Success); return; }
-        
         controller.animationHandler.Play("Run");
     }
     

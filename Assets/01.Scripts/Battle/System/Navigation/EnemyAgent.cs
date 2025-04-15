@@ -5,6 +5,7 @@ public class EnemyAgent : MonoBehaviour
 {
     private EnemyBaseController controller;
     public GameObject target { get; private set; }
+    public Collider2D tCollider { get; private set; }
     
     public enum Status { None, Detected, Tracked }
     [HideInInspector] public Status status = Status.None;
@@ -28,6 +29,7 @@ public class EnemyAgent : MonoBehaviour
         if (gameObject.layer == LayerMask.NameToLayer("Enemy"))
         { 
             target = GameObject.FindGameObjectWithTag("Player"); // 만약 서먼이 몬스터를 향한다면?
+            tCollider = target.GetComponent<Collider2D>();
         }
     }
 
@@ -66,7 +68,7 @@ public class EnemyAgent : MonoBehaviour
 
     public Vector2 GetDirection()
     {
-        if (!target) return GameObject.FindWithTag("Player").transform.right; // enemy와 summon이 공통으로 사용하면서 문제가 발생함
-        return (target.transform.position - transform.position).normalized;
+        // if (!target) return GameObject.FindWithTag("Player").transform.right; // enemy와 summon이 공통으로 사용하면서 문제가 발생함
+        return (tCollider.bounds.center - transform.position).normalized;
     }
 }

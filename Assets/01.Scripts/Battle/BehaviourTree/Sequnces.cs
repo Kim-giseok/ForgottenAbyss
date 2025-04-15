@@ -22,7 +22,7 @@ public class RootNode : Node
     // 어떤 상태가 들어오든 다시 시작
     public override void GetStatus(Status newStatus, Node caller)
     {
-        machine.OnLooped?.Invoke();
+        machine.OnLooped?.Invoke(); // check: 삭제되도 계속 진행되는 지 체크
         machine.SetCurrentNode(children[0]);
     }
 }

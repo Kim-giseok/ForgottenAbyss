@@ -26,6 +26,12 @@ public class ExplosionNode : Node
 public class ChargingNode : Node
 {
     private float duration = 2;
+
+    public ChargingNode(float duration)
+    {
+        this.duration = duration;
+    }
+    
     public override void Start()
     {
         controller.animationHandler.Play("Charging");
@@ -33,6 +39,7 @@ public class ChargingNode : Node
 
     public override void Update()
     {
+        controller.LookTarget();
         if(currTime >= duration) { SetStatus(Status.Success); return; }
     }
 }

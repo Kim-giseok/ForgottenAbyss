@@ -1,3 +1,5 @@
+using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 
@@ -39,18 +41,24 @@ public class MeleeAttack : Node
 // Attack은 추상화할 수 있는 편
 public class RangeAttackNode : Node
 {
+    private readonly int index;
+
+    public RangeAttackNode(int index)
+    {
+        this.index = index;
+    }
     public override void Start()
     {
-        // controller.animationHandler.Set(EnemyAnimationHandler.Attack);
+        controller.animationHandler.Play("Attack");
         controller.LookTarget();
     }
-
+    
     public override void OnAnimatedEvent(bool isFire)
     {
         // 콜백으로 공격 방식 추상화
         if (isFire)
         {
-            ProjectileManager.Instance.CreateProjectile(controller.transform, 3, degree: ProjectileManager.Instance.GetDegreeByDirection(controller.agent.GetDirection()));
+            ProjectileManager.Instance.CreateProjectile(controller.transform, 10, index: index, degree: ProjectileManager.GetDegreeByDirection(controller.agent.GetDirection()));
         }
     }
     

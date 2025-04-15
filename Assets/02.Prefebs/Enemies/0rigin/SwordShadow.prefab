@@ -171,8 +171,8 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -1.02, y: -0.15}
-  m_Size: {x: 0.5, y: 0.87}
+  m_Offset: {x: 0.16, y: 0.06}
+  m_Size: {x: 0.5, y: 0.72}
   m_Direction: 0
 --- !u!114 &2548974520867460979
 MonoBehaviour:
@@ -188,7 +188,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 30
   attack: 10
-  name: 4
+  name: 6
 --- !u!114 &6211334845711148440
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -202,9 +202,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   status: 0
-  detectedDistance: 4
+  detectedDistance: 8
   stoppingDistance: 2
-  tracingSpeed: 3
+  boundaryDistance: 0
+  defenseDistance: 0
+  tracingSpeed: 6
+  combatDuration: 0
 --- !u!114 &831001327869306582
 MonoBehaviour:
   m_ObjectHideFlags: 0

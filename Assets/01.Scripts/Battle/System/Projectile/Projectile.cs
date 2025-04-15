@@ -3,9 +3,10 @@ using UnityEngine;
 
 public abstract class Projectile: MonoBehaviour
 {
-    protected float currTime;
-    protected float duration;
-    
+    protected float currTime;  
+    public float duration;
+    public float speed;
+
     protected Rigidbody2D rigidbody;
     protected Collider2D collider;
     protected SpriteRenderer spriteRenderer;
@@ -19,7 +20,7 @@ public abstract class Projectile: MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
-    protected void OnEnable()
+    protected virtual void OnEnable()
     {
         currTime = 0;
     }
@@ -27,10 +28,17 @@ public abstract class Projectile: MonoBehaviour
     protected virtual void FixedUpdate()
     {
         currTime += Time.fixedDeltaTime;
+        rigidbody.velocity = transform.right * speed;
+
+        if (currTime >= duration)
+        {
+            ProjectileManager.Instance.DestroyProjectile(gameObject);
+        }
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
+    protected virtual void OnTriggerEnter2D(Collider2D other)
     {
+        if (gameObject.layer == other.gameObject.layer) return;
         ProjectileManager.Instance.DestroyProjectile(gameObject);
     }
 }

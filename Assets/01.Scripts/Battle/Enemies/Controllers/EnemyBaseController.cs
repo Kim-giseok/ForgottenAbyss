@@ -32,6 +32,7 @@ public class EnemyBaseController: MonoBehaviour
         machine.Run();
     }
 
+    // Destory된 이후에 발생한 경우 오류 발생
     protected void OnAnimatedEvent(int value) // notice: string과 enum으로 좀 더 다양하게 구현하도록 처리
     {
         machine.OnAnimatedEvent(value == 1);
