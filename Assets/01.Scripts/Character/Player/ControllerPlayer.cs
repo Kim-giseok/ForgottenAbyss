@@ -103,7 +103,6 @@ public class ControllerPlayer : MonoBehaviour
             //Debug.Log($"{states[currentState]}");
         }
 
-
         if (!isGround &&  rigid.velocity.y < -0.1f)
         {
             if (!animator.GetCurrentAnimatorStateInfo(0).IsTag("Attack") && !animator.GetCurrentAnimatorStateInfo(0).IsTag("Ladder"))

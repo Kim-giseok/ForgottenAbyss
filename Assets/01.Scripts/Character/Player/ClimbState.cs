@@ -7,6 +7,7 @@ public class ClimbState : PlayerStateMachine
 {
     public float climbSpeed = 5f;
     public float originalGravity;
+    public bool isMoving;
     public ClimbState(ControllerPlayer player) : base(player) { }
 
     public override void Enter()
@@ -44,8 +45,6 @@ public class ClimbState : PlayerStateMachine
         // 수평 속도 0으로 설정
         player.rigid.velocity = new Vector2(0, 0);
         player.rigid.gravityScale = 0;
-
-        player.animator.SetFloat("SpeedY", 0);
     }
 
     public override void Update()
@@ -60,15 +59,6 @@ public class ClimbState : PlayerStateMachine
                 Collider = collider;
                 break;
             }
-        }
-
-        if (player.inputVec.y == 0)
-        {
-            player.animator.SetFloat("SpeedY", 0);  // 수직 이동이 없을 때
-        }
-        else
-        {
-            player.animator.SetFloat("SpeedY", player.inputVec.y);  // 위/아래로 이동할 때
         }
 
         if (player.inputVec.y > 0 && player.transform.position.y >= Collider.bounds.max.y - 1.1f)
@@ -89,6 +79,23 @@ public class ClimbState : PlayerStateMachine
     {
         // Y축 입력에 따라 상하 이동
         player.rigid.velocity = new Vector2(0, player.inputVec.y * climbSpeed);
+
+        if (player.inputVec.y == 0)
+        {
+            if (isMoving) // isMoving이 true일 때만 변경
+            {
+                player.animator.SetBool("IsMovingLadder", false);
+                isMoving = false; // 이동 중이 아님
+            }
+        }
+        else
+        {
+            if (!isMoving)
+            {
+                isMoving = true;
+                player.animator.SetBool("IsMovingLadder", true);
+            }
+        }
     }
 
     public override void Exit()
