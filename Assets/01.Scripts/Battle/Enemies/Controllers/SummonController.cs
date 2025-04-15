@@ -1,52 +1,69 @@
 using System;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
 
+// 중간에 풀어도 될 듯
 public class SummonController: EnemyBaseController
 {
-    public Transform target {get; private set;}
-    private bool isTargetAttached = true;
+    public int hitInformation; // 현재 공격에 대한 정보를 저장받는다.
     
-    public Rigidbody2D tRigidbody {get; private set;}
-    private Collider2D tCollider;
-    private SpriteRenderer tRenderer;
-    
-    protected override void Awake()
-    {
-        base.Awake();
-        target = GameObject.FindGameObjectWithTag("Player").transform;
-        
-        tRigidbody  = target.GetComponent<Rigidbody2D>();
-        tRenderer = target.GetComponent<SpriteRenderer>();
-    }
+    public Transform caster {get; private set;}
+    private bool isCasterAttached = true;
 
-    public void Set(SummonSkillManager.Skill skill)
+    public Rigidbody2D cRigidbody {get; private set;}
+    private Collider2D cCollider;
+    private SpriteRenderer cRenderer;
+    
+    public Vector2 playerDirection {get; private set;}
+    
+    // ReSharper disable Unity.PerformanceAnalysis
+    public void SetCaster(Transform currCaster ,bool isAttached = false)
     {
-        var (enemy, node) = SummonSkillManager.Get(skill);
+        caster = currCaster;
+        cRigidbody  = caster.GetComponent<Rigidbody2D>();
+        cRenderer = caster.GetComponent<SpriteRenderer>();
+        
+        isCasterAttached = isAttached;
+        
+        if (!isCasterAttached) return;
+        // 플레이어 비/활성화가 잠시 필요 - agent 쪽에서 인식 처리만 잘되면 됨
+        cRenderer.enabled = false;
+    }
+    
+    public void ExecuteSkill(SummonSkillManager.Skill skillName)
+    {
+        var (enemy, node) = SummonSkillManager.skills[skillName];
         animationHandler.SetController(EnemiesAnimator.animators[enemy.ToString()]);
 
         // notice: 머신도 제거되는 지 체크 후 이벤트 제거 필요
+        // notice: 오브젝트 풀링으로 인해 비활성화가 나을 수도 있음
         machine.OnLooped += () => { Destroy(gameObject); };
         machine.Define(node);
     }
 
-    private void OnEnable()
+    public void CancelAttached()
     {
-        if (!isTargetAttached) return;
-        // 플레이어 비/활성화가 잠시 필요 - agent 쪽에서 인식 처리만 잘되면 됨
-        tRenderer.enabled = false;
+        isCasterAttached = false;
+        cRigidbody.velocity = Vector2.zero;
+        cRenderer.enabled = true;
     }
-
+    
     public void Update()
     {
-        if (!isTargetAttached) return;
-        target.transform.position = transform.position;
+        if (!isCasterAttached) return;
+        caster.transform.position = transform.position;
     }
 
     private void OnDestroy()
     {
-        if (!isTargetAttached) return;
-        tRigidbody.velocity = Vector2.zero;
-        tRenderer.enabled = true;
+        if (!isCasterAttached) return;
+        cRigidbody.velocity = Vector2.zero;
+        cRenderer.enabled = true;
+    }
+
+    private void OnMove(InputValue value)
+    {
+        playerDirection = value.Get<Vector2>().normalized;
     }
 }

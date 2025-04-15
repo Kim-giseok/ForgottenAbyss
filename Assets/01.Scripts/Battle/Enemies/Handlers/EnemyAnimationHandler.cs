@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 public class EnemyAnimationHandler: MonoBehaviour
@@ -6,18 +5,14 @@ public class EnemyAnimationHandler: MonoBehaviour
     private EnemyBaseController controller;
     private Animator animator;
     
-    public enum Status { Start, End } 
-    private Status currStatus;
+    public enum Status { None, Start, End } 
+    private Status currStatus = Status.None;
+    private int currClipHash;
 
-    public void SetController(RuntimeAnimatorController newController)
-    {
-        animator.runtimeAnimatorController = newController;
-    }
-
-    public void Play(string animationName)
-    {
-        animator.Play(animationName);
-    }
+    public void SetController(RuntimeAnimatorController newController) => animator.runtimeAnimatorController = newController;
+    public void Play(string animationName) => animator.Play(animationName);
+    public void SetSpeed(float speed) => animator.speed = speed;
+    public void Refresh() => currStatus = Status.None;
     
     private void Awake()
     {
@@ -32,7 +27,13 @@ public class EnemyAnimationHandler: MonoBehaviour
 
         if (stateInfo is { normalizedTime: >= 1f, loop: false }) return;
 
-        // 시작 부분인지 확인 (예: 5% 이내)
+        // 애니메이션이 변경되면 상태 처음부터 다시 시작
+        if (currClipHash != stateInfo.shortNameHash)
+        {
+            currClipHash = stateInfo.fullPathHash;
+            currStatus = Status.None;
+        }
+        
         if (progress < 0.05f && currStatus != Status.Start)
         {
             currStatus = Status.Start;
@@ -41,7 +42,6 @@ public class EnemyAnimationHandler: MonoBehaviour
             controller.machine.currNode.OnAnimated(Node.AnimationStatus.Start, stateInfo);
         }
 
-        // 끝 부분인지 확인 (예: 마지막 5%)
         if (progress > 0.95f && currStatus != Status.End)
         {
             currStatus = Status.End;

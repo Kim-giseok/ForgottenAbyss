@@ -80,7 +80,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 1
   m_Sprite: {fileID: -1933657924, guid: d53fcd4a326ab4053832d5d1f6ab261d, type: 3}
-  m_Color: {r: 0.6981132, g: 0.6981132, b: 0.6981132, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -100,7 +100,7 @@ Animator:
   m_GameObject: {fileID: 6572394734144107118}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 22100000, guid: 6f37304e53ae449158f4449df82ecce1, type: 2}
+  m_Controller: {fileID: 9100000, guid: 73b8f032890334053963beac94778947, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -187,7 +187,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 30
   attack: 10
-  name: Archer
+  name: 0
 --- !u!114 &4783053661208568393
 MonoBehaviour:
   m_ObjectHideFlags: 0

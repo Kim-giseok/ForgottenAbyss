@@ -1,13 +1,13 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1102 &-397159843367589118
+--- !u!1102 &-7442201820333065825
 AnimatorState:
   serializedVersion: 6
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Teleport
+  m_Name: Charging
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -20,7 +20,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 483487610ec5a45c9872be06ef2e6f14, type: 2}
+  m_Motion: {fileID: 7400000, guid: 53222dc5f72cd4bbb93979b60b910aef, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -206,7 +206,7 @@ AnimatorStateMachine:
     m_State: {fileID: 1598682214655528281}
     m_Position: {x: 250, y: 50, z: 0}
   - serializedVersion: 1
-    m_State: {fileID: -397159843367589118}
+    m_State: {fileID: -7442201820333065825}
     m_Position: {x: 490, y: 110, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []

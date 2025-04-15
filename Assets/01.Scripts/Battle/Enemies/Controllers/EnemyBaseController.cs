@@ -23,6 +23,7 @@ public class EnemyBaseController: MonoBehaviour
         combatHandler = new EnemyCombatHandler();
         detectHandler = GetComponent<EnemyDetectHandler>();
         
+        // summon에선 없도록 처리
         agent = GetComponent<EnemyAgent>(); // 플레이어의 경우 주면 몬스터를 찾도록(혹은 새 클래스로 분리하기)
     }
     
@@ -36,7 +37,7 @@ public class EnemyBaseController: MonoBehaviour
         machine.OnAnimatedEvent(value == 1);
     }
 
-    public void OnDetected(EnemyDetectHandler.DetectType detectType, string value)
+    public void OnDetected(EnemyDetectHandler.DetectType detectType, bool value)
     {
         machine.OnDetected(detectType, value);
     }

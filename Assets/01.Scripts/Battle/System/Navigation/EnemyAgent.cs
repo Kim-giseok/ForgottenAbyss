@@ -11,7 +11,12 @@ public class EnemyAgent : MonoBehaviour
     
     public float detectedDistance;
     public float stoppingDistance;
+    public float boundaryDistance;
+    public float defenseDistance;
+    
     public float tracingSpeed;
+
+    public float combatDuration; // 전
     
     // public Tilemap tilemap; // 추후 동적으로 찾도록 처리
 
@@ -28,12 +33,11 @@ public class EnemyAgent : MonoBehaviour
 
     private void Update()
     {
-        // notice: summon에서 monster를 역으로 추적하는 경우
+        // notice: summon에서 monster를 역으로 추적하는 경우 - 그냥 없도록 하기
         if (gameObject.layer == LayerMask.NameToLayer("Player") && Physics2D.OverlapCircle(transform.position, 3f, LayerMask.GetMask("Enemy")) is var hit && hit)
         {
             target = hit.gameObject;
         }
-
 
         if (gameObject.layer == LayerMask.NameToLayer("Enemy"))
         {

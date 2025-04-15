@@ -17,7 +17,7 @@ public class TempTester: MonoBehaviour
       
       if (Input.GetKeyDown(KeyCode.L))
       {
-         ProjectileManager.Instance.CreateEnemyProjectile(transform, SummonSkillManager.Skill.DashAttack);
+         ProjectileManager.Instance.CreateEnemyProjectile(transform, SummonSkillManager.Skill.DashAttack, true);
       }
    }
 }

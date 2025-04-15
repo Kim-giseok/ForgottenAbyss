@@ -1,6 +1,7 @@
 
 // 시퀀스를 싱글 노드를 기준으로 해보기
 
+using System.Collections.Generic;
 using UnityEngine;
 
 public class RootNode : Node
@@ -96,6 +97,36 @@ public class SelectorNode : Node
         }
         
         SetStatus(Status.Success);
+    }
+}
+
+
+// 공통 노드로 가야할 듯
+public class RandomNode : Node
+{
+    private List<float> percentage = new();
+    public RandomNode(List<(float, Node)> children)
+    {
+        
+        foreach ((float percent, Node node) in children)
+        {
+            percentage.Add(percent);
+            node.SetParent(this);
+            this.children.Add(node);
+        }
+    }
+
+    public override void Start()
+    {
+        var random = Random.Range(0f, 1f);
+        var selected = percentage.Find(percent => percent >= random);
+        
+        machine.SetCurrentNode(children[percentage.IndexOf(selected)]);
+    }
+
+    public override void GetStatus(Status newStatus, Node caller)
+    {
+        SetStatus(newStatus);
     }
 }
 

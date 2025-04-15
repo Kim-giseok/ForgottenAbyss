@@ -1,9 +1,7 @@
 using UnityEngine;
 
-public class LinearShot: MonoBehaviour
+public class LinearShot: Projectile
 {
-    private Rigidbody2D rigidbody;
-
     private float currTime;
     public float duration;
     public float speed;
@@ -11,7 +9,6 @@ public class LinearShot: MonoBehaviour
 
     private void Awake()
     {
-        rigidbody = GetComponent<Rigidbody2D>();
     }
 
     private void OnEnable()
@@ -28,6 +25,5 @@ public class LinearShot: MonoBehaviour
             return;
         }
         
-        rigidbody.velocity = transform.up * speed;
     }
 }

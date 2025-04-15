@@ -37,6 +37,7 @@ public class EnemyController : EnemyBaseController, IDamagable
 
     public void GetDamage(float damage) // notice: summon은 제외
     {
+        // hitBox 측에서 알려주는 것도 나쁘지 않을 듯
         // Vector3 textPosition = transform.position + Vector3.up * 1f;
         // DamageTextManager.Instance.ShowDamage(textPosition, (int)damage);
         
@@ -47,11 +48,10 @@ public class EnemyController : EnemyBaseController, IDamagable
 
         statusHandler.isHit = true;
         machine.Notify();
-
-        if (health <= 0) Die();
     }
 
     // 리워드 표시, 리스폰 아리어에서 제거
+    // ReSharper disable Unity.PerformanceAnalysis
     public void Die()
     {
         try { MapSpawnManager.Instance.SpawnedMap.monsterManager.RemoveEnemy(this); }

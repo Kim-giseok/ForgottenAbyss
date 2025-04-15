@@ -53,6 +53,8 @@ public class NavSurface : MonoBehaviour
                 // upperCells.Add(current);
             }
         }
+        
+        foreach (var curr in upperCells) {}
     }
 
     private void Awake()

@@ -63,6 +63,7 @@ public class ProjectileManager : Singleton<ProjectileManager> // 단위 미사�
     // ReSharper disable Unity.PerformanceAnalysis
     public void CreateProjectile(Transform parent, float power, Vector2 startPos = default,  int index = 0, float degree = 0, bool isLocalPosition = true) // melee attack인 경우 우연히 두번 켜지는 현상 방지 필요
     {
+        // notice: 인덱스가 의미가 없는 게 sprite를 바꿀 예정 
         var instance = currProjectiles.Find(projectile => projectile.index == index && !projectile.instance.activeSelf).instance;
         if (!instance)
         {
@@ -86,22 +87,22 @@ public class ProjectileManager : Singleton<ProjectileManager> // 단위 미사�
     {
         
     }
-
-    public void DestroyProjectile(Transform transform)
-    {
-        var selectedProjectile = currProjectiles.Find(projectile => projectile.instance.transform.parent == transform).instance;
-        if(selectedProjectile) selectedProjectile.gameObject.SetActive(false);
-    }
     
     public void DestroyProjectile(GameObject instance)
     {
+        var selectedProjectile = currProjectiles.Find(projectile => projectile.instance == instance).instance;
         instance.SetActive(false);
     }
-
-    public void CreateEnemyProjectile(Transform parent, SummonSkillManager.Skill skill)
+    
+    // 팩토리 패턴과 빌더 패턴을 합쳐서 사용하고 싶다. - summon도 재사용 개념이 필요한지 확인해보기
+    // 각도로 넣어주기 
+    public void CreateEnemyProjectile(Transform parent, SummonSkillManager.Skill skill, bool isAttached = false)
     {
         // notice: 플레이어 위치로 인한 보정 필요
         GameObject instance = Instantiate(summon, new Vector2(parent.transform.position.x, parent.transform.position.y + 0.8f), Quaternion.identity);
-        instance.GetComponent<SummonController>().Set(skill);
+        
+        SummonController summonController = instance.GetComponent<SummonController>();
+        summonController.SetCaster(parent, isAttached);
+        summonController.ExecuteSkill(skill);
     }
 }
