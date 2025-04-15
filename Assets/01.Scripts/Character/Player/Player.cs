@@ -29,26 +29,30 @@ public class Player : MonoBehaviour, IDamagable
             StartCoroutine(TestGetDamage()); //테스트용
         }
 
-        if (isDead)
-        {
-            animator.SetBool("IsDead", true);
-        }
+        //if (isDead)
+        //{
+        //    animator.SetBool("IsDead", true);
+        //}
     }
 
     public void GetDamage(float damage)
     {
         playerstatus.stats[StatType.HP] -= damage;
-        
-        if (playerstatus.stats[StatType.HP] <= 0) 
+
+        if (playerstatus.stats[StatType.HP] <= 0)
         {
             isDead = true;
+
+            animator.SetTrigger("DeadTrigger");
         }
+
+        animator.SetTrigger("HitTrigger");
     }
 
     IEnumerator TestGetDamage() //피격 판정 테스트용 
     {
-        GetDamage(10);
-        animator.SetTrigger("HitTrigger");
+        GetDamage(50);
+        
         yield return new WaitForSeconds(0.5f);
     }
 }
