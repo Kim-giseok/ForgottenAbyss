@@ -15,6 +15,7 @@ public class NPC : MonoBehaviour, IInteractable
     {
         npcSentence = GetComponent<NpcSentence>();
         playerInput = GameObject.FindWithTag("Player").GetComponent<PlayerInput>();
+
         if (npcText != null)
         {
             // RectTransform을 사용하여 UI 요소 위치 설정 (UI 요소인 경우)
