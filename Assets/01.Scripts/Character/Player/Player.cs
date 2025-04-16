@@ -11,7 +11,7 @@ public class Player : MonoBehaviour, IDamagable
     PlayerStatus playerstatus;
     public ControllerPlayer controller;
     
-    private bool isDead = false;
+    private bool isDead;
     
     public void Awake()
     {
@@ -20,6 +20,8 @@ public class Player : MonoBehaviour, IDamagable
         spriteRenderer = GetComponent<SpriteRenderer>();
         controller = GetComponent<ControllerPlayer>();
         //rigidbody = GetComponent<Rigidbody2D>();
+
+        isDead = false;
     }
 
     public void Update()
@@ -41,9 +43,9 @@ public class Player : MonoBehaviour, IDamagable
 
         if (playerstatus.stats[StatType.HP] <= 0)
         {
-            isDead = true;
-
             animator.SetTrigger("DeadTrigger");
+
+            isDead = true;
         }
 
         animator.SetTrigger("HitTrigger");
@@ -58,7 +60,7 @@ public class Player : MonoBehaviour, IDamagable
 
     IEnumerator TimeSet()
     {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(2f);
 
         Time.timeScale = 0f;
     }
