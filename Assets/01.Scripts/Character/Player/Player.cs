@@ -29,10 +29,10 @@ public class Player : MonoBehaviour, IDamagable
             StartCoroutine(TestGetDamage()); //테스트용
         }
 
-        //if (isDead)
-        //{
-        //    animator.SetBool("IsDead", true);
-        //}
+        if (isDead)
+        {
+            StartCoroutine(TimeSet());
+        }
     }
 
     public void GetDamage(float damage)
@@ -54,5 +54,12 @@ public class Player : MonoBehaviour, IDamagable
         GetDamage(50);
         
         yield return new WaitForSeconds(0.5f);
+    }
+
+    IEnumerator TimeSet()
+    {
+        yield return new WaitForSeconds(1f);
+
+        Time.timeScale = 0f;
     }
 }

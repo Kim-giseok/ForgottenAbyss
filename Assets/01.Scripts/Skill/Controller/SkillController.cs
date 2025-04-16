@@ -21,7 +21,8 @@ public class SkillController : Singleton<SkillController>
 
     private void Update()
     {
-        ActionBufferUtil.Instance.Update();
+        if(ActionBufferUtil.Instance != null)
+            ActionBufferUtil.Instance.Update();
     }
 
     void OnAttack(InputValue value)
@@ -92,7 +93,7 @@ public class SkillController : Singleton<SkillController>
     public bool IsTurning()
     {
         AnimatorStateInfo stateInfo = GameManager.Instance.player.animator.GetCurrentAnimatorStateInfo(0);
-        if (stateInfo.IsTag("Turn"))
+        if (stateInfo.IsTag("Turn") || stateInfo.IsTag("Fall"))
             return true;
         else return false;
     }
