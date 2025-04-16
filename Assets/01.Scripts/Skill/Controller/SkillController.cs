@@ -17,8 +17,24 @@ public class SkillController : Singleton<SkillController>
     public Transform skillSpawnPoint2;
 
     private bool isGettingHit = false;
+    private bool isDead = false;
     private bool isSkillPlaying = false;
     public bool isBowAttack = false;
+
+    private void Awake()
+    {
+        if (_instance == null)
+        {
+            _instance = this;
+        }
+        else if (_instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        Init();
+    }
 
     private void Update()
     {
@@ -30,7 +46,7 @@ public class SkillController : Singleton<SkillController>
 
     void OnAttack(InputValue value)
     {
-        if (isSkillPlaying || isGettingHit) return;
+        if (isSkillPlaying || isGettingHit || isDead) return;
 
         if (IsTurning())
         {
@@ -67,21 +83,21 @@ public class SkillController : Singleton<SkillController>
 
     void OnFirstSkill(InputValue value)
     {
-        if (isGettingHit) return;
+        if (isGettingHit || isDead) return;
         TryBufferOrExecuteSkill(skill01Id, "FirstSkill");
         Debug.Log("S: 스킬1");
     }
 
     void OnSecondSkill(InputValue value)
     {
-        if (isGettingHit) return;
+        if (isGettingHit || isDead) return;
         TryBufferOrExecuteSkill(skill02Id, "SecondSkill");
         Debug.Log("D: 스킬2");
     }
 
     void OnSpecialSkill(InputValue value)
     {
-        if (isGettingHit) return;
+        if (isGettingHit || isDead) return;
         TryBufferOrExecuteSkill(memorySkillId, "SpecialSkill");
         Debug.Log("R: 기억 스킬");
     }
@@ -163,6 +179,11 @@ public class SkillController : Singleton<SkillController>
     public void SetGettingHit(bool value)
     {
         isGettingHit = value;
+    }
+
+    public void SetDead(bool value)
+    {
+        isDead = value;
     }
 
     public void ResetAttack()

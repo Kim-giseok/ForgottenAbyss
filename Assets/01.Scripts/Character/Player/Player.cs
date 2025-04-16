@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem.XR;
 
 public class Player : MonoBehaviour, IDamagable
 {
@@ -9,9 +10,10 @@ public class Player : MonoBehaviour, IDamagable
     SpriteRenderer spriteRenderer;
        
     PlayerStatus playerstatus;
-    public ControllerPlayer controller;
+    ControllerPlayer controller;
+    SkillController skillController;
     
-    private bool isDead;
+    public bool isDead;
     
     public void Awake()
     {
@@ -22,6 +24,23 @@ public class Player : MonoBehaviour, IDamagable
         //rigidbody = GetComponent<Rigidbody2D>();
 
         isDead = false;
+    }
+
+    private void Start()
+    {
+        StartCoroutine(SetupSkillController());
+    }
+
+    IEnumerator SetupSkillController()
+    {
+        while (SkillController.Instance == null)
+            yield return null;
+
+        skillController = SkillController.Instance;
+        skillController.comboAttack = GetComponent<ComboAttack>();
+        skillController.rangedAttack = GetComponent<RangedAttack>();
+
+        Debug.Log("[Player] SkillController 세팅 완료");
     }
 
     public void Update()
@@ -44,14 +63,15 @@ public class Player : MonoBehaviour, IDamagable
         if (playerstatus.stats[StatType.HP] <= 0)
         {
             animator.SetTrigger("DeadTrigger");
-
+            skillController.SetDead(true);
+            controller.isAlive = false;
             isDead = true;
         }
 
         animator.SetTrigger("HitTrigger");
 
-        SkillController.Instance.SetGettingHit(true);
-        SkillController.Instance.ResetAttack();
+        skillController.SetGettingHit(true);
+        skillController.ResetAttack();
 
         StartCoroutine(ClearGettingHitAfterDelay(0.4f));
     }
@@ -66,7 +86,7 @@ public class Player : MonoBehaviour, IDamagable
     private IEnumerator ClearGettingHitAfterDelay(float delay)
     {
         yield return new WaitForSeconds(delay);
-        SkillController.Instance.SetGettingHit(false);
+        skillController.SetGettingHit(false);
     }
 
     IEnumerator TimeSet()
