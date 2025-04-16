@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class WeaponManager : Singleton<WeaponManager>
 {
     public SkillController skillController;
     public ComboAttack comboAttack; 
+    public WeaponSwapper swapper;
 
     private WeaponDataSO currentWeaponSO;
     private WeaponData currentWeaponData;
@@ -17,8 +19,18 @@ public class WeaponManager : Singleton<WeaponManager>
 
     private void Awake()
     {
+        //우선 임시로 find로 연결해줌
         if (skillUI == null)
             skillUI = FindObjectOfType<SkillUI>();
+
+        if (skillController == null)
+            skillController = FindObjectOfType<SkillController>();
+
+        if (comboAttack == null)
+            comboAttack = FindObjectOfType<ComboAttack>();
+
+        if (swapper == null)
+            swapper = FindObjectOfType<WeaponSwapper>();
     }
 
     private void Start()
@@ -47,9 +59,12 @@ public class WeaponManager : Singleton<WeaponManager>
     private void EquipDefaultWeapons()
     {
         var defaultSwordSO = Resources.Load<WeaponDataSO>("Weapon/Sword_SO");
+        var defaultBowSO = Resources.Load<WeaponDataSO>("Weapon/Bow_SO");
         if (defaultSwordSO != null)
         {
             EquipWeapon(defaultSwordSO);
+
+            swapper.SetWeaponIcons(defaultSwordSO.weaponIcon, defaultBowSO.weaponIcon);
         }
         else
         {
@@ -188,6 +203,8 @@ public class WeaponManager : Singleton<WeaponManager>
             EquipWeapon(nextWeaponSO);
         else
             Debug.LogWarning($"경로에 무기 SO 없음: {nextWeaponPath}");
+
+        swapper.SwapWeapons();
     }
 
 #if UNITY_EDITOR
