@@ -11,7 +11,12 @@ public class IdleState : PlayerStateMachine
         //player.IgnorePlatformCollision();
         player.animator.SetBool("IsRun", false);
         player.animator.SetBool("IsJump", false);
-        player.rigid.velocity = new Vector2(0, player.rigid.velocity.y);
+
+        if(player.previousState == PlayerState.Climb)
+            player.rigid.velocity = Vector2.zero;
+        else
+            player.rigid.velocity = new Vector2(0, player.rigid.velocity.y);
+
         SkillController.Instance.ResetAttack();
     }
 

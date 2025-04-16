@@ -43,11 +43,13 @@ public class ControllerPlayer : MonoBehaviour
     // FSM 관련 변수
     private Dictionary<PlayerState, PlayerStateMachine> states = new Dictionary<PlayerState, PlayerStateMachine>();
     public PlayerState currentState;
+    public PlayerState previousState;
 
     private bool isFacingRight = true;
 
     [SerializeField] private float groundCheckRadius = 0.2f;
-    [SerializeField] private LayerMask groundLayer;
+    public LayerMask groundLayer;
+    public bool isOnLadder = false;
 
     private void Awake()
     {
@@ -84,6 +86,8 @@ public class ControllerPlayer : MonoBehaviour
     {
         if (!isAlive) return;
 
+        previousState = currentState;
+
         // 현재 상태가 있다면 Exit 호출
         if (states.ContainsKey(currentState))
         {
@@ -109,9 +113,11 @@ public class ControllerPlayer : MonoBehaviour
             //Debug.Log($"{states[currentState]}");
         }
 
-        if (!isGround &&  rigid.velocity.y < -0.1f)
+        AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+
+        if (!isGround &&  rigid.velocity.y < 0)
         {
-            if (!animator.GetCurrentAnimatorStateInfo(0).IsTag("Attack") && !animator.GetCurrentAnimatorStateInfo(0).IsTag("Ladder"))
+            if (!stateInfo.IsTag("Attack") && !stateInfo.IsTag("Ladder") && !stateInfo.IsTag("WallSlide"))
             {
                 animator.SetBool("IsFall", true);
             }
@@ -123,7 +129,6 @@ public class ControllerPlayer : MonoBehaviour
 
         if (dashBuffered)
         {
-            AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
             if (!stateInfo.IsTag("Turn"))
             {
                 dashBuffered = false;
@@ -560,8 +565,11 @@ public class ControllerPlayer : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, groundCheckRadius);
     }
 
-    private void UpdateGroundCheck()
+    public void UpdateGroundCheck()
     {
-        isGround = Physics2D.OverlapCircle(transform.position, groundCheckRadius, groundLayer);
+        if (currentState != PlayerState.Climb)
+        {
+            isGround = Physics2D.OverlapCircle(transform.position, groundCheckRadius, groundLayer);
+        }
     }
 }

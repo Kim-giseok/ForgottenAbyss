@@ -12,6 +12,7 @@ public class ClimbState : PlayerStateMachine
 
     public override void Enter()
     {
+        player.isOnLadder = true;
         player.animator.SetTrigger("LadderTrigger");
         player.animator.SetBool("IsLadder", true);
         Debug.Log("트리거 진입");
@@ -68,7 +69,7 @@ public class ClimbState : PlayerStateMachine
             //    Collider.transform.position.y + Collider.bounds.extents.y + player.playerCollider.bounds.extents.y, 0 );
             
             Vector3 topPosition = new Vector3(Collider.bounds.center.x,
-                Collider.bounds.max.y + player.playerCollider.bounds.extents.y - 0.7f, 0 );
+                Collider.bounds.max.y + player.playerCollider.bounds.extents.y - 0.4f, 0 );
 
             player.transform.position = topPosition;
             player.ChangeState(PlayerState.Idle);
@@ -79,27 +80,11 @@ public class ClimbState : PlayerStateMachine
     {
         // Y축 입력에 따라 상하 이동
         player.rigid.velocity = new Vector2(0, player.inputVec.y * climbSpeed);
-
-        if (player.inputVec.y == 0)
-        {
-            if (isMoving) // isMoving이 true일 때만 변경
-            {
-                player.animator.SetBool("IsMovingLadder", false);
-                isMoving = false; // 이동 중이 아님
-            }
-        }
-        else
-        {
-            if (!isMoving)
-            {
-                isMoving = true;
-                player.animator.SetBool("IsMovingLadder", true);
-            }
-        }
     }
 
     public override void Exit()
     {
+        player.isOnLadder = false;
         player.animator.SetBool("IsLadder", false);
         player.rigid.gravityScale = originalGravity;
     }

@@ -101,7 +101,7 @@ public class SlideState : PlayerStateMachine
 
     public override void OnCollisionEnter(Collision2D collision)
     {
-        if(collision.gameObject.layer == LayerMask.NameToLayer("Water"))
+        if(collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
         {
             player.ChangeState(PlayerState.Idle);
         }

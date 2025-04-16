@@ -13,8 +13,8 @@ public class Player : MonoBehaviour, IDamagable
     ControllerPlayer controller;
     SkillController skillController;
     
-    public bool isDead;
-    
+    public bool isDead = false;
+
     public void Awake()
     {
         playerstatus = GetComponent<PlayerStatus>();
@@ -22,8 +22,6 @@ public class Player : MonoBehaviour, IDamagable
         spriteRenderer = GetComponent<SpriteRenderer>();
         controller = GetComponent<ControllerPlayer>();
         //rigidbody = GetComponent<Rigidbody2D>();
-
-        isDead = false;
     }
 
     private void Start()
