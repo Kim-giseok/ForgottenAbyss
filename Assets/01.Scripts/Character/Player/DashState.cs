@@ -33,8 +33,7 @@ public class DashState : PlayerStateMachine
     public override void Exit()
     {
         player.animator.SetBool("IsDash", false);
-        SkillController.Instance.comboAttack.EndComboAttack();
-        SkillController.Instance.rangedAttack.EndRangedAttack();
+        SkillController.Instance.ResetAttack();
         player.SetInvincibility(false);
     }
 }

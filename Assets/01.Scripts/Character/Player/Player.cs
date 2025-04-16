@@ -49,6 +49,11 @@ public class Player : MonoBehaviour, IDamagable
         }
 
         animator.SetTrigger("HitTrigger");
+
+        SkillController.Instance.SetGettingHit(true);
+        SkillController.Instance.ResetAttack();
+
+        StartCoroutine(ClearGettingHitAfterDelay(0.4f));
     }
 
     IEnumerator TestGetDamage() //피격 판정 테스트용 
@@ -58,9 +63,15 @@ public class Player : MonoBehaviour, IDamagable
         yield return new WaitForSeconds(0.5f);
     }
 
+    private IEnumerator ClearGettingHitAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        SkillController.Instance.SetGettingHit(false);
+    }
+
     IEnumerator TimeSet()
     {
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1.5f);
 
         Time.timeScale = 0f;
     }

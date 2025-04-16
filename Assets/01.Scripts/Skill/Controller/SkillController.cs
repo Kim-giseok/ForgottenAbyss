@@ -16,6 +16,7 @@ public class SkillController : Singleton<SkillController>
     public Transform skillSpawnPoint;
     public Transform skillSpawnPoint2;
 
+    private bool isGettingHit = false;
     private bool isSkillPlaying = false;
     public bool isBowAttack = false;
 
@@ -23,11 +24,13 @@ public class SkillController : Singleton<SkillController>
     {
         if(ActionBufferUtil.Instance != null)
             ActionBufferUtil.Instance.Update();
+
+        //Debug.Log($"[DEBUG] combo: {comboAttack.IsAttacking}, ranged: {rangedAttack.IsAttacking}, skill: {isSkillPlaying}");
     }
 
     void OnAttack(InputValue value)
     {
-        if (isSkillPlaying) return;
+        if (isSkillPlaying || isGettingHit) return;
 
         if (IsTurning())
         {
@@ -64,18 +67,21 @@ public class SkillController : Singleton<SkillController>
 
     void OnFirstSkill(InputValue value)
     {
+        if (isGettingHit) return;
         TryBufferOrExecuteSkill(skill01Id, "FirstSkill");
         Debug.Log("S: 스킬1");
     }
 
     void OnSecondSkill(InputValue value)
     {
+        if (isGettingHit) return;
         TryBufferOrExecuteSkill(skill02Id, "SecondSkill");
         Debug.Log("D: 스킬2");
     }
 
     void OnSpecialSkill(InputValue value)
     {
+        if (isGettingHit) return;
         TryBufferOrExecuteSkill(memorySkillId, "SpecialSkill");
         Debug.Log("R: 기억 스킬");
     }
@@ -151,6 +157,36 @@ public class SkillController : Singleton<SkillController>
         else
         {
             StartCoroutine(UseSkillRoutine(skillId));
+        }
+    }
+
+    public void SetGettingHit(bool value)
+    {
+        isGettingHit = value;
+    }
+
+    public void ResetAttack()
+    {
+        Debug.Log("리셋 실행");
+
+        isSkillPlaying = false;
+
+        if (comboAttack != null && comboAttack.gameObject != null)
+        {
+            comboAttack.EndComboAttack();
+        }
+        else
+        {
+            Debug.LogWarning("comboAttack이 Destroy되어 null입니다.");
+        }
+
+        if (rangedAttack != null && rangedAttack.gameObject != null)
+        {
+            rangedAttack.EndRangedAttack();
+        }
+        else
+        {
+            Debug.LogWarning("rangedAttack이 Destroy되어 null입니다.");
         }
     }
 }
