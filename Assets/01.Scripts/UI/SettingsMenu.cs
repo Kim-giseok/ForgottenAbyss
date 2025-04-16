@@ -11,6 +11,9 @@ public class SettingsMenu : MonoBehaviour
     public void ToggleSettingsMenu()
     {
         isSettingsOpen = !isSettingsOpen;
+        Debug.Log($"[SettingsMenu] isSettingsOpen: {isSettingsOpen}");
+        Debug.Log($"[SettingsMenu] settingsMenuUI == null? {settingsMenuUI == null}");
+
         settingsMenuUI.SetActive(isSettingsOpen);
 
         // 옵션창이 열릴 때 게임 일시정지
