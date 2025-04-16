@@ -16,20 +16,66 @@ public class SkillController : Singleton<SkillController>
     public Transform skillSpawnPoint;
     public Transform skillSpawnPoint2;
 
+    private bool isGettingHit = false;
+    private bool isDead = false;
     private bool isSkillPlaying = false;
     public bool isBowAttack = false;
 
+    private void Awake()
+    {
+        if (_instance == null)
+        {
+            _instance = this;
+        }
+        else if (_instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        Init();
+    }
+
+    private void Update()
+    {
+        if(ActionBufferUtil.Instance != null)
+            ActionBufferUtil.Instance.Update();
+
+        //Debug.Log($"[DEBUG] combo: {comboAttack.IsAttacking}, ranged: {rangedAttack.IsAttacking}, skill: {isSkillPlaying}");
+    }
+
     void OnAttack(InputValue value)
     {
-        if (isSkillPlaying) return;
+        if (isSkillPlaying || isGettingHit || isDead) return;
 
-        if (WeaponManager.Instance.GetCurrentWeaponData().Type == WeaponType.Sword)
+        if (IsTurning())
         {
-            comboAttack?.HandleAttackInput();
+            ActionBufferUtil.Instance.BufferAction(
+                "NormalAttack",
+                () => !IsTurning() && !isSkillPlaying,
+                () =>
+                {
+                    if (WeaponManager.Instance.GetCurrentWeaponData().Type == WeaponType.Sword)
+                    {
+                        comboAttack?.HandleAttackInput();
+                    }
+                    else if (WeaponManager.Instance.GetCurrentWeaponData().Type == WeaponType.Bow)
+                    {
+                        rangedAttack?.HandleAttackInput();
+                    }
+                }
+            );
         }
-        else if (WeaponManager.Instance.GetCurrentWeaponData().Type == WeaponType.Bow)
+        else
         {
-            rangedAttack?.HandleAttackInput();
+            if (WeaponManager.Instance.GetCurrentWeaponData().Type == WeaponType.Sword)
+            {
+                comboAttack?.HandleAttackInput();
+            }
+            else if (WeaponManager.Instance.GetCurrentWeaponData().Type == WeaponType.Bow)
+            {
+                rangedAttack?.HandleAttackInput();
+            }
         }
 
         Debug.Log("A: 일반공격");
@@ -37,31 +83,22 @@ public class SkillController : Singleton<SkillController>
 
     void OnFirstSkill(InputValue value)
     {
-        if (isSkillPlaying) return;
-        if (comboAttack != null && comboAttack.IsAttacking) return;
-        if (rangedAttack != null && rangedAttack.IsAttacking) return;
-
-        StartCoroutine(UseSkillRoutine(skill01Id));
+        if (isGettingHit || isDead) return;
+        TryBufferOrExecuteSkill(skill01Id, "FirstSkill");
         Debug.Log("S: 스킬1");
     }
 
     void OnSecondSkill(InputValue value)
     {
-        if (isSkillPlaying) return;
-        if (comboAttack != null && comboAttack.IsAttacking) return;
-        if (rangedAttack != null && rangedAttack.IsAttacking) return;
-
-        StartCoroutine(UseSkillRoutine(skill02Id));
+        if (isGettingHit || isDead) return;
+        TryBufferOrExecuteSkill(skill02Id, "SecondSkill");
         Debug.Log("D: 스킬2");
     }
 
-    void OnSpecialSkill(InputValue value) //특수스킬 키 입력
+    void OnSpecialSkill(InputValue value)
     {
-        if (isSkillPlaying) return;
-        if (comboAttack != null && comboAttack.IsAttacking) return;
-        if (rangedAttack != null && rangedAttack.IsAttacking) return;
-
-        StartCoroutine(UseSkillRoutine(memorySkillId));
+        if (isGettingHit || isDead) return;
+        TryBufferOrExecuteSkill(memorySkillId, "SpecialSkill");
         Debug.Log("R: 기억 스킬");
     }
 
@@ -73,6 +110,14 @@ public class SkillController : Singleton<SkillController>
     public void OnSetSkillFalse()
     {
         isSkillPlaying = false;
+    }
+
+    public bool IsTurning()
+    {
+        AnimatorStateInfo stateInfo = GameManager.Instance.player.animator.GetCurrentAnimatorStateInfo(0);
+        if (stateInfo.IsTag("Turn") || stateInfo.IsTag("Fall"))
+            return true;
+        else return false;
     }
 
     public bool IsAttacking()
@@ -111,5 +156,58 @@ public class SkillController : Singleton<SkillController>
         }
 
         return skillVisual.animPlayTime / skillVisual.animationSpeed;
+    }
+
+    private void TryBufferOrExecuteSkill(int skillId, string bufferName)
+    {
+        if (IsAttacking()) return;
+
+        if (IsTurning())
+        {
+            ActionBufferUtil.Instance.BufferAction(
+                bufferName,
+                () => !IsTurning() && !IsAttacking(),
+                () => StartCoroutine(UseSkillRoutine(skillId))
+            );
+        }
+        else
+        {
+            StartCoroutine(UseSkillRoutine(skillId));
+        }
+    }
+
+    public void SetGettingHit(bool value)
+    {
+        isGettingHit = value;
+    }
+
+    public void SetDead(bool value)
+    {
+        isDead = value;
+    }
+
+    public void ResetAttack()
+    {
+        Debug.Log("리셋 실행");
+
+        isSkillPlaying = false;
+
+        if (comboAttack != null && comboAttack.gameObject != null)
+        {
+            comboAttack.EndComboAttack();
+        }
+        else
+        {
+            Debug.LogWarning("comboAttack이 Destroy되어 null입니다.");
+        }
+
+        if (rangedAttack != null && rangedAttack.gameObject != null)
+        {
+            rangedAttack.EndRangedAttack();
+        }
+        else
+        {
+            Debug.LogWarning("rangedAttack이 Destroy되어 null입니다.");
+        }
     }
 }

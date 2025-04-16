@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class WeaponManager : Singleton<WeaponManager>
 {
     public SkillController skillController;
     public ComboAttack comboAttack; 
+    public WeaponSwapper swapper;
 
     private WeaponDataSO currentWeaponSO;
     private WeaponData currentWeaponData;
@@ -17,8 +19,23 @@ public class WeaponManager : Singleton<WeaponManager>
 
     private void Awake()
     {
+        //우선 임시로 find로 연결해줌
         if (skillUI == null)
             skillUI = FindObjectOfType<SkillUI>();
+
+        if (skillController == null)
+            skillController = FindObjectOfType<SkillController>();
+
+        if (comboAttack == null)
+            comboAttack = FindObjectOfType<ComboAttack>();
+
+        if (swapper == null)
+            swapper = FindObjectOfType<WeaponSwapper>();
+    }
+
+    private void Start()
+    {
+        EquipDefaultWeapons();
     }
 
     private void Update()
@@ -37,6 +54,32 @@ public class WeaponManager : Singleton<WeaponManager>
             Debug_EquipTestMemoryPiece(); // 기억 조각 장착
         }
 #endif
+    }
+
+    private void EquipDefaultWeapons()
+    {
+        var defaultSwordSO = Resources.Load<WeaponDataSO>("Weapon/Sword_SO");
+        var defaultBowSO = Resources.Load<WeaponDataSO>("Weapon/Bow_SO");
+        if (defaultSwordSO != null)
+        {
+            EquipWeapon(defaultSwordSO);
+
+            swapper.SetWeaponIcons(defaultSwordSO.weaponIcon, defaultBowSO.weaponIcon);
+        }
+        else
+        {
+            Debug.LogWarning("기본 검 무기 SO를 찾을 수 없습니다.");
+        }
+
+        var defaultMemorySO = Resources.Load<MemoryPieceSO>("Weapon/MemoryPieceSO");
+        if (defaultMemorySO != null)
+        {
+            EquipMemoryPiece(defaultMemorySO);
+        }
+        else
+        {
+            Debug.LogWarning("기본 기억 조각 SO를 찾을 수 없습니다.");
+        }
     }
 
     public void EquipWeapon(WeaponDataSO selectedWeapon)
@@ -160,6 +203,8 @@ public class WeaponManager : Singleton<WeaponManager>
             EquipWeapon(nextWeaponSO);
         else
             Debug.LogWarning($"경로에 무기 SO 없음: {nextWeaponPath}");
+
+        swapper.SwapWeapons();
     }
 
 #if UNITY_EDITOR

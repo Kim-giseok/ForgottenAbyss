@@ -31,6 +31,7 @@ public class ControllerPlayer : MonoBehaviour
     //public bool isIgnoringCollision = false; //콜라이더 충돌 무시 여부
     public bool isInvincible = false; //무적 상태 여부
     private bool dashBuffered = false;
+    public bool isAlive = true;
 
     public Rigidbody2D rigid;
     public Animator animator;
@@ -44,6 +45,9 @@ public class ControllerPlayer : MonoBehaviour
     public PlayerState currentState;
 
     private bool isFacingRight = true;
+
+    [SerializeField] private float groundCheckRadius = 0.2f;
+    [SerializeField] private LayerMask groundLayer;
 
     private void Awake()
     {
@@ -78,6 +82,8 @@ public class ControllerPlayer : MonoBehaviour
 
     public void ChangeState(PlayerState newState)
     {
+        if (!isAlive) return;
+
         // 현재 상태가 있다면 Exit 호출
         if (states.ContainsKey(currentState))
         {
@@ -103,10 +109,9 @@ public class ControllerPlayer : MonoBehaviour
             //Debug.Log($"{states[currentState]}");
         }
 
-
         if (!isGround &&  rigid.velocity.y < -0.1f)
         {
-            if (!animator.GetCurrentAnimatorStateInfo(0).IsTag("Attack"))
+            if (!animator.GetCurrentAnimatorStateInfo(0).IsTag("Attack") && !animator.GetCurrentAnimatorStateInfo(0).IsTag("Ladder"))
             {
                 animator.SetBool("IsFall", true);
             }
@@ -140,6 +145,7 @@ public class ControllerPlayer : MonoBehaviour
             states[currentState].FixedUpdate();
         }
 
+        UpdateGroundCheck();
         //if (!isDashing && !isAttacking)
         //{
         //    rigid.velocity = new Vector2(inputVec.x * speed, rigid.velocity.y);
@@ -149,6 +155,7 @@ public class ControllerPlayer : MonoBehaviour
 
     void OnMove(InputValue value)
     {
+        if (!isAlive) return;
         inputVec = value.Get<Vector2>();
 
         if (states.ContainsKey(currentState))
@@ -180,6 +187,7 @@ public class ControllerPlayer : MonoBehaviour
     //}
     void OnJump(InputValue value)
     {
+        if (!isAlive) return;
         if (value.isPressed)
         {
             // 현재 상태에 점프 입력 전달
@@ -192,6 +200,7 @@ public class ControllerPlayer : MonoBehaviour
 
     void OnDash(InputValue value) //대쉬 키 입력
     {
+        if (!isAlive) return;
         AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
         bool isTurn = stateInfo.IsTag("Turn");
 
@@ -237,6 +246,7 @@ public class ControllerPlayer : MonoBehaviour
 
     void OnInteraction() //상호 작용 키 입력
     {
+        if (!isAlive) return;
         //Vector2 origin = transform.position;
         //Vector2 direction = transform.right;
         //interaction.Interact(origin, direction);
@@ -541,8 +551,17 @@ public class ControllerPlayer : MonoBehaviour
         {
             spriteRenderer.color = new Color(1f, 1f, 1f, 0.3f);
             yield return null;
-        }
-        
+        }  
     }
-        
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(transform.position, groundCheckRadius);
+    }
+
+    private void UpdateGroundCheck()
+    {
+        isGround = Physics2D.OverlapCircle(transform.position, groundCheckRadius, groundLayer);
+    }
 }

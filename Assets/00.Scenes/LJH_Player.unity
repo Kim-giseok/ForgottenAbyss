@@ -766,6 +766,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: RedHood
       objectReference: {fileID: 0}
+    - target: {fileID: 6048227883838887976, guid: 6dc31ed564c18ca4b9568794c27595d7, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6642390488503649345, guid: 6dc31ed564c18ca4b9568794c27595d7, type: 3}
       propertyPath: m_Material
       value: 
@@ -775,6 +779,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6dc31ed564c18ca4b9568794c27595d7, type: 3}
+--- !u!114 &739072568 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 307188709645930398, guid: 6dc31ed564c18ca4b9568794c27595d7, type: 3}
+  m_PrefabInstance: {fileID: 739072567}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39a5f5a0c2370ae4d8d16db0febae4fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &854572767
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -790,7 +805,7 @@ PrefabInstance:
     - target: {fileID: 497392018163810730, guid: 2cef33c320151574f914bdb408e62aab, type: 3}
       propertyPath: skillController
       value: 
-      objectReference: {fileID: 1424171428}
+      objectReference: {fileID: 739072568}
     - target: {fileID: 1524514876729645651, guid: 2cef33c320151574f914bdb408e62aab, type: 3}
       propertyPath: skillUI
       value: 
@@ -2059,17 +2074,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: eb354eabd912cd44ca6ae06b6cae8fdd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1424171428 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 447847266130749123, guid: 6dc31ed564c18ca4b9568794c27595d7, type: 3}
-  m_PrefabInstance: {fileID: 739072567}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 39a5f5a0c2370ae4d8d16db0febae4fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &1424171431 stripped
