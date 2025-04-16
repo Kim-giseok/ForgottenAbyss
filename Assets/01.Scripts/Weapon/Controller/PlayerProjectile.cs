@@ -52,6 +52,9 @@ public class PlayerProjectile : MonoBehaviour
                 float damage = data.CalculateDamage();
                 damageable.GetDamage(damage);
 
+                Vector3 textPosition = other.transform.position + Vector3.up * 1f;
+                DamageTextManager.Instance.ShowDamage(textPosition, (int)damage);
+
                 if (other.CompareTag("Enemy"))
                 {
                     CameraShake.Instance.Shake(0.1f, 0.2f);

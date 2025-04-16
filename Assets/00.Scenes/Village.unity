@@ -1082,7 +1082,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.00005576276}
+  m_AnchoredPosition: {x: 0, y: 0.0038984674}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &440183555
@@ -7963,7 +7963,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 537982152}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.9999966
+  m_Size: 0.94729394
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -8604,6 +8604,8 @@ GameObject:
   - component: {fileID: 447847266066030259}
   - component: {fileID: 4415495858570078103}
   - component: {fileID: 8607925810560979801}
+  - component: {fileID: 8708700905642208362}
+  - component: {fileID: 8708700905642208361}
   m_Layer: 8
   m_Name: RedHood
   m_TagString: Player
@@ -8869,6 +8871,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d28328199117d8040a76155a4a19d81a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animator: {fileID: 0}
   controller: {fileID: 0}
 --- !u!114 &8607925810560979801
 MonoBehaviour:
@@ -8905,6 +8908,30 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &8708700905642208361
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3741893359107929953}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e87230b470492f419b10669fe89756c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8708700905642208362
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3741893359107929953}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79fba0894687e9547b2b9859db700eaf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

@@ -83,6 +83,9 @@ public class ComboAttack : MonoBehaviour
 
     public void EndComboAttack()
     {
+        if (this == null || animator == null || !gameObject.activeInHierarchy)
+            return;
+
         IsAttacking = false;
         attackIndex = 0;
         animator.SetInteger("AttackCombo", 0);
@@ -131,12 +134,17 @@ public class ComboAttack : MonoBehaviour
     {
         Vector3 startPos = transform.position;
 
-        // 대각선 방향으로 점프 (오른쪽 + 위 방향)
+        // 점프 방향 (대각선 위)
         Vector3 jumpDir = (transform.right + Vector3.up).normalized;
         Vector3 peakPos = startPos + jumpDir * height;
 
+        Vector3 horizontalDir = transform.right;
+        Vector3 endPos = startPos + horizontalDir * height; // 수평 이동 포함
+
         float halfDuration = duration / 2f;
         float elapsed = 0f;
+
+        LayerMask wallMask = LayerMask.GetMask("Wall", "Ground"); // 충돌 감지할 레이어 설정
 
         // 상승
         while (elapsed < halfDuration)
@@ -144,19 +152,41 @@ public class ComboAttack : MonoBehaviour
             elapsed += Time.deltaTime;
             float t = elapsed / halfDuration;
             float easeT = Mathf.Sin(t * Mathf.PI * 0.5f); // EaseOutSine
-            transform.position = Vector3.Lerp(startPos, peakPos, easeT);
+
+            Vector3 nextPos = Vector3.Lerp(startPos, peakPos, easeT);
+            Vector3 moveDir = nextPos - transform.position;
+
+            // 벽 체크
+            RaycastHit2D hit = Physics2D.Raycast(transform.position, moveDir.normalized, moveDir.magnitude, wallMask);
+            if (hit.collider != null)
+            {
+                transform.position = hit.point;
+                yield break; // 점프 중단
+            }
+
+            transform.position = nextPos;
             yield return null;
         }
 
-        // 하강: 시작점 기준으로 대각선 아래로 내려오게
-        Vector3 endPos = startPos + transform.right * height; // 수평 이동 포함
+        // 하강
         elapsed = 0f;
         while (elapsed < halfDuration)
         {
             elapsed += Time.deltaTime;
             float t = elapsed / halfDuration;
             float easeT = 1f - Mathf.Cos(t * Mathf.PI * 0.5f); // EaseInSine
-            transform.position = Vector3.Lerp(peakPos, endPos, easeT);
+
+            Vector3 nextPos = Vector3.Lerp(peakPos, endPos, easeT);
+            Vector3 moveDir = nextPos - transform.position;
+
+            RaycastHit2D hit = Physics2D.Raycast(transform.position, moveDir.normalized, moveDir.magnitude, wallMask);
+            if (hit.collider != null)
+            {
+                transform.position = hit.point;
+                yield break; // 점프 중단
+            }
+
+            transform.position = nextPos;
             yield return null;
         }
 
@@ -191,10 +221,14 @@ public class ComboAttack : MonoBehaviour
             if (enemy != null)
             {
                 enemy.GetDamage(damage);
+
+                Vector3 textPosition = enemy.transform.position + Vector3.up * 1f;
+                DamageTextManager.Instance.ShowDamage(textPosition, (int)damage);
+
                 CameraShake.Instance.Shake(0.1f, 0.2f);
 
                 Vector2 attackerPos = (Vector2)transform.position + Vector2.up * 0.5f;
-                KnockbackUtil.ApplyKnockback(target, attackerPos, 2f);
+                KnockbackUtil.ApplyKnockback(target, attackerPos, 5f);
             }
 
             var laber = target.GetComponentInChildren<LaberDamagerble>();
@@ -214,7 +248,7 @@ public class ComboAttack : MonoBehaviour
         float radius = step.radius;
         float angle = step.angle;
         Vector2 origin = (Vector2)transform.position + Vector2.up * 0.5f;
-        Vector2 forward = transform.right;
+        Vector2 forward = (transform.localScale.x > 0) ? Vector2.right : Vector2.left;
 
         Collider2D[] hits = Physics2D.OverlapCircleAll(origin, radius, LayerMask.GetMask("Enemy"));
 
@@ -223,11 +257,12 @@ public class ComboAttack : MonoBehaviour
 
         foreach (var hit in hits)
         {
-            Vector2 toTarget = ((Vector2)hit.transform.position - origin).normalized;
-            float dist = Vector2.Distance(origin, hit.transform.position);
+            Vector2 toTarget = hit.ClosestPoint(origin) - origin;
+            float dist = toTarget.magnitude;
+            float angleToTarget = Vector2.Angle(forward, toTarget.normalized);
 
             // 마지막 타수면 angle 체크 없이 그냥 원형 판정
-            if (attackIndex == comboData.comboSteps.Count || Vector2.Angle(forward, toTarget) <= angle / 2f)
+            if (attackIndex == comboData.comboSteps.Count || angleToTarget <= angle / 2f)
             {
                 if (dist < minDistance)
                 {

@@ -153,6 +153,9 @@ public class RangedAttack : MonoBehaviour
 
     public void EndRangedAttack()
     {
+        if (this == null || animator == null || !gameObject.activeInHierarchy)
+            return;
+
         IsAttacking = false;
         attackIndex = 0;
         inputCombo = false;

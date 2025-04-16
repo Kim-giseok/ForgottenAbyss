@@ -5,7 +5,7 @@ using UnityEngine;
 public class Player : MonoBehaviour, IDamagable
 {
     
-    Animator animator;
+    public Animator animator;
     SpriteRenderer spriteRenderer;
        
     PlayerStatus playerstatus;
