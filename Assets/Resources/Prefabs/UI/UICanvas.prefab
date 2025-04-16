@@ -5886,6 +5886,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inventoryPanel: {fileID: 5936130204635400117}
+  inventoryController: {fileID: 6443250336303513538}
   closeButton: {fileID: 2681901509040307851}
   slotHolder: {fileID: 1128636970614694970}
   slots: []
@@ -7402,6 +7403,7 @@ GameObject:
   - component: {fileID: 1128636970614694970}
   - component: {fileID: 4939406984544558733}
   - component: {fileID: 4070563531390719414}
+  - component: {fileID: 6443250336303513538}
   m_Layer: 5
   m_Name: Content
   m_TagString: Untagged
@@ -7486,6 +7488,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HorizontalFit: 0
   m_VerticalFit: 2
+--- !u!114 &6443250336303513538
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7764152284691053635}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72c0aaa0ca584e248a4b81641da3fbca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inventorySlots: []
 --- !u!1 &7824731684067645094
 GameObject:
   m_ObjectHideFlags: 0

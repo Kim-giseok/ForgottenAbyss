@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using static UnityEditor.Progress;
 
 public class InventorySlot : SlotBase
 {
@@ -37,6 +36,7 @@ public class InventorySlot : SlotBase
 
     public override void ClearSlot()
     {
+        Debug.Log($"[ClearSlot] {gameObject.name} ½½·Ô ºñ¿ò");
         currentItem = null;
         iconImage.sprite = null;
         iconImage.enabled = false;
