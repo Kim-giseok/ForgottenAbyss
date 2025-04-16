@@ -273,9 +273,10 @@ public class ComboAttack : MonoBehaviour
         var step = comboData.comboSteps[attackIndex-1];
 
         float radius = step.radius;
-        float angle = step.angle;
-        Vector2 origin = (Vector2)transform.position + Vector2.up * 0.5f;
+        float offset = step.offset;
+        
         Vector2 forward = (transform.localScale.x > 0) ? Vector2.right : Vector2.left;
+        Vector2 origin = (Vector2)transform.position + Vector2.up * 0.5f + forward * offset; ;
 
         Collider2D[] hits = Physics2D.OverlapCircleAll(origin, radius, LayerMask.GetMask("Enemy"));
 
@@ -284,26 +285,15 @@ public class ComboAttack : MonoBehaviour
 
         foreach (var hit in hits)
         {
-            Vector2 toTarget = hit.ClosestPoint(origin) - origin;
-            float dist = toTarget.magnitude;
-            float angleToTarget = Vector2.Angle(forward, toTarget.normalized);
-
-            // 마지막 타수면 angle 체크 없이 그냥 원형 판정
-            if (attackIndex == comboData.comboSteps.Count || angleToTarget <= angle / 2f)
+            float dist = Vector2.Distance(origin, hit.ClosestPoint(origin));
+            if (dist < minDistance)
             {
-                if (dist < minDistance)
-                {
-                    minDistance = dist;
-                    closest = hit.gameObject;
-                }
+                minDistance = dist;
+                closest = hit.gameObject;
             }
         }
 
-        // 디버그 시각화: 막타는 원형, 나머지는 부채꼴
-        if (attackIndex == comboData.comboSteps.Count)
-            DebugDrawUtil.DrawCircle(origin, radius, Color.yellow);
-        else
-            DebugDrawUtil.DrawFan(origin, radius, angle, forward, Color.cyan);
+        DebugDrawUtil.DrawCircle(origin, radius, Color.yellow);
 
         return closest;
     }
