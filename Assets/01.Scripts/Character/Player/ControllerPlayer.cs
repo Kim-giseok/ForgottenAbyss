@@ -46,6 +46,9 @@ public class ControllerPlayer : MonoBehaviour
 
     private bool isFacingRight = true;
 
+    [SerializeField] private float groundCheckRadius = 0.2f;
+    [SerializeField] private LayerMask groundLayer;
+
     private void Awake()
     {
         rigid = GetComponent<Rigidbody2D>();
@@ -142,6 +145,7 @@ public class ControllerPlayer : MonoBehaviour
             states[currentState].FixedUpdate();
         }
 
+        UpdateGroundCheck();
         //if (!isDashing && !isAttacking)
         //{
         //    rigid.velocity = new Vector2(inputVec.x * speed, rigid.velocity.y);
@@ -547,8 +551,17 @@ public class ControllerPlayer : MonoBehaviour
         {
             spriteRenderer.color = new Color(1f, 1f, 1f, 0.3f);
             yield return null;
-        }
-        
+        }  
     }
-        
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(transform.position, groundCheckRadius);
+    }
+
+    private void UpdateGroundCheck()
+    {
+        isGround = Physics2D.OverlapCircle(transform.position, groundCheckRadius, groundLayer);
+    }
 }

@@ -140,11 +140,14 @@ public class HomingArrowEffect : MonoBehaviour
 
         foreach (var hit in hits)
         {
-            float dist = Vector2.Distance(transform.position, hit.transform.position);
-            if (dist < minDist)
+            if (hit.TryGetComponent<EnemyController>(out var enemy))
             {
-                minDist = dist;
-                nearest = hit.transform;
+                float dist = Vector2.Distance(transform.position, enemy.transform.position);
+                if (dist < minDist)
+                {
+                    minDist = dist;
+                    nearest = enemy.transform;
+                }
             }
         }
 

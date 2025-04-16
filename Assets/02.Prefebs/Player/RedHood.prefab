@@ -271,12 +271,17 @@ MonoBehaviour:
   isDashing: 0
   isAttacking: 0
   isInvincible: 0
+  isAlive: 1
   rigid: {fileID: 0}
   animator: {fileID: 0}
   playerCollider: {fileID: 0}
   spriteRenderer: {fileID: 0}
   interaction: {fileID: 0}
   currentState: 0
+  groundCheckRadius: 0.2
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 1152
 --- !u!114 &7695836731054088730
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -290,7 +295,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 0}
-  skillController: {fileID: 307188709645930398}
+  isDead: 0
 --- !u!114 &5384723960413066390
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -140,14 +140,24 @@ public class RangedAttack : MonoBehaviour
         transform.position = targetPos; // 마지막 위치 보정
     }
 
-        void SpawnProjectile(Vector3 direction)
+    void SpawnProjectile(Vector3 direction)
     {
         GameObject projectile = ProjectilePool.Instance.Get(firePoint.position, Quaternion.LookRotation(Vector3.forward, direction));
 
         PlayerProjectile pp = projectile.GetComponent<PlayerProjectile>();
         if (pp != null)
         {
-            pp.Setup(direction, caster: this.gameObject, rangedData.comboSteps[attackIndex-1].multiplier); // 방향 세팅
+            int comboStepIndex = attackIndex - 1;
+
+            if (comboStepIndex >= 0 && comboStepIndex < rangedData.comboSteps.Count)
+            {
+                float multiplier = rangedData.comboSteps[comboStepIndex].multiplier;
+                pp.Setup(direction, caster: this.gameObject, multiplier);
+            }
+            else
+            {
+                Debug.LogWarning($"[RangedAttack] Invalid combo step index: {comboStepIndex}, attackIndex: {attackIndex}, total steps: {rangedData.comboSteps.Count}");
+            }
         }
     }
 

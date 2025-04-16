@@ -21,6 +21,11 @@ public class WeaponManager : Singleton<WeaponManager>
             skillUI = FindObjectOfType<SkillUI>();
     }
 
+    private void Start()
+    {
+        EquipDefaultWeapons();
+    }
+
     private void Update()
     {
 #if UNITY_EDITOR
@@ -37,6 +42,29 @@ public class WeaponManager : Singleton<WeaponManager>
             Debug_EquipTestMemoryPiece(); // 기억 조각 장착
         }
 #endif
+    }
+
+    private void EquipDefaultWeapons()
+    {
+        var defaultSwordSO = Resources.Load<WeaponDataSO>("Weapon/Sword_SO");
+        if (defaultSwordSO != null)
+        {
+            EquipWeapon(defaultSwordSO);
+        }
+        else
+        {
+            Debug.LogWarning("기본 검 무기 SO를 찾을 수 없습니다.");
+        }
+
+        var defaultMemorySO = Resources.Load<MemoryPieceSO>("Weapon/MemoryPieceSO");
+        if (defaultMemorySO != null)
+        {
+            EquipMemoryPiece(defaultMemorySO);
+        }
+        else
+        {
+            Debug.LogWarning("기본 기억 조각 SO를 찾을 수 없습니다.");
+        }
     }
 
     public void EquipWeapon(WeaponDataSO selectedWeapon)
