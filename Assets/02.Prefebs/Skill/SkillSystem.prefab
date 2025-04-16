@@ -87,6 +87,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skillController: {fileID: 0}
   comboAttack: {fileID: 0}
+  swapper: {fileID: 0}
 --- !u!114 &3622915880698505367
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -115,8 +116,8 @@ MonoBehaviour:
   - key: BowSkill02
     prefab: {fileID: 7023494829652142248, guid: d206c7f780630034a8969b45a6f23623, type: 3}
     initialSize: 3
-  - key: SwordSkill02_b
-    prefab: {fileID: 5264371681372061162, guid: a1baa6c1d03af5d42b292db930e93fa5, type: 3}
+  - key: SwordSkill02
+    prefab: {fileID: 1205478487176026167, guid: 1341b472ed220a64eae7777e5caf8078, type: 3}
     initialSize: 3
 --- !u!114 &2628890420770852956
 MonoBehaviour:

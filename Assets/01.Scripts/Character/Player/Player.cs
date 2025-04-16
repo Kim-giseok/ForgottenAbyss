@@ -1,17 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem.XR;
 
 public class Player : MonoBehaviour, IDamagable
 {
     
-    Animator animator;
+    public Animator animator;
     SpriteRenderer spriteRenderer;
        
     PlayerStatus playerstatus;
-    public ControllerPlayer controller;
+    ControllerPlayer controller;
+    SkillController skillController;
     
-    private bool isDead = false;
+    public bool isDead;
     
     public void Awake()
     {
@@ -20,6 +22,25 @@ public class Player : MonoBehaviour, IDamagable
         spriteRenderer = GetComponent<SpriteRenderer>();
         controller = GetComponent<ControllerPlayer>();
         //rigidbody = GetComponent<Rigidbody2D>();
+
+        isDead = false;
+    }
+
+    private void Start()
+    {
+        StartCoroutine(SetupSkillController());
+    }
+
+    IEnumerator SetupSkillController()
+    {
+        while (SkillController.Instance == null)
+            yield return null;
+
+        skillController = SkillController.Instance;
+        skillController.comboAttack = GetComponent<ComboAttack>();
+        skillController.rangedAttack = GetComponent<RangedAttack>();
+
+        Debug.Log("[Player] SkillController 세팅 완료");
     }
 
     public void Update()
@@ -29,10 +50,10 @@ public class Player : MonoBehaviour, IDamagable
             StartCoroutine(TestGetDamage()); //테스트용
         }
 
-        //if (isDead)
-        //{
-        //    animator.SetBool("IsDead", true);
-        //}
+        if (isDead)
+        {
+            StartCoroutine(TimeSet());
+        }
     }
 
     public void GetDamage(float damage)
@@ -41,12 +62,10 @@ public class Player : MonoBehaviour, IDamagable
 
         if (playerstatus.stats[StatType.HP] <= 0)
         {
-            isDead = true;
-
-            animator.SetTrigger("DeadTrigger");
+            Die();
         }
-
-        animator.SetTrigger("HitTrigger");
+        else
+            Hit();
     }
 
     IEnumerator TestGetDamage() //피격 판정 테스트용 
@@ -54,5 +73,47 @@ public class Player : MonoBehaviour, IDamagable
         GetDamage(50);
         
         yield return new WaitForSeconds(0.5f);
+    }
+
+    IEnumerator TimeSet()
+    {
+        yield return new WaitForSeconds(1.5f);
+
+        Time.timeScale = 0f;
+    }
+
+    void Die()
+    {
+        Debug.Log("die 실행");
+        if (isDead) return;
+
+        isDead = true;    
+        controller.isAlive = false;
+        controller.rigid.velocity = Vector2.zero;
+        controller.inputVec = Vector2.zero;
+        controller.speed = 0f;
+        skillController.SetDead(true);
+
+        animator.ResetTrigger("HitTrigger");
+        animator.ResetTrigger("DashTrigger");
+        animator.ResetTrigger("AttackTrigger");
+
+        animator.SetTrigger("DeadTrigger");
+    }
+
+    void Hit()
+    {
+        skillController.SetGettingHit(true);
+        skillController.ResetAttack();
+
+        animator.SetTrigger("HitTrigger");
+
+        StartCoroutine(ClearGettingHitAfterDelay(0.4f));
+    }
+
+    private IEnumerator ClearGettingHitAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        skillController.SetGettingHit(false);
     }
 }

@@ -1,29 +1,26 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class UIManager : MonoBehaviour
 {
-    public InventoryUI inventoryUI;  // 인벤토리
-    public SettingsMenu settingsMenu; // 옵션창
+    public static UIManager Instance { get; private set; }
+
+    public InventoryUI inventoryUI;
+    public SettingsMenu settingsMenu;
     public WeaponSwapper weaponSwapper;
 
-    void Update()
+    private void Awake()
     {
-        if (Input.GetKeyDown(KeyCode.I))  // 인벤토리 열기/닫기
+        if (Instance != null && Instance != this)
         {
-            inventoryUI.ToggleInventory();
+            Destroy(gameObject);
+            return;
         }
 
-        if (Input.GetKeyDown(KeyCode.Escape)) // 옵션창 열기/닫기
-        {
-            settingsMenu.ToggleSettingsMenu();
-        }
-
-        if (Input.GetKeyDown(KeyCode.Tab)) // 무기 스왑
-        {
-            weaponSwapper.SwapWeapons();
-        }
-
+        Instance = this;
+        DontDestroyOnLoad(gameObject); // 씬 넘어가도 유지
     }
+
+    public void ToggleInventory() => inventoryUI?.ToggleInventory();
+    public void ToggleSettings() => settingsMenu?.ToggleSettingsMenu();
+    public void SwapWeapons() => weaponSwapper?.SwapWeapons();
 }

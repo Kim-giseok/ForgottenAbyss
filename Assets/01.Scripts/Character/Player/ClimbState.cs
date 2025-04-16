@@ -7,10 +7,13 @@ public class ClimbState : PlayerStateMachine
 {
     public float climbSpeed = 5f;
     public float originalGravity;
+    public bool isMoving;
     public ClimbState(ControllerPlayer player) : base(player) { }
 
     public override void Enter()
     {
+        player.animator.SetTrigger("LadderTrigger");
+        player.animator.SetBool("IsLadder", true);
         Debug.Log("트리거 진입");
         originalGravity = player.rigid.gravityScale;
 
@@ -58,9 +61,6 @@ public class ClimbState : PlayerStateMachine
             }
         }
 
-        if (player.inputVec.y > 0)
-            player.animator.SetBool("IsLadder", true);
-
         if (player.inputVec.y > 0 && player.transform.position.y >= Collider.bounds.max.y - 1.1f)
         {
             // 사다리 꼭대기에 도달했을 때 자동으로 위로 올라가기
@@ -79,6 +79,23 @@ public class ClimbState : PlayerStateMachine
     {
         // Y축 입력에 따라 상하 이동
         player.rigid.velocity = new Vector2(0, player.inputVec.y * climbSpeed);
+
+        if (player.inputVec.y == 0)
+        {
+            if (isMoving) // isMoving이 true일 때만 변경
+            {
+                player.animator.SetBool("IsMovingLadder", false);
+                isMoving = false; // 이동 중이 아님
+            }
+        }
+        else
+        {
+            if (!isMoving)
+            {
+                isMoving = true;
+                player.animator.SetBool("IsMovingLadder", true);
+            }
+        }
     }
 
     public override void Exit()

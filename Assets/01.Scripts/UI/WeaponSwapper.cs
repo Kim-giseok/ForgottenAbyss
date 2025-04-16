@@ -93,4 +93,13 @@ public class WeaponSwapper : MonoBehaviour
         SetWeaponBrightness(frontWeapon, 1f);   // 앞으로 나온 무기 밝게
         SetWeaponBrightness(backWeapon, 0.7f);  // 뒤로 간 무기 어둡게
     }
+
+    public void SetWeaponIcons(Sprite frontIcon, Sprite backIcon)
+    {
+        Image frontImage = frontWeapon.GetComponent<Image>();
+        Image backImage = backWeapon.GetComponent<Image>();
+
+        if (frontImage != null) frontImage.sprite = frontIcon;
+        if (backImage != null) backImage.sprite = backIcon;
+    }
 }
