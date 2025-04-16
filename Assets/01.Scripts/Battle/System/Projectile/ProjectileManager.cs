@@ -103,6 +103,8 @@ public class ProjectileManager : Singleton<ProjectileManager> // 단위 미사�
         // notice: 플레이어 위치로 인한 보정 필요
         GameObject instance = Instantiate(summon, new Vector2(parent.transform.position.x, parent.transform.position.y + 0.8f), Quaternion.identity);
         
+        instance.gameObject.layer = parent.gameObject.layer;
+        
         SummonController summonController = instance.GetComponent<SummonController>();
         summonController.SetCaster(parent, isAttached);
         summonController.ExecuteSkill(skill);
