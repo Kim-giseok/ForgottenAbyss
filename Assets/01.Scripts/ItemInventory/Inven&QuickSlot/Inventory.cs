@@ -5,12 +5,12 @@ using UnityEngine;
 
 public class Inventory : MonoBehaviour
 {
-    public static Inventory Instance; // ½Ì±ÛÅæ
+    public static Inventory Instance; // ï¿½Ì±ï¿½ï¿½ï¿½
 
-    public List<Item> items = new List<Item>(); // ¾ÆÀÌÅÛ ¸ñ·Ï
+    public List<Item> items = new List<Item>(); // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
     public int capacity = 10;
 
-    public event Action onItemChanged; // ½½·Ô °³¼ö º¯°æ ½Ã È£Ãâ
+    public event Action onItemChanged; // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ È£ï¿½ï¿½
 
 
     void Awake()
@@ -23,22 +23,22 @@ public class Inventory : MonoBehaviour
         Instance = this;
     }
 
-    // ¾ÆÀÌÅÛ Ãß°¡
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ß°ï¿½
     public bool AddItem(Item item)
     {
         if (item == null)
         {
-            Debug.LogWarning("AddItem() ½ÇÆÐ: itemÀÌ nullÀÔ´Ï´Ù!");
+            Debug.LogWarning("AddItem() ï¿½ï¿½ï¿½ï¿½: itemï¿½ï¿½ nullï¿½Ô´Ï´ï¿½!");
             return false;
         }
 
         if (items.Count >= capacity)
         {
-            Debug.LogWarning("AddItem() ½ÇÆÐ: ÀÎº¥Åä¸® °¡µæ Âü!");
+            Debug.LogWarning("AddItem() ï¿½ï¿½ï¿½ï¿½: ï¿½Îºï¿½ï¿½ä¸® ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½!");
             return false;
         }
 
-        Debug.Log("¾ÆÀÌÅÛ Ãß°¡µÊ: " + item.name);
+        Debug.Log("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ß°ï¿½ï¿½ï¿½: " + item.name);
         items.Add(item);
         onItemChanged?.Invoke();
         return true;
@@ -46,6 +46,7 @@ public class Inventory : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        Debug.LogWarning(collision.gameObject.name);
         if (collision.CompareTag("FieldItem"))
         {
             FieldItem fieldItem = collision.GetComponent<FieldItem>();

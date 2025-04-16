@@ -50,7 +50,6 @@ namespace Summon
         {
             controller.animationHandler.SetSpeed(1f);
             ProjectileManager.Instance.DestroyMeleeProjectile(controller.transform);
-
         }
     }
 

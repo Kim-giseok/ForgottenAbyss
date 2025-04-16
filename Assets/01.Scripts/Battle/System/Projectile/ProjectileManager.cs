@@ -41,6 +41,8 @@ public class ProjectileManager : Singleton<ProjectileManager> // 단위 미사�
         
         HitBox hitBox = instance.GetComponent<HitBox>();
         hitBox.SetDamage(power);
+        
+        // bug: 충돌이 우선 발생하여 인식하지 못하는 현상 발생
         hitBox.SetOwner(parent);
 
         instance.transform.localScale = size ?? Vector3.one;
@@ -79,7 +81,6 @@ public class ProjectileManager : Singleton<ProjectileManager> // 단위 미사�
         instance.transform.rotation = Quaternion.Euler(0, 0, degree);
 
         instance.transform.position = parent.position;
-        instance.layer = parent.gameObject.layer;
         
         instance.SetActive(true);
 
@@ -98,7 +99,7 @@ public class ProjectileManager : Singleton<ProjectileManager> // 단위 미사�
     
     // 팩토리 패턴과 빌더 패턴을 합쳐서 사용하고 싶다. - summon도 재사용 개념이 필요한지 확인해보기
     // 각도로 넣어주기 
-    public void CreateSummonProjectile(Transform parent, SummonSkillManager.Skill skill, bool isAttached = false)
+    public void CreateSummon(Transform parent, SummonSkillManager.Skill skill, bool isAttached = false)
     {
         // notice: 플레이어 위치로 인한 보정 필요
         GameObject instance = Instantiate(summon, new Vector2(parent.transform.position.x, parent.transform.position.y + 0.8f), Quaternion.identity);

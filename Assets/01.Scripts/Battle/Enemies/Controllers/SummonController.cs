@@ -39,7 +39,7 @@ public class SummonController: EnemyBaseController
         // bug: 한번 실행 후 마지막 start가 진행되는 것으로 보임
         // notice: 머신도 제거되는 지 체크 후 이벤트 제거 필요
         // notice: 오브젝트 풀링으로 인해 비활성화가 나을 수도 있음
-        machine.OnLooped += () => { Destroy(gameObject); };
+        machine.OnLooped += () => Destroy(gameObject);
         machine.Define(node);
     }
 
@@ -50,7 +50,7 @@ public class SummonController: EnemyBaseController
         cRenderer.enabled = true;
     }
     
-    public void Update()
+    private void Update()
     {
         if (!isCasterAttached) return;
         caster.transform.position = transform.position;

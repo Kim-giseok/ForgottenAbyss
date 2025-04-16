@@ -9,6 +9,7 @@ public class EnemyController : EnemyBaseController, IDamagable
     public float health;
     public float attack;
 
+
     public Enemies.Enemy name;
     
     public EnemyResourceHandler resourceHandler { get; private set; }
@@ -37,10 +38,6 @@ public class EnemyController : EnemyBaseController, IDamagable
 
     public void GetDamage(float damage) // notice: summon은 제외
     {
-        // hitBox 측에서 알려주는 것도 나쁘지 않을 듯
-        // Vector3 textPosition = transform.position + Vector3.up * 1f;
-        // DamageTextManager.Instance.ShowDamage(textPosition, (int)damage);
-        
         // resourceHandler에서 처리
         health -= damage;
         statusHandler.stamina -= 1;
