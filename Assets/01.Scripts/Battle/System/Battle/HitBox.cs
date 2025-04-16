@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class HitBox : MonoBehaviour // 1회 공격 당의 캐싱이 필요할 수 있음
@@ -24,6 +25,11 @@ public class HitBox : MonoBehaviour // 1회 공격 당의 캐싱이 필요할 �
     // notice: 오브젝트가 enable 될 때 트리거 인식 안되는 현상 발생
     private void OnEnable()
     {
+        // 임시 수정 - 근거리 공격 인식 안되는 현상 발생
+        if (transform.parent.gameObject.layer != LayerMask.NameToLayer("Default"))
+        {
+            gameObject.layer = transform.parent.gameObject.layer;
+        }
         collider.enabled = true;
     }
 

@@ -6,6 +6,8 @@ using UnityEngine.SceneManagement;
 public class EnterGate : MonoBehaviour
 {
     public GameObject confirmationUI;
+    public int gateNumber; //문 고유 번호
+    public int sceneToLoad; //각 문마다 로드 할 씬 번호
 
     private void Awake()
     {
@@ -16,6 +18,7 @@ public class EnterGate : MonoBehaviour
         if (collision != null && collision.CompareTag("Player"))
         {
             confirmationUI.SetActive(true);
+            Debug.Log(gateNumber);
         }
     }
 
@@ -29,8 +32,8 @@ public class EnterGate : MonoBehaviour
 
     public void OnClickEnter()
     {
-        Debug.Log("입장");
-        SceneManager.LoadScene(2);
+        Debug.Log(gateNumber.ToString());
+        SceneManager.LoadScene(sceneToLoad);
     }
 
     public void OnClickExit()
