@@ -30,7 +30,7 @@ public class EnterGate : MonoBehaviour
     public void OnClickEnter()
     {
         Debug.Log("¿‘¿Â");
-        //SceneManager.LoadScene(""); 
+        SceneManager.LoadScene(2);
     }
 
     public void OnClickExit()
