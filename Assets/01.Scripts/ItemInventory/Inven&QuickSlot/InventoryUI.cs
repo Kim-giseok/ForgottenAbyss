@@ -6,7 +6,8 @@ using UnityEngine.UI;
 
 public class InventoryUI : MonoBehaviour
 {
-    public GameObject inventoryPanel; // 인벤토리 패널
+    [SerializeField] private GameObject inventoryPanel; // 인벤토리 패널
+    [SerializeField] private InventoryController inventoryController;
     public Button closeButton; // 닫기 버튼
     public Transform slotHolder; // 슬롯 부모
     public InventorySlot[] slots; // 슬롯 배열
@@ -42,7 +43,6 @@ public class InventoryUI : MonoBehaviour
     private IEnumerator WaitForInventoryAndUpdate()
     {
         yield return new WaitUntil(() => Inventory.Instance != null && Inventory.Instance.items != null);
-        Debug.Log("[InventoryUI] Inventory 준비 완료, UI 갱신 시작");
         Inventory.Instance.onItemChanged += UpdateUI;
         UpdateUI();
     }
@@ -52,17 +52,13 @@ public class InventoryUI : MonoBehaviour
     {
         if (Inventory.Instance == null)
         {
-            Debug.LogWarning("[InventoryUI] Inventory.Instance가 null이라 UI 갱신 실패");
             return;
         }
-
-        Debug.Log("[InventoryUI] UpdateUI() 호출됨");
 
         for (int i = 0; i < slots.Length; i++)
         {
             if (i < Inventory.Instance.items.Count)
             {
-                Debug.Log($"슬롯 {i}에 아이템 배치: {Inventory.Instance.items[i].itemName}");
                 slots[i].SetItem(Inventory.Instance.items[i]);
             }
             else
@@ -75,7 +71,13 @@ public class InventoryUI : MonoBehaviour
     // 인벤토리 활성화/비활성화
     public void ToggleInventory()
     {
-        inventoryPanel.SetActive(!inventoryPanel.activeSelf);
+        bool isActive = inventoryPanel.activeSelf;
+        inventoryPanel.SetActive(!isActive);
+
+        if (isActive)
+        {
+            inventoryController.InitializeInventory(); // 인벤토리 열릴 때 직접 초기화
+        }
     }
 
     // 인벤토리 닫기
