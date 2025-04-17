@@ -10,7 +10,7 @@ public class Player : MonoBehaviour, IDamagable
     SpriteRenderer spriteRenderer;
        
     PlayerStatus playerstatus;
-    ControllerPlayer controller;
+    public ControllerPlayer controller;
     SkillController skillController;
     
     public bool isDead = false;

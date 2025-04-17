@@ -572,4 +572,12 @@ public class ControllerPlayer : MonoBehaviour
             isGround = Physics2D.OverlapCircle(transform.position, groundCheckRadius, groundLayer);
         }
     }
+
+    public void OnAttackAnimationEnd()
+    {
+        if (inputVec.x == 0)
+            ChangeState(PlayerState.Idle);
+        else
+            ChangeState(PlayerState.Run);
+    }
 }
