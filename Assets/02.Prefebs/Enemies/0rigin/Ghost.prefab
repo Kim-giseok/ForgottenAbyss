@@ -185,9 +185,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68e4352b8584b49edb0f5da93bdaf397, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animationValue: 1
   health: 30
   attack: 10
-  name: 0
+  name: 3
 --- !u!114 &-1265359502176364130
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -203,7 +204,10 @@ MonoBehaviour:
   status: 0
   detectedDistance: 6
   stoppingDistance: 4
+  boundaryDistance: 0
+  defenseDistance: 0
   tracingSpeed: 1
+  combatDuration: 0
 --- !u!114 &2040290271737414899
 MonoBehaviour:
   m_ObjectHideFlags: 0
