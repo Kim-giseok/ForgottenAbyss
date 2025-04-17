@@ -13,7 +13,7 @@ public class Enemies
         {
           Enemy.Agis,
           new SelectorNode(
-              new SequenceNode(new HitNode(), new DieNode()),
+              new SequenceNode(new HitNode(), new SetZeroPosNode(), new DieNode()),
               new SequenceNode(new MoveNode(3), new MoveNode(-3))
               )
         },
