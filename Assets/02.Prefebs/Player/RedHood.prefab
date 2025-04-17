@@ -49,10 +49,11 @@ GameObject:
   - component: {fileID: 7695836731054088730}
   - component: {fileID: 5384723960413066390}
   - component: {fileID: 1976620441361161620}
-  - component: {fileID: 447847266130749123}
   - component: {fileID: 4415495858370617319}
   - component: {fileID: 8607925810357332777}
   - component: {fileID: 4046284310909441350}
+  - component: {fileID: 4236096479325815789}
+  - component: {fileID: 307188709645930398}
   m_Layer: 8
   m_Name: RedHood
   m_TagString: Player
@@ -137,7 +138,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 377493787, guid: c6545fd68853535408c8a21d0885a162, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 1
@@ -270,11 +271,17 @@ MonoBehaviour:
   isDashing: 0
   isAttacking: 0
   isInvincible: 0
+  isAlive: 1
   rigid: {fileID: 0}
   animator: {fileID: 0}
   playerCollider: {fileID: 0}
   spriteRenderer: {fileID: 0}
   interaction: {fileID: 0}
+  currentState: 0
+  groundCheckRadius: 0.2
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 1152
 --- !u!114 &7695836731054088730
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -287,6 +294,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d28328199117d8040a76155a4a19d81a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animator: {fileID: 0}
+  isDead: 0
 --- !u!114 &5384723960413066390
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -315,26 +324,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a426047b96f0a0247a130cbf4a69fe2e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &447847266130749123
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3741893359042678545}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 39a5f5a0c2370ae4d8d16db0febae4fb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  comboAttack: {fileID: 4415495858370617319}
-  rangedAttack: {fileID: 8607925810357332777}
-  combatId: 0
-  skill01Id: 0
-  skill02Id: 0
-  memorySkillId: 0
-  skillSpawnPoint: {fileID: 3592222812765152639}
-  skillSpawnPoint2: {fileID: 6279390733494535156}
 --- !u!114 &4415495858370617319
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -375,3 +364,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79fba0894687e9547b2b9859db700eaf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &4236096479325815789
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3741893359042678545}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e87230b470492f419b10669fe89756c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &307188709645930398
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3741893359042678545}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39a5f5a0c2370ae4d8d16db0febae4fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  comboAttack: {fileID: 4415495858370617319}
+  rangedAttack: {fileID: 8607925810357332777}
+  combatId: 0
+  skill01Id: 0
+  skill02Id: 0
+  memorySkillId: 0
+  skillSpawnPoint: {fileID: 3592222812765152639}
+  skillSpawnPoint2: {fileID: 6279390733494535156}
+  isBowAttack: 0

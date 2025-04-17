@@ -1832,7 +1832,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.000046528097}
+  m_AnchoredPosition: {x: 0, y: -0.000033628792}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &440183555
@@ -3069,7 +3069,7 @@ GameObject:
   m_Component:
   - component: {fileID: 771748327}
   - component: {fileID: 771748326}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Grid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4135,7 +4135,7 @@ GameObject:
   - component: {fileID: 1319066919}
   - component: {fileID: 1319066918}
   - component: {fileID: 1319066920}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Tilemap
   m_TagString: Ground
   m_Icon: {fileID: 0}
@@ -9385,7 +9385,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 537982152}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.9999462
+  m_Size: 0.99988043
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -9880,7 +9880,7 @@ MonoBehaviour:
   skill02Id: 0
   memorySkillId: 0
   skillSpawnPoint: {fileID: 3592222812830391567}
-  skillSpawnPoint2: {fileID: 0}
+  skillSpawnPoint2: {fileID: 3592222812830391567}
   isBowAttack: 0
 --- !u!70 &901143559568299494
 CapsuleCollider2D:
@@ -10048,12 +10048,17 @@ MonoBehaviour:
   isDashing: 0
   isAttacking: 0
   isInvincible: 0
+  isAlive: 1
   rigid: {fileID: 0}
   animator: {fileID: 0}
   playerCollider: {fileID: 0}
   spriteRenderer: {fileID: 0}
   interaction: {fileID: 0}
   currentState: 0
+  groundCheckRadius: 0.2
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 1152
 --- !u!114 &3512040177652362637
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10369,7 +10374,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d28328199117d8040a76155a4a19d81a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  controller: {fileID: 0}
+  animator: {fileID: 0}
+  isDead: 0
 --- !u!114 &8607925810560979801
 MonoBehaviour:
   m_ObjectHideFlags: 0
