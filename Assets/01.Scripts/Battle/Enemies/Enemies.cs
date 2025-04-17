@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class Enemies
 {
+    // notice: enum을 추가하면 한칸씩 밀리는 현상 발생
     public enum Enemy { Test, Agis, Archer, Ghost, GhostChild, Gunner, NightBone, SwordShadow, Wizard }
     public static Node Get(Enemy enemy) => behaviour[enemy];
 
