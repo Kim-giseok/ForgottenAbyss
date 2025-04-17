@@ -59,6 +59,20 @@ public class SummoningNode : Node
     }
 }
 
+public class SetZeroPosNode : Node
+{
+    public override void Start()
+    {
+        controller.transform.position = Vector2.zero;
+        SetStatus(Status.Success);
+    }
+}
+
+public class TeleportNode : Node
+{
+    
+}
+
 public class MoveNode : Node
 {
     private readonly float velocityX;
@@ -82,5 +96,10 @@ public class MoveNode : Node
         }
         
         controller.rigidbody.velocity = new Vector2(velocityX, controller.rigidbody.velocity.y);
+    }
+
+    public override void End()
+    {
+        controller.rigidbody.velocity = Vector2.zero;
     }
 }

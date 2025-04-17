@@ -1,19 +1,11 @@
 using UnityEngine;
-using UnityEngine.Serialization;
-using UnityEngine.Tilemaps;
 
-public class TempTester: MonoBehaviour
+public class PlatformChecker: MonoBehaviour
 {
-   private BoxCollider2D collider;
-   // 그냥 싱글톤으로 해도 될 듯
+   // 그냥 싱글톤으로 해도 될 듯 - 만약 surface가 많아지면 어떻게 관리할 것인지 생각 필요
    public NavSurface NavSurface;
-   private void Awake()
-   {
-      collider = GetComponent<BoxCollider2D>();
-   }
 
-
-   private void Update()
+   private void FixedUpdate()
    {
       RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 1f, LayerMask.GetMask("Ground"));
       if (!hit.collider) return;
