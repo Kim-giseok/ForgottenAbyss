@@ -24,6 +24,7 @@ public class SkillUI : MonoBehaviour
     private float[] skillTimes = { 12, 9, 9, 9 };
     private float[] getSkillTimes = { 0,0,0,0 };
 
+    private Dictionary<int, float[]> weaponCooldownTable = new Dictionary<int, float[]>();
     private Coroutine[] skillCoroutines; // 각 스킬에 대한 코루틴을 저장
 
     void Start()
@@ -48,7 +49,7 @@ public class SkillUI : MonoBehaviour
         {
             hideSkillButtons[skillNum].SetActive(true); // 버튼 할성화
             getSkillTimes[skillNum] = coolTime; // 쿨타임 설정 (외부에서 받은 값)
-            skillTimes[skillNum] = coolTime;    // 총 쿨타임 기록도 갱신
+            //skillTimes[skillNum] = coolTime;    // 총 쿨타임 기록도 갱신
             isHideSkills[skillNum] = true; // 스킬이 활성화됨
 
             // 해당 설정에 대한 코루틴 실행
@@ -112,5 +113,50 @@ public class SkillUI : MonoBehaviour
         int idx = (int)slot;
         if (idx >= 0 && idx < skillTimes.Length)
             skillTimes[idx] = cooldown;
+    }
+
+    public void SaveCurrentCooldown(int weaponId)
+    {
+        float[] cooldownEndTimes = new float[getSkillTimes.Length];
+        for (int i = 0; i < getSkillTimes.Length; i++)
+        {
+            cooldownEndTimes[i] = Time.time + getSkillTimes[i]; // 종료 예정 시각 저장
+        }
+        weaponCooldownTable[weaponId] = cooldownEndTimes;
+    }
+
+    public void LoadCooldownFromWeapon(int weaponId)
+    {
+        ResetAllCooldowns();
+
+        if (weaponCooldownTable.TryGetValue(weaponId, out float[] savedEndTimes))
+        {
+            for (int i = 0; i < getSkillTimes.Length; i++)
+            {
+                float remainingTime = savedEndTimes[i] - Time.time;
+                if (remainingTime > 0f)
+                {
+                    HideSkillSetting(i, remainingTime);
+                }
+            }
+        }
+    }
+
+    public void ResetAllCooldowns()
+    {
+        for (int i = 0; i < isHideSkills.Length; i++)
+        {
+            if (skillCoroutines[i] != null)
+            {
+                StopCoroutine(skillCoroutines[i]);
+                skillCoroutines[i] = null;
+            }
+
+            getSkillTimes[i] = 0f;
+            isHideSkills[i] = false;
+            hideSkillButtons[i].SetActive(false);
+            hideSkillImages[i].fillAmount = 0f;
+            hideSkillTimeTexts[i].text = "";
+        }
     }
 }

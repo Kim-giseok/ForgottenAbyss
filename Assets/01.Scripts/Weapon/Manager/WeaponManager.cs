@@ -16,6 +16,7 @@ public class WeaponManager : Singleton<WeaponManager>
     private MemoryPieceSO currentMemorySO;
 
     private SkillUI skillUI;
+    private int previousWeaponId = -1;
 
     private void Awake()
     {
@@ -90,6 +91,12 @@ public class WeaponManager : Singleton<WeaponManager>
             return;
         }
 
+        if (currentWeaponSO != null && skillUI != null)
+        {
+            previousWeaponId = currentWeaponSO.currentWeaponId;
+            skillUI.SaveCurrentCooldown(previousWeaponId);
+        }
+
         currentWeaponSO = selectedWeapon;
 
    
@@ -116,6 +123,8 @@ public class WeaponManager : Singleton<WeaponManager>
 
         skillUI.SetSkillCooldownTime(SkillSlotType.Skill01, skill01Data.CoolTime);
         skillUI.SetSkillCooldownTime(SkillSlotType.Skill02, skill02Data.CoolTime);
+
+        skillUI.LoadCooldownFromWeapon(selectedWeapon.currentWeaponId);
 
         if (currentWeaponData.Type == WeaponType.Sword && selectedWeapon.comboAttackData != null)
         {
