@@ -19,6 +19,15 @@ public class PlayerStatus : CharacterStatus
         InitializeExpRequired();
     }
 
+    private void Start()
+    {
+        var binder = FindObjectOfType<PlayerUIBinder>();
+        if (binder != null)
+        {
+            binder.BindStatus(this);
+        }
+    }
+
     private void Update()
     {
         TestExp();

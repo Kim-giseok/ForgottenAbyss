@@ -34,6 +34,13 @@ public class DashState : PlayerStateMachine
     {
         player.animator.SetBool("IsDash", false);
         SkillController.Instance.ResetAttack();
+
+        player.StartCoroutine(DelayedInvincibilityOff(0.25f)); //대쉬 무적판정 조금 더 길게
+    }
+
+    private IEnumerator DelayedInvincibilityOff(float delay)
+    {
+        yield return new WaitForSeconds(delay);
         player.SetInvincibility(false);
     }
 }

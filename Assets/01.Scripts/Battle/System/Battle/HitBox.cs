@@ -42,11 +42,14 @@ public class HitBox : MonoBehaviour // 1회 공격 당의 캐싱이 필요할 �
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (!other.TryGetComponent(out IDamagable damagable) || ownerLayer == other.gameObject.layer) return;
-        
+
         // notice: UI에게 notify하는 방식으로 관리하기
         // Vector3 textPosition = transform.position + Vector3.up * 1f;
         // DamageTextManager.Instance.ShowDamage(textPosition, (int)damage);
-        
-        damagable.GetDamage(damage);
+
+        ControllerPlayer player = other.gameObject.GetComponent<ControllerPlayer>();
+
+        if(player != null && !player.isInvincible)
+            damagable.GetDamage(damage);
     }
 }
