@@ -12,27 +12,28 @@ public class MiniMapManager : MonoBehaviour
 
     public Transform playerTarget;
 
+
     void Start()
     {
-        // 미니맵 카메라 생성
+        // 카메라 생성
         Camera miniCam = Instantiate(miniMapCameraPrefab);
+        DontDestroyOnLoad(miniCam.gameObject);
         miniCam.targetTexture = miniMapTexture;
 
-        // 미니맵 UI 생성
-        GameObject ui = Instantiate(miniMapUIPrefab);
+        // UI생성
+        GameObject miniMapUI = Instantiate(miniMapUIPrefab);
+        DontDestroyOnLoad(miniMapUI);
+        RawImage rawImage = miniMapUI.GetComponentInChildren<RawImage>();
+        if (rawImage != null )
+            rawImage.texture = miniMapTexture;
 
-        // UI 로우이미지에 텍스처 연결
-        RawImage raw = ui.GetComponentInChildren<RawImage>();
-        if (raw != null)
+        // 타겟 연결
+        GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
+        if (playerObj != null)
         {
-            raw.texture = miniMapTexture;
-        }
-
-        // 카메라가 타겟 따라다니도록 설정
-        MiniMapFollow follow = miniCam.GetComponent<MiniMapFollow>();
-        if (follow != null)
-        {
-            follow.target = playerTarget;
+            MiniMapFollow miniMapFollow = miniCam.GetComponent<MiniMapFollow>();
+            if (miniMapFollow != null)
+                miniMapFollow.target = playerObj.transform;
         }
     }
 }
