@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System;
 
 public enum SkillSlotType
 {
@@ -23,6 +24,9 @@ public class SkillUI : MonoBehaviour
     private bool[] isHideSkills = { false, false, false, false};
     private float[] skillTimes = { 12, 9, 9, 9 };
     private float[] getSkillTimes = { 0,0,0,0 };
+    
+    public event Action OnInitialized;
+    public bool IsInitialized = false;
 
     private Dictionary<int, float[]> weaponCooldownTable = new Dictionary<int, float[]>();
     private Coroutine[] skillCoroutines; // 각 스킬에 대한 코루틴을 저장
@@ -35,6 +39,9 @@ public class SkillUI : MonoBehaviour
             hideSkillTimeTexts[i] = textPros[i].GetComponent<TextMeshProUGUI>();
             hideSkillButtons[i].SetActive(false); // 버튼 비활성화
         }
+
+        IsInitialized = true;
+        OnInitialized?.Invoke();
     }
 
     void Update()
@@ -144,6 +151,7 @@ public class SkillUI : MonoBehaviour
 
     public void ResetAllCooldowns()
     {
+        Debug.Log($"[SkillUI] ResetAllCooldowns - hideSkillButtons: {hideSkillButtons?.Length}");
         for (int i = 0; i < isHideSkills.Length; i++)
         {
             if (skillCoroutines[i] != null)
@@ -154,9 +162,20 @@ public class SkillUI : MonoBehaviour
 
             getSkillTimes[i] = 0f;
             isHideSkills[i] = false;
-            hideSkillButtons[i].SetActive(false);
-            hideSkillImages[i].fillAmount = 0f;
-            hideSkillTimeTexts[i].text = "";
+            if (hideSkillButtons[i] != null)
+                hideSkillButtons[i].SetActive(false);
+            else
+                Debug.LogWarning($"[SkillUI] hideSkillButtons[{i}]가 null입니다.");
+
+            if (hideSkillImages[i] != null)
+                hideSkillImages[i].fillAmount = 0f;
+            else
+                Debug.LogWarning($"[SkillUI] hideSkillImages[{i}]가 null입니다.");
+
+            if (hideSkillTimeTexts[i] != null)
+                hideSkillTimeTexts[i].text = "";
+            else
+                Debug.LogWarning($"[SkillUI] hideSkillTimeTexts[{i}]가 null입니다.");
         }
     }
 }

@@ -34,8 +34,10 @@ public class WeaponManager : Singleton<WeaponManager>
             swapper = FindObjectOfType<WeaponSwapper>();
     }
 
-    private void Start()
+    IEnumerator Start()
     {
+        yield return new WaitUntil(() => skillUI.IsInitialized);
+
         EquipDefaultWeapons();
     }
 
