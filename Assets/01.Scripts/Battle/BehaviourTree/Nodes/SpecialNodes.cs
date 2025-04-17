@@ -53,6 +53,9 @@ public class DieNode : Node
     public override void Start()
     {
         if (controller is not EnemyController eController || eController.health > 0) { SetStatus(Status.Fail); return;}
+        
+        controller.collider.enabled = false; // 죽은 이후로는 피격 불가능하도록 처리
+        controller.rigidbody.gravityScale = 0; // 바닥 아래로 떨어지는 현상 방지
         eController.animationHandler.Play("Die");
     }
 

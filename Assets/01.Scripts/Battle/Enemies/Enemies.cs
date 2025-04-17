@@ -5,15 +5,19 @@ using UnityEngine;
 
 public class Enemies
 {
-    public enum Enemy { Agis, Archer, Ghost, GhostChild, Gunner, NightBone, SwordShadow, Wizard }
+    public enum Enemy { Test, Agis, Archer, Ghost, GhostChild, Gunner, NightBone, SwordShadow, Wizard }
     public static Node Get(Enemy enemy) => behaviour[enemy];
 
     private static Dictionary<Enemy, Node> behaviour = new()
     {
         {
+            Enemy.Test,
+            new SelectorNode(new IdleNode(1f))
+        },
+        {
           Enemy.Agis,
           new SelectorNode(
-              new SequenceNode(new HitNode(), new DieNode()),
+              new SequenceNode(new HitNode(), new SetZeroPosNode(), new DieNode()),
               new SequenceNode(new MoveNode(3), new MoveNode(-3))
               )
         },

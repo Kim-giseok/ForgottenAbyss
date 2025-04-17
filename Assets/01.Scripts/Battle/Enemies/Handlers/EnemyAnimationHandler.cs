@@ -38,6 +38,7 @@ public class EnemyAnimationHandler: MonoBehaviour
         {
             currStatus = Status.Start;
             
+            if (controller.machine.currNode == null) return;
             controller.machine.currNode.SetController(controller);
             controller.machine.currNode.OnAnimated(Node.AnimationStatus.Start, stateInfo);
         }
@@ -45,7 +46,8 @@ public class EnemyAnimationHandler: MonoBehaviour
         if (progress > 0.95f && currStatus != Status.End)
         {
             currStatus = Status.End;
-            
+
+            if (controller.machine.currNode == null) return;
             controller.machine.currNode.SetController(controller);
             controller.machine.currNode.OnAnimated(Node.AnimationStatus.End, stateInfo);
         }   

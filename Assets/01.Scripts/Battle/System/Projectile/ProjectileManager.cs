@@ -2,11 +2,13 @@ using System;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 // direction to degree 같은 것이 필요 할 듯
 // 빌더 패턴으로 관리해보면 어떨까? 아무튼 조합의 형태를 띄어야 함
-public class ProjectileManager : Singleton<ProjectileManager> // 단위 미사일
+public class ProjectileManager : MonoBehaviour // 단위 미사일
 {
+    public static ProjectileManager Instance { get; private set; }
     public enum ProjectileType { Linear, Guided, Reflection, Fuse, Parabola }
     
     public GameObject meleeProjectile;
@@ -16,6 +18,22 @@ public class ProjectileManager : Singleton<ProjectileManager> // 단위 미사�
     
     public List<(int index, GameObject instance)> currProjectiles = new(); // notice : HitBox를 가지고 있는 편이 비용 감소
     public List<(GameObject owner, HitBox hitBox)> currMeleeProjectiles = new(); // 만약 여기서 등록하는 경우, 몬스터가 죽으면 함께 제거 필요
+
+    private void Awake()
+    {
+        if (Instance) return;
+        
+        Instance = this;
+        DontDestroyOnLoad(this);
+    }
+
+    private void Start()
+    {
+        SceneManager.activeSceneChanged += (Scene oldScene, Scene newScene) =>
+        {
+            currMeleeProjectiles.Clear();
+        };
+    }
     
     public static float GetDegreeByDirection(Vector2 direction)
     {
