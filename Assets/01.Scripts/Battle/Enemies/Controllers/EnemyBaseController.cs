@@ -7,9 +7,12 @@ public class EnemyBaseController: MonoBehaviour
     public Collider2D collider { get; protected set; }
     public Rigidbody2D rigidbody { get; protected set; }
     public SpriteRenderer spriteRenderer { get; protected set; }
+    public Material material { get; protected set; }
     public EnemyAnimationHandler animationHandler { get; protected set; }
     public EnemyCombatHandler combatHandler { get; protected set; }
     public EnemyDetectHandler detectHandler { get; protected set; }
+    
+    public float animationValue = 1;
 
     protected virtual void Awake()
     {
@@ -18,6 +21,7 @@ public class EnemyBaseController: MonoBehaviour
         collider = GetComponent<Collider2D>();
         rigidbody = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>(); 
+        material = spriteRenderer.material;
         animationHandler = GetComponent<EnemyAnimationHandler>();
 
         combatHandler = new EnemyCombatHandler();
@@ -29,6 +33,7 @@ public class EnemyBaseController: MonoBehaviour
     
     protected void FixedUpdate()
     {
+        material.SetFloat("_YValue", animationValue);
         machine.Run();
     }
 

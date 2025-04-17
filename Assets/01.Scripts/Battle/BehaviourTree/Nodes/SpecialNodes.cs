@@ -17,6 +17,7 @@ public class GuardNode : Node
 }
 
 // knockBack이 들어갈 수도 있도록
+// 피격 애니메이션 자체는 발생하더라도 바로 액션 끝나도록
 public class HitNode : Node
 {
     private bool isNockBack = false; // 내부 변수 불가능
@@ -27,7 +28,7 @@ public class HitNode : Node
         if (controller is not EnemyController eController) return;
         if (!eController.statusHandler.isHit) { SetStatus(Status.Fail); return; }
         if(eController.health <= 0) { SetStatus(Status.Success); return; }
-        
+     
         // 타격 받은 쪽으로 회전
         // Vector2 direction = (controller.agent.player.transform.position - controller.transform.position).normalized;
         // controller.Flip(direction.x > 0);
@@ -35,6 +36,9 @@ public class HitNode : Node
         if(eController.statusHandler.isIgnoreHitAction) eController.spriteRenderer.color = Color.red;
         eController.animationHandler.Play("Hit");
         eController.statusHandler.isHit = false;
+
+        // 애니메이션이 바로 바뀌어 꺼지는 현상과 충돌
+        if (eController.statusHandler.isIgnoreHitAction && currTime >= 0.2f) { SetStatus(Status.Fail); }
     }
 
     public override void OnAnimated(AnimationStatus status, AnimatorStateInfo animInfo)

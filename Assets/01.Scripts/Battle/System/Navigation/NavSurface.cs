@@ -54,6 +54,7 @@ public class NavSurface : MonoBehaviour
             }
         }
         
+        // upperCells 중에서도 가장 위에 있는 친구들을 먼저 남긴 후, 거기서 왼쪽부터 검사해서 끊기지 않으면 플랫폼으로 인식하도록 처리
         foreach (var curr in upperCells) {}
     }
 

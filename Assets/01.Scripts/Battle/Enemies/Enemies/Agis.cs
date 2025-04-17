@@ -36,7 +36,7 @@ public class SummoningAllNode : Node
 {
     public override void Start()
     {
-        ProjectileManager.Instance.CreateSummonProjectile(controller.transform, SummonSkillManager.Skill.BossSkill, false);
+        ProjectileManager.Instance.CreateSummon(controller.transform, SummonSkillManager.Skill.BossSkill, false);
     }
 
     public override void Update()
@@ -49,12 +49,38 @@ public class SummoningNode : Node
 {
     public override void Start()
     {
-        ProjectileManager.Instance.CreateSummonProjectile(controller.transform, SummonSkillManager.Skill.BossSkill2, false);
-        ProjectileManager.Instance.CreateSummonProjectile(controller.transform, SummonSkillManager.Skill.BossSkill3, false);
+        ProjectileManager.Instance.CreateSummon(controller.transform, SummonSkillManager.Skill.BossSkill2, false);
+        // ProjectileManager.Instance.CreateSummon(controller.transform, SummonSkillManager.Skill.BossSkill3, false);
     }
 
     public override void Update()
     {
         if(currTime >= 1f) { SetStatus(Status.Success); return; }
+    }
+}
+
+public class MoveNode : Node
+{
+    private readonly float velocityX;
+    public MoveNode(float velocityX) => this.velocityX = velocityX;
+
+    public override void Start()
+    {
+        controller.animationHandler.Play("Run");
+    }
+    
+    public override void Update()
+    {
+        float currX = controller.transform.position.x;
+        
+        if(velocityX == 3 && currX > 8.0f) { SetStatus(Status.Success); return; }
+        if(velocityX == -3 && currX < -8.0f) { SetStatus(Status.Success); return; }
+        
+        if (!Mathf.Approximately(Mathf.Floor(currTime / 3), Mathf.Floor((currTime - Time.deltaTime) / 3)))
+        {
+            ProjectileManager.Instance.CreateSummon(controller.transform, SummonSkillManager.Skill.BossSkill, false);
+        }
+        
+        controller.rigidbody.velocity = new Vector2(velocityX, controller.rigidbody.velocity.y);
     }
 }

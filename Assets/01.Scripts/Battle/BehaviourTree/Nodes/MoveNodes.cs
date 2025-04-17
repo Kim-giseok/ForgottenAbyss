@@ -13,7 +13,6 @@ public class IdleNode : Node
     public override void Start()
     {
         controller.rigidbody.velocity = new Vector2(0, controller.rigidbody.velocity.y);
-        
         controller.animationHandler.Play("Idle");
     }
 
