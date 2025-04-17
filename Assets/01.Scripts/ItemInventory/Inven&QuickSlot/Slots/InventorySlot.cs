@@ -36,7 +36,6 @@ public class InventorySlot : SlotBase
 
     public override void ClearSlot()
     {
-        Debug.Log($"[ClearSlot] {gameObject.name} ½½·Ô ºñ¿ò");
         currentItem = null;
         iconImage.sprite = null;
         iconImage.enabled = false;

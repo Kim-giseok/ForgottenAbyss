@@ -4918,7 +4918,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Texture: {fileID: 0}
+  m_Texture: {fileID: 8400000, guid: 7b7a03967657deb4aacd77168324da29, type: 2}
   m_UVRect:
     serializedVersion: 2
     x: 0
@@ -5194,6 +5194,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7137036363239662683}
+  - component: {fileID: 5163724709922028527}
   m_Layer: 5
   m_Name: MiniMap
   m_TagString: Untagged
@@ -5221,6 +5222,20 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 400, y: 300}
   m_Pivot: {x: 1, y: 1}
+--- !u!114 &5163724709922028527
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5416752551290622349}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f1e0c2e9d21403d4eac789dfb23877c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  miniMapCamera: {fileID: 5997743047240752149, guid: eeaa4b1cfa17d484689785901e63c486, type: 3}
+  miniMapTexture: {fileID: 8400000, guid: 7b7a03967657deb4aacd77168324da29, type: 2}
 --- !u!1 &5452130423997939532
 GameObject:
   m_ObjectHideFlags: 0

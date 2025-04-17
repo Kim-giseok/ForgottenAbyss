@@ -9,8 +9,7 @@ public class InventoryController : MonoBehaviour
 
     private void Awake()
     {
-        inventorySlots = GetComponentsInChildren<InventorySlot>(true).ToList();
-        Debug.Log($"[InventoryController] 자동 수집된 슬롯 수: {inventorySlots.Count}");
+        inventorySlots = GetComponentsInChildren<InventorySlot>(true).ToList(); // 인벤토리 슬롯 자동할당
     }
 
     private void Start()
@@ -20,10 +19,8 @@ public class InventoryController : MonoBehaviour
 
     public void InitializeInventory()
     {
-        Debug.Log("[InventoryController] InitializeInventory 호출됨");
         foreach (var slot in inventorySlots)
         {
-            Debug.Log($"슬롯 초기화: {slot.name}");
             slot.ClearSlot(); // 데이터 & UI 초기화
         }
     }
