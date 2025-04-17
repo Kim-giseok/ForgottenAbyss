@@ -50,14 +50,19 @@ public class PlayerProjectile : MonoBehaviour
                 );
 
                 float damage = data.CalculateDamage();
-                damageable.GetDamage(damage);
 
-                Vector3 textPosition = other.transform.position + Vector3.up * 1f;
-                DamageTextManager.Instance.ShowDamage(textPosition, (int)damage);
+                if (other.GetComponent<EnemyController>() != null) {
+                    
+                    damageable.GetDamage(damage);
 
-                if (other.CompareTag("Enemy"))
+                    Vector3 textPosition = other.transform.position + Vector3.up * 1f;
+                    DamageTextManager.Instance.ShowDamage(textPosition, (int)damage);
+                    //CameraShake.Instance.Shake(0.1f, 0.2f);
+                }
+
+                if(other.GetComponent<LaberDamagerble>() != null)
                 {
-                    CameraShake.Instance.Shake(0.1f, 0.2f);
+                    damageable.GetDamage(damage);
                 }
             }
             ReturnToPool();

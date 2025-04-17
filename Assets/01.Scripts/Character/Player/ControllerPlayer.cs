@@ -45,7 +45,7 @@ public class ControllerPlayer : MonoBehaviour
     public PlayerState currentState;
     public PlayerState previousState;
 
-    private bool isFacingRight = true;
+    public bool isFacingRight = true;
 
     [SerializeField] private float groundCheckRadius = 0.2f;
     public LayerMask groundLayer;

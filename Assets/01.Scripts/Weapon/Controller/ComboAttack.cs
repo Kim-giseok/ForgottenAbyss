@@ -1,4 +1,6 @@
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class ComboAttack : MonoBehaviour
@@ -230,71 +232,81 @@ public class ComboAttack : MonoBehaviour
 
         float multiplier = comboData.comboSteps[attackIndex - 1].damageMultiplier;
 
-        GameObject target = FindTargetInFront();
-        if (target == null) Debug.Log("타겟이 널입니다.");
+        List<GameObject> targets = FindTargetInFront();
 
-        var attackData = BasicAttackData.Create(
-            caster: gameObject,
-            target: target,
-            comboMultiplier: multiplier
-        );
-
-        float damage = attackData.CalculateDamage();
-        
-        if (target != null)
+        if (targets == null || targets.Count == 0)
         {
-            var enemy = target.GetComponent<EnemyController>();
+            Debug.Log("타겟이 없습니다.");
+            return;
+        }
 
-            if (enemy != null)
+        foreach (var target in targets)
+        {
+            var attackData = BasicAttackData.Create(
+                caster: gameObject,
+                target: target,
+                comboMultiplier: multiplier
+            );
+
+            float damage = attackData.CalculateDamage();
+
+            if (target != null)
             {
-                enemy.GetDamage(damage);
+                var enemy = target.GetComponent<EnemyController>();
+                if (enemy != null)
+                {
+                    enemy.GetDamage(damage);
 
-                Vector3 textPosition = enemy.transform.position + Vector3.up * 1f;
-                DamageTextManager.Instance.ShowDamage(textPosition, (int)damage);
+                    Vector3 textPosition = enemy.transform.position + Vector3.up * 1f;
+                    DamageTextManager.Instance.ShowDamage(textPosition, (int)damage);
 
-                //CameraShake.Instance.Shake(0.1f, 0.2f);
+                    Vector2 attackerPos = (Vector2)transform.position + Vector2.up * 0.5f;
+                    KnockbackUtil.ApplyKnockback(target, attackerPos, 5f);
+                }
 
-                Vector2 attackerPos = (Vector2)transform.position + Vector2.up * 0.5f;
-                KnockbackUtil.ApplyKnockback(target, attackerPos, 5f);
-            }
-
-            var laber = target.GetComponentInChildren<LaberDamagerble>();
-
-            if (laber != null)
-            {
-                Debug.Log("레버 타격!");
-                laber.GetDamage(damage);
+                var laber = target.GetComponentInChildren<LaberDamagerble>();
+                if (laber != null)
+                {
+                    Debug.Log("레버 타격!");
+                    laber.GetDamage(damage);
+                }
             }
         }
     }
 
-    private GameObject FindTargetInFront()
+    private List<GameObject> FindTargetInFront()
     {
         var step = comboData.comboSteps[attackIndex-1];
 
         float radius = step.radius;
         float offset = step.offset;
         
-        Vector2 forward = (transform.localScale.x > 0) ? Vector2.right : Vector2.left;
+        Vector2 forward = GameManager.Instance.player.controller.isFacingRight ? Vector2.right : Vector2.left;
         Vector2 origin = (Vector2)transform.position + Vector2.up * 0.5f + forward * offset; ;
 
         Collider2D[] hits = Physics2D.OverlapCircleAll(origin, radius, LayerMask.GetMask("Enemy"));
 
-        GameObject closest = null;
-        float minDistance = float.MaxValue;
-
-        foreach (var hit in hits)
+        if (attackIndex <= 3)
         {
-            float dist = Vector2.Distance(origin, hit.ClosestPoint(origin));
-            if (dist < minDistance)
+            GameObject closest = null;
+            float minDistance = float.MaxValue;
+
+            foreach (var hit in hits)
             {
-                minDistance = dist;
-                closest = hit.gameObject;
+                float dist = Vector2.Distance(origin, hit.ClosestPoint(origin));
+                if (dist < minDistance)
+                {
+                    minDistance = dist;
+                    closest = hit.gameObject;
+                }
             }
+
+            return closest != null ? new List<GameObject> { closest } : new List<GameObject>();
         }
-
-        DebugDrawUtil.DrawCircle(origin, radius, Color.yellow);
-
-        return closest;
+        else
+        {
+            // 3~6타: 관통 공격
+            return hits.Select(hit => hit.gameObject).ToList();
+        }
     }
 }
