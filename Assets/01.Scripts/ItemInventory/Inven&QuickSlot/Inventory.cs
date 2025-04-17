@@ -5,12 +5,12 @@ using UnityEngine;
 
 public class Inventory : MonoBehaviour
 {
-    public static Inventory Instance; // �̱���
+    public static Inventory Instance; //싱글톤
 
-    public List<Item> items = new List<Item>(); // ������ ���
+    public List<Item> items = new List<Item>(); // 아이템 목록
     public int capacity = 10;
 
-    public event Action onItemChanged; // ���� ���� ���� �� ȣ��
+    public event Action onItemChanged; // 슬롯 개수 변경 시 호출
 
 
     void Awake()
@@ -23,22 +23,19 @@ public class Inventory : MonoBehaviour
         Instance = this;
     }
 
-    // ������ �߰�
+    // 아이템 추가
     public bool AddItem(Item item)
     {
         if (item == null)
         {
-            Debug.LogWarning("AddItem() ����: item�� null�Դϴ�!");
             return false;
         }
 
         if (items.Count >= capacity)
         {
-            Debug.LogWarning("AddItem() ����: �κ��丮 ���� ��!");
             return false;
         }
 
-        Debug.Log("������ �߰���: " + item.name);
         items.Add(item);
         onItemChanged?.Invoke();
         return true;
