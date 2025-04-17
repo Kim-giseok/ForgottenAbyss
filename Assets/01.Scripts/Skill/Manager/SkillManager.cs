@@ -11,6 +11,12 @@ public class SkillManager : Singleton<SkillManager>
 
     public SkillUI skillUI;
 
+    private void Start()
+    {
+        if(skillUI == null)
+            skillUI = FindObjectOfType<SkillUI>();
+    }
+
     // 무기 장착 시 호출
     public void SetCurrentWeaponSkills(int weaponId)
     {
