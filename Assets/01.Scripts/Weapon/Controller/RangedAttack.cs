@@ -90,7 +90,7 @@ public class RangedAttack : MonoBehaviour
 
     public void OnFireProjectile()
     {
-        if (rangedData == null || rangedData.comboSteps.Count < attackIndex) return;
+        if (rangedData == null || rangedData.comboSteps.Count < attackIndex || attackIndex <= 0) return;
 
         RangedComboStep step = rangedData.comboSteps[attackIndex - 1];
 

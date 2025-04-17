@@ -11,6 +11,22 @@ public class SkillManager : Singleton<SkillManager>
 
     public SkillUI skillUI;
 
+    private void Awake()
+    {
+        if (_instance == null)
+        {
+            _instance = this;
+            DontDestroyOnLoad(transform.root.gameObject);
+        }
+        else if (_instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        Init();
+    }
+
     private void Start()
     {
         if(skillUI == null)
@@ -27,12 +43,25 @@ public class SkillManager : Singleton<SkillManager>
             return;
         }
 
-        currentWeaponSkillIds = new List<int>
+        currentWeaponSkillIds = new List<int>();
+
+        switch (weaponData.Type)
         {
-        weaponData.ComboAttack,
-        weaponData.Skill1Id,
-        weaponData.Skill2Id
-        };
+            case WeaponType.Sword:
+                currentWeaponSkillIds.Add(weaponData.ComboAttack);
+                break;
+            case WeaponType.Bow:
+                currentWeaponSkillIds.Add(weaponData.RangedAttack);
+                break;
+            default:
+                Debug.LogWarning($"Unknown weapon type: {weaponData.Type}");
+                return;
+        }
+
+        currentWeaponSkillIds.Add(weaponData.Skill1Id);
+        currentWeaponSkillIds.Add(weaponData.Skill2Id);
+
+        Debug.Log($"[SkillController] 무기 {weaponId} 스킬 세팅 완료 (타입: {weaponData.Type})");
     }
 
     // 기억 스킬 장착 시 호출
