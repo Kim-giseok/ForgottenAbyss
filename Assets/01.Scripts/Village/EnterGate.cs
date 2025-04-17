@@ -24,9 +24,12 @@ public class EnterGate : MonoBehaviour
 
     public void OnTriggerExit2D(Collider2D collision)
     {
+        if (collision == null || confirmationUI == null || !gameObject.activeInHierarchy)
+            return;
         if (collision != null && collision.CompareTag("Player"))
         {
-            confirmationUI.SetActive(false);
+            if (confirmationUI != null)
+                confirmationUI.SetActive(false);
         }
     }
 
