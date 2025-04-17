@@ -99,6 +99,7 @@ public class ProjectileManager : MonoBehaviour // 단위 미사일
         instance.transform.rotation = Quaternion.Euler(0, 0, degree);
 
         instance.transform.position = parent.position;
+        instance.gameObject.layer = parent.gameObject.layer; // 레이어 적용
         
         instance.SetActive(true);
 
