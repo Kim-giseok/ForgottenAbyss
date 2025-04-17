@@ -28,13 +28,17 @@ public class MemorySkillExecutionSO : SkillExecutionSO
             {
                 effect.transform.localScale = Vector3.one * effectRange;
             }
-        }
 
+            GameManager.Instance.player.controller.isInvincible = true;
+
+            float duration = Mathf.Max(0.01f, visualSO.animPlayTime);
+            CoroutinRunner.Instance.StartCoroutine(ResetInvincibilityAfter(duration));
+        }
+        
         // 3. 데미지 계산
         CoroutinRunner.Instance.StartCoroutine(RepeatDamage(hits, castData));
 
         DebugDrawUtil.DrawCircle(center, range, Color.red);
-        Debug.Log($"Memory Skill executed. Hit {hits.Length} enemies.");
     }
 
     private IEnumerator RepeatDamage(Collider2D[] hits, SkillCastData castData)
@@ -49,12 +53,17 @@ public class MemorySkillExecutionSO : SkillExecutionSO
                 if (hit != null)
                 {
                     DealDamageToTarget(hit.gameObject, castData);
-                    CameraShake.Instance.Shake(0.05f, 0.1f);
+                    //CameraShake.Instance.Shake(0.05f, 0.1f);
                     KnockbackUtil.ApplyKnockback(hit.gameObject, castData.caster.transform.position, 1f);
                 }
             }
 
             yield return new WaitForSeconds(delay);
         }
+    }
+    private IEnumerator ResetInvincibilityAfter(float duration)
+    {
+        yield return new WaitForSeconds(duration);
+        GameManager.Instance.player.controller.isInvincible = false;
     }
 }

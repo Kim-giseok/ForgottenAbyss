@@ -107,7 +107,7 @@ public class SkillManager : Singleton<SkillManager>
         var executionSO = DataManager.Instance.GetSkillExecutionSO(skillData.ExecutionSOName);
         if (executionSO != null)
         {
-            executionSO.Execute(spawnPoint.gameObject, null, skillData); // 타겟 지정 필요시 수정
+            executionSO.Execute(GameManager.Instance.player.gameObject, null, skillData);
         }
         else
         {
