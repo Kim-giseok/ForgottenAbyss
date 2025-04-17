@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public class EnemyStatusHandler
 {
     public bool isIgnoreHitAction = false; // 원거리 친구만 false
@@ -10,4 +12,6 @@ public class EnemyStatusHandler
     public int faintedDuration = 3;
 
     public bool isCombat = false; // 한번 전투 중이면 지속 체크
+    
+    public Vector2 castingDirection; // 스킬을 발사하는 방향
 }

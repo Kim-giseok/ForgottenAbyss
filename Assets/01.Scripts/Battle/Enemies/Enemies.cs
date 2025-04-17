@@ -14,7 +14,7 @@ public class Enemies
           Enemy.Agis,
           new SelectorNode(
               new SequenceNode(new HitNode(), new DieNode()),
-              new SequenceNode(new IdleNode(3), new SummoningNode(), new IdleNode(1))
+              new SequenceNode(new MoveNode(3), new MoveNode(-3))
               )
         },
         {
@@ -77,7 +77,7 @@ public class Enemies
         },
         {
             Enemy.Wizard,
-            new SelectorNode()
+            new SelectorNode(new IdleNode(1))
         }
     };
 }

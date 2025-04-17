@@ -1,0 +1,14 @@
+using UnityEngine;
+
+[CreateAssetMenu(menuName = "Item/MemorySkillItem")]
+public class MemorySkillItem: Item
+{
+    public SummonSkillManager.Skill skillName;
+    public bool isRide;
+
+    public override bool Use()
+    {
+        ProjectileManager.Instance.CreateSummon(GameManager.Instance.player.transform, skillName, isRide);
+        return true;
+    }
+}

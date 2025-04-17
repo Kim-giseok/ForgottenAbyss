@@ -9,9 +9,9 @@ public class Item : ScriptableObject
     public Sprite itemIcon;
     // public ItemType itemType;
 
-    public bool Use()
+    public virtual bool Use()
     {
-        return false; //¾ÆÀÌÅÛ »ç¿ë ¼º°ø ¿©ºÎ ¹ÝÈ¯
+        return false; //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¯
     }
 
 }

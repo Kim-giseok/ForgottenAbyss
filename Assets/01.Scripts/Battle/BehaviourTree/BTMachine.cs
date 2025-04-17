@@ -9,7 +9,7 @@ public class BTMachine
     private EnemyBaseController controller;
     public BTContext context = new();
     
-    public Action OnLooped = delegate { };
+    public Action OnLooped;
     
     public bool isPlaying { get; private set; } = false;
     public float currTime = 0;

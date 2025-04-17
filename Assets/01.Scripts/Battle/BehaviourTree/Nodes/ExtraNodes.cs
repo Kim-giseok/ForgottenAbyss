@@ -1,11 +1,14 @@
 using UnityEngine;
 
-public class SetSizeNode: Node
+public class InitNode: Node
 {
-    // public SetSizeNode(Vector2 size) { }
+    private readonly Vector2 size;
+    
+    public InitNode(Vector2 size) => this.size = size;
     public override void Start()
     {
-        controller.transform.localScale = new Vector3(0.4f, 0.4f, 0);
+        controller.transform.localScale = size;
+        controller.spriteRenderer.enabled = true;
         SetStatus(Status.Success);
     }
 }
