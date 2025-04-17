@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,9 +10,25 @@ public enum VOLTYPE
     SFX
 }
 
+[Serializable]
+public class Volume
+{
+    public VOLTYPE type;
+    [Range(0, 1)] public float arrange = 1;
+}
+
+[Serializable]
+public class Volumes
+{
+    public Volume[] list;
+}
+
 public class SoundManager : Singleton<SoundManager>
 {
+    [SerializeField] Volumes baseVolumes;
     public Dictionary<VOLTYPE, float> volumes = new();
+
+    [SerializeField] string volumeSavePath = "volumes.json";
 
     AudioSource bgmSource, sfxSource;
     [SerializeField] AudioClip bgm;
@@ -26,12 +43,25 @@ public class SoundManager : Singleton<SoundManager>
             _instance = this;
         DontDestroyOnLoad(gameObject);
 
+        baseVolumes = DataSave<Volumes>.LoadOrBase(baseVolumes, volumeSavePath);
+
+        foreach (var baseVol in baseVolumes.list)
+            volumes[baseVol.type] = baseVol.arrange;
+
         if (!TryGetComponent<AudioSource>(out bgmSource))
             bgmSource = gameObject.AddComponent<AudioSource>();
         sfxSource = gameObject.AddComponent<AudioSource>();
 
         bgmSource.loop = true;
         PlayBgm();
+    }
+
+    private void OnDestroy()
+    {
+        foreach (var baseVol in baseVolumes.list)
+            baseVol.arrange = volumes[baseVol.type];
+
+        DataSave<Volumes>.SaveData(baseVolumes, volumeSavePath);
     }
 
     public void PlayBgm(AudioClip bgm = null)
