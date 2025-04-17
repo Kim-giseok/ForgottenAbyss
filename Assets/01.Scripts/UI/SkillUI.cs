@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System;
 
 public enum SkillSlotType
 {
@@ -23,7 +24,11 @@ public class SkillUI : MonoBehaviour
     private bool[] isHideSkills = { false, false, false, false};
     private float[] skillTimes = { 12, 9, 9, 9 };
     private float[] getSkillTimes = { 0,0,0,0 };
+    
+    public event Action OnInitialized;
+    public bool IsInitialized = false;
 
+    private Dictionary<int, float[]> weaponCooldownTable = new Dictionary<int, float[]>();
     private Coroutine[] skillCoroutines; // 각 스킬에 대한 코루틴을 저장
 
     void Start()
@@ -34,6 +39,9 @@ public class SkillUI : MonoBehaviour
             hideSkillTimeTexts[i] = textPros[i].GetComponent<TextMeshProUGUI>();
             hideSkillButtons[i].SetActive(false); // 버튼 비활성화
         }
+
+        IsInitialized = true;
+        OnInitialized?.Invoke();
     }
 
     void Update()
@@ -48,7 +56,7 @@ public class SkillUI : MonoBehaviour
         {
             hideSkillButtons[skillNum].SetActive(true); // 버튼 할성화
             getSkillTimes[skillNum] = coolTime; // 쿨타임 설정 (외부에서 받은 값)
-            skillTimes[skillNum] = coolTime;    // 총 쿨타임 기록도 갱신
+            //skillTimes[skillNum] = coolTime;    // 총 쿨타임 기록도 갱신
             isHideSkills[skillNum] = true; // 스킬이 활성화됨
 
             // 해당 설정에 대한 코루틴 실행
@@ -112,5 +120,62 @@ public class SkillUI : MonoBehaviour
         int idx = (int)slot;
         if (idx >= 0 && idx < skillTimes.Length)
             skillTimes[idx] = cooldown;
+    }
+
+    public void SaveCurrentCooldown(int weaponId)
+    {
+        float[] cooldownEndTimes = new float[getSkillTimes.Length];
+        for (int i = 0; i < getSkillTimes.Length; i++)
+        {
+            cooldownEndTimes[i] = Time.time + getSkillTimes[i]; // 종료 예정 시각 저장
+        }
+        weaponCooldownTable[weaponId] = cooldownEndTimes;
+    }
+
+    public void LoadCooldownFromWeapon(int weaponId)
+    {
+        ResetAllCooldowns();
+
+        if (weaponCooldownTable.TryGetValue(weaponId, out float[] savedEndTimes))
+        {
+            for (int i = 0; i < getSkillTimes.Length; i++)
+            {
+                float remainingTime = savedEndTimes[i] - Time.time;
+                if (remainingTime > 0f)
+                {
+                    HideSkillSetting(i, remainingTime);
+                }
+            }
+        }
+    }
+
+    public void ResetAllCooldowns()
+    {
+        Debug.Log($"[SkillUI] ResetAllCooldowns - hideSkillButtons: {hideSkillButtons?.Length}");
+        for (int i = 0; i < isHideSkills.Length; i++)
+        {
+            if (skillCoroutines[i] != null)
+            {
+                StopCoroutine(skillCoroutines[i]);
+                skillCoroutines[i] = null;
+            }
+
+            getSkillTimes[i] = 0f;
+            isHideSkills[i] = false;
+            if (hideSkillButtons[i] != null)
+                hideSkillButtons[i].SetActive(false);
+            else
+                Debug.LogWarning($"[SkillUI] hideSkillButtons[{i}]가 null입니다.");
+
+            if (hideSkillImages[i] != null)
+                hideSkillImages[i].fillAmount = 0f;
+            else
+                Debug.LogWarning($"[SkillUI] hideSkillImages[{i}]가 null입니다.");
+
+            if (hideSkillTimeTexts[i] != null)
+                hideSkillTimeTexts[i].text = "";
+            else
+                Debug.LogWarning($"[SkillUI] hideSkillTimeTexts[{i}]가 null입니다.");
+        }
     }
 }

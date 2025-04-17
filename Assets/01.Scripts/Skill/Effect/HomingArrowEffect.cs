@@ -96,27 +96,33 @@ public class HomingArrowEffect : MonoBehaviour
                 target = FindNearestEnemy(searchRadius);
             }
 
+            // 타겟이 존재하는 경우 → 유도 모드
             if (target != null)
             {
                 float distanceToTarget = Vector3.Distance(transform.position, target.position);
 
                 if (distanceToTarget > maxDistance)
                 {
+                    // 유효 범위 벗어나면 타겟 포기
                     target = null;
-                    continue;
                 }
                 else if (distanceToTarget < hitRange)
                 {
                     OnHitTarget();
                     yield break;
                 }
-
-                Vector3 dirToTarget = (target.position - transform.position).normalized;
-                Quaternion targetRotation = Quaternion.LookRotation(dirToTarget);
-                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
-                transform.position = Vector3.MoveTowards(transform.position, target.position, speed * Time.deltaTime);
+                else
+                {
+                    // 유도 이동
+                    Vector3 dirToTarget = (target.position - transform.position).normalized;
+                    Quaternion targetRotation = Quaternion.LookRotation(dirToTarget);
+                    transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+                    transform.position = Vector3.MoveTowards(transform.position, target.position, speed * Time.deltaTime);
+                }
             }
-            else
+
+            // 타겟이 없으면 직진
+            if (target == null)
             {
                 transform.position += transform.forward * speed * Time.deltaTime;
 
