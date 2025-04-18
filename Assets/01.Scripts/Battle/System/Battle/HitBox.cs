@@ -39,13 +39,22 @@ public class HitBox : MonoBehaviour // 1회 공격 당의 캐싱이 필요할 �
         collider.enabled = false;
     }
 
+    
+    
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (!other.TryGetComponent(out IDamagable damagable) || ownerLayer == other.gameObject.layer) return;
-
         // notice: UI에게 notify하는 방식으로 관리하기
         // Vector3 textPosition = transform.position + Vector3.up * 1f;
         // DamageTextManager.Instance.ShowDamage(textPosition, (int)damage);
+        
+        if (!other.TryGetComponent(out IDamagable damagable) || ownerLayer == other.gameObject.layer) return;
+
+        // notice: 캐스팅 대상이 플레이어인 경우
+        if (other.gameObject.layer == LayerMask.NameToLayer("Enemy"))
+        {
+            damagable.GetDamage(damage);
+            return;
+        }
 
         ControllerPlayer player = other.gameObject.GetComponent<ControllerPlayer>();
 
