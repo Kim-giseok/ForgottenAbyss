@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class WeaponManager : Singleton<WeaponManager>
 {
@@ -18,20 +19,24 @@ public class WeaponManager : Singleton<WeaponManager>
     private SkillUI skillUI;
     private int previousWeaponId = -1;
 
-    private void Awake()
+    private void OnEnable()
     {
-        //우선 임시로 find로 연결해줌
-        if (skillUI == null)
-            skillUI = FindObjectOfType<SkillUI>();
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
 
-        if (skillController == null)
-            skillController = FindObjectOfType<SkillController>();
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
 
-        if (comboAttack == null)
-            comboAttack = FindObjectOfType<ComboAttack>();
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        skillUI = FindObjectOfType<SkillUI>();
+        skillController = FindObjectOfType<SkillController>();
+        comboAttack = FindObjectOfType<ComboAttack>();
+        swapper = FindObjectOfType<WeaponSwapper>();
 
-        if (swapper == null)
-            swapper = FindObjectOfType<WeaponSwapper>();
+        RefreshSkillController();
     }
 
     IEnumerator Start()
@@ -216,6 +221,38 @@ public class WeaponManager : Singleton<WeaponManager>
             Debug.LogWarning($"경로에 무기 SO 없음: {nextWeaponPath}");
 
         swapper.SwapWeapons();
+    }
+
+    public void RefreshSkillController()
+    {
+        if (skillController == null) return;
+
+        if (currentWeaponSO != null)
+        {
+            skillController.skill01Id = currentWeaponSO.skill01SO.skillId;
+            skillController.skill02Id = currentWeaponSO.skill02SO.skillId;
+
+            if (currentWeaponData == null)
+            {
+                currentWeaponData = DataManager.Instance.GetWeaponData(currentWeaponSO.currentWeaponId);
+            }
+
+            if (currentWeaponData.Type == WeaponType.Sword && currentWeaponSO.comboAttackData != null)
+            {
+                skillController.combatId = currentWeaponSO.comboAttackData.id;
+                skillController.comboAttack.SetComboData(currentWeaponSO.comboAttackData);
+            }
+            else if (currentWeaponData.Type == WeaponType.Bow && currentWeaponSO.rangedAttackData != null)
+            {
+                skillController.combatId = currentWeaponSO.rangedAttackData.id;
+                skillController.rangedAttack.SetRangedAttackData(currentWeaponSO.rangedAttackData);
+            }
+        }
+
+        if (currentMemorySO != null)
+        {
+            skillController.memorySkillId = currentMemorySO.memorySkillVisualSO.skillId;
+        }
     }
 
 #if UNITY_EDITOR

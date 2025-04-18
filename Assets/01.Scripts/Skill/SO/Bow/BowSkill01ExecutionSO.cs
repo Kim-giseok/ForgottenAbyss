@@ -15,7 +15,7 @@ public class BowSkill01ExecutionSO : SkillExecutionSO
         SkillCastData castData = PrepareCastData(caster, target, data);
 
         Vector2 direction = caster.transform.right.normalized;
-        Vector2 origin = (Vector2)caster.transform.position + direction * 2f;
+        Vector2 origin = (Vector2)caster.transform.position + Vector2.up * 0.5f + direction * 2f;
 
         SkillController.Instance.isBowAttack = true;
         CoroutinRunner.Instance.RunCoroutine(ExecuteWithEffectDelay(caster, origin, direction, castData));
@@ -32,7 +32,6 @@ public class BowSkill01ExecutionSO : SkillExecutionSO
         float totalRange = range + extraLength; // 전체 박스 길이
 
         Vector2 center = origin + dir * (range / 2f); // origin 기준 앞으로 절반만큼 이동한 지점을 중심으로
-        center += Vector2.up * 0.5f;
         Vector2 size = new Vector2(totalRange, hitRadius * 2f); // 박스 크기
         float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
 

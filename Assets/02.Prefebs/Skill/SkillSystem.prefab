@@ -14,6 +14,8 @@ GameObject:
   - component: {fileID: 497392018163810730}
   - component: {fileID: 3622915880698505367}
   - component: {fileID: 2628890420770852956}
+  - component: {fileID: 6956797629615996865}
+  - component: {fileID: 2718819318423730678}
   m_Layer: 0
   m_Name: SkillSystem
   m_TagString: Untagged
@@ -133,3 +135,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   projectilePrefab: {fileID: 2562934970777424423, guid: d25d49ec691fd1948ad3e2cb45cfeeb2, type: 3}
   poolSize: 6
+--- !u!114 &6956797629615996865
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2714057563554896699}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79fba0894687e9547b2b9859db700eaf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2718819318423730678
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2714057563554896699}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e87230b470492f419b10669fe89756c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

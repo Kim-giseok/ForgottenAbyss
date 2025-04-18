@@ -82,6 +82,19 @@ public class ControllerPlayer : MonoBehaviour
         }
     }
 
+    void Start()
+    {
+        Transform firePoint = transform.Find("FirePoint");
+        if (firePoint != null)
+        {
+            SkillController.Instance.skillSpawnPoint2 = firePoint;
+        }
+        else
+        {
+            Debug.LogWarning("FirePoint를 찾을 수 없습니다!");
+        }
+    }
+
     public void ChangeState(PlayerState newState)
     {
         if (!isAlive) return;
