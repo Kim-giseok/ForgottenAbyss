@@ -1,29 +1,73 @@
 using System.Collections;
 using System.Collections.Generic;
-using Cinemachine;
 using UnityEngine;
+using Cinemachine;
+using UnityEngine.SceneManagement;
 
 public class CameraShake : Singleton<CameraShake>
 {
     [SerializeField] private CinemachineVirtualCamera virtualCamera;
 
-    private CinemachineFramingTransposer framingTransposer;
+    private CinemachineBasicMultiChannelPerlin noise;
     private Coroutine shakeCoroutine;
 
-    void Awake()
+    private void Awake()
     {
-        if (virtualCamera != null)
+        if (_instance == null)
         {
-            framingTransposer = virtualCamera.GetCinemachineComponent<CinemachineFramingTransposer>();
+            _instance = this;
+            DontDestroyOnLoad(transform.root.gameObject);
+        }
+        else if (_instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        if (virtualCamera != null)
+            SetupNoiseComponent();
+    }
+
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        // 씬에 새로 생성된 VirtualCamera 찾기
+        virtualCamera = FindObjectOfType<CinemachineVirtualCamera>();
+        if (virtualCamera == null)
+        {
+            Debug.LogWarning("CameraShake: 새 씬에서 VirtualCamera를 찾지 못했습니다.");
+            return;
+        }
+
+        SetupNoiseComponent();
+    }
+
+    private void SetupNoiseComponent()
+    {
+        noise = virtualCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+        if (noise == null)
+        {
+            Debug.LogWarning("CameraShake: VirtualCamera에 Perlin Noise 컴포넌트가 없습니다!");
         }
     }
 
     public void Shake(float duration = 0.1f, float amplitude = 0.2f, float frequency = 5f)
     {
-        if (framingTransposer == null)
+        if (noise == null)
+        {
+            Debug.LogWarning("CameraShake: noise 컴포넌트가 null입니다.");
             return;
+        }
 
-        // 기존 쉐이크가 진행 중이면 멈추기
         if (shakeCoroutine != null)
             StopCoroutine(shakeCoroutine);
 
@@ -32,31 +76,14 @@ public class CameraShake : Singleton<CameraShake>
 
     private IEnumerator ShakeRoutine(float duration, float amplitude, float frequency)
     {
-        if (framingTransposer != null)
-        {
-            framingTransposer.m_DeadZoneWidth = 0f;
-            framingTransposer.m_DeadZoneHeight = 0f;
-
-            var noise = virtualCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
-
-            if (noise != null)
-            {
-                noise.m_AmplitudeGain = amplitude;
-                noise.m_FrequencyGain = frequency;
-            }
-        }
+        noise.m_AmplitudeGain = amplitude;
+        noise.m_FrequencyGain = frequency;
 
         yield return new WaitForSeconds(duration);
 
-        if (framingTransposer != null)
-        {
-            var noise = virtualCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+        noise.m_AmplitudeGain = 0f;
+        noise.m_FrequencyGain = 0f;
 
-            if (noise != null)
-            {
-                noise.m_AmplitudeGain = 0f;
-                noise.m_FrequencyGain = 0f;
-            }
-        }
+        shakeCoroutine = null;
     }
 }

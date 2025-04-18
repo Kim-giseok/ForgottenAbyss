@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using System.Collections;
 
 public class DamageText : MonoBehaviour
 {
@@ -27,7 +28,24 @@ public class DamageText : MonoBehaviour
         StartCoroutine(AnimateText());
     }
 
-    private System.Collections.IEnumerator AnimateText()
+    public void Setup(string message, Color color)
+    {
+        dmgText.text = message;
+        dmgText.color = color;
+
+        dmgText.fontSize = 12f;
+        dmgText.fontStyle = FontStyles.Bold; // 굵게
+
+        Camera cam = Camera.main;
+        Vector3 centerPos = cam.transform.position + cam.transform.forward * 5f + cam.transform.up * -1f;
+        transform.position = centerPos;
+
+        transform.rotation = Quaternion.LookRotation(transform.position - cam.transform.position);
+
+        StartCoroutine(AnimateScreenCenterText());
+    }
+
+    private IEnumerator AnimateText()
     {
         Vector3 startPos = transform.position;
         Vector3 endPos = startPos + Vector3.up * 1.5f;
@@ -47,6 +65,48 @@ public class DamageText : MonoBehaviour
             elapsed += Time.deltaTime;
             yield return null;
         }
+
+        ReturnToPool();
+    }
+
+    public IEnumerator AnimateScreenCenterText()
+    {
+        CanvasGroup canvasGroup = GetComponent<CanvasGroup>();
+        if (canvasGroup == null)
+            canvasGroup = gameObject.AddComponent<CanvasGroup>();
+
+        canvasGroup.alpha = 0f;
+        transform.localScale = Vector3.one * 1.2f;
+
+        float holdTime = 1.5f;
+        float fadeDuration = 0.5f;
+        float elapsed = 0f;
+
+        yield return ScreenFader.Instance.FadeIn(fadeDuration);
+        // 1. 페이드 인
+        while (elapsed < fadeDuration)
+        {
+            float t = elapsed / fadeDuration;
+            canvasGroup.alpha = Mathf.Lerp(0f, 1f, t);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+        canvasGroup.alpha = 1f;
+
+        yield return new WaitForSeconds(holdTime);
+
+        // 3. 페이드 아웃
+        elapsed = 0f;
+        while (elapsed < fadeDuration)
+        {
+            float t = elapsed / fadeDuration;
+            canvasGroup.alpha = Mathf.Lerp(1f, 0f, t);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+        canvasGroup.alpha = 0f;
+
+        yield return ScreenFader.Instance.FadeOut(fadeDuration);
 
         ReturnToPool();
     }

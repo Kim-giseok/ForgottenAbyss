@@ -38,7 +38,7 @@ public class NPC : MonoBehaviour, IInteractable
 
     public void ActiveInteraction()
     {
-        playerInput.enabled = false;
+        //playerInput.enabled = false;
         npcText.SetActive(false);
         npcSentence.TalkNpc();
     }

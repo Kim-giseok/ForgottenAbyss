@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Cinemachine;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class CameraZoom : Singleton<CameraZoom>
 {
@@ -23,8 +24,48 @@ public class CameraZoom : Singleton<CameraZoom>
     private Vector3 originalCamPosition;
     private bool isZoomedIn = false;
 
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        StopAllCoroutines();
+
+        virtualCam = FindObjectOfType<CinemachineVirtualCamera>();
+        if (virtualCam == null)
+        {
+            Debug.Log("CameraZoom: 씬 내에 사용할 카메라 없음 (마을임)");
+            return;
+        }
+        playerTransform = FindObjectOfType<Player>().transform;
+        if (playerTransform == null)
+        {
+            Debug.LogWarning("CameraZoom: 새 씬에서 playerTransform을 찾지 못했습니다.");
+            return;
+        }
+    }
+
     public void ZoomIn(float zoomSpeedOverride = -1f, float moveSpeedOverride = -1f)
     {
+        if (virtualCam == null)
+        {
+            Debug.LogWarning("CameraZoom: virtualCam이 null입니다.(마을임)");
+            return;
+        }
+
+        if (playerTransform == null)
+        {
+            Debug.LogWarning("CameraZoom: playerTransform이 null입니다.");
+            return;
+        }
+
         if (isZoomedIn) return;
 
         originalCamPosition = virtualCam.transform.position;
@@ -43,6 +84,18 @@ public class CameraZoom : Singleton<CameraZoom>
 
     public void ZoomOut(float zoomSpeedOverride = -1f, float moveSpeedOverride = -1f)
     {
+        if (virtualCam == null)
+        {
+            Debug.LogWarning("CameraZoom: virtualCam이 null입니다.(마을임)");
+            return;
+        }
+
+        if (playerTransform == null)
+        {
+            Debug.LogWarning("CameraZoom: playerTransform이 null입니다.");
+            return;
+        }
+
         if (!isZoomedIn) return;
 
         float zoomSpeedToUse = zoomSpeedOverride > 0f ? zoomSpeedOverride : zoomSpeed;
@@ -87,6 +140,19 @@ public class CameraZoom : Singleton<CameraZoom>
 
     private IEnumerator MoveCameraTo(Vector3 targetPosition, float speed)
     {
+        if (virtualCam == null)
+        {
+            Debug.LogWarning("CameraZoom: virtualCam이 null이라 카메라 이동을 중단합니다.");
+            yield break;
+        }
+
+        Transform camTransform = virtualCam.transform;
+        if (camTransform == null)
+        {
+            Debug.LogWarning("CameraZoom: virtualCam.transform이 null입니다.");
+            yield break;
+        }
+
         while ((virtualCam.transform.position - targetPosition).sqrMagnitude > 0.01f)
         {
             virtualCam.transform.position = Vector3.Lerp(

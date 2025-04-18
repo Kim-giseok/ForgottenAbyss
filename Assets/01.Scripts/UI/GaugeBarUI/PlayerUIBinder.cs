@@ -45,13 +45,13 @@ public class PlayerUIBinder : MonoBehaviour
     {
         if (type == StatType.CurrentHP || type == StatType.MaxHP)
         {
-            Debug.Log($"[UIBinder] Ã¼·Â ¹Ý¿µµÊ: {newValue}");
+            //Debug.Log($"[UIBinder] Ã¼·Â ¹Ý¿µµÊ: {newValue}");
             UpdateHPSlider();
         }
 
         if (type == StatType.CurrentMP || type == StatType.MaxMP)
         {
-            Debug.Log($"[UIBinder] ¸¶³ª ¹Ý¿µµÊ: {newValue}");
+            //Debug.Log($"[UIBinder] ¸¶³ª ¹Ý¿µµÊ: {newValue}");
             UpdateMPSlider();
         }
     }
