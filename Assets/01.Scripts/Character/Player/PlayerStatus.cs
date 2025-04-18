@@ -27,6 +27,15 @@ public class PlayerStatus : CharacterStatus
             binder.BindStatus(this);
         }
     }
+    // 이벤트 구독
+    private void OnEnable()
+    {
+        OnStatChanged += (type, value) =>
+        {
+            if (type == StatType.CurrentHP)
+                Debug.Log($"HP 변경됨: {value}");
+        };
+    }
 
     private void Update()
     {
@@ -34,8 +43,10 @@ public class PlayerStatus : CharacterStatus
     }
     private void InitializeStats()
     {
-        stats[StatType.HP] = 100f; //초기 HP
-        stats[StatType.MP] = 100f; //초기 MP
+        stats[StatType.CurrentHP] = 100f; //현재 HP
+        stats[StatType.MaxHP] = 100f; //초기 HP
+        stats[StatType.CurrentMP] = 100f; //현재 MP
+        stats[StatType.MaxMP] = 100f; //초기 MP
         stats[StatType.ATK] = 10f; //초기 공격력
         stats[StatType.DEF] = 10f; //초기 방어력
         stats[StatType.LEVEL] = 1f; //초기 레벨
@@ -52,8 +63,8 @@ public class PlayerStatus : CharacterStatus
             Dictionary<StatType, float> statIncreases = new Dictionary<StatType, float>();
 
             // 레벨별 증가량
-            statIncreases[StatType.HP] = 20f;         // HP 증가량
-            statIncreases[StatType.MP] = 15f;        // MP 증가량
+            statIncreases[StatType.MaxHP] = 20f;         // HP 증가량
+            statIncreases[StatType.MaxMP] = 15f;        // MP 증가량
             statIncreases[StatType.ATK] = 1f;     // 공격력 증가량
             statIncreases[StatType.DEF] = 1f;     // 방어력 증가량
 
@@ -74,7 +85,8 @@ public class PlayerStatus : CharacterStatus
     // 경험치 획득 메서드
     public void GainExperience(float amount)
     {
-        stats[StatType.EXP] += amount;
+        SetStat(StatType.EXP, stats[StatType.EXP] + amount);
+        //stats[StatType.EXP] += amount;
         Debug.Log($"경험치 획득: +{amount} (현재: {stats[StatType.EXP]})");
 
         CheckLevelUp();
@@ -115,8 +127,8 @@ public class PlayerStatus : CharacterStatus
         ApplyLevelStats(newLevel);
 
         Debug.Log($"현재 레벨: {stats[StatType.LEVEL]}");
-        Debug.Log($"HP: {stats[StatType.HP]}");
-        Debug.Log($"MP: {stats[StatType.MP]}");
+        Debug.Log($"HP: {stats[StatType.MaxHP]}");
+        Debug.Log($"MP: {stats[StatType.MaxMP]}");
         Debug.Log($"ATK: {stats[StatType.ATK]}");
         Debug.Log($"DEF: {stats[StatType.DEF]}");
 
@@ -131,7 +143,9 @@ public class PlayerStatus : CharacterStatus
 
             foreach (var statType in statIncreases.Keys)
             {
-                stats[statType] += statIncreases[statType];
+                float newValue = stats[statType] + statIncreases[statType];
+                SetStat(statType, newValue); // 이벤트 발생 포함
+                //stats[statType] += statIncreases[statType];
                 Debug.Log($"{statType} 증가: +{statIncreases[statType]}");
             }
         }
