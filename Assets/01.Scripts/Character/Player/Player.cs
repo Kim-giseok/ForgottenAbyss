@@ -11,10 +11,12 @@ public class Player : MonoBehaviour, IDamagable
     public Animator animator;
     SpriteRenderer spriteRenderer;
        
-    PlayerStatus playerstatus;
+    public PlayerStatus playerstatus;
     public ControllerPlayer controller;
     SkillController skillController;
-    
+
+    public float hpRegenRate = 2f;
+    public float mpRegenRate = 5f;
     public bool isDead = false;
 
     public void Awake()
@@ -49,6 +51,8 @@ public class Player : MonoBehaviour, IDamagable
         {
             StartCoroutine(TestGetDamage()); //테스트용
         }
+
+        RegenerateStats();
     }
 
     public void GetDamage(float damage)
@@ -118,5 +122,22 @@ public class Player : MonoBehaviour, IDamagable
     {
         yield return new WaitForSeconds(delay);
         skillController.SetGettingHit(false);
+    }
+
+    private void RegenerateStats()
+    {
+        float dt = Time.deltaTime;
+
+        float currentHP = playerstatus.stats[StatType.CurrentHP];
+        float maxHP = playerstatus.stats[StatType.MaxHP];
+
+        float currentMP = playerstatus.stats[StatType.CurrentMP];
+        float maxMP = playerstatus.stats[StatType.MaxMP];
+
+        currentHP = Mathf.Min(currentHP + hpRegenRate * dt, maxHP);
+        currentMP = Mathf.Min(currentMP + mpRegenRate * dt, maxMP);
+
+        playerstatus.SetStat(StatType.CurrentHP, currentHP);
+        playerstatus.SetStat(StatType.CurrentMP, currentMP);
     }
 }

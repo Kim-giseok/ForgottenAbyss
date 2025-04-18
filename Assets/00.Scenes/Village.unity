@@ -1832,7 +1832,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.00033378837}
+  m_AnchoredPosition: {x: 0, y: 0.00042820693}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &440183555
@@ -2142,6 +2142,51 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 504526554}
   m_CullTransparentMesh: 1
+--- !u!1 &513646960
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 513646962}
+  - component: {fileID: 513646961}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &513646961
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 513646960}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 983b46341c59ff743a9555ddf2ae6b5a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 7695836730985110122}
+--- !u!4 &513646962
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 513646960}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &526561185
 GameObject:
   m_ObjectHideFlags: 0
@@ -10879,7 +10924,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 537982152}
   m_Direction: 2
   m_Value: 0
-  m_Size: 1
+  m_Size: 0.89633095
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -11550,6 +11595,7 @@ MonoBehaviour:
   interaction: {fileID: 0}
   currentState: 0
   previousState: 0
+  isFacingRight: 1
   groundCheckRadius: 0.2
   groundLayer:
     serializedVersion: 2
@@ -11871,6 +11917,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 0}
+  playerstatus: {fileID: 0}
+  controller: {fileID: 0}
+  hpRegenRate: 2
+  mpRegenRate: 5
   isDead: 0
 --- !u!114 &8607925810560979801
 MonoBehaviour:
@@ -11921,3 +11971,4 @@ SceneRoots:
   - {fileID: 3592222812830391567}
   - {fileID: 2136938175}
   - {fileID: 804188840}
+  - {fileID: 513646962}

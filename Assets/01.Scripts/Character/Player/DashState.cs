@@ -8,9 +8,24 @@ public class DashState : PlayerStateMachine
     public DashState(ControllerPlayer player) : base(player) { }
     public override void Enter()
     {
+        PlayerStatus status = GameManager.Instance.player.playerstatus;
+        float curMp = status.stats[StatType.CurrentMP];
+        float cost = 10f;
+
+        if (curMp < cost)
+        {
+            Debug.Log("스태미너 부족 - 대쉬 취소");
+
+            player.ChangeState(player.previousState);
+            return;
+        }
+
+        status.SetStat(StatType.CurrentMP, curMp - cost);
+
         player.animator.SetBool("IsDash", true);
         player.animator.SetTrigger("DashTrigger");
         player.SetInvincibility(true);
+
         dashTimer = 0f;
 
         player.rigid.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
