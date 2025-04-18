@@ -13,6 +13,8 @@ public class DashState : PlayerStateMachine
         player.SetInvincibility(true);
         dashTimer = 0f;
 
+        player.rigid.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
+
         Vector2 dashDirection = new Vector2(player.inputVec.x, 0);
         player.rigid.velocity = new Vector2(dashDirection.x * player.dashDistance / player.dashTime, player.rigid.velocity.y);
         Debug.Log($"{player.dashDistance/player.dashTime}");
@@ -34,6 +36,15 @@ public class DashState : PlayerStateMachine
     {
         player.animator.SetBool("IsDash", false);
         SkillController.Instance.ResetAttack();
+
+        player.rigid.collisionDetectionMode = CollisionDetectionMode2D.Discrete;
+
+        player.StartCoroutine(DelayedInvincibilityOff(0.25f)); //대쉬 무적판정 조금 더 길게
+    }
+
+    private IEnumerator DelayedInvincibilityOff(float delay)
+    {
+        yield return new WaitForSeconds(delay);
         player.SetInvincibility(false);
     }
 }

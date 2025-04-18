@@ -20,8 +20,17 @@ public class SkillCastData
         result.target = target;
 
         var status = caster.GetComponent<PlayerStatus>();
+        if(status == null)
+        {
+            Debug.Log("status 가 널입니다.");
+        }
+
+
         if (status != null)
+        {
             result.baseAttack = status.stats[StatType.ATK];
+        }
+            
 
         result.weaponAttack = WeaponManager.Instance.GetCurrentWeaponAttack();
         result.skillMultiplier = data.DamageMultiplier;

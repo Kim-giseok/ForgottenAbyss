@@ -45,7 +45,7 @@ public class ControllerPlayer : MonoBehaviour
     public PlayerState currentState;
     public PlayerState previousState;
 
-    private bool isFacingRight = true;
+    public bool isFacingRight = true;
 
     [SerializeField] private float groundCheckRadius = 0.2f;
     public LayerMask groundLayer;
@@ -571,5 +571,13 @@ public class ControllerPlayer : MonoBehaviour
         {
             isGround = Physics2D.OverlapCircle(transform.position, groundCheckRadius, groundLayer);
         }
+    }
+
+    public void OnAttackAnimationEnd()
+    {
+        if (inputVec.x == 0)
+            ChangeState(PlayerState.Idle);
+        else
+            ChangeState(PlayerState.Run);
     }
 }

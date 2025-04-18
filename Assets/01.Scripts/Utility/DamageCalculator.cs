@@ -4,6 +4,8 @@ public static class DamageCalculator
 {
     public static float CalculateDamage(SkillCastData castData)
     {
+        Debug.Log($"{castData.baseAttack} + {castData.weaponAttack} * {castData.skillMultiplier} = " +
+            $"{(castData.baseAttack + castData.weaponAttack) * castData.skillMultiplier}");
         return (castData.baseAttack + castData.weaponAttack) * castData.skillMultiplier;
     }
 

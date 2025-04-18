@@ -7,5 +7,4 @@ public class MemoryPieceSO : ScriptableObject
 {
     public int currentMemoryPieceId;
     public SkillVisualSO memorySkillVisualSO;
-    public Sprite icon;
 }
