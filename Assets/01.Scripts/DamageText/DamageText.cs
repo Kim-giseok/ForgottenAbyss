@@ -78,11 +78,11 @@ public class DamageText : MonoBehaviour
         canvasGroup.alpha = 0f;
         transform.localScale = Vector3.one * 1.2f;
 
-        float duration = 1.0f;
         float holdTime = 1.5f;
         float fadeDuration = 0.5f;
         float elapsed = 0f;
 
+        yield return ScreenFader.Instance.FadeIn(fadeDuration);
         // 1. 페이드 인
         while (elapsed < fadeDuration)
         {
@@ -93,7 +93,6 @@ public class DamageText : MonoBehaviour
         }
         canvasGroup.alpha = 1f;
 
-        // 2. 잠시 유지
         yield return new WaitForSeconds(holdTime);
 
         // 3. 페이드 아웃
@@ -106,6 +105,8 @@ public class DamageText : MonoBehaviour
             yield return null;
         }
         canvasGroup.alpha = 0f;
+
+        yield return ScreenFader.Instance.FadeOut(fadeDuration);
 
         ReturnToPool();
     }

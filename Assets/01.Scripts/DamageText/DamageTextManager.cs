@@ -2,6 +2,22 @@ using UnityEngine;
 
 public class DamageTextManager : Singleton <DamageTextManager>
 {
+    private void Awake()
+    {
+        if (_instance == null)
+        {
+            _instance = this;
+            DontDestroyOnLoad(transform.root.gameObject);
+        }
+        else if (_instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        Init();
+    }
+
     public void ShowDamage(Vector3 position, int damage)
     {
         GameObject obj = DamageTextPool.Instance.Get();

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem.XR;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour, IDamagable
 {
@@ -68,13 +69,6 @@ public class Player : MonoBehaviour, IDamagable
         yield return new WaitForSeconds(0.5f);
     }
 
-    IEnumerator TimeSet()
-    {
-        yield return new WaitForSeconds(1.5f);
-
-        DamageTextManager.Instance.ShowDeath();
-    }
-
     void Die()
     {
         Debug.Log("die 실행");
@@ -93,7 +87,7 @@ public class Player : MonoBehaviour, IDamagable
 
         animator.SetTrigger("DeadTrigger");
 
-        StartCoroutine(TimeSet());
+        StartCoroutine(DiePanel());
     }
 
     void Hit()
@@ -104,6 +98,17 @@ public class Player : MonoBehaviour, IDamagable
         animator.SetTrigger("HitTrigger");
 
         StartCoroutine(ClearGettingHitAfterDelay(0.4f));
+    }
+
+    IEnumerator DiePanel()
+    {
+        yield return new WaitForSeconds(1.5f);
+
+        DamageTextManager.Instance.ShowDeath();
+
+        yield return new WaitForSeconds(3.2f);
+
+        SceneManager.LoadScene("Village");
     }
 
     private IEnumerator ClearGettingHitAfterDelay(float delay)
