@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class Enemies
 {
+    // notice: enum을 추가하면 한칸씩 밀리는 현상 발생
     public enum Enemy { Test, Agis, Archer, Ghost, GhostChild, Gunner, NightBone, SwordShadow, Wizard }
     public static Node Get(Enemy enemy) => behaviour[enemy];
 
@@ -81,7 +82,10 @@ public class Enemies
         },
         {
             Enemy.Wizard,
-            new SelectorNode(new IdleNode(1))
+            new SelectorNode(
+                new SequenceNode(new HitNode(), new DieNode()), 
+                    new SequenceNode(new IdleNode(4), new HealNode())
+                )
         }
     };
 }
