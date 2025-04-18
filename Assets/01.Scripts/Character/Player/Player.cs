@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem.XR;
 using UnityEngine.SceneManagement;
+using static UnityEngine.Rendering.DebugUI;
 
 public class Player : MonoBehaviour, IDamagable
 {
@@ -52,7 +53,9 @@ public class Player : MonoBehaviour, IDamagable
 
     public void GetDamage(float damage)
     {
-        playerstatus.stats[StatType.CurrentHP] -= damage;
+        float hp = playerstatus.stats[StatType.CurrentHP] - damage;
+
+        playerstatus.SetStat(StatType.CurrentHP, hp);
 
         if (playerstatus.stats[StatType.CurrentHP] <= 0)
         {
