@@ -57,7 +57,7 @@ public class PlayerProjectile : MonoBehaviour
 
                     Vector3 textPosition = other.transform.position + Vector3.up * 1f;
                     DamageTextManager.Instance.ShowDamage(textPosition, (int)damage);
-                    //CameraShake.Instance.Shake(0.1f, 0.2f);
+                    CameraShake.Instance.Shake(0.1f, 0.2f);
                 }
 
                 if(other.GetComponent<LaberDamagerble>() != null)

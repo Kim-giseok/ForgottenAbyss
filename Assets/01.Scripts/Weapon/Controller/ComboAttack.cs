@@ -259,7 +259,7 @@ public class ComboAttack : MonoBehaviour
 
                     Vector3 textPosition = enemy.transform.position + Vector3.up * 1f;
                     DamageTextManager.Instance.ShowDamage(textPosition, (int)damage);
-
+                    CameraShake.Instance.Shake(0.2f, 0.4f);
                     Vector2 attackerPos = (Vector2)transform.position + Vector2.up * 0.5f;
                     KnockbackUtil.ApplyKnockback(target, attackerPos, 5f);
                 }

@@ -1832,7 +1832,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.00042820693}
+  m_AnchoredPosition: {x: 0, y: -0.000017175582}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &440183555
@@ -10924,7 +10924,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 537982152}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.89633095
+  m_Size: 0.99999774
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -11391,8 +11391,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4527268092236380006}
-  - component: {fileID: 7373104313850824593}
-  - component: {fileID: 3512040177652362637}
+  - component: {fileID: 4527268092236380007}
   m_Layer: 0
   m_Name: CameraHolder
   m_TagString: Untagged
@@ -11601,19 +11600,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1152
   isOnLadder: 0
---- !u!114 &3512040177652362637
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 375885802576136127}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dbeb0f056e41de2458eec26652ee647a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  virtualCamera: {fileID: 0}
 --- !u!4 &3592222812830391567
 Transform:
   m_ObjectHideFlags: 0
@@ -11688,6 +11674,19 @@ Transform:
   - {fileID: 1668632152412532451}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4527268092236380007
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 375885802576136127}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2dd378386e7c540a98a84a3f9e761edc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  depth: 10
 --- !u!114 &5384723960343571686
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11891,19 +11890,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &7373104313850824593
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 375885802576136127}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2dd378386e7c540a98a84a3f9e761edc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  depth: 10
 --- !u!114 &7695836730985110122
 MonoBehaviour:
   m_ObjectHideFlags: 0
