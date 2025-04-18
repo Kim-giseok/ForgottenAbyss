@@ -12,7 +12,8 @@ public class EnemyBaseController: MonoBehaviour
     public EnemyCombatHandler combatHandler { get; protected set; }
     public EnemyDetectHandler detectHandler { get; protected set; }
     
-    public float animationValue = 1;
+    
+    public float animationValue = 1; // 애니메이터에서 직접 컨트롤 가능
 
     protected virtual void Awake()
     {
