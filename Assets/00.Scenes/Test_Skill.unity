@@ -202,11 +202,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45e653bab7fb20e499bda25e1b646fea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!20 &687352377 stripped
-Camera:
-  m_CorrespondingSourceObject: {fileID: 3724353485988825919, guid: 0af13329df20ec049a4a87d33d568adf, type: 3}
-  m_PrefabInstance: {fileID: 4362323574144947629}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1003356248 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3530073967686969312, guid: 198547ce10f94224d9792fd58cd72a7f, type: 3}
@@ -551,6 +546,14 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1269122229756493129, guid: d1c2fe897324d1d4ca88169e9f737467, type: 3}
+      propertyPath: m_Type
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1269122229756493129, guid: d1c2fe897324d1d4ca88169e9f737467, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: feec3761a7be3274991364504d2f16bf, type: 3}
     - target: {fileID: 1554788902873582943, guid: d1c2fe897324d1d4ca88169e9f737467, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -663,6 +666,14 @@ PrefabInstance:
       propertyPath: playerStatus
       value: 
       objectReference: {fileID: 6851509142293679298}
+    - target: {fileID: 5143628838843411282, guid: d1c2fe897324d1d4ca88169e9f737467, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5143628838843411282, guid: d1c2fe897324d1d4ca88169e9f737467, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5316916271187468077, guid: d1c2fe897324d1d4ca88169e9f737467, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -781,6 +792,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8469159691272902386, guid: d1c2fe897324d1d4ca88169e9f737467, type: 3}
       propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8728192386599502514, guid: d1c2fe897324d1d4ca88169e9f737467, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8728192386599502514, guid: d1c2fe897324d1d4ca88169e9f737467, type: 3}
+      propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -844,11 +863,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3094358607974540795, guid: 8d7d7615f0a381d429ab973fa025a2ff, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 200
+      value: 1920
       objectReference: {fileID: 0}
     - target: {fileID: 3094358607974540795, guid: 8d7d7615f0a381d429ab973fa025a2ff, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 200
+      value: 1080
       objectReference: {fileID: 0}
     - target: {fileID: 3094358607974540795, guid: 8d7d7615f0a381d429ab973fa025a2ff, type: 3}
       propertyPath: m_LocalPosition.x
@@ -880,11 +899,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3094358607974540795, guid: 8d7d7615f0a381d429ab973fa025a2ff, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 960
       objectReference: {fileID: 0}
     - target: {fileID: 3094358607974540795, guid: 8d7d7615f0a381d429ab973fa025a2ff, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: 540
       objectReference: {fileID: 0}
     - target: {fileID: 3094358607974540795, guid: 8d7d7615f0a381d429ab973fa025a2ff, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -898,10 +917,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3230390695416598321, guid: 8d7d7615f0a381d429ab973fa025a2ff, type: 3}
-      propertyPath: m_Camera
-      value: 
-      objectReference: {fileID: 687352377}
     - target: {fileID: 3854891442505159424, guid: 8d7d7615f0a381d429ab973fa025a2ff, type: 3}
       propertyPath: m_Name
       value: TextIndicatorCanvas

@@ -23,9 +23,9 @@ public class BowSkill01ExecutionSO : SkillExecutionSO
 
     private IEnumerator ExecuteWithEffectDelay(GameObject caster, Vector2 origin, Vector2 direction, SkillCastData castData)
     {
-        //CameraZoom.Instance.ZoomIn(0.3f);
+        CameraZoom.Instance.ZoomIn(0.3f);
         yield return new WaitForSeconds(damageDelay);
-        //CameraZoom.Instance.ZoomOut();
+        CameraZoom.Instance.ZoomOut();
         float extraLength = 3f; // 범위 확장값
         Vector2 dir = direction.normalized;
 
@@ -42,7 +42,7 @@ public class BowSkill01ExecutionSO : SkillExecutionSO
         {
             DealDamageToTarget(hit.gameObject, castData);  // 데미지 처리
             Debug.Log($"Hit {hit.name}");
-            //CameraShake.Instance.Shake(0.1f, 0.2f);  // 카메라 쉐이크
+            CameraShake.Instance.Shake(0.1f, 0.2f);  // 카메라 쉐이크
             SkillController.Instance.isBowAttack = false;
         }
 

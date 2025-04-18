@@ -24,7 +24,9 @@ public class SkillUI : MonoBehaviour
     private bool[] isHideSkills = { false, false, false, false};
     private float[] skillTimes = { 12, 9, 9, 9 };
     private float[] getSkillTimes = { 0,0,0,0 };
-    
+    private float memoryCooldown;
+
+
     public event Action OnInitialized;
     public bool IsInitialized = false;
 
@@ -127,7 +129,13 @@ public class SkillUI : MonoBehaviour
         float[] cooldownEndTimes = new float[getSkillTimes.Length];
         for (int i = 0; i < getSkillTimes.Length; i++)
         {
-            cooldownEndTimes[i] = Time.time + getSkillTimes[i]; // 종료 예정 시각 저장
+            if (i == (int)SkillSlotType.Memory)
+            {
+                memoryCooldown = Time.time + getSkillTimes[(int)SkillSlotType.Memory];
+                continue;
+            }
+
+            cooldownEndTimes[i] = Time.time + getSkillTimes[i];
         }
         weaponCooldownTable[weaponId] = cooldownEndTimes;
     }
@@ -146,6 +154,12 @@ public class SkillUI : MonoBehaviour
                     HideSkillSetting(i, remainingTime);
                 }
             }
+        }
+
+        float remainingMemory = memoryCooldown - Time.time;
+        if (remainingMemory > 0f)
+        {
+            HideSkillSetting((int)SkillSlotType.Memory, remainingMemory);
         }
     }
 

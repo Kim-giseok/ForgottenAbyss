@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem.XR;
+using UnityEngine.SceneManagement;
+using static UnityEngine.Rendering.DebugUI;
 
 public class Player : MonoBehaviour, IDamagable
 {
@@ -9,10 +11,12 @@ public class Player : MonoBehaviour, IDamagable
     public Animator animator;
     SpriteRenderer spriteRenderer;
        
-    PlayerStatus playerstatus;
+    public PlayerStatus playerstatus;
     public ControllerPlayer controller;
     SkillController skillController;
-    
+
+    public float hpRegenRate = 2f;
+    public float mpRegenRate = 5f;
     public bool isDead = false;
 
     public void Awake()
@@ -48,15 +52,14 @@ public class Player : MonoBehaviour, IDamagable
             StartCoroutine(TestGetDamage()); //테스트용
         }
 
-        if (isDead)
-        {
-            StartCoroutine(TimeSet());
-        }
+        RegenerateStats();
     }
 
     public void GetDamage(float damage)
     {
-        playerstatus.stats[StatType.CurrentHP] -= damage;
+        float hp = playerstatus.stats[StatType.CurrentHP] - damage;
+
+        playerstatus.SetStat(StatType.CurrentHP, hp);
 
         if (playerstatus.stats[StatType.CurrentHP] <= 0)
         {
@@ -71,13 +74,6 @@ public class Player : MonoBehaviour, IDamagable
         GetDamage(50);
         
         yield return new WaitForSeconds(0.5f);
-    }
-
-    IEnumerator TimeSet()
-    {
-        yield return new WaitForSeconds(1.5f);
-
-        Time.timeScale = 0f;
     }
 
     void Die()
@@ -97,6 +93,8 @@ public class Player : MonoBehaviour, IDamagable
         animator.ResetTrigger("AttackTrigger");
 
         animator.SetTrigger("DeadTrigger");
+
+        StartCoroutine(DiePanel());
     }
 
     void Hit()
@@ -109,9 +107,37 @@ public class Player : MonoBehaviour, IDamagable
         StartCoroutine(ClearGettingHitAfterDelay(0.4f));
     }
 
+    IEnumerator DiePanel()
+    {
+        yield return new WaitForSeconds(1.5f);
+
+        DamageTextManager.Instance.ShowDeath();
+
+        yield return new WaitForSeconds(3.2f);
+
+        SceneManager.LoadScene("Village");
+    }
+
     private IEnumerator ClearGettingHitAfterDelay(float delay)
     {
         yield return new WaitForSeconds(delay);
         skillController.SetGettingHit(false);
+    }
+
+    private void RegenerateStats()
+    {
+        float dt = Time.deltaTime;
+
+        float currentHP = playerstatus.stats[StatType.CurrentHP];
+        float maxHP = playerstatus.stats[StatType.MaxHP];
+
+        float currentMP = playerstatus.stats[StatType.CurrentMP];
+        float maxMP = playerstatus.stats[StatType.MaxMP];
+
+        currentHP = Mathf.Min(currentHP + hpRegenRate * dt, maxHP);
+        currentMP = Mathf.Min(currentMP + mpRegenRate * dt, maxMP);
+
+        playerstatus.SetStat(StatType.CurrentHP, currentHP);
+        playerstatus.SetStat(StatType.CurrentMP, currentMP);
     }
 }

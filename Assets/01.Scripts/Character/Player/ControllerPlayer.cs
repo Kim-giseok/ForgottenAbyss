@@ -132,7 +132,11 @@ public class ControllerPlayer : MonoBehaviour
         {
             if (!stateInfo.IsTag("Attack") && !stateInfo.IsTag("Ladder") && !stateInfo.IsTag("WallSlide"))
             {
-                animator.SetBool("IsFall", true);
+                if (!animator.GetBool("IsFall"))
+                {
+                    animator.SetTrigger("FallTrigger");
+                    animator.SetBool("IsFall", true);
+                }
             }
         }
         else
