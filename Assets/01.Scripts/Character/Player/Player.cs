@@ -52,9 +52,9 @@ public class Player : MonoBehaviour, IDamagable
 
     public void GetDamage(float damage)
     {
-        playerstatus.stats[StatType.HP] -= damage;
+        playerstatus.stats[StatType.CurrentHP] -= damage;
 
-        if (playerstatus.stats[StatType.HP] <= 0)
+        if (playerstatus.stats[StatType.CurrentHP] <= 0)
         {
             Die();
         }
