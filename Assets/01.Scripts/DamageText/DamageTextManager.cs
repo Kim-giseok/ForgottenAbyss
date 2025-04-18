@@ -9,4 +9,13 @@ public class DamageTextManager : Singleton <DamageTextManager>
 
         obj.GetComponent<DamageText>().Setup(damage);
     }
+
+    public void ShowDeath()
+    {
+        GameObject obj = DamageTextPool.Instance.Get();
+
+        obj.transform.position = Vector3.zero;
+
+        obj.GetComponent<DamageText>().Setup("You Die", Color.red);
+    }
 }

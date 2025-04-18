@@ -47,11 +47,6 @@ public class Player : MonoBehaviour, IDamagable
         {
             StartCoroutine(TestGetDamage()); //테스트용
         }
-
-        if (isDead)
-        {
-            StartCoroutine(TimeSet());
-        }
     }
 
     public void GetDamage(float damage)
@@ -77,7 +72,7 @@ public class Player : MonoBehaviour, IDamagable
     {
         yield return new WaitForSeconds(1.5f);
 
-        Time.timeScale = 0f;
+        DamageTextManager.Instance.ShowDeath();
     }
 
     void Die()
@@ -97,6 +92,8 @@ public class Player : MonoBehaviour, IDamagable
         animator.ResetTrigger("AttackTrigger");
 
         animator.SetTrigger("DeadTrigger");
+
+        StartCoroutine(TimeSet());
     }
 
     void Hit()
