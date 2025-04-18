@@ -5,7 +5,8 @@ using UnityEngine.Serialization;
 public class EnemyController : EnemyBaseController, IDamagable
 {
     // SO로 추후 관리해도 좋을 듯
-    [Header("Resource")]
+    public float maxHealth { get; private set; }
+    [Header("Resource")] 
     public float health;
     public float attack;
 
@@ -27,9 +28,10 @@ public class EnemyController : EnemyBaseController, IDamagable
     
     public void Start()
     {
+        maxHealth = health;
         // Debug.Log(name.ToString());
         // 애니메이터 자동 등록
-        animationHandler.SetController(EnemiesAnimator.animators["NightBone"]);
+        // animationHandler.SetController(EnemiesAnimator.animators["NightBone"]);
         // 에러처리 필요
         machine.Define(Enemies.Get(name)); // 각 개체별 생성되는 방식
         

@@ -12,8 +12,8 @@ public class UIDamageDetector: MonoBehaviour, IDamagable
     public void GetDamage(float damage)
     {
         controller.GetDamage(damage);
-        
-        // UI 값 변경
+        Debug.Log(controller.maxHealth);
         Debug.Log(controller.health);
+        // UI 값 변경
     }
 }
