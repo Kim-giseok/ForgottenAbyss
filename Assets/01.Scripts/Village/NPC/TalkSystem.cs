@@ -37,6 +37,7 @@ public class TalkSystem : MonoBehaviour
         yield return null;
         while (sentences.Count > 0)
         {
+            playerInput.enabled = false;
             curSentence = sentences.Dequeue();
             NpcText.text = curSentence;
             quad.transform.localScale = new Vector2(NpcText.preferredWidth, NpcText.preferredHeight);
