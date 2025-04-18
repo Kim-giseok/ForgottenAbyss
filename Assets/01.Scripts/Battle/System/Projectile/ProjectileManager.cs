@@ -92,12 +92,17 @@ public class ProjectileManager : MonoBehaviour // 단위 미사일
         }
 
         HitBox hitBox = instance.GetComponent<HitBox>(); // notice: HitBox 자체를 저장하도록 변경 필요
-        hitBox.SetDamage(power);
-        hitBox.SetOwner(parent);
+
+        if (hitBox)
+        {
+            hitBox.SetDamage(power);
+            hitBox.SetOwner(parent);
+        }
         
         
         instance.transform.rotation = Quaternion.Euler(0, 0, degree);
 
+        instance.gameObject.layer = parent.gameObject.layer; // 레이어 적용
         instance.transform.position = parent.position;
         
         instance.SetActive(true);

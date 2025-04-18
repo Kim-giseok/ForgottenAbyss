@@ -38,9 +38,9 @@ public abstract class Projectile: MonoBehaviour
 
     protected virtual void OnTriggerEnter2D(Collider2D other)
     {
-        // 그라운드, 플레이어, 에너미 와의 충돌이 아닌 경우 무시 필요
-        if (gameObject.layer == LayerMask.NameToLayer("Default")) return;
-        
+        // 그라운드, 플레이어, 에너미 와의 충돌이 아닌 경우 무시 필요(임시 해결)
+        if (other.gameObject.layer == LayerMask.NameToLayer("Default")) return;
+
         if (gameObject.layer == other.gameObject.layer) return;
         ProjectileManager.Instance.DestroyProjectile(gameObject);
     }

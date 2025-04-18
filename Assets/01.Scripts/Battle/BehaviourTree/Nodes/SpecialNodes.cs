@@ -55,7 +55,9 @@ public class DieNode : Node
         if (controller is not EnemyController eController || eController.health > 0) { SetStatus(Status.Fail); return;}
         
         controller.collider.enabled = false; // 죽은 이후로는 피격 불가능하도록 처리
-        controller.rigidbody.gravityScale = 0; // 바닥 아래로 떨어지는 현상 방지
+        controller.rigidbody.velocity = Vector3.zero; // fix: 넉백으로 날라가는 현상 발생
+        controller.rigidbody.isKinematic = true;
+        
         eController.animationHandler.Play("Die");
     }
 
