@@ -82,7 +82,10 @@ public class Enemies
         },
         {
             Enemy.Wizard,
-            new SelectorNode(new IdleNode(1))
+            new SelectorNode(
+                new SequenceNode(new HitNode(), new DieNode()), 
+                    new SequenceNode(new IdleNode(4), new HealNode())
+                )
         }
     };
 }
