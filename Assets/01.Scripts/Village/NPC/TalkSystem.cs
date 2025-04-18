@@ -11,12 +11,14 @@ public class TalkSystem : MonoBehaviour
     public Queue<string> sentences;
     public string curSentence;
     public TextMeshPro NpcText;
-    public GameObject quad;
+    //public GameObject quad;
+    SpriteRenderer spriteRenderer;
     PlayerInput playerInput;
 
     private void Awake()
     {
         playerInput = GameObject.FindWithTag("Player").GetComponent<PlayerInput>();
+        spriteRenderer = GetComponentInChildren<SpriteRenderer>();
     }
 
 
@@ -40,7 +42,7 @@ public class TalkSystem : MonoBehaviour
             playerInput.enabled = false;
             curSentence = sentences.Dequeue();
             NpcText.text = curSentence;
-            quad.transform.localScale = new Vector2(NpcText.preferredWidth, NpcText.preferredHeight);
+            spriteRenderer.size = new Vector2(NpcText.preferredWidth + 1.0f, NpcText.preferredHeight + 0.5f);
             transform.position = new Vector2(talkPoint.position.x, talkPoint.position.y);
             yield return new WaitForSeconds(2f);
             
