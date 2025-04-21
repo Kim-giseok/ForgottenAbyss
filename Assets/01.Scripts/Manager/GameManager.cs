@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 public class GameManager : Singleton<GameManager>
 {
     public Player player;
-    Camera mainCamera;
+    public Camera mainCamera;
 
     private void Awake()
     {
