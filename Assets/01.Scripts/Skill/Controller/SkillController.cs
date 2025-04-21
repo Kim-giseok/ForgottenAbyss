@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -11,7 +12,7 @@ public class SkillController : Singleton<SkillController>
     public int combatId;
     public int skill01Id;
     public int skill02Id;
-    public int memorySkillId;
+    public MemorySkillItem memorySkillItem;
 
     public Transform skillSpawnPoint;
     public Transform skillSpawnPoint2;
@@ -98,7 +99,8 @@ public class SkillController : Singleton<SkillController>
     void OnSpecialSkill(InputValue value)
     {
         if (isGettingHit || isDead) return;
-        TryBufferOrExecuteSkill(memorySkillId, "SpecialSkill");
+        TryBufferOrExecuteSkill(memorySkillItem.memoryPieceId, "SpecialSkill");
+        //memorySkillItem.Use();
         Debug.Log("R: 기억 스킬");
     }
 
@@ -139,7 +141,14 @@ public class SkillController : Singleton<SkillController>
             SkillManager.Instance.TryUseSkill(skillId, skillSpawnPoint2);
         }
 
-        yield return new WaitForSeconds(GetAnimPlayTime(skillId));
+        if (SkillManager.Instance.GetCurrentMemorySkillData()?.memoryPieceId == skillId)
+        {
+            yield return new WaitForSeconds(2.0f);
+        }
+        else
+        {
+            yield return new WaitForSeconds(GetAnimPlayTime(skillId));
+        }
 
         isSkillPlaying = false;
     }

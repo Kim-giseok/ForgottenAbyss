@@ -6,5 +6,7 @@ using UnityEngine;
 public class MemoryPieceSO : ScriptableObject
 {
     public int currentMemoryPieceId;
-    public SkillVisualSO memorySkillVisualSO;
+    public string displayName;
+    public Sprite icon;
+    public MemorySkillItem skillItem;
 }

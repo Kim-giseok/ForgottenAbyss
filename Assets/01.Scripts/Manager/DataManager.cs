@@ -195,10 +195,14 @@ public class DataManager : Singleton<DataManager>
             MemoryPieceData matchedData = memoryPieceDataList.MemoryPieces.Find(m => m.Id == so.currentMemoryPieceId);
             if (matchedData != null)
             {
-                SkillData skillData = GetSkillData(matchedData.SkillId);
-                if (skillData != null)
+                var item = Resources.Load<MemorySkillItem>($"Item/{matchedData.ItemName}");
+                if (item != null)
                 {
-                    so.memorySkillVisualSO = GetSkillVisualSO(skillData.VisualSOName);
+                    so.skillItem = item;
+                }
+                else
+                {
+                    Debug.LogWarning($"[MemoryPieceSO] '{so.name}'에 매칭되는 MemorySkillItem '{matchedData.ItemName}'을 찾을 수 없습니다.");
                 }
             }
             else
@@ -220,5 +224,11 @@ public class DataManager : Singleton<DataManager>
 
         Debug.LogWarning($"MemoryVisualSO with name {name} not found.");
         return null;
+    }
+
+    public MemorySkillItem GetMemorySkillItemById(int memoryPieceId)
+    {
+        var memorySO = memoryVisualSOList.Find(x => x.currentMemoryPieceId == memoryPieceId);
+        return memorySO?.skillItem;
     }
 }

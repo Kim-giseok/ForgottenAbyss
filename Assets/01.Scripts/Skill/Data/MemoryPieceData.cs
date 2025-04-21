@@ -8,5 +8,5 @@ public class MemoryPieceData
     public int Id;
     public string Name;
     public string Description;
-    public int SkillId;
+    public string ItemName;
 }

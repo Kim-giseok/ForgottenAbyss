@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,7 +8,7 @@ public class SkillManager : Singleton<SkillManager>
     private Dictionary<int, float> nextAvailableTimes = new Dictionary<int, float>();
 
     private List<int> currentWeaponSkillIds = new List<int>();
-    private int currentMemorySkillId = -1;
+    private MemoryPieceSO currentMemoryPiece;
 
     public SkillUI skillUI;
 
@@ -65,34 +66,61 @@ public class SkillManager : Singleton<SkillManager>
     }
 
     // 기억 스킬 장착 시 호출
-    public void SetMemorySkill(int skillId)
+    public void SetMemorySkill(MemoryPieceSO memorySO)
     {
-        var data = DataManager.Instance.GetSkillData(skillId);
-        if (data == null)
+        if (memorySO == null || memorySO.skillItem == null)
         {
-            Debug.LogError($"Memory SkillData not found for ID: {skillId}");
+            Debug.LogError("MemoryPieceSO 또는 연결된 MemorySkillItem이 null입니다.");
             return;
         }
 
-        currentMemorySkillId = skillId;
-        Debug.Log($"Memory Skill Set: {data.Name}");
+        currentMemoryPiece = memorySO;
+
+        Debug.Log($"[SkillManager] Memory Skill Set: {memorySO.displayName}");
     }
 
-    public SkillData GetCurrentMemorySkillData()
+    public MemorySkillItem GetCurrentMemorySkillData()
     {
-        if (currentMemorySkillId == -1) return null;
-        return DataManager.Instance.GetSkillData(currentMemorySkillId);
+        return currentMemoryPiece?.skillItem;
     }
 
     public void TryUseSkill(int skillId, Transform spawnPoint)
     {
         // 0. 장착 여부 확인
-        bool isMemorySkill = skillId == currentMemorySkillId;
+        bool isMemorySkill = skillId == GetCurrentMemorySkillData()?.memoryPieceId;
         bool isWeaponSkill = currentWeaponSkillIds.Contains(skillId);
 
         if (!isMemorySkill && !isWeaponSkill)
         {
             Debug.LogWarning($"Skill ID {skillId} is not equipped.");
+            return;
+        }
+
+        if (isMemorySkill)
+        {
+            MemorySkillItem memoryItem = GetCurrentMemorySkillData();
+            if (memoryItem != null)
+            {
+                // 쿨타임 검사
+                if (nextAvailableTimes.TryGetValue(skillId, out float memoryNextTime) && Time.time < memoryNextTime)
+                {
+                    float remain = memoryNextTime - Time.time;
+                    Debug.Log($"[MemorySkill] On Cooldown: {remain:F1} sec remaining.");
+                    return;
+                }
+
+                memoryItem.Use();  // 여기서 CreateSummon 실행됨
+
+                // 쿨타임 처리
+                float cooldown = 5f; // 기본 쿨타임 (필요시 MemoryPieceSO에 속성 추가)
+                nextAvailableTimes[skillId] = Time.time + cooldown;
+                skillUI.HideSkillSetting((int)SkillSlotType.Memory, cooldown);
+            }
+            else
+            {
+                Debug.LogWarning("MemorySkillItem is null.");
+            }
+
             return;
         }
 
@@ -165,7 +193,7 @@ public class SkillManager : Singleton<SkillManager>
         if (skillId == sc.combatId) return 1;
         if (skillId == sc.skill01Id) return 2;
         if (skillId == sc.skill02Id) return 3;
-        if (skillId == sc.memorySkillId) return 0;
+        if (skillId == sc.memorySkillItem.memoryPieceId) return 0;
         return -1;
     }
 
