@@ -60,12 +60,13 @@ public class Enemies
             Enemy.NightBone,
             new SelectorNode(
                 new SequenceNode(new HitNode(), new DieNode()), 
-                new SequenceNode(new TracingNode(), new StopNode(), 
-                    new RandomNode(new()
+                new SequenceNode(
+                    new SequenceNode( new TracingNode(), new MovePlatformNode(), new TracingNode()),
+                    new SequenceNode(new StopNode(), new RandomNode(new()
                     {
-                        (0.3f, new SequenceNode(new ChargingNode(2f), new ExplosionNode())),
+                        (0.2f, new SequenceNode(new ChargingNode(2f), new ExplosionNode())),
                         (1f, new SequenceNode(new MeleeAttack(), new IdleNode(0.5f)))
-                    })), 
+                    }))), 
                 new SequenceNode(new IdleNode(1), new PatrolMove(1)))
         },
         {
@@ -91,14 +92,16 @@ public class Enemies
         {
             Enemy.MudEye,
             new SelectorNode(
-                new SequenceNode(new HitNode(), new DieNode())
+                new SequenceNode(new HitNode(), new DieNode()),
+                new SequenceNode(new IdleNode(1))
                 )
         },
         {
             Enemy.MudChildHand,
             new SelectorNode(
-                new SequenceNode()
-                )
+                new SequenceNode(new HitNode(), new DieNode()),
+                new SequenceNode(new IdleNode(1), new PatrolMove(1))
+            )
         }
     };
 }

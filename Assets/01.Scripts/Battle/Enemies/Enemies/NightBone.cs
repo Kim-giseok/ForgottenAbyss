@@ -48,6 +48,8 @@ public class StopNode : Node
 {
     public override void Start()
     {
+        if(controller.agent.status != EnemyAgent.Status.Tracked) { SetStatus(Status.Fail); return; }
+
         controller.rigidbody.velocity = Vector2.zero;
         SetStatus(Status.Success);
         return;
