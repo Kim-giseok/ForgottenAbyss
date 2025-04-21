@@ -10,7 +10,6 @@ public class BackGround : MonoBehaviour
         set
         {
             transform.position = value;
-            float gap = right.transform.position.x - left.transform.position.x;
             if (Camera.main.transform.position.x < left.transform.position.x)
             {
                 right.transform.position = left.transform.position;
@@ -24,6 +23,8 @@ public class BackGround : MonoBehaviour
         }
     }
 
+    float gap => right.transform.position.x - left.transform.position.x;
+
     public int sortingOrder
     {
         get => right.sortingOrder;
@@ -33,7 +34,14 @@ public class BackGround : MonoBehaviour
     public Sprite sprite
     {
         get => right.sprite;
-        set => right.sprite = left.sprite = value;
+        set
+        {
+            right.sprite = left.sprite = value;
+            right.transform.localPosition = new Vector3(sprite.bounds.extents.x, 0);
+            left.transform.localPosition = new Vector3(-sprite.bounds.extents.x, 0);
+
+            transform.localScale = Vector2.one * (Camera.main.orthographicSize / sprite.bounds.extents.y);
+        }
     }
 
     public SpriteRenderer right, left;
