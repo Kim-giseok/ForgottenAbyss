@@ -12,6 +12,7 @@ public enum StatType
     DEF,
     LEVEL,
     EXP,
+    MaxEXP,
     GOLD
 }
 public class CharacterStatus : MonoBehaviour
