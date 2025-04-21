@@ -28,7 +28,7 @@ public class EnemyController : EnemyBaseController, IDamagable
     
     public void Start()
     {
-        maxHealth = health;
+        maxHealth = health; // 리소스 시스템 구현 필요
         // Debug.Log(name.ToString());
         // 애니메이터 자동 등록
         // animationHandler.SetController(EnemiesAnimator.animators["NightBone"]);
@@ -40,9 +40,11 @@ public class EnemyController : EnemyBaseController, IDamagable
     }
 
 
-    public void GetDamage(float damage) // notice: summon은 제외
+    public void GetDamage(float damage)
     {
         // resourceHandler에서 처리
+        
+        // 방어력 개념도 구현하기
         health -= damage;
         statusHandler.stamina -= 1;
         if (statusHandler.stamina <= 0) { statusHandler.stamina = 3; }

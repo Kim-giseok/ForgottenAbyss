@@ -2,37 +2,60 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
+// 셀 포지션이 곧 world 포지션
+public class Cell
+{
+    public Vector2 WorldPos;
+    public Vector3Int tilePos;
+        
+    public TileBase tile;
+        
+    public bool isWall;
+    public int platformID = -1;
+
+    public Cell(Vector2 worldPos, Vector3Int tilePos, TileBase tile, bool isWall)
+    {
+        this.WorldPos = worldPos;
+        this.tilePos = tilePos;
+            
+        this.tile = tile;
+        this.isWall = isWall;
+    }
+}
+
+public class Platform
+{
+    public int id = -1;
+    public List<Cell> cells = new();
+    public Cell centerCell => cells[cells.Count / 2];
+}
+
 public class NavSurface : MonoBehaviour
 {
-    public Vector2Int area;
-    public List<Cell> cells = new();
-    public LayerMask layerMask;
+    public Dictionary<GameObject, int> targetPlatforms { get; private set; } = new();
+    public static NavSurface Instance;
     
-    public Tilemap tilemap;
+    public Vector2Int area; // 타일맵 자체 너비
+    public List<Cell> cells = new();
+    public List<Platform> platforms = new();
+    
+    public LayerMask layerMask { get; private set; }
+    public Tilemap tilemap { get; private set; }
 
-    // 셀 포지션이 곧 world 포지션
-    public class Cell
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
+    private static void Init()
     {
-        public Vector2 WorldPos;
-        public Vector3Int tilePos;
-        
-        public TileBase tile;
-        
-        public bool isWall;
-        public int platformID = -1;
-
-        public Cell(Vector2 worldPos, Vector3Int tilePos, TileBase tile, bool isWall)
-        {
-            this.WorldPos = worldPos;
-            this.tilePos = tilePos;
-            
-            this.tile = tile;
-            this.isWall = isWall;
-        }
+        if(!Instance) { Instance = FindObjectOfType<NavSurface>(); }
     }
     
     private void Awake()
     {
+        layerMask = gameObject.layer;
+        tilemap = gameObject.GetComponent<Tilemap>();
+        
+        // 타일맵의 가로, 세로 크기 (타일의 수)
+        // Debug.Log(tilemap.cellBounds.size);
+        
         cells.Clear();
         ScanArea();
     }
@@ -45,7 +68,7 @@ public class NavSurface : MonoBehaviour
         {
             // 0,0 이니 하단부터 시작
             var point = new Vector2(transform.position.x + coordX + 0.5f, transform.position.y + coordY + 0.5f);
-            var hit = Physics2D.OverlapBox(point, new Vector2(0.9f, 0.9f), 0f, layerMask);
+            var hit = Physics2D.OverlapBox(point, new Vector2(0.9f, 0.9f), 0f, 1 << layerMask);
             
             if (hit)
             {
@@ -67,8 +90,19 @@ public class NavSurface : MonoBehaviour
         {
             // 왼쪽에 바로 붙은 cell 찾기 (x - 1, y 같은 위치)
             var left = topCells.Find(c => Mathf.Approximately(c.WorldPos.x, cell.WorldPos.x - 1f) && Mathf.Approximately(c.WorldPos.y, cell.WorldPos.y));
-            if (left != null && left.platformID != -1) { cell.platformID = left.platformID; }
-            else { cell.platformID = currentPlatformID++; }
+            if (left != null && left.platformID != -1)
+            {
+                // notice: 비용적 효율을 위해 어떻게 개선해야하는 지 생가해보기
+                cell.platformID = left.platformID;
+                platforms.Find(platform => platform.id == left.platformID).cells.Add(cell);
+            }
+            else
+            {
+                cell.platformID = ++currentPlatformID;
+                Platform newPlatform = new () { id = cell.platformID };
+                newPlatform.cells.Add(cell);
+                platforms.Add(newPlatform);
+            }
         }
     }
     
@@ -78,7 +112,8 @@ public class NavSurface : MonoBehaviour
         return new Color(Random.value, Random.value, Random.value);
     }
     
-    void OnDrawGizmosSelected()
+    // 계속 실행되는 점 확인 필요
+    void OnDrawGizmos()
     {
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireCube(transform.position, new Vector3(area.x, area.y, 1));

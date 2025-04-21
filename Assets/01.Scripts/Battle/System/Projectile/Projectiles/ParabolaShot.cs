@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class ParabolaShot: Projectile
+public class ParabolaShot: BoltController
 {
     private void Start()
     {
