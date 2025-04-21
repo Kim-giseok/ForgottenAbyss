@@ -10,6 +10,7 @@ public class BackGround : MonoBehaviour
         set
         {
             transform.position = value;
+            float gap = right.transform.position.x - left.transform.position.x;
             if (Camera.main.transform.position.x < left.transform.position.x)
             {
                 right.transform.position = left.transform.position;
@@ -23,7 +24,6 @@ public class BackGround : MonoBehaviour
         }
     }
 
-    float gap => right.transform.position.x - left.transform.position.x;
 
     public int sortingOrder
     {
