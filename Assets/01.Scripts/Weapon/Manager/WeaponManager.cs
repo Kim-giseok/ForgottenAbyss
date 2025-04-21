@@ -278,7 +278,7 @@ public class WeaponManager : Singleton<WeaponManager>
     [ContextMenu("DEBUG: 기억 조각 장착")]
     private void Debug_EquipTestMemoryPiece()
     {
-        var testMemorySO = Resources.Load<MemoryPieceSO>("Weapon/MemoryPieceSO");
+        var testMemorySO = Resources.Load<MemoryPieceSO>("Weapon/MemoryPiece01_SO");
         EquipMemoryPiece(testMemorySO);
     }
 #endif
