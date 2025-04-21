@@ -63,6 +63,7 @@ public class PlayerStatus : CharacterStatus
         stats[StatType.DEF] = 10f; //초기 방어력
         stats[StatType.LEVEL] = 1f; //초기 레벨
         stats[StatType.EXP] = 0f; //초기 경험치
+        stats[StatType.MaxEXP] = 0f; //초기 경험치
         stats[StatType.GOLD] = 0f; //초기 골드
     }
 
@@ -92,6 +93,9 @@ public class PlayerStatus : CharacterStatus
             // 경험치 공식 (예: level^2 * 100)
             expRequiredForLevel[level] = level * 100f;
         }
+
+        int currentLevel = (int)stats[StatType.LEVEL];
+        stats[StatType.MaxEXP] = expRequiredForLevel[currentLevel];
     }
 
     // 경험치 획득 메서드
@@ -138,6 +142,12 @@ public class PlayerStatus : CharacterStatus
         // 레벨에 따른 스탯 증가
         ApplyLevelStats(newLevel);
 
+        stats[StatType.CurrentHP] = stats[StatType.MaxHP];
+        stats[StatType.CurrentMP] = stats[StatType.MaxMP];
+
+        int currentLevel = (int)stats[StatType.LEVEL];
+        stats[StatType.MaxEXP] = expRequiredForLevel[currentLevel];
+
         Debug.Log($"현재 레벨: {stats[StatType.LEVEL]}");
         Debug.Log($"HP: {stats[StatType.MaxHP]}");
         Debug.Log($"MP: {stats[StatType.MaxMP]}");
@@ -170,7 +180,7 @@ public class PlayerStatus : CharacterStatus
 
     private void TestExp() //테스트 경험치 획득
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1))
+        if (Input.GetKeyDown(KeyCode.Alpha0))
         {
             GainExperience(50);
         }
