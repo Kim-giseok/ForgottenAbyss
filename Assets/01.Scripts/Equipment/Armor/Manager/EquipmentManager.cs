@@ -62,13 +62,13 @@ public class EquipmentManager : Singleton<EquipmentManager>
     {
         float current = 0;
         playerStatus.stats.TryGetValue(armor.statType, out current);
-        playerStatus.SetStat(armor.statType, current + armor.value);
+        playerStatus.SetStat(armor.statType, current + armor.value);  // 단순 + 인데 %로 바꿔줘도 될듯?
     }
 
     private void RemoveStatBonus(ArmorSO armor)
     {
         float current = 0;
         playerStatus.stats.TryGetValue(armor.statType, out current);
-        playerStatus.SetStat(armor.statType, current - armor.value);
+        playerStatus.SetStat(armor.statType, current - armor.value);  // 단순 - 인데 %로 바꿔줘도 될듯?
     }
 }
