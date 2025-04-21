@@ -5,7 +5,7 @@ public class HitBox : MonoBehaviour // 1회 공격 당의 캐싱이 필요할 �
 {
     private float damage;
     // hitBox 자체는 default Layer 어야 트리거 인식 자체는 하게 된다.
-    private LayerMask? ownerLayer = null;
+    public LayerMask? ownerLayer { get; private set; } = null;
     
     private Collider2D collider;
 
