@@ -143,7 +143,11 @@ public class SkillController : Singleton<SkillController>
 
         if (SkillManager.Instance.GetCurrentMemorySkillData()?.memoryPieceId == skillId)
         {
-            yield return new WaitForSeconds(2.0f);
+            GameManager.Instance.player.controller.isInvincible = true;
+
+            yield return new WaitForSeconds(3.0f);
+
+            GameManager.Instance.player.controller.isInvincible = false;
         }
         else
         {
