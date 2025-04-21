@@ -10,6 +10,8 @@ public class MapSpawnManager : Singleton<MapSpawnManager>
     [SerializeField] CinemachineConfiner2D confiner2D;
     int mapIdx = 0;
     public Map SpawnedMap { get; private set; }
+    public Sprite[] bImages;
+    public SpriteRenderer[] backGrounds;
 
     private void Awake()
     {
@@ -21,7 +23,19 @@ public class MapSpawnManager : Singleton<MapSpawnManager>
     {
         CinemachineVirtualCamera virtualCamera = confiner2D.GetComponent<CinemachineVirtualCamera>();
         virtualCamera.Follow = GameManager.Instance.player.transform;
+        for (int i = 0; i < backGrounds.Length; i++)
+            backGrounds[i].sortingOrder = -100 + i;
         SpawnRandomMap();
+    }
+
+    private void Update()
+    {
+        for(int i = 0; i< backGrounds.Length; i++)
+        {
+            float posX = (SpawnedMap.transform.position - Camera.main.transform.position).x * i / backGrounds.Length;
+            Vector3 newPosition = Camera.main.transform.position - Vector3.left * posX;
+            backGrounds[i].transform.position = new Vector3(newPosition.x, newPosition.y);
+        }
     }
 
     public void SpawnRandomMap()
