@@ -10,8 +10,9 @@ public class MapSpawnManager : Singleton<MapSpawnManager>
     [SerializeField] CinemachineConfiner2D confiner2D;
     int mapIdx = 0;
     public Map SpawnedMap { get; private set; }
-    public Sprite[] bImages;
-    public SpriteRenderer[] backGrounds;
+    public Sprite[] backgroundSprites;
+    public BackGround backgroundprefeb;
+    public BackGround[] backgrounds;
 
     private void Awake()
     {
@@ -23,22 +24,17 @@ public class MapSpawnManager : Singleton<MapSpawnManager>
     {
         CinemachineVirtualCamera virtualCamera = confiner2D.GetComponent<CinemachineVirtualCamera>();
         virtualCamera.Follow = GameManager.Instance.player.transform;
-        for (int i = 0; i < backGrounds.Length; i++)
-            backGrounds[i].sortingOrder = -100 + i;
-        SpawnRandomMap();
+
+        SpawnBackground();
+        SpawnNextMap();
     }
 
     private void Update()
     {
-        for(int i = 0; i< backGrounds.Length; i++)
-        {
-            float posX = (SpawnedMap.transform.position - Camera.main.transform.position).x * i / backGrounds.Length;
-            Vector3 newPosition = Camera.main.transform.position - Vector3.left * posX;
-            backGrounds[i].transform.position = new Vector3(newPosition.x, newPosition.y);
-        }
+        ParrallexScrollBackground();
     }
 
-    public void SpawnRandomMap()
+    public void SpawnNextMap()
     {
         if (mapIdx >= maps.Length)
         {
@@ -52,5 +48,26 @@ public class MapSpawnManager : Singleton<MapSpawnManager>
         SpawnedMap = Instantiate(maps[mapIdx++]);
         SpawnedMap.MapStart();
         confiner2D.m_BoundingShape2D = SpawnedMap.CameraCollider;
+    }
+
+    void SpawnBackground()
+    {
+        backgrounds = new BackGround[backgroundSprites.Length];
+        for (int i = 0; i < backgroundSprites.Length; i++)
+        {
+            backgrounds[i] = Instantiate(backgroundprefeb, Vector3.zero, Quaternion.identity);
+            backgrounds[i].sprite = backgroundSprites[i];
+            backgrounds[i].sortingOrder = -100 + i;
+        }
+    }
+
+    void ParrallexScrollBackground()
+    {
+        for (int i = 0; i < backgrounds.Length; i++)
+        {
+            float posX = (SpawnedMap.transform.position - Camera.main.transform.position).x * i / backgrounds.Length;
+            Vector3 newPosition = Camera.main.transform.position - Vector3.left * posX;
+            backgrounds[i].position = new Vector3(newPosition.x, newPosition.y);
+        }
     }
 }
