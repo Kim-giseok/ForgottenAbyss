@@ -6,7 +6,7 @@ using UnityEngine;
 public class Enemies
 {
     // notice: enum을 추가하면 한칸씩 밀리는 현상 발생
-    public enum Enemy { Test, Agis, Archer, Ghost, GhostChild, Gunner, NightBone, SwordShadow, Wizard }
+    public enum Enemy { Test, Agis, Archer, Ghost, GhostChild, Gunner, NightBone, SwordShadow, Wizard, MudEye, MudChildHand }
     public static Node Get(Enemy enemy) => behaviour[enemy];
 
     private static Dictionary<Enemy, Node> behaviour = new()
@@ -47,6 +47,7 @@ public class Enemies
                     new ChargingNode(1f),
                     new RandomNode(new()
                     {
+                        // 스킬을 사용한 경우 마나와 쿨타임 정보 가지는 방식 필요
                         // 연속 공격이 왜 안됨(애님메이션 관련 문제)
                         (0.2f, new SequenceNode( new RangeAttackNode(1), new IdleNode(0.05f), new RangeAttackNode(1))),
                         (1f, new RangeAttackNode(1))
@@ -85,6 +86,18 @@ public class Enemies
             new SelectorNode(
                 new SequenceNode(new HitNode(), new DieNode()), 
                     new SequenceNode(new IdleNode(4), new HealNode())
+                )
+        },
+        {
+            Enemy.MudEye,
+            new SelectorNode(
+                new SequenceNode(new HitNode(), new DieNode())
+                )
+        },
+        {
+            Enemy.MudChildHand,
+            new SelectorNode(
+                new SequenceNode()
                 )
         }
     };
