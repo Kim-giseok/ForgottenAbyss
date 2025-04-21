@@ -4,6 +4,8 @@ using UnityEngine;
 
 public abstract class BoltController: MonoBehaviour
 {
+    public HitBox hitBox;
+    
     protected float currTime;  
     
     public float duration; // Node가 자체적으로 가진다.
@@ -32,6 +34,8 @@ public abstract class BoltController: MonoBehaviour
         rigidbody = GetComponent<Rigidbody2D>();
         collider = GetComponent<Collider2D>();
         renderer = GetComponent<SpriteRenderer>();
+        
+        hitBox = GetComponent<HitBox>();
     }
 
     protected void Update()
@@ -57,10 +61,12 @@ public abstract class BoltController: MonoBehaviour
 
     protected virtual void OnTriggerEnter2D(Collider2D other)
     {
-        // 그라운드, 플레이어, 에너미 와의 충돌이 아닌 경우 무시 필요(임시 해결)
-        if (other.gameObject.layer == LayerMask.NameToLayer("Default")) return;
-
-        if (gameObject.layer == other.gameObject.layer) return;
+        // 그라운드, 플레이어, 에너미 와의 충돌이 아닌 경우 무시 필요(임시 해결) // 총알끼리 부딪힘
+        if (other.gameObject.layer == LayerMask.NameToLayer("Default") || other.gameObject.layer == gameObject.layer) return;
+        
+        // 레이어 자체는 모두 감지가 필요하므로 충돌 비교 레이어를 필드로 따로 둠
+        if (hitBox.ownerLayer == other.gameObject.layer) return;
+       
         ProjectileManager.Instance.DestroyProjectile(gameObject);
 
         foreach (BoltEffect effect in effects)
