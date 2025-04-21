@@ -9,27 +9,27 @@ using UnityEngine.SocialPlatforms;
 public class ControllerPlayer : MonoBehaviour
 {
     public Vector2 inputVec;
-    public float speed; //ÀÌµ¿¼Óµµ
-    public float jumpPower; //Á¡ÇÁ·Â
-    public float dashDistance; //´ë½¬°Å¸®
-    public float dashTime; //´ë½¬Áö¼Ó½Ã°£
-    public int jumplimit; //Á¡ÇÁ °¡´É È½¼ö
-    public int currentJumpCount; //ÇöÀç Á¡ÇÁ È½¼ö
-    public LayerMask platformLayerMask; //Á¡ÇÁ Áß ¹«½ÃÇÒ ÇÃ·§Æû ·¹ÀÌ¾î
-    public LayerMask invincibilityLayerMask; //¹«Àû »óÅÂ¿¡¼­ ¹«½ÃÇÒ ·¹ÀÌ¾î
+    public float speed; //ï¿½Ìµï¿½ï¿½Óµï¿½
+    public float jumpPower; //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    public float dashDistance; //ï¿½ë½¬ï¿½Å¸ï¿½
+    public float dashTime; //ï¿½ë½¬ï¿½ï¿½ï¿½Ó½Ã°ï¿½
+    public int jumplimit; //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ È½ï¿½ï¿½
+    public int currentJumpCount; //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ È½ï¿½ï¿½
+    public LayerMask platformLayerMask; //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ì¾ï¿½
+    public LayerMask invincibilityLayerMask; //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Â¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ì¾ï¿½
 
-    //public LayerMask wallLayer; //º® °¨Áö ·¹ÀÌ¾î
-    //public float wallDistance; //º® °¨Áö °Å¸®
+    //public LayerMask wallLayer; //ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ì¾ï¿½
+    //public float wallDistance; //ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Å¸ï¿½
 
-    //public bool isWallDetected; //º® °¨Áö ¿©ºÎ
-    //public bool isWallClimbing; //µî¹Ý °¡´ÉÇÑ º®ÀÎÁö ¿©ºÎ
+    //public bool isWallDetected; //ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+    //public bool isWallClimbing; //ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     //public RaycastHit2D wallHit;
 
-    public bool isGround; //¶¥ ¹â°í ÀÖ´ÂÁö ¿©ºÎ
-    public bool isDashing = false; //´ë½¬ ¿©ºÎ
-    public bool isAttacking = false; //°ø°Ý ¿©ºÎ
-    //public bool isIgnoringCollision = false; //ÄÝ¶óÀÌ´õ Ãæµ¹ ¹«½Ã ¿©ºÎ
-    public bool isInvincible = false; //¹«Àû »óÅÂ ¿©ºÎ
+    public bool isGround; //ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+    public bool isDashing = false; //ï¿½ë½¬ ï¿½ï¿½ï¿½ï¿½
+    public bool isAttacking = false; //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+    //public bool isIgnoringCollision = false; //ï¿½Ý¶ï¿½ï¿½Ì´ï¿½ ï¿½æµ¹ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+    public bool isInvincible = false; //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     private bool dashBuffered = false;
     public bool isAlive = true;
 
@@ -40,7 +40,7 @@ public class ControllerPlayer : MonoBehaviour
 
     public PlayerInteraction interaction;
 
-    // FSM °ü·Ã º¯¼ö
+    // FSM ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     private Dictionary<PlayerState, PlayerStateMachine> states = new Dictionary<PlayerState, PlayerStateMachine>();
     public PlayerState currentState;
     public PlayerState previousState;
@@ -59,13 +59,13 @@ public class ControllerPlayer : MonoBehaviour
         playerCollider = GetComponent<Collider2D>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
 
-        // »óÅÂ ¸Ó½Å ÃÊ±âÈ­
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½Ó½ï¿½ ï¿½Ê±ï¿½È­
         InitStateMachine();
     }
 
     private void InitStateMachine()
     {
-        // »óÅÂ µî·Ï
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
         states.Add(PlayerState.Idle, new IdleState(this));
         states.Add(PlayerState.Run, new RunState(this));
         states.Add(PlayerState.Jump, new JumpState(this));
@@ -75,7 +75,7 @@ public class ControllerPlayer : MonoBehaviour
         states.Add(PlayerState.Climb, new ClimbState(this));
         states.Add(PlayerState.Slide, new SlideState(this));
 
-        // ÃÊ±â »óÅÂ ¼³Á¤
+        // ï¿½Ê±ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         if (currentState == 0 || !states.ContainsKey(currentState))
         {
             ChangeState(PlayerState.Idle);
@@ -91,7 +91,7 @@ public class ControllerPlayer : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("FirePoint¸¦ Ã£À» ¼ö ¾ø½À´Ï´Ù!");
+            Debug.LogWarning("FirePointï¿½ï¿½ Ã£ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½!");
         }
     }
 
@@ -101,16 +101,16 @@ public class ControllerPlayer : MonoBehaviour
 
         previousState = currentState;
 
-        // ÇöÀç »óÅÂ°¡ ÀÖ´Ù¸é Exit È£Ãâ
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Â°ï¿½ ï¿½Ö´Ù¸ï¿½ Exit È£ï¿½ï¿½
         if (states.ContainsKey(currentState))
         {
             states[currentState].Exit();
         }
 
-        // »óÅÂ º¯°æ
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         currentState = newState;
 
-        // »õ »óÅÂÀÇ Enter È£Ãâ
+        // ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Enter È£ï¿½ï¿½
         if (states.ContainsKey(currentState))
         {
             states[currentState].Enter();
@@ -119,7 +119,7 @@ public class ControllerPlayer : MonoBehaviour
 
     private void Update()
     {
-        // ÇöÀç »óÅÂ ¾÷µ¥ÀÌÆ®
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
         if (states.ContainsKey(currentState))
         {
             states[currentState].Update();
@@ -161,7 +161,7 @@ public class ControllerPlayer : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        // ÇöÀç »óÅÂ FixedUpdate
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ FixedUpdate
         if (states.ContainsKey(currentState))
         {
             states[currentState].FixedUpdate();
@@ -188,10 +188,10 @@ public class ControllerPlayer : MonoBehaviour
 
     //void OnJump(InputValue value)
     //{
-    //    if (value.isPressed && !isAttacking && currentJumpCount < jumplimit) //Á¡ÇÁ °¡´É Á¶°Ç
+    //    if (value.isPressed && !isAttacking && currentJumpCount < jumplimit) //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     //        if (isGround)
     //        {
-    //            rigid.velocity = new Vector2(rigid.velocity.x, 0); // yÃà ¼Óµµ ÃÊ±âÈ­
+    //            rigid.velocity = new Vector2(rigid.velocity.x, 0); // yï¿½ï¿½ ï¿½Óµï¿½ ï¿½Ê±ï¿½È­
     //            rigid.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
     //            isGround = false;
     //            animator.SetBool("IsJump", true);
@@ -202,7 +202,7 @@ public class ControllerPlayer : MonoBehaviour
     //        }
     //        else if (currentJumpCount < jumplimit)
     //        {
-    //            rigid.velocity = new Vector2(rigid.velocity.x, 0); // yÃà ¼Óµµ ÃÊ±âÈ­
+    //            rigid.velocity = new Vector2(rigid.velocity.x, 0); // yï¿½ï¿½ ï¿½Óµï¿½ ï¿½Ê±ï¿½È­
     //            rigid.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
     //            currentJumpCount++;
     //        }
@@ -212,7 +212,7 @@ public class ControllerPlayer : MonoBehaviour
         if (!isAlive) return;
         if (value.isPressed)
         {
-            // ÇöÀç »óÅÂ¿¡ Á¡ÇÁ ÀÔ·Â Àü´Þ
+            // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Â¿ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ô·ï¿½ ï¿½ï¿½ï¿½ï¿½
             if (states.ContainsKey(currentState))
             {
                 states[currentState].OnJump();
@@ -220,7 +220,7 @@ public class ControllerPlayer : MonoBehaviour
         }
     }
 
-    void OnDash(InputValue value) //´ë½¬ Å° ÀÔ·Â
+    void OnDash(InputValue value) //ï¿½ë½¬ Å° ï¿½Ô·ï¿½
     {
         if (!isAlive) return;
         AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
@@ -234,7 +234,7 @@ public class ControllerPlayer : MonoBehaviour
             }
             else
             {
-                // ÅÏ ¾Ö´Ï¸ÞÀÌ¼ÇÀÌ ¾Æ´Ï¸é ¹Ù·Î ´ë½Ã ½ÇÇà
+                // ï¿½ï¿½ ï¿½Ö´Ï¸ï¿½ï¿½Ì¼ï¿½ï¿½ï¿½ ï¿½Æ´Ï¸ï¿½ ï¿½Ù·ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
                 if (states.ContainsKey(currentState))
                 {
                     states[currentState].OnDash();
@@ -243,7 +243,7 @@ public class ControllerPlayer : MonoBehaviour
         }
     }
 
-    //public void OnAttack(InputValue value) //ÀÏ¹Ý°ø°Ý Å° ÀÔ·Â
+    //public void OnAttack(InputValue value) //ï¿½Ï¹Ý°ï¿½ï¿½ï¿½ Å° ï¿½Ô·ï¿½
     //{
     //    if (value.isPressed && !isDashing && !isAttacking )
     //    {
@@ -251,22 +251,22 @@ public class ControllerPlayer : MonoBehaviour
     //    }
     //}
 
-    //void OnFirstSkill() //1¹ø½ºÅ³ Å° ÀÔ·Â
+    //void OnFirstSkill() //1ï¿½ï¿½ï¿½ï¿½Å³ Å° ï¿½Ô·ï¿½
     //{
-    //    Debug.Log("S: ½ºÅ³1");
+    //    Debug.Log("S: ï¿½ï¿½Å³1");
     //}
 
-    //void OnSecondSkill() //2¹ø½ºÅ³ Å° ÀÔ·Â
+    //void OnSecondSkill() //2ï¿½ï¿½ï¿½ï¿½Å³ Å° ï¿½Ô·ï¿½
     //{
-    //    Debug.Log("D: ½ºÅ³2");
+    //    Debug.Log("D: ï¿½ï¿½Å³2");
     //}
 
-    //void OnSpecialSkill() //Æ¯¼ö½ºÅ³ Å° ÀÔ·Â
+    //void OnSpecialSkill() //Æ¯ï¿½ï¿½ï¿½ï¿½Å³ Å° ï¿½Ô·ï¿½
     //{
-    //    Debug.Log("R: Æ¯¼ö ½ºÅ³");
+    //    Debug.Log("R: Æ¯ï¿½ï¿½ ï¿½ï¿½Å³");
     //}
 
-    void OnInteraction() //»óÈ£ ÀÛ¿ë Å° ÀÔ·Â
+    void OnInteraction() //ï¿½ï¿½È£ ï¿½Û¿ï¿½ Å° ï¿½Ô·ï¿½
     {
         if (!isAlive) return;
         //Vector2 origin = transform.position;
@@ -276,26 +276,26 @@ public class ControllerPlayer : MonoBehaviour
         {
             states[currentState].OnInteraction();
         }
-        Debug.Log("F: »óÈ£ÀÛ¿ë");
+        Debug.Log("F: ï¿½ï¿½È£ï¿½Û¿ï¿½");
     }
 
-    void OnInventory() //ÀÎº¥Åä¸® Å° ÀÔ·Â
+    void OnInventory() //ï¿½Îºï¿½ï¿½ä¸® Å° ï¿½Ô·ï¿½
     {
-        Debug.Log("I: ÀÎº¥Åä¸® ¿­±â");
+        Debug.Log("I: ï¿½Îºï¿½ï¿½ä¸® ï¿½ï¿½ï¿½ï¿½");
     }
 
-    void OnMenu() //¸Þ´º Å° ÀÔ·Â
+    void OnMenu() //ï¿½Þ´ï¿½ Å° ï¿½Ô·ï¿½
     {
-        Debug.Log("Esc: ¸Þ´ºÃ¢ ¿­±â");
+        Debug.Log("Esc: ï¿½Þ´ï¿½Ã¢ ï¿½ï¿½ï¿½ï¿½");
     }
 
-    void OnOtherWeapon() //¹«±âº¯È¯ Å° ÀÔ·Â
+    void OnOtherWeapon() //ï¿½ï¿½ï¿½âº¯È¯ Å° ï¿½Ô·ï¿½
     {
         WeaponManager.Instance.SwapWeapon();
-        Debug.Log("Z: ´Ù¸¥¹«±â·Î º¯È¯");
+        Debug.Log("Z: ï¿½Ù¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¯");
     }
 
-    public void UpdateDirection() //¹æÇâ ÀüÈ¯
+    public void UpdateDirection() //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¯
     {
         AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
 
@@ -305,7 +305,7 @@ public class ControllerPlayer : MonoBehaviour
 
         if (inputVec.x < 0 && isFacingRight && !isAttack)
         {
-            // ¿À¸¥ÂÊ ¡æ ¿ÞÂÊÀ¸·Î ¹Ù²ñ
+            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ù²ï¿½
             isFacingRight = false;
             transform.localEulerAngles = new Vector3(0, 180, 0);
 
@@ -314,7 +314,7 @@ public class ControllerPlayer : MonoBehaviour
         }
         else if (inputVec.x > 0 && !isFacingRight && !isAttack)
         {
-            // ¿ÞÂÊ ¡æ ¿À¸¥ÂÊÀ¸·Î ¹Ù²ñ
+            // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ù²ï¿½
             isFacingRight = true;
             transform.localEulerAngles = new Vector3(0, 0, 0);
 
@@ -325,11 +325,11 @@ public class ControllerPlayer : MonoBehaviour
 
     public void OnCollisionEnter2D(Collision2D collision)
     {
-        //// ¹«Àû »óÅÂÀÏ ¶§´Â Ãæµ¹ ¹«½Ã
+        //// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½æµ¹ ï¿½ï¿½ï¿½ï¿½
         //if (isInvincible && ((1 << collision.gameObject.layer) & invincibilityLayerMask) != 0)
         //{
         //    Debug.Log("1");
-        //    // ÀûÀÌ³ª Åõ»çÃ¼ µî°úÀÇ Ãæµ¹ ¹«½Ã
+        //    // ï¿½ï¿½ï¿½Ì³ï¿½ ï¿½ï¿½ï¿½ï¿½Ã¼ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½æµ¹ ï¿½ï¿½ï¿½ï¿½
         //    Physics2D.IgnoreCollision(playerCollider, collision.collider, true);
         //    return;
         //}
@@ -340,19 +340,19 @@ public class ControllerPlayer : MonoBehaviour
         //    animator.SetBool("IsJump", false);
         //    currentJumpCount = 0;
 
-        //    if (isIgnoringCollision) //¶¥¿¡ ´êÀ¸¸é ¹«½Ã »óÅÂ ÇØÁ¦
+        //    if (isIgnoringCollision) //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         //    {
         //        StartCoroutine(IgnorePlatformCollision(false));
         //        isIgnoringCollision = false;
         //    }
         //}
-        //else if (isIgnoringCollision) //´Ù¸¥ ¹°Ã¼¿Í Ãæµ¹ ½Ã ¹«½Ã »óÅÂ ÇØÁ¦
+        //else if (isIgnoringCollision) //ï¿½Ù¸ï¿½ ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½æµ¹ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         //{
         //    StartCoroutine(IgnorePlatformCollision(false));
         //    isIgnoringCollision = false;
         //}
 
-        // ÇöÀç »óÅÂ¿¡ Ãæµ¹ ÀÌº¥Æ® Àü´Þ
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Â¿ï¿½ ï¿½æµ¹ ï¿½Ìºï¿½Æ® ï¿½ï¿½ï¿½ï¿½
         if (states.ContainsKey(currentState))
         {
             states[currentState].OnCollisionEnter(collision);
@@ -394,7 +394,7 @@ public class ControllerPlayer : MonoBehaviour
 
     public void OnCollisionExit2D(Collision2D collision)
     {
-        // ÇöÀç »óÅÂ¿¡ Ãæµ¹ Á¾·á ÀÌº¥Æ® Àü´Þ
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Â¿ï¿½ ï¿½æµ¹ ï¿½ï¿½ï¿½ï¿½ ï¿½Ìºï¿½Æ® ï¿½ï¿½ï¿½ï¿½
         if (states.ContainsKey(currentState))
         {
             states[currentState].OnCollisionExit(collision);
@@ -428,14 +428,14 @@ public class ControllerPlayer : MonoBehaviour
     {
         this.isInvincible = isInvincible;
 
-        // ¹«Àû »óÅÂ Åõ¸íµµ Á¶Àý
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         if (isInvincible)
         {
             StartCoroutine(InvincibleEffect());
 
             Collider2D[] Colliders = Physics2D.OverlapCircleAll(transform.position, 10f, invincibilityLayerMask);
 
-            foreach (Collider2D Collider in Colliders) //ÄÝ¶óÀÌ´õ ¹«½Ã
+            foreach (Collider2D Collider in Colliders) //ï¿½Ý¶ï¿½ï¿½Ì´ï¿½ ï¿½ï¿½ï¿½ï¿½
             {
                 if (Collider != null )
                 {
@@ -445,21 +445,21 @@ public class ControllerPlayer : MonoBehaviour
         }
         else
         {
-            // ¹«Àû ÇØÁ¦ ½Ã ¿ø·¡ »óÅÂ·Î º¹±Í
+            // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Â·ï¿½ ï¿½ï¿½ï¿½ï¿½
             spriteRenderer.color = new Color(1f, 1f, 1f, 1f);
-            ResetIgnoredCollision(); //¹«Àû »óÅÂ ÇØÁ¦
+            ResetIgnoredCollision(); //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         }
 
         //if (!isInvincible)
         //{
-        //    ResetIgnoredCollision(); //¹«Àû »óÅÂ ÇØÁ¦
+        //    ResetIgnoredCollision(); //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         //}
 
     }
 
-    public void ResetIgnoredCollision() //¹«Àû »óÅÂ ÇØÁ¦
+    public void ResetIgnoredCollision() //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     {
-        // ¹«Àû Áß¿¡ ¹«½ÃÇß´ø ¸ðµç ÄÝ¶óÀÌ´õ¿ÍÀÇ Ãæµ¹ ¼³Á¤ ÃÊ±âÈ­
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ß¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ß´ï¿½ ï¿½ï¿½ï¿½ ï¿½Ý¶ï¿½ï¿½Ì´ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½æµ¹ ï¿½ï¿½ï¿½ï¿½ ï¿½Ê±ï¿½È­
         Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, 10f, invincibilityLayerMask);
 
         foreach (Collider2D collider in colliders)
@@ -477,25 +477,25 @@ public class ControllerPlayer : MonoBehaviour
 
     //    if(isWallDetected = wallHit.collider != null)
     //    {
-    //        Debug.Log("º®°¨Áö"); 
+    //        Debug.Log("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"); 
     //    }
     //}
 
     //public IEnumerator Dash()
     //{
-    //    isDashing = true; //´ë½¬ ½ÃÀÛ
-    //    SetInvincibility(true); //¹«Àû »óÅÂ ½ÃÀÛ
+    //    isDashing = true; //ï¿½ë½¬ ï¿½ï¿½ï¿½ï¿½
+    //    SetInvincibility(true); //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
-    //    Vector2 dashDirection = new Vector2(inputVec.x, 0); //ÇöÀç ÀÌµ¿ ¹æÇâ
+    //    Vector2 dashDirection = new Vector2(inputVec.x, 0); //ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½ ï¿½ï¿½ï¿½ï¿½
     //    rigid.velocity = new Vector2(dashDirection.x * dashDistance / dashTime, rigid.velocity.y);
 
 
     //    yield return new WaitForSeconds(dashTime);
 
-    //    isDashing = false; //´ë½¬ Á¾·á
-    //    SetInvincibility(false); //¹«Àû »óÅÂ Á¾·á
+    //    isDashing = false; //ï¿½ë½¬ ï¿½ï¿½ï¿½ï¿½
+    //    SetInvincibility(false); //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
-    //    rigid.velocity = new Vector2(inputVec.x * speed, rigid.velocity.y); //¿ø·¡ ¼Óµµ·Î º¹±Í
+    //    rigid.velocity = new Vector2(inputVec.x * speed, rigid.velocity.y); //ï¿½ï¿½ï¿½ï¿½ ï¿½Óµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     //}
 
     public IEnumerator Attack()
@@ -507,15 +507,15 @@ public class ControllerPlayer : MonoBehaviour
 
         yield return new WaitForSeconds(0.35f);
 
-        ProjectileManager.Instance.CreateMeleeProjectile(transform, 10);
+        BoltManager.Instance.CreateMelee(transform, 10);
 
         yield return new WaitForSeconds(0.1f);
               
         isAttacking = false;
         animator.SetBool("IsAttacking", false);
-        ProjectileManager.Instance.DestroyMeleeProjectile(transform);
+        BoltManager.Instance.DestroyMelee(transform);
 
-        // °ø°Ý Á¾·á ÈÄ ¹æÇâÅ°°¡ ¿©ÀüÈ÷ ´­·ÁÀÖ´Ù¸é ¼Óµµ º¹¿ø
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Å°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ö´Ù¸ï¿½ ï¿½Óµï¿½ ï¿½ï¿½ï¿½ï¿½
         if (inputVec.x != 0)
         {
             animator.SetBool("IsRun", true);
@@ -527,7 +527,7 @@ public class ControllerPlayer : MonoBehaviour
     {
         Collider2D[] platformColliders = Physics2D.OverlapCircleAll(transform.position, 10f, platformLayerMask);
 
-        foreach (Collider2D platformCollider in platformColliders) //ÄÝ¶óÀÌ´õ ¹«½Ã
+        foreach (Collider2D platformCollider in platformColliders) //ï¿½Ý¶ï¿½ï¿½Ì´ï¿½ ï¿½ï¿½ï¿½ï¿½
         {
             if (rigid.velocity.y < 0)
             {
@@ -540,14 +540,14 @@ public class ControllerPlayer : MonoBehaviour
         }
     }
 
-    //public IEnumerator IgnorePlatformCollision(bool ignore) //ÇÃ·§Æû ÄÝ¶óÀÌ´õ ¹«½Ã
+    //public IEnumerator IgnorePlatformCollision(bool ignore) //ï¿½Ã·ï¿½ï¿½ï¿½ ï¿½Ý¶ï¿½ï¿½Ì´ï¿½ ï¿½ï¿½ï¿½ï¿½
     //{
     //    isIgnoringCollision = ignore;
 
-    //    //ÇÃ·§Æû ·¹ÀÌ¾îÀÇ ¸ðµç ÄÝ¶óÀÌ´õ Ã£±â
+    //    //ï¿½Ã·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ì¾ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½Ý¶ï¿½ï¿½Ì´ï¿½ Ã£ï¿½ï¿½
     //    Collider2D[] platformColliders = Physics2D.OverlapCircleAll(transform.position, 10f, platformLayerMask);
 
-    //    foreach (Collider2D platformCollider in platformColliders) //ÄÝ¶óÀÌ´õ ¹«½Ã
+    //    foreach (Collider2D platformCollider in platformColliders) //ï¿½Ý¶ï¿½ï¿½Ì´ï¿½ ï¿½ï¿½ï¿½ï¿½
     //    {
     //        if(platformCollider != null && platformCollider.CompareTag("Ground"))
     //        {
@@ -558,7 +558,7 @@ public class ControllerPlayer : MonoBehaviour
     //    yield return null;
     //}
 
-    //public IEnumerator ResetIgnoreCollision(float delay) //ÄÝ¶óÀÌ´õ ¹«½Ã »óÅÂ ÃÊ±âÈ­
+    //public IEnumerator ResetIgnoreCollision(float delay) //ï¿½Ý¶ï¿½ï¿½Ì´ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ê±ï¿½È­
     //{
     //    yield return new WaitForSeconds(delay);
 

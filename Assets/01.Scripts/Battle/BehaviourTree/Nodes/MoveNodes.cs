@@ -13,7 +13,7 @@ public class IdleNode : Node
     public override void Start()
     {
         controller.rigidbody.velocity = new Vector2(0, controller.rigidbody.velocity.y);
-        controller.animationHandler.Play("Idle");
+        controller.animnHandler.Play("Idle");
     }
 
     public override void Update()
@@ -48,7 +48,7 @@ public class PatrolMove : Node
             SetStatus(Status.Fail); return;
         } 
      
-        controller.animationHandler.Play("Run");
+        controller.animnHandler.Play("Run");
     }
 
     public override void Update()
@@ -82,7 +82,7 @@ public class TracingNode : Node
         // 추적이 완료되면 무한 재귀 발생
         if(controller.agent.status == EnemyAgent.Status.None) { SetStatus(Status.Fail); return; }
         if(controller.agent.status == EnemyAgent.Status.Tracked) { SetStatus(Status.Success); return; }
-        controller.animationHandler.Play("Run");
+        controller.animnHandler.Play("Run");
     }
     
     public override void Update()
@@ -94,12 +94,12 @@ public class TracingNode : Node
         
         // NavSurface.Instance.targetPlatforms.ContainsKey(controller.agent.target)
         
-        if (NavSurface.Instance.targetPlatforms[controller.agent.target] !=
-            NavSurface.Instance.targetPlatforms[controller.gameObject])
-        {
-            // 플랫폼 이동과 추적 간의 순서는 좀 더 생각해보기
-            SetStatus(Status.Success);            
-        }
+        // if (NavSurface.Instance.targetPlatforms[controller.agent.target] !=
+        //     NavSurface.Instance.targetPlatforms[controller.gameObject])
+        // {
+        //     // 플랫폼 이동과 추적 간의 순서는 좀 더 생각해보기
+        //     SetStatus(Status.Success);            
+        // }
         
         controller.rigidbody.velocity = new Vector2(controller.agent.GetDirection().x * controller.agent.tracingSpeed, controller.rigidbody.velocity.y);
     }

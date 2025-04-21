@@ -17,7 +17,7 @@ public class SpreadShotNode : Node
         for (int degree = 0; degree <= 360; degree += 20)
         {
             // 튕기는 발사체가 좋을 듯
-            ProjectileManager.Instance.CreateProjectile(controller.transform, 10f, degree: degree, index: 1);
+            BoltManager.Instance.CreateProjectile(controller.transform, 10f, degree: degree, index: 1);
         }
     }
 
@@ -36,7 +36,7 @@ public class SummoningAllNode : Node
 {
     public override void Start()
     {
-        ProjectileManager.Instance.CreateSummon(controller.transform, SummonSkillManager.Skill.BossSkill, false);
+        BoltManager.Instance.CreateSummon(controller.transform, SummonSkillManager.Skill.BossSkill, false);
     }
 
     public override void Update()
@@ -49,7 +49,7 @@ public class SummoningNode : Node
 {
     public override void Start()
     {
-        ProjectileManager.Instance.CreateSummon(controller.transform, SummonSkillManager.Skill.BossSkill2, false);
+        BoltManager.Instance.CreateSummon(controller.transform, SummonSkillManager.Skill.BossSkill2, false);
         // ProjectileManager.Instance.CreateSummon(controller.transform, SummonSkillManager.Skill.BossSkill3, false);
     }
 
@@ -80,7 +80,7 @@ public class MoveNode : Node
 
     public override void Start()
     {
-        controller.animationHandler.Play("Run");
+        controller.animnHandler.Play("Run");
     }
     
     public override void Update()
@@ -92,7 +92,7 @@ public class MoveNode : Node
         
         if (!Mathf.Approximately(Mathf.Floor(currTime / 3), Mathf.Floor((currTime - Time.deltaTime) / 3)))
         {
-            ProjectileManager.Instance.CreateSummon(controller.transform, SummonSkillManager.Skill.BossSkill, false);
+            BoltManager.Instance.CreateSummon(controller.transform, SummonSkillManager.Skill.BossSkill, false);
         }
         
         controller.rigidbody.velocity = new Vector2(velocityX, controller.rigidbody.velocity.y);

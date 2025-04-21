@@ -12,7 +12,7 @@ public class RangeMultiAttackNode : Node
     }
     public override void Start()
     {
-        controller.animationHandler.Play("Attack");
+        controller.animnHandler.Play("Attack");
         controller.LookTarget();
     }
     
@@ -23,7 +23,7 @@ public class RangeMultiAttackNode : Node
         {
             for (int currDegree = -20; currDegree <= 20; currDegree += 10)
             {
-                ProjectileManager.Instance.CreateProjectile(controller.transform, 10, index: index, degree: ProjectileManager.GetDegreeByDirection(controller.agent.GetDirection()) + currDegree);
+                BoltManager.Instance.CreateProjectile(controller.transform, 10, index: index, degree: BoltManager.GetDegreeByDirection(controller.agent.GetDirection()) + currDegree);
             }
         }
     }
@@ -39,7 +39,7 @@ public class PlayRollingAnimation : Node
 {
     public override void Start()
     {
-        controller.animationHandler.Play("Rolling");
+        controller.animnHandler.Play("Rolling");
     }
 
     public override void OnAnimated(AnimationStatus status, AnimatorStateInfo animInfo)

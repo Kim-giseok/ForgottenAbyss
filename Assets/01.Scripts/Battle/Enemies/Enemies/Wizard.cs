@@ -6,13 +6,13 @@ public class HealNode : Node
 {
     public override void Start()
     {
-        controller.animationHandler.Play("Heal");
+        controller.animnHandler.Play("Heal");
         Collider2D[] hits = Physics2D.OverlapCircleAll(controller.transform.position, 200f, LayerMask.GetMask("Enemy"));
         foreach (var hit in hits)
         {
             if (hit.gameObject == controller.gameObject) continue;
             if (!hit.TryGetComponent(out EnemyController econtoller)) continue;
-            ProjectileManager.Instance.CreateProjectile(hit.transform, 0, index: 2);
+            BoltManager.Instance.CreateProjectile(hit.transform, 0, index: 2);
             if(econtoller.health <= 30) econtoller.health += 10;
         }
     }

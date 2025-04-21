@@ -9,7 +9,7 @@ public class MeleeAttack : Node
     public override void Start()
     {
         controller.LookTarget();
-        controller.animationHandler.Play("Attack");
+        controller.animnHandler.Play("Attack");
     }
 
     public override void OnAnimatedEvent(bool isFire)
@@ -17,11 +17,11 @@ public class MeleeAttack : Node
         if (isFire)
         {
             // 데미지나 사이즈등은 추상화로 접급
-            ProjectileManager.Instance.CreateMeleeProjectile(controller.transform, controller.combatHandler.power);
+            BoltManager.Instance.CreateMelee(controller.transform, controller.combatHandler.power);
         }
         else
         {
-            ProjectileManager.Instance.DestroyMeleeProjectile(controller.transform);
+            BoltManager.Instance.DestroyMelee(controller.transform);
         }
     }
 
@@ -34,7 +34,7 @@ public class MeleeAttack : Node
     
     public override void End() // notice: 공격 중 피격 당하는 경우
     {
-        ProjectileManager.Instance.DestroyMeleeProjectile(controller.transform);
+        BoltManager.Instance.DestroyMelee(controller.transform);
     }
 }
 
@@ -49,7 +49,7 @@ public class RangeAttackNode : Node
     }
     public override void Start()
     {
-        controller.animationHandler.Play("Attack");
+        controller.animnHandler.Play("Attack");
         controller.LookTarget();
     }
     
@@ -58,7 +58,7 @@ public class RangeAttackNode : Node
         // 콜백으로 공격 방식 추상화
         if (isFire)
         {
-            ProjectileManager.Instance.CreateProjectile(controller.transform, 10, index: index, degree: ProjectileManager.GetDegreeByDirection(controller.agent.GetDirection()));
+            BoltManager.Instance.CreateProjectile(controller.transform, 10, index: index, degree: BoltManager.GetDegreeByDirection(controller.agent.GetDirection()));
         }
     }
     

@@ -53,9 +53,6 @@ public class NavSurface : MonoBehaviour
         layerMask = gameObject.layer;
         tilemap = gameObject.GetComponent<Tilemap>();
         
-        // 타일맵의 가로, 세로 크기 (타일의 수)
-        // Debug.Log(tilemap.cellBounds.size);
-        
         cells.Clear();
         ScanArea();
     }
@@ -69,6 +66,8 @@ public class NavSurface : MonoBehaviour
             // 0,0 이니 하단부터 시작
             var point = new Vector2(transform.position.x + coordX + 0.5f, transform.position.y + coordY + 0.5f);
             var hit = Physics2D.OverlapBox(point, new Vector2(0.9f, 0.9f), 0f, 1 << layerMask);
+            
+            Debug.Log(hit.ToString());
             
             if (hit)
             {

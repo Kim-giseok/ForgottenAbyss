@@ -2,24 +2,26 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class BoltController: MonoBehaviour
+public class Bolt: MonoBehaviour
 {
     public HitBox hitBox;
     
-    protected float currTime;  
+    protected float currTime;
+
+    public float currDirection; // 발사체의 방향은 공통 변수로 관리
     
     public float duration; // Node가 자체적으로 가진다.
     public float speed;
 
     // transform 에서 사이즈도 처리
-    protected Rigidbody2D rigidbody;
-    protected Collider2D collider;
+    public Rigidbody2D rigidbody { get; private set; }
+    public Collider2D collider { get; private set; }
     
     protected SpriteRenderer renderer;
     protected Animator animator; // 애니메이터는 한개지만 내부 애니메이션 실행을 목적으로 이용
     protected BoltAnimHandler animHandler;
     
-    public BoltStepMachine machine { get; protected set; } = new(); // 등록 자체를 순차 등록
+    public StepMachine machine { get; protected set; } = new(); // 등록 자체를 순차 등록
     
     protected List<BoltEffect> effects = new();
     
@@ -55,7 +57,7 @@ public abstract class BoltController: MonoBehaviour
 
         if (currTime >= duration)
         {
-            ProjectileManager.Instance.DestroyProjectile(gameObject);
+            BoltManager.Instance.DestroyProjectile(gameObject);
         }
     }
 
@@ -67,7 +69,7 @@ public abstract class BoltController: MonoBehaviour
         // 레이어 자체는 모두 감지가 필요하므로 충돌 비교 레이어를 필드로 따로 둠
         if (hitBox.ownerLayer == other.gameObject.layer) return;
        
-        ProjectileManager.Instance.DestroyProjectile(gameObject);
+        BoltManager.Instance.DestroyProjectile(gameObject);
 
         foreach (BoltEffect effect in effects)
         {

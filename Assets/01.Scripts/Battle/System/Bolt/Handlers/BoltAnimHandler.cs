@@ -3,7 +3,7 @@ using UnityEngine;
 // animHandler는 역할 동일
 public class BoltAnimHandler: MonoBehaviour
 {
-    private BoltController controller;
+    private Bolt controller;
     private Animator animator;
     
     public enum Status { None, Start, End } 
@@ -17,7 +17,7 @@ public class BoltAnimHandler: MonoBehaviour
     
     private void Awake()
     {
-        controller = GetComponent<BoltController>();
+        controller = GetComponent<Bolt>();
         animator = GetComponent<Animator>();
     }
 

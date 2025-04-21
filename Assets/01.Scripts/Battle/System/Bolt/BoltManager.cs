@@ -6,9 +6,9 @@ using UnityEngine.SceneManagement;
 
 // direction to degree 같은 것이 필요 할 듯
 // 빌더 패턴으로 관리해보면 어떨까? 아무튼 조합의 형태를 띄어야 함
-public class ProjectileManager : MonoBehaviour // 단위 미사일
+public class BoltManager : MonoBehaviour // 단위 미사일
 {
-    public static ProjectileManager Instance { get; private set; }
+    public static BoltManager Instance { get; private set; }
     public enum ProjectileType { Linear, Guided, Reflection, Fuse, Parabola }
     
     public GameObject meleeProjectile;
@@ -42,7 +42,7 @@ public class ProjectileManager : MonoBehaviour // 단위 미사일
 
     // ReSharper disable Unity.PerformanceAnalysis
     // do: 사이즈의 조절, 모양의 변경 등의 관리 필요
-    public void CreateMeleeProjectile(Transform parent, float power, Vector2? startPos = null, Vector2? size = null)
+    public void CreateMelee(Transform parent, float power, Vector2? startPos = null, Vector2? size = null)
     {
         var instance = parent.GetComponentInChildren<HitBox>(true)?.gameObject; // 찾는 방법 필요
         
@@ -71,7 +71,7 @@ public class ProjectileManager : MonoBehaviour // 단위 미사일
 
     // 비용 문제에 고민해보기
     // ReSharper disable Unity.PerformanceAnalysis
-    public void DestroyMeleeProjectile(Transform parent)
+    public void DestroyMelee(Transform parent)
     {
         var instance = parent.GetComponentInChildren<HitBox>(true)?.gameObject;
         if(instance) instance.SetActive(false);

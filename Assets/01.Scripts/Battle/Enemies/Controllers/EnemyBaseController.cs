@@ -8,7 +8,7 @@ public class EnemyBaseController: MonoBehaviour
     public Rigidbody2D rigidbody { get; protected set; }
     public SpriteRenderer spriteRenderer { get; protected set; }
     public Material material { get; protected set; }
-    public EnemyAnimationHandler animationHandler { get; protected set; }
+    public EnemyAnimationHandler animnHandler { get; protected set; }
     public EnemyCombatHandler combatHandler { get; protected set; }
     public EnemyDetectHandler detectHandler { get; protected set; }
     
@@ -23,7 +23,7 @@ public class EnemyBaseController: MonoBehaviour
         rigidbody = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>(); 
         material = spriteRenderer.material;
-        animationHandler = GetComponent<EnemyAnimationHandler>();
+        animnHandler = GetComponent<EnemyAnimationHandler>();
 
         combatHandler = new EnemyCombatHandler();
         detectHandler = GetComponent<EnemyDetectHandler>();

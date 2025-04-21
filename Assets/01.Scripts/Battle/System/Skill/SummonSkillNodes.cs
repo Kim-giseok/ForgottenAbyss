@@ -18,8 +18,8 @@ namespace Summon
         {
             if (controller is not SummonController sController) { SetStatus(Status.Fail); return; }
             
-            controller.animationHandler.SetSpeed(2f);
-            controller.animationHandler.Play("Attack");
+            controller.animnHandler.SetSpeed(2f);
+            controller.animnHandler.Play("Attack");
             
             context.Set("direction", sController.cRigidbody.velocity.normalized);
             sController.Flip(Mathf.Approximately(sController.caster.eulerAngles.y, 0));
@@ -35,7 +35,7 @@ namespace Summon
             
             if (status == AnimationStatus.Start)
             {
-                ProjectileManager.Instance.CreateMeleeProjectile(controller.transform, 10f, Vector2.zero, Vector2.one * 2);
+                BoltManager.Instance.CreateMelee(controller.transform, 10f, Vector2.zero, Vector2.one * 2);
                 return;
             }
             
@@ -48,8 +48,8 @@ namespace Summon
 
         public override void End()
         {
-            controller.animationHandler.SetSpeed(1f);
-            ProjectileManager.Instance.DestroyMeleeProjectile(controller.transform);
+            controller.animnHandler.SetSpeed(1f);
+            BoltManager.Instance.DestroyMelee(controller.transform);
         }
     }
 
@@ -58,14 +58,14 @@ namespace Summon
         public override void Start()
         {
             if(controller is not SummonController sController) { SetStatus(Status.Fail); return; }
-            sController.animationHandler.Play("Explosion");
-            controller.animationHandler.SetSpeed(1f);
+            sController.animnHandler.Play("Explosion");
+            controller.animnHandler.SetSpeed(1f);
         }
 
         public override void OnAnimatedEvent(bool isFire)
         {
-            if (isFire) ProjectileManager.Instance.CreateMeleeProjectile(controller.transform, 10f, Vector2.zero, Vector2.one * 2);
-            else ProjectileManager.Instance.DestroyMeleeProjectile(controller.transform);
+            if (isFire) BoltManager.Instance.CreateMelee(controller.transform, 10f, Vector2.zero, Vector2.one * 2);
+            else BoltManager.Instance.DestroyMelee(controller.transform);
         }
 
         public override void OnAnimated(AnimationStatus status, AnimatorStateInfo animInfo)
@@ -76,7 +76,7 @@ namespace Summon
 
         public override void End()
         {
-            controller.animationHandler.SetSpeed(1f);
+            controller.animnHandler.SetSpeed(1f);
         }
     }
 }

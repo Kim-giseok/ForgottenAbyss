@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 
 // 순차 실행이므로 선언 자체를 
-public class BoltStepMachine
+public class StepMachine
 {
-    public BoltController bot;
+    public Bolt controller;
     
     public List<BoltNode> nodeList;
     public BoltNode currNode;
