@@ -29,7 +29,7 @@ public class MapSpawnManager : Singleton<MapSpawnManager>
         SpawnNextMap();
     }
 
-    private void Update()
+    private void LateUpdate()
     {
         ParrallexScrollBackground();
     }
