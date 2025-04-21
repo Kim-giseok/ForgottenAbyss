@@ -7,24 +7,28 @@ public class DataManager : Singleton<DataManager>
     public SkillDataList skillDataList;
     public WeaponDataList weaponDataList;
     public MemoryPieceDataList memoryPieceDataList;
+    public ArmorDataList armorDataList;
 
-    public Dictionary<string, SkillVisualSO> skillVisualSODic = new Dictionary<string, SkillVisualSO>();
+    public Dictionary<string, SkillVisualSO> skillVisualSODic = new();
     public List<SkillVisualSO> skillVisualSOList;
 
-    public Dictionary<string, SkillExecutionSO> skillExecutionSODic = new Dictionary<string, SkillExecutionSO>();
+    public Dictionary<string, SkillExecutionSO> skillExecutionSODic = new();
     public List<SkillExecutionSO> skillExecutionSOList;
 
-    public Dictionary<string, WeaponDataSO> weaponSODic = new Dictionary<string, WeaponDataSO>();
+    public Dictionary<string, WeaponDataSO> weaponSODic = new();
     public List<WeaponDataSO> weaponSOList;
 
-    public Dictionary<int, ComboAttackSO> comboAttackSODic = new Dictionary<int, ComboAttackSO>();
+    public Dictionary<int, ComboAttackSO> comboAttackSODic = new();
     public List<ComboAttackSO> comboAttackSOList;
 
-    public Dictionary<int, RangedAttackSO> rangedAttackSODic = new Dictionary<int, RangedAttackSO>();
+    public Dictionary<int, RangedAttackSO> rangedAttackSODic = new();
     public List<RangedAttackSO> rangedAttackSOList;
 
-    public Dictionary<string, MemoryPieceSO> memoryVisualSODic = new Dictionary<string, MemoryPieceSO>();
+    public Dictionary<string, MemoryPieceSO> memoryVisualSODic = new();
     public List<MemoryPieceSO> memoryVisualSOList;
+
+    public Dictionary<string, ArmorSO> armorSODic = new();
+    public List<ArmorSO> armorSOList;
 
     private void Awake()
     {
@@ -41,6 +45,9 @@ public class DataManager : Singleton<DataManager>
 
         LoadMemoryPieceData();
         InitMemoryPieceSO();
+
+        LoadArmorData();
+        InitArmorSO();
     }
 
     private void LoadSkillData()
@@ -230,5 +237,44 @@ public class DataManager : Singleton<DataManager>
     {
         var memorySO = memoryVisualSOList.Find(x => x.currentMemoryPieceId == memoryPieceId);
         return memorySO?.skillItem;
+    }
+
+    private void LoadArmorData()
+    {
+        TextAsset json = Resources.Load<TextAsset>("Json/ArmorData");
+        armorDataList = JsonUtility.FromJson<ArmorDataList>(json.text);
+    }
+
+    private void InitArmorSO()
+    {
+        var allArmorSOs = Resources.LoadAll<ArmorSO>("Armor");
+        armorSOList = new List<ArmorSO>(allArmorSOs);
+
+        foreach (var so in allArmorSOs)
+        {
+            if (!armorSODic.ContainsKey(so.name))
+            {
+                armorSODic.Add(so.name, so);
+            }
+        }
+    }
+
+    public ArmorData GetArmorData(int id)
+    {
+        var data = armorDataList.Armors.Find(x => x.Id == id);
+        if (data == null)
+        {
+            Debug.LogWarning($"ArmorData with ID {id} not found.");
+        }
+        return data;
+    }
+
+    public ArmorSO GetArmorSO(string name)
+    {
+        if (armorSODic.TryGetValue(name, out var so))
+            return so;
+
+        Debug.LogWarning($"ArmorSO with name {name} not found.");
+        return null;
     }
 }
