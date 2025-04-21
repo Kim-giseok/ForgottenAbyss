@@ -49,6 +49,13 @@ public class SkillController : Singleton<SkillController>
     {
         if (isSkillPlaying || isGettingHit || isDead) return;
 
+        var weaponData = WeaponManager.Instance.GetCurrentWeaponData();
+        if (weaponData == null)
+        {
+            Debug.LogWarning("기본 공격: 무기가 장착되어 있지 않음.");
+            return;
+        }
+
         if (IsTurning())
         {
             ActionBufferUtil.Instance.BufferAction(
@@ -173,6 +180,12 @@ public class SkillController : Singleton<SkillController>
 
     private void TryBufferOrExecuteSkill(int skillId, string bufferName)
     {
+        if (!SkillManager.Instance.IsSkillEquipped(skillId))
+        {
+            Debug.LogWarning($"Skill ID {skillId} is not equipped.");
+            return;
+        }
+
         if (IsAttacking()) return;
 
         if (IsTurning())

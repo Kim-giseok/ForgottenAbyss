@@ -84,6 +84,13 @@ public class SkillManager : Singleton<SkillManager>
         return currentMemoryPiece?.skillItem;
     }
 
+    public bool IsSkillEquipped(int skillId)
+    {
+        bool isMemory = skillId == GetCurrentMemorySkillData()?.memoryPieceId;
+        bool isWeaponSkill = currentWeaponSkillIds.Contains(skillId);
+        return isMemory || isWeaponSkill;
+    }
+
     public void TryUseSkill(int skillId, Transform spawnPoint)
     {
         // 0. 장착 여부 확인

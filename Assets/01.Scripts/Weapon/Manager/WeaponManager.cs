@@ -43,7 +43,7 @@ public class WeaponManager : Singleton<WeaponManager>
     {
         yield return new WaitUntil(() => skillUI.IsInitialized);
 
-        EquipDefaultWeapons();
+        //EquipDefaultWeapons();
     }
 
     private void Update()
@@ -64,7 +64,7 @@ public class WeaponManager : Singleton<WeaponManager>
 #endif
     }
 
-    private void EquipDefaultWeapons()
+    public void EquipDefaultWeapons()
     {
         var defaultSwordSO = Resources.Load<WeaponDataSO>("Weapon/Sword_SO");
         var defaultBowSO = Resources.Load<WeaponDataSO>("Weapon/Bow_SO");
@@ -79,15 +79,15 @@ public class WeaponManager : Singleton<WeaponManager>
             Debug.LogWarning("기본 검 무기 SO를 찾을 수 없습니다.");
         }
 
-        var defaultMemorySO = Resources.Load<MemoryPieceSO>("Weapon/MemoryPieceSO");
-        if (defaultMemorySO != null)
-        {
-            EquipMemoryPiece(defaultMemorySO);
-        }
-        else
-        {
-            Debug.LogWarning("기본 기억 조각 SO를 찾을 수 없습니다.");
-        }
+        //var defaultMemorySO = Resources.Load<MemoryPieceSO>("Weapon/MemoryPieceSO");
+        //if (defaultMemorySO != null)
+        //{
+        //    EquipMemoryPiece(defaultMemorySO);
+        //}
+        //else
+        //{
+        //    Debug.LogWarning("기본 기억 조각 SO를 찾을 수 없습니다.");
+        //}
     }
 
     public void EquipWeapon(WeaponDataSO selectedWeapon)
