@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class LaserShot: Projectile
+public class LaserShot: Bolt
 {
     private LineRenderer lineRenderer;
 

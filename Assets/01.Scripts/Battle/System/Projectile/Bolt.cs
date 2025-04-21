@@ -1,23 +1,39 @@
 using System;
 using UnityEngine;
 
-public abstract class Projectile: MonoBehaviour
+public abstract class Bolt: MonoBehaviour
 {
     protected float currTime;  
-    public float duration;
+    
+    public float duration; // Node가 자체적으로 가진다.
     public float speed;
 
+    // transform 에서 사이즈도 처리
     protected Rigidbody2D rigidbody;
     protected Collider2D collider;
-    protected SpriteRenderer spriteRenderer;
+    
+    protected SpriteRenderer renderer;
+    protected Animator animator; // 애니메이터는 한개지만 내부 애니메이션 실행을 목적으로 이용
+    protected BoltAnimHandler animHandler;
+    
+    protected BoltStepMachine machine = new(); // 등록 자체를 순차 등록
     
     // public void SetSprite(Sprite sprite) => spriteRenderer.sprite = sprite;
+    public void SetSize()
+    {
+        // transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y, 1) * 3f;
+    }
 
     private void Awake()
     {
         rigidbody = GetComponent<Rigidbody2D>();
         collider = GetComponent<Collider2D>();
-        spriteRenderer = GetComponent<SpriteRenderer>();
+        renderer = GetComponent<SpriteRenderer>();
+    }
+
+    protected void Update()
+    {
+        machine.Run();
     }
 
     protected virtual void OnEnable()

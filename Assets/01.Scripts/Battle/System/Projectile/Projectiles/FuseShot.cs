@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class FuseShot: Projectile
+public class FuseShot: Bolt
 {
         
 }

@@ -1,7 +1,7 @@
 using UnityEngine;
 
 // 동작 안됨
-public class ReflectionShot: Projectile
+public class ReflectionShot: Bolt
 {
     public int reflectionCount = 2;
     private Vector2 currDirection;
