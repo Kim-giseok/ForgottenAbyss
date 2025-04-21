@@ -10,4 +10,5 @@ public class ArmorSO : ScriptableObject
     public ArmorSlot slot;
     public StatType statType;
     public float value;
+    public Sprite icon;
 }
