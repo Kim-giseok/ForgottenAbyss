@@ -1,7 +1,8 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Bolt: MonoBehaviour
+public abstract class BoltController: MonoBehaviour
 {
     protected float currTime;  
     
@@ -16,7 +17,9 @@ public abstract class Bolt: MonoBehaviour
     protected Animator animator; // 애니메이터는 한개지만 내부 애니메이션 실행을 목적으로 이용
     protected BoltAnimHandler animHandler;
     
-    protected BoltStepMachine machine = new(); // 등록 자체를 순차 등록
+    public BoltStepMachine machine { get; protected set; } = new(); // 등록 자체를 순차 등록
+    
+    protected List<BoltEffect> effects = new();
     
     // public void SetSprite(Sprite sprite) => spriteRenderer.sprite = sprite;
     public void SetSize()
@@ -59,5 +62,10 @@ public abstract class Bolt: MonoBehaviour
 
         if (gameObject.layer == other.gameObject.layer) return;
         ProjectileManager.Instance.DestroyProjectile(gameObject);
+
+        foreach (BoltEffect effect in effects)
+        {
+            effect.Execute(other);
+        }
     }
 }

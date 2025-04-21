@@ -2,7 +2,7 @@
 public class BoltNode
 {
     public BoltStepMachine machine;
-    public Bolt bolt;
+    public BoltController BoltController;
     
     public virtual void Start() {}
     public virtual void Update() {}
@@ -11,3 +11,8 @@ public class BoltNode
     // 다음 노드로 변경
     public void Next() {}
 }
+
+public class BoltGuidedNode : BoltNode {}
+public class BoldParabolaNode: BoltNode {}
+
+public class BoltWaitNode : BoltNode {}

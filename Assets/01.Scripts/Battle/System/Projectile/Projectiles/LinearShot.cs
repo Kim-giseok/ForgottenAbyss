@@ -1,5 +1,5 @@
 using UnityEngine;
 
-public class LinearShot: Bolt
+public class LinearShot: BoltController
 {
 }

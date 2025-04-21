@@ -1,7 +1,7 @@
 using UnityEngine;
 
 // 관통의 갯수를 가지게 한다.
-public class PiercingShot: Bolt 
+public class PiercingShot: BoltController 
 {
     protected override void FixedUpdate()
     {

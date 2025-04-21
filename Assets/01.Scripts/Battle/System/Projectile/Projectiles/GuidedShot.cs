@@ -2,7 +2,7 @@ using UnityEngine;
 
 // do: 단순 일정 방향으로 회전하는 경우 필요 
 // 브릿지 패턴으로 조합하도록
-public class GuidedShot: Bolt
+public class GuidedShot: BoltController
 {
     // public Transform target;
     //

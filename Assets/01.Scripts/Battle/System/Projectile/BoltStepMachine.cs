@@ -3,7 +3,7 @@ using System.Collections.Generic;
 // 순차 실행이므로 선언 자체를 
 public class BoltStepMachine
 {
-    public Bolt bot;
+    public BoltController bot;
     
     public List<BoltNode> nodeList;
     public BoltNode currNode;
