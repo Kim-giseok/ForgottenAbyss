@@ -128,16 +128,16 @@ public class Player : MonoBehaviour, IDamagable
     {
         float dt = Time.deltaTime;
 
-        float currentHP = playerstatus.stats[StatType.CurrentHP];
-        float maxHP = playerstatus.stats[StatType.MaxHP];
+        //float currentHP = playerstatus.stats[StatType.CurrentHP];
+        //float maxHP = playerstatus.stats[StatType.MaxHP];
 
         float currentMP = playerstatus.stats[StatType.CurrentMP];
         float maxMP = playerstatus.stats[StatType.MaxMP];
 
-        currentHP = Mathf.Min(currentHP + hpRegenRate * dt, maxHP);
+        //currentHP = Mathf.Min(currentHP + hpRegenRate * dt, maxHP);
         currentMP = Mathf.Min(currentMP + mpRegenRate * dt, maxMP);
 
-        playerstatus.SetStat(StatType.CurrentHP, currentHP);
+        //playerstatus.SetStat(StatType.CurrentHP, currentHP);
         playerstatus.SetStat(StatType.CurrentMP, currentMP);
     }
 }
