@@ -24,7 +24,6 @@ public class GhostTrailRenderer : MonoBehaviour
             lastPositions.Add(transform.parent.position);
         }
     }
-
     private void FixedUpdate()
     {
         frameCounter++;
