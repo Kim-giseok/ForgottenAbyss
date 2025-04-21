@@ -43,7 +43,7 @@ public class WeaponManager : Singleton<WeaponManager>
     {
         yield return new WaitUntil(() => skillUI.IsInitialized);
 
-        EquipDefaultWeapons();
+        //EquipDefaultWeapons();
     }
 
     private void Update()
@@ -64,7 +64,7 @@ public class WeaponManager : Singleton<WeaponManager>
 #endif
     }
 
-    private void EquipDefaultWeapons()
+    public void EquipDefaultWeapons()
     {
         var defaultSwordSO = Resources.Load<WeaponDataSO>("Weapon/Sword_SO");
         var defaultBowSO = Resources.Load<WeaponDataSO>("Weapon/Bow_SO");
@@ -79,15 +79,15 @@ public class WeaponManager : Singleton<WeaponManager>
             Debug.LogWarning("기본 검 무기 SO를 찾을 수 없습니다.");
         }
 
-        var defaultMemorySO = Resources.Load<MemoryPieceSO>("Weapon/MemoryPieceSO");
-        if (defaultMemorySO != null)
-        {
-            EquipMemoryPiece(defaultMemorySO);
-        }
-        else
-        {
-            Debug.LogWarning("기본 기억 조각 SO를 찾을 수 없습니다.");
-        }
+        //var defaultMemorySO = Resources.Load<MemoryPieceSO>("Weapon/MemoryPieceSO");
+        //if (defaultMemorySO != null)
+        //{
+        //    EquipMemoryPiece(defaultMemorySO);
+        //}
+        //else
+        //{
+        //    Debug.LogWarning("기본 기억 조각 SO를 찾을 수 없습니다.");
+        //}
     }
 
     public void EquipWeapon(WeaponDataSO selectedWeapon)
@@ -166,18 +166,23 @@ public class WeaponManager : Singleton<WeaponManager>
             return;
         }
 
-        skillController.memorySkillId = memorySO.memorySkillVisualSO.skillId;
+        skillController.memorySkillItem = currentMemorySO.skillItem;
 
-        SkillManager.Instance.SetMemorySkill(currentMemorySO.memorySkillVisualSO.skillId);
+        SkillManager.Instance.SetMemorySkill(memorySO);
 
         if (skillUI == null)
             skillUI = FindObjectOfType<SkillUI>();
 
-        skillUI.SetSkillIcon(SkillSlotType.Memory, memorySO.memorySkillVisualSO.skillIcon);
+        skillUI.SetSkillIcon(SkillSlotType.Memory, memorySO.icon);
 
-        var memoryData = DataManager.Instance.GetSkillData(memorySO.memorySkillVisualSO.skillId);
-
-        skillUI.SetSkillCooldownTime(SkillSlotType.Memory, memoryData.CoolTime);
+        if (memorySO.skillItem != null)
+        {
+            skillUI.SetSkillCooldownTime(SkillSlotType.Memory, memorySO.skillItem.coolTime);
+        }
+        else
+        {
+            Debug.LogWarning("SkillItem이 비어 있어 쿨타임을 설정할 수 없습니다.");
+        }
     }
 
     public float GetCurrentWeaponAttack()
@@ -251,7 +256,7 @@ public class WeaponManager : Singleton<WeaponManager>
 
         if (currentMemorySO != null)
         {
-            skillController.memorySkillId = currentMemorySO.memorySkillVisualSO.skillId;
+            skillController.memorySkillItem = currentMemorySO.skillItem;
         }
     }
 
@@ -273,7 +278,7 @@ public class WeaponManager : Singleton<WeaponManager>
     [ContextMenu("DEBUG: 기억 조각 장착")]
     private void Debug_EquipTestMemoryPiece()
     {
-        var testMemorySO = Resources.Load<MemoryPieceSO>("Weapon/MemoryPieceSO");
+        var testMemorySO = Resources.Load<MemoryPieceSO>("Weapon/MemoryPiece01_SO");
         EquipMemoryPiece(testMemorySO);
     }
 #endif

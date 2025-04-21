@@ -49,6 +49,28 @@ public class CameraShake : Singleton<CameraShake>
         }
 
         SetupNoiseComponent();
+
+        RemoveExtraAudioListeners();
+    }
+
+    private void RemoveExtraAudioListeners()
+    {
+        var listeners = FindObjectsOfType<AudioListener>();
+        if (listeners.Length > 1)
+        {
+            bool keptOne = false;
+            foreach (var listener in listeners)
+            {
+                if (!keptOne)
+                {
+                    keptOne = true;
+                    continue;
+                }
+                Destroy(listener);
+            }
+
+            Debug.LogWarning("[CameraShake] 중복 AudioListener가 감지되어 제거되었습니다.");
+        }
     }
 
     private void SetupNoiseComponent()

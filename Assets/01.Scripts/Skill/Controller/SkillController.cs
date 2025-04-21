@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -11,7 +12,7 @@ public class SkillController : Singleton<SkillController>
     public int combatId;
     public int skill01Id;
     public int skill02Id;
-    public int memorySkillId;
+    public MemorySkillItem memorySkillItem;
 
     public Transform skillSpawnPoint;
     public Transform skillSpawnPoint2;
@@ -47,6 +48,13 @@ public class SkillController : Singleton<SkillController>
     void OnAttack(InputValue value)
     {
         if (isSkillPlaying || isGettingHit || isDead) return;
+
+        var weaponData = WeaponManager.Instance.GetCurrentWeaponData();
+        if (weaponData == null)
+        {
+            Debug.LogWarning("기본 공격: 무기가 장착되어 있지 않음.");
+            return;
+        }
 
         if (IsTurning())
         {
@@ -98,7 +106,8 @@ public class SkillController : Singleton<SkillController>
     void OnSpecialSkill(InputValue value)
     {
         if (isGettingHit || isDead) return;
-        TryBufferOrExecuteSkill(memorySkillId, "SpecialSkill");
+        TryBufferOrExecuteSkill(memorySkillItem.memoryPieceId, "SpecialSkill");
+        //memorySkillItem.Use();
         Debug.Log("R: 기억 스킬");
     }
 
@@ -139,7 +148,18 @@ public class SkillController : Singleton<SkillController>
             SkillManager.Instance.TryUseSkill(skillId, skillSpawnPoint2);
         }
 
-        yield return new WaitForSeconds(GetAnimPlayTime(skillId));
+        if (SkillManager.Instance.GetCurrentMemorySkillData()?.memoryPieceId == skillId)
+        {
+            GameManager.Instance.player.controller.isInvincible = true;
+
+            yield return new WaitForSeconds(3.0f);
+
+            GameManager.Instance.player.controller.isInvincible = false;
+        }
+        else
+        {
+            yield return new WaitForSeconds(GetAnimPlayTime(skillId));
+        }
 
         isSkillPlaying = false;
     }
@@ -160,6 +180,12 @@ public class SkillController : Singleton<SkillController>
 
     private void TryBufferOrExecuteSkill(int skillId, string bufferName)
     {
+        if (!SkillManager.Instance.IsSkillEquipped(skillId))
+        {
+            Debug.LogWarning($"Skill ID {skillId} is not equipped.");
+            return;
+        }
+
         if (IsAttacking()) return;
 
         if (IsTurning())

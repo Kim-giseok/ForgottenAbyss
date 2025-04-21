@@ -2,8 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Memory_Skill_Execution", menuName = "SO/Skill/Execution/MemorySkill")]
-public class MemorySkillExecutionSO : SkillExecutionSO
+[CreateAssetMenu(fileName = "Sword_Skill03_Execution", menuName = "SO/Skill/Execution/SwordSkill03")]
+public class SwordSkill03ExecutionSO : SkillExecutionSO
 {
     public float range = 3f;
     public float effectRange = 3f;

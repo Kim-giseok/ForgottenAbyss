@@ -22,6 +22,16 @@
         },
         {
             "Id": 102,
+            "Name": "Sword_Skill03",
+            "Description": "검 스킬 3",
+            "CoolTime": 5.0,
+            "DamageMultiplier": 2.0,
+            "VisualSOName": "Sword_Skill03_Visual",
+            "ExecutionSOName": "Sword_Skill03_Execution",
+            "Type": 0
+        },
+        {
+            "Id": 200,
             "Name": "Bow_Skill01",
             "Description": "활 스킬 1",
             "CoolTime": 8.0,
@@ -31,7 +41,7 @@
             "Type": 0
         },
 	{
-            "Id": 103,
+            "Id": 201,
             "Name": "Bow_Skill02",
             "Description": "활 스킬 2",
             "CoolTime": 10.0,
@@ -39,16 +49,6 @@
             "VisualSOName": "Bow_Skill02_Visual",
             "ExecutionSOName": "Bow_Skill02_Execution",
             "Type": 1
-        },
-        {
-            "Id": 900,
-            "Name": "Memory_Skill01",
-            "Description": "보스 기억 스킬 1",
-            "CoolTime": 5.0,
-            "DamageMultiplier": 2.0,
-            "VisualSOName": "Memory_Skill01_Visual",
-            "ExecutionSOName": "Memory_Skill01_Execution",
-            "Type": 2
         }
     ]
 }

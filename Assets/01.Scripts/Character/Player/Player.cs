@@ -15,9 +15,11 @@ public class Player : MonoBehaviour, IDamagable
     public ControllerPlayer controller;
     SkillController skillController;
 
-    public float hpRegenRate = 2f;
-    public float mpRegenRate = 5f;
     public bool isDead = false;
+
+    [SerializeField] private float defenseFactor = 100f;
+    [SerializeField] private float hpRegenRate = 2f;
+    [SerializeField] private float mpRegenRate = 5f;
 
     public void Awake()
     {
@@ -57,7 +59,10 @@ public class Player : MonoBehaviour, IDamagable
 
     public void GetDamage(float damage)
     {
-        float hp = playerstatus.stats[StatType.CurrentHP] - damage;
+        float def = playerstatus.stats[StatType.DEF];
+        float damageReductionRate = def / (100f + def);
+        float finalDamage = damage * (1f - damageReductionRate);
+        float hp = playerstatus.stats[StatType.CurrentHP] - finalDamage;
 
         playerstatus.SetStat(StatType.CurrentHP, hp);
 
@@ -128,16 +133,16 @@ public class Player : MonoBehaviour, IDamagable
     {
         float dt = Time.deltaTime;
 
-        float currentHP = playerstatus.stats[StatType.CurrentHP];
-        float maxHP = playerstatus.stats[StatType.MaxHP];
+        //float currentHP = playerstatus.stats[StatType.CurrentHP];
+        //float maxHP = playerstatus.stats[StatType.MaxHP];
 
         float currentMP = playerstatus.stats[StatType.CurrentMP];
         float maxMP = playerstatus.stats[StatType.MaxMP];
 
-        currentHP = Mathf.Min(currentHP + hpRegenRate * dt, maxHP);
+        //currentHP = Mathf.Min(currentHP + hpRegenRate * dt, maxHP);
         currentMP = Mathf.Min(currentMP + mpRegenRate * dt, maxMP);
 
-        playerstatus.SetStat(StatType.CurrentHP, currentHP);
+        //playerstatus.SetStat(StatType.CurrentHP, currentHP);
         playerstatus.SetStat(StatType.CurrentMP, currentMP);
     }
 }

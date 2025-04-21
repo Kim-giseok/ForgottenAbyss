@@ -62,6 +62,10 @@ MonoBehaviour:
   virtualCam: {fileID: 0}
   zoomedSize: 3
   defaultSize: 5
+  zoomSpeed: 5
+  playerTransform: {fileID: 0}
+  zoomMoveDistance: 1.5
+  zoomMoveLerpSpeed: 5
 --- !u!1 &5570428632314206731
 GameObject:
   m_ObjectHideFlags: 0
@@ -72,7 +76,6 @@ GameObject:
   m_Component:
   - component: {fileID: 116529639887167939}
   - component: {fileID: 3724353485988825919}
-  - component: {fileID: 4094092725898183684}
   - component: {fileID: 3003933385372734465}
   m_Layer: 0
   m_Name: Main Camera
@@ -147,14 +150,6 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!81 &4094092725898183684
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5570428632314206731}
-  m_Enabled: 1
 --- !u!114 &3003933385372734465
 MonoBehaviour:
   m_ObjectHideFlags: 0
