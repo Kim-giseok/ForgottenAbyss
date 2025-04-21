@@ -106,6 +106,13 @@ public class SkillController : Singleton<SkillController>
     void OnSpecialSkill(InputValue value)
     {
         if (isGettingHit || isDead) return;
+
+        if (memorySkillItem == null)
+        {
+            Debug.LogWarning("기억 스킬 x");
+            return;
+        }
+
         TryBufferOrExecuteSkill(memorySkillItem.memoryPieceId, "SpecialSkill");
         //memorySkillItem.Use();
         Debug.Log("R: 기억 스킬");

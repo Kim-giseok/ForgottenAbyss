@@ -34,7 +34,8 @@ public class WeaponManager : Singleton<WeaponManager>
         skillUI = FindObjectOfType<SkillUI>();
         skillController = FindObjectOfType<SkillController>();
         comboAttack = FindObjectOfType<ComboAttack>();
-        swapper = FindObjectOfType<WeaponSwapper>();
+        if(swapper == null)
+            swapper = FindObjectOfType<WeaponSwapper>();
 
         RefreshSkillController();
     }
