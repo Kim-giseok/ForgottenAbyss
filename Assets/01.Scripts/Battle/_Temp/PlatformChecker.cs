@@ -18,19 +18,4 @@ public class PlatformChecker: MonoBehaviour
       
       if (curTile != null) { Debug.Log(curTile.platformID); }
    }
-   
-   // private void Update()
-   // {
-   //    if (Input.GetKeyDown(KeyCode.K))
-   //    {
-   //       // direction 정보를 넘길 수 없음
-   //       ProjectileManager.Instance.CreateSummon(transform, SummonSkillManager.Skill.BossSkill3, false);
-   //    }
-   //    
-   //    if (Input.GetKeyDown(KeyCode.L))
-   //    {
-   //       ProjectileManager.Instance.CreateSummon(transform, SummonSkillManager.Skill.DashAttack, true);
-   //    }
-   // }
-
 }
