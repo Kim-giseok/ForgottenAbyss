@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,23 +6,39 @@ using UnityEngine;
 public class GoldManager : MonoBehaviour
 {
     public static GoldManager Instance { get; private set; }
-    [SerializeField] private int currentGold = 1000;
+
+    [SerializeField] private int currentGold = 1000; // 현재 소지 금액
+
+    // 이벤트 선언
+    public event Action<int> OnGoldChanged;
 
     private void Awake()
     {
-        // 싱글톤 패턴
         if (Instance == null)
-        {
             Instance = this;
-        }
         else
-        {
             Destroy(gameObject);
-        }
+
+        // 초기 UI업데이트
+        OnGoldChanged?.Invoke(currentGold);
     }
 
-    public int GetGold()
+    public int GetGold() => currentGold;
+
+    public bool SpendGold(int amount)
     {
-        return currentGold;
+        if (currentGold >= amount)
+        {
+            currentGold -= amount;
+            OnGoldChanged?.Invoke(currentGold);
+            return true;
+        }
+        return false;
+    }
+
+    public void AddGold(int amount)
+    {
+        currentGold += amount;
+        OnGoldChanged?.Invoke(currentGold);
     }
 }
