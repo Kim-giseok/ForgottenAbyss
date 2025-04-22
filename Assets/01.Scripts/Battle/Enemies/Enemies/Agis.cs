@@ -15,11 +15,9 @@ public class AgisSpreadShot : Node
             controller.rigidbody.AddForce(sContorller.castingDirection, ForceMode2D.Impulse);
             controller.transform.SetParent(sContorller.eController.transform);
         }
-        
-        // for (int degree = 0; degree <= 360; degree += 20)
-        // {
-            // 튕기는 발사체가 좋을 듯
-        // }
+     
+        // 애니메이션 도중 스프라이트 컬러 변경되지 않는 현상 발생
+        controller.renderer.color = Color.black;
     }
 
     public override void Update()

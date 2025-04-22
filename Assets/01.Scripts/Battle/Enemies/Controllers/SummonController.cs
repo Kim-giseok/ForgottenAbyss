@@ -93,7 +93,7 @@ public class SummonController: EnemyBaseController
         }
         
         // agis의 경우 변경되지 않는 점 확인 필요
-        renderer.color = Color.black;
+        // renderer.color = Color.black;
     }
     
     private void Update()

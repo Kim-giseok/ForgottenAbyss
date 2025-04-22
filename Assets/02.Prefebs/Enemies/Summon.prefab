@@ -37,7 +37,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 8391959413067354657}
+  - {fileID: 8864666910128512716}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &8543450859485489921
@@ -82,7 +82,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.3529412, g: 0.3529412, b: 0.3529412, a: 0.78431374}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -250,7 +250,7 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
---- !u!1001 &8377216997003660046
+--- !u!1001 &8877297937466132451
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -307,8 +307,8 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 24c023a79cdc9482f88ca97f0729c1ca, type: 3}
---- !u!4 &8391959413067354657 stripped
+--- !u!4 &8864666910128512716 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 15728405817628975, guid: 24c023a79cdc9482f88ca97f0729c1ca, type: 3}
-  m_PrefabInstance: {fileID: 8377216997003660046}
+  m_PrefabInstance: {fileID: 8877297937466132451}
   m_PrefabAsset: {fileID: 0}

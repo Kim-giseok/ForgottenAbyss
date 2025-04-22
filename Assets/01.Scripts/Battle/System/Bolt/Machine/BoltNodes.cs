@@ -84,11 +84,17 @@ public class BoltRecursiveNode : BoltNode {}
 
 public class BlackHoleNode : BoltNode
 {
-    public override void Start() {}
+    public override void Start()
+    {
+        bolt.rigidbody.drag = 10;
+        bolt.rigidbody.AddForce(new Vector2(Random.Range(-4f, 4f), 4f) * 10f, ForceMode2D.Impulse);
+    }
 
     public override void Update()
     {
         var player = GameObject.FindGameObjectWithTag("Player");
+        
+        var direction = (bolt.transform.position - player.transform.position).normalized;
+        player.GetComponent<Rigidbody2D>().AddForce(direction * 10f, ForceMode2D.Force);
     }
-    
 }

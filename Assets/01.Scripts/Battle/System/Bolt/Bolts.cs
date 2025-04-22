@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 public class Bolts
 {
-    public enum Type { Linear, Test }
+    public enum Type { Linear, BlackHole, Test }
     public enum EffectType { Penetration, Reflection }
     public static BoltNode[] Get(Type type) => boltNodes[type];
     
@@ -11,8 +11,8 @@ public class Bolts
 
     private static Dictionary<Type, BoltNode[]> boltNodes = new() {
         { Type.Linear , new BoltNode[] { new BoltLinearNode() } },
+        { Type.BlackHole , new BoltNode[]{ new BlackHoleNode() }},
         { Type.Test, new BoltNode[] { new RandomSpreadNode(), new BoltTestDownNode() }}
-        // { Type.Test, new BoltNode[] { new BlackHoleNode() }}
     };
 
     private static Dictionary<EffectType, BoltEffect> effects = new() { };
