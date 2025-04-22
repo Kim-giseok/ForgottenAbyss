@@ -186,4 +186,10 @@ public class PlayerStatus : CharacterStatus
             GainExperience(50);
         }
     }
+
+    public float GetStat(StatType statType)
+    {
+        stats.TryGetValue(statType, out float value);
+        return value;
+    }
 }

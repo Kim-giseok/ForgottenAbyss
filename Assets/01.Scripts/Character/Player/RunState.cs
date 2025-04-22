@@ -27,7 +27,7 @@ public class RunState : PlayerStateMachine
 
     public override void FixedUpdate()
     {
-        float currentSpeed = player.speed;
+        float currentSpeed = player.status.stats[StatType.SPEED];
 
         AnimatorStateInfo stateInfo = player.animator.GetCurrentAnimatorStateInfo(0);
         if (stateInfo.IsTag("Attack"))

@@ -11,6 +11,8 @@ public static class DamageCalculator
 
     public static float CalculateBasicDamage(BasicAttackData baData)
     {
+        Debug.Log($"{baData.baseAttack} + {baData.weaponAttack} * {baData.comboMultiplier} = " +
+            $"{(baData.baseAttack + baData.weaponAttack) * baData.comboMultiplier}");
         return (baData.baseAttack + baData.weaponAttack) * baData.comboMultiplier;
     }
 }

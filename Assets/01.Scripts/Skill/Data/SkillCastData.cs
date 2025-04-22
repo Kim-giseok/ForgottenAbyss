@@ -28,7 +28,7 @@ public class SkillCastData
 
         if (status != null)
         {
-            result.baseAttack = status.stats[StatType.ATK];
+            result.baseAttack = status.GetStat(StatType.ATK);
         }
             
 

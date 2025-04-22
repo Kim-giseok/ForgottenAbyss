@@ -5,25 +5,15 @@ using UnityEngine.InputSystem;
 
 public class Shop : MonoBehaviour, IInteractable
 {
-    public GameObject shopUI;
-    public GameObject shopText;
+    public GameObject shopUI => UIManager.Instance.shopUI;
+    public GameObject shopText => UIManager.Instance.npcText;
     PlayerInput playerInput;
 
     private void Awake()
     {
-        shopUI.SetActive(false);
-        shopText.SetActive(false);
+        //shopUI.SetActive(false);
+        //shopText.SetActive(false);
         playerInput = GameObject.FindWithTag("Player").GetComponent<PlayerInput>();
-
-        if (shopText != null)
-        {
-            // RectTransform을 사용하여 UI 요소 위치 설정 (UI 요소인 경우)
-            if (shopText.GetComponent<RectTransform>() != null)
-            {
-                shopText.GetComponent<RectTransform>().anchoredPosition = new Vector2(50, 350);
-            }
-           
-        }
     }
 
     public void OnTriggerEnter2D(Collider2D collision)

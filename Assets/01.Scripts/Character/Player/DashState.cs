@@ -44,7 +44,7 @@ public class DashState : PlayerStateMachine
             else
                 player.ChangeState(PlayerState.Idle);
 
-            player.rigid.velocity = new Vector2(player.inputVec.x * player.speed, player.rigid.velocity.y);
+            player.rigid.velocity = new Vector2(player.inputVec.x * player.status.stats[StatType.SPEED], player.rigid.velocity.y);
         }
     }
     public override void Exit()

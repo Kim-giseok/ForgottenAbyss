@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -42,27 +43,29 @@ public class WeaponManager : Singleton<WeaponManager>
 
     IEnumerator Start()
     {
+        yield return new WaitUntil(() => DataManager.Instance.IsInitialized);
         yield return new WaitUntil(() => skillUI.IsInitialized);
 
-        //EquipDefaultWeapons();
+        LoadWeaponState();
     }
 
     private void Update()
     {
 #if UNITY_EDITOR
-        if (Input.GetKeyDown(KeyCode.Alpha8))
-        {
-            Debug_EquipTestWeapon();  // 검 장착
-        }
         if (Input.GetKeyDown(KeyCode.Alpha9))
         {
-            Debug_EquipTestBow();     // 활 장착
+            ClearWeaponSaveData();
         }
         if (Input.GetKeyDown(KeyCode.Alpha0))
         {
             Debug_EquipTestMemoryPiece(); // 기억 조각 장착
         }
 #endif
+    }
+
+    private void OnApplicationQuit()
+    {
+        SaveWeaponState();
     }
 
     public void EquipDefaultWeapons()
@@ -261,6 +264,119 @@ public class WeaponManager : Singleton<WeaponManager>
         }
     }
 
+    public void SaveWeaponState()
+    {
+        var saveData = new WeaponSaveData
+        {
+            weaponId = currentWeaponSO != null ? currentWeaponSO.currentWeaponId : -1,
+            memoryPieceId = currentMemorySO != null ? currentMemorySO.currentMemoryPieceId : -1
+        };
+
+        string json = JsonUtility.ToJson(saveData);
+        PlayerPrefs.SetString("WeaponSaveData", json);
+        PlayerPrefs.Save();
+
+        Debug.Log("[Save] 무기 및 기억 조각 상태 저장 완료");
+    }
+
+    public void LoadWeaponState()
+    {
+        string json = PlayerPrefs.GetString("WeaponSaveData", null);
+        if (string.IsNullOrEmpty(json)) return;
+
+        WeaponSaveData saveData = JsonUtility.FromJson<WeaponSaveData>(json);
+
+        if (saveData.weaponId != -1)
+        {
+            WeaponDataSO weaponSO = DataManager.Instance.weaponSOList.Find(w => w.currentWeaponId == saveData.weaponId);
+            if (weaponSO != null)
+            {
+                EquipWeapon(weaponSO);
+                Debug.Log("[Load] 무기 로드");
+
+                if (swapper == null)
+                    swapper = FindObjectOfType<WeaponSwapper>();
+
+                var swordSO = DataManager.Instance.weaponSOList.Find(w =>
+                                      DataManager.Instance.GetWeaponData(w.currentWeaponId).Type == WeaponType.Sword);
+
+                var bowSO = DataManager.Instance.weaponSOList.Find(w =>
+                                   DataManager.Instance.GetWeaponData(w.currentWeaponId).Type == WeaponType.Bow);
+
+
+                if (swordSO != null && bowSO != null)
+                {
+                    if (currentWeaponSO == swordSO)
+                        swapper.SetWeaponIcons(swordSO.weaponIcon, bowSO.weaponIcon);
+                    else
+                        swapper.SetWeaponIcons(bowSO.weaponIcon, swordSO.weaponIcon);
+
+                    Debug.Log($"[SetIcon] 무기 스왑 아이콘 설정 완료 (현재 장착: {currentWeaponSO.name})");
+                }
+                else
+                {
+                    Debug.LogWarning("[SetIcon] 무기 타입 기반으로 아이콘 설정 실패 - Sword 또는 Bow SO 없음");
+                }
+            }
+        }
+
+        if (saveData.memoryPieceId != -1)
+        {
+            MemoryPieceSO memorySO = DataManager.Instance.memoryVisualSOList.Find(m => m.currentMemoryPieceId == saveData.memoryPieceId);
+            if (memorySO != null)
+            {
+                EquipMemoryPiece(memorySO);
+                Debug.Log("[Load] 기억 조각 로드");
+            }
+        }
+
+        Debug.Log("[Load] 무기 및 기억 조각 상태 로드 완료");
+    }
+
+    public void UnequipWeapon()
+    {
+        currentWeaponSO = null;
+        currentWeaponData = null;
+
+        skillController.skill01Id = -1;
+        skillController.skill02Id = -1;
+
+        if (skillUI != null)
+        {
+            skillUI.ClearSkillIcon(SkillSlotType.Skill01);
+            skillUI.ClearSkillIcon(SkillSlotType.Skill02);
+            skillUI.ClearSkillIcon(SkillSlotType.Basic);
+        }
+
+        if (swapper != null)
+            swapper.ClearWeaponIcons();
+
+        Debug.Log("[Clear] 무기 장착 해제 완료");
+    }
+
+    public void UnequipMemoryPiece()
+    {
+        currentMemorySO = null;
+        currentMemoryData = null;
+
+        skillController.memorySkillItem = null;
+
+        skillUI.ClearSkillIcon(SkillSlotType.Memory);
+
+        Debug.Log("[Clear] 기억 조각 장착 해제 완료");
+    }
+
+
+    public void ClearWeaponSaveData()
+    {
+        PlayerPrefs.DeleteKey("WeaponSaveData");
+        PlayerPrefs.Save();
+
+        UnequipWeapon();
+        UnequipMemoryPiece();
+        Debug.Log("[Clear] 무기 및 기억 조각 저장 데이터 초기화 완료");
+    }
+
 #if UNITY_EDITOR
     [ContextMenu("DEBUG: 검 장착")]
     private void Debug_EquipTestWeapon()
@@ -283,4 +399,11 @@ public class WeaponManager : Singleton<WeaponManager>
         EquipMemoryPiece(testMemorySO);
     }
 #endif
+
+    [Serializable]
+    private class WeaponSaveData
+    {
+        public int weaponId;
+        public int memoryPieceId;
+    }
 }

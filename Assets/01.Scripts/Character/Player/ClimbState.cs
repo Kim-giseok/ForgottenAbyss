@@ -18,6 +18,8 @@ public class ClimbState : PlayerStateMachine
         Debug.Log("트리거 진입");
         originalGravity = player.rigid.gravityScale;
 
+        Physics2D.IgnoreLayerCollision(player.gameObject.layer, LayerMask.NameToLayer("Ground"), true);
+
         // 현재 접촉 중인 WallClimb 레이어의 트리거 찾기
         Collider2D[] colliders = Physics2D.OverlapCircleAll(player.transform.position, 1f);
         Collider2D Collider = null;
@@ -87,6 +89,8 @@ public class ClimbState : PlayerStateMachine
         player.isOnLadder = false;
         player.animator.SetBool("IsLadder", false);
         player.rigid.gravityScale = originalGravity;
+
+        Physics2D.IgnoreLayerCollision(player.gameObject.layer, LayerMask.NameToLayer("Ground"), false);
     }
 
     public override void OnJump()

@@ -27,8 +27,10 @@ public class DataManager : Singleton<DataManager>
     public Dictionary<string, MemoryPieceSO> memoryVisualSODic = new();
     public List<MemoryPieceSO> memoryVisualSOList;
 
-    public Dictionary<string, ArmorSO> armorSODic = new();
+    public Dictionary<int, ArmorSO> armorSODic = new();
     public List<ArmorSO> armorSOList;
+
+    public bool IsInitialized { get; private set; } = false;
 
     private void Awake()
     {
@@ -48,6 +50,8 @@ public class DataManager : Singleton<DataManager>
 
         LoadArmorData();
         InitArmorSO();
+
+        IsInitialized = true;
     }
 
     private void LoadSkillData()
@@ -252,9 +256,13 @@ public class DataManager : Singleton<DataManager>
 
         foreach (var so in allArmorSOs)
         {
-            if (!armorSODic.ContainsKey(so.name))
+            if (!armorSODic.ContainsKey(so.armorId))
             {
-                armorSODic.Add(so.name, so);
+                armorSODic.Add(so.armorId, so);
+            }
+            else
+            {
+                Debug.LogWarning($"중복 ArmorID 발견: {so.armorId} - {so.name}");
             }
         }
     }
@@ -269,12 +277,12 @@ public class DataManager : Singleton<DataManager>
         return data;
     }
 
-    public ArmorSO GetArmorSO(string name)
+    public ArmorSO GetArmorSO(int id)
     {
-        if (armorSODic.TryGetValue(name, out var so))
+        if (armorSODic.TryGetValue(id, out var so))
             return so;
 
-        Debug.LogWarning($"ArmorSO with name {name} not found.");
+        Debug.LogWarning($"ArmorSO with ID {id} not found.");
         return null;
     }
 }

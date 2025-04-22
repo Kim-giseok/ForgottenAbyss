@@ -221,8 +221,6 @@ public class SkillController : Singleton<SkillController>
 
     public void ResetAttack()
     {
-        Debug.Log("리셋 실행");
-
         isSkillPlaying = false;
 
         if (comboAttack != null && comboAttack.gameObject != null)

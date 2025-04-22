@@ -90,7 +90,7 @@ public class Player : MonoBehaviour, IDamagable
         controller.isAlive = false;
         controller.rigid.velocity = Vector2.zero;
         controller.inputVec = Vector2.zero;
-        controller.speed = 0f;
+        controller.status.stats[StatType.SPEED] = 0f;
         skillController.SetDead(true);
 
         animator.ResetTrigger("HitTrigger");
