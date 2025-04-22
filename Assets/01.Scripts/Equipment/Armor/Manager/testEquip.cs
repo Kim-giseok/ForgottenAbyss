@@ -1,8 +1,9 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class ArmorTestEquip : MonoBehaviour
 {
-    [SerializeField] private int testArmorID = 400; // Resources/Armor 폴더에 있는 SO 이름
+    [SerializeField] private List<int> testArmorIDs = new() { 400, 401, 402, 403 };
 
     private void Update()
     {
@@ -14,13 +15,17 @@ public class ArmorTestEquip : MonoBehaviour
 
     private void TryEquipArmor()
     {
-        if (DataManager.Instance.armorSODic.TryGetValue(testArmorID, out var armorSO))
+        foreach (int id in testArmorIDs)
         {
-            EquipmentManager.Instance.EquipArmor(armorSO);
-        }
-        else
-        {
-            Debug.LogWarning($"[Test] ArmorSO ID : '{testArmorID}'을 찾을 수 없습니다.");
+            if (DataManager.Instance.armorSODic.TryGetValue(id, out var armorSO))
+            {
+                EquipmentManager.Instance.EquipArmor(armorSO);
+                Debug.Log($"[Test] 장착 시도 → {armorSO.name} ({armorSO.slot})");
+            }
+            else
+            {
+                Debug.LogWarning($"[Test] ArmorSO ID '{id}'를 찾을 수 없습니다.");
+            }
         }
     }
 }

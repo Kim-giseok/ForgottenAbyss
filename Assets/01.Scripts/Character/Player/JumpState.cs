@@ -34,7 +34,7 @@ public class JumpState : PlayerStateMachine
     }
     public override void FixedUpdate()
     {
-        player.rigid.velocity = new Vector2(player.inputVec.x * player.speed, player.rigid.velocity.y);
+        player.rigid.velocity = new Vector2(player.inputVec.x * player.status.stats[StatType.SPEED], player.rigid.velocity.y);
         player.UpdateDirection();
         player.IgnorePlatformCollision();
     }

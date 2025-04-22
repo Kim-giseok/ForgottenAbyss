@@ -26,10 +26,6 @@ public class EquipmentManager : Singleton<EquipmentManager>
         }
 
         DontDestroyOnLoad(gameObject);
-        Find();
-
-        LoadEquippedArmors();
-        Debug.Log("[Auto] 애플리케이션 실행 → 장비 불러오기");
     }
 
     private void Find()
@@ -37,18 +33,43 @@ public class EquipmentManager : Singleton<EquipmentManager>
         playerStatus = FindObjectOfType<Player>().GetComponent<CharacterStatus>();
     }
 
-    private void Update()
+    private void OnEnable()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha5))
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        StartCoroutine(DelayedPlayerFindAndApply());
+    }
+
+    private IEnumerator DelayedPlayerFindAndApply()
+    {
+        yield return new WaitUntil(() => FindObjectOfType<Player>() != null);
+
+        Find();
+
+        yield return new WaitUntil(() => playerStatus.stats != null && playerStatus.stats.Count > 0);
+
+        foreach (var armor in equippedArmors.Values)
         {
-            Debug.Log("[Test] 5번 키 → 장비 불러오기 시도");
-            LoadEquippedArmors();
+            ApplyStatBonus(armor);
         }
 
+        Debug.Log($"[SceneLoaded] {SceneManager.GetActiveScene().name} → 플레이어 찾기 및 장비 스탯 재적용 완료");
+    }
+
+    private void Update()
+    {
         if (Input.GetKeyDown(KeyCode.Alpha6))
         {
-            Debug.Log("[Test] 6번 키 → 장비 저장 시도");
-            SaveEquippedArmors();
+            Debug.Log("[Test] 6번 키 → 장비 저장 데이터 초기화");
+            ClearEquippedArmorData();
         }
     }
 
@@ -71,7 +92,9 @@ public class EquipmentManager : Singleton<EquipmentManager>
         equippedArmors[armor.slot] = armor;
         ApplyStatBonus(armor);
         OnEquipArmor?.Invoke(armor);
-        Debug.Log($"[Test] 장착 성공: {armor.name} → {armor.slot}, {armor.statType} +{armor.value}");
+
+        string bonusLog = string.Join(", ", armor.statBonuses.Select(b => $"{b.statType} {b.bonusType} +{b.value}"));
+        Debug.Log($"[Test] 장착 성공: {armor.name} → {armor.slot}, {bonusLog}");
     }
 
     public void UnequipArmor(ArmorSlot slot)
@@ -81,7 +104,9 @@ public class EquipmentManager : Singleton<EquipmentManager>
             RemoveStatBonus(armor);
             equippedArmors.Remove(slot);
             OnUnequipArmor?.Invoke(armor);
-            Debug.Log($"[Test] 장착 해제: {armor.name} → {armor.slot}, {armor.statType} -{armor.value}");
+
+            string bonusLog = string.Join(", ", armor.statBonuses.Select(b => $"{b.statType} {b.bonusType} -{b.value}"));
+            Debug.Log($"[Test] 장착 해제: {armor.name} → {armor.slot}, {bonusLog}");
         }  
     }
 
@@ -94,27 +119,49 @@ public class EquipmentManager : Singleton<EquipmentManager>
     public Dictionary<StatType, float> GetTotalArmorStats()
     {
         Dictionary<StatType, float> total = new();
+
         foreach (var armor in equippedArmors.Values)
         {
-            if (!total.ContainsKey(armor.statType))
-                total[armor.statType] = 0;
-            total[armor.statType] += armor.value;
+            foreach (var bonus in armor.statBonuses)
+            {
+                if (!total.ContainsKey(bonus.statType))
+                    total[bonus.statType] = 0;
+
+                total[bonus.statType] += bonus.value;
+            }
         }
+
         return total;
     }
 
     private void ApplyStatBonus(ArmorSO armor)
     {
-        float current = 0;
-        playerStatus.stats.TryGetValue(armor.statType, out current);
-        playerStatus.SetStat(armor.statType, current + armor.value);  // 단순 + 인데 %로 바꿔줘도 될듯?
+        foreach (StatType statType in Enum.GetValues(typeof(StatType)))
+        {
+            var bonuses = armor.statBonuses.Where(b => b.statType == statType).ToList();
+            if (bonuses.Count == 0) continue;
+
+            playerStatus.stats.TryGetValue(statType, out float baseValue);
+            float finalValue = StatBonusCalculator.ApplyBonuses(baseValue, bonuses);
+
+            playerStatus.SetStat(statType, finalValue);
+            Debug.Log($"[ApplyStatBonus] {statType}: {baseValue} → {finalValue}");
+        }
     }
 
     private void RemoveStatBonus(ArmorSO armor)
     {
-        float current = 0;
-        playerStatus.stats.TryGetValue(armor.statType, out current);
-        playerStatus.SetStat(armor.statType, current - armor.value);  // 단순 - 인데 %로 바꿔줘도 될듯?
+        foreach (StatType statType in Enum.GetValues(typeof(StatType)))
+        {
+            var bonuses = armor.statBonuses.Where(b => b.statType == statType).ToList();
+            if (bonuses.Count == 0) continue;
+
+            playerStatus.stats.TryGetValue(statType, out float currentValue);
+            float restoredValue = StatBonusCalculator.RemoveBonuses(currentValue, bonuses);
+
+            playerStatus.SetStat(statType, restoredValue);
+            Debug.Log($"[RemoveStatBonus] {statType}: {currentValue} → {restoredValue}");
+        }
     }
 
     public void SaveEquippedArmors()
@@ -160,6 +207,13 @@ public class EquipmentManager : Singleton<EquipmentManager>
                 Debug.LogWarning($"장비 ID {entry.armorId}에 해당하는 ArmorSO를 찾을 수 없습니다.");
             }
         }
+    }
+
+    public void ClearEquippedArmorData()
+    {
+        PlayerPrefs.DeleteKey("EquippedArmors");
+        PlayerPrefs.Save();
+        Debug.Log("[Clear] 장비 저장 데이터 초기화 완료");
     }
 
     private void OnApplicationQuit()

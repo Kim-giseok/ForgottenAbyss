@@ -39,6 +39,7 @@ public class ControllerPlayer : MonoBehaviour
     public SpriteRenderer spriteRenderer;
 
     public PlayerInteraction interaction;
+    public CharacterStatus status;
 
     // FSM 관련 변수
     private Dictionary<PlayerState, PlayerStateMachine> states = new Dictionary<PlayerState, PlayerStateMachine>();
@@ -58,6 +59,7 @@ public class ControllerPlayer : MonoBehaviour
         animator = GetComponent<Animator>();
         playerCollider = GetComponent<Collider2D>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        status = GetComponent<CharacterStatus>();
 
         // 상태 머신 초기화
         InitStateMachine();
