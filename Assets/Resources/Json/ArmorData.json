@@ -4,29 +4,54 @@
       "Id": 400,
       "Name": "TEST Helmet",
       "Slot": "Helmet",
-      "StatType": "DEF",
-      "Value": 5.0
+      "StatBonuses": [
+        {
+          "StatType": "DEF",
+          "Value": 5.0,
+          "BonusType": "Flat"
+        }
+      ]
     },
     {
       "Id": 401,
       "Name": "TEST Chest",
       "Slot": "Chest",
-      "StatType": "MaxHP",
-      "Value": 5.0
+      "StatBonuses": [
+        {
+          "StatType": "MaxHP",
+          "Value": 10.0,
+          "BonusType": "Flat"
+        },
+        {
+          "StatType": "DEF",
+          "Value": 10.0,
+          "BonusType": "Percent"
+        }
+      ]
     },
     {
       "Id": 402,
       "Name": "TEST Gloves",
       "Slot": "Gloves",
-      "StatType": "ATK",
-      "Value": 5.0
+      "StatBonuses": [
+        {
+          "StatType": "ATK",
+          "Value": 10.0,
+          "BonusType": "Percent"
+        }
+      ]
     },
     {
       "Id": 403,
       "Name": "TEST Boots",
       "Slot": "Boots",
-      "StatType": "DEF",
-      "Value": 5.0
+      "StatBonuses": [
+        {
+          "StatType": "SPEED",
+          "Value": 10.0,
+          "BonusType": "Percent"
+        }
+      ]
     }
   ]
 }

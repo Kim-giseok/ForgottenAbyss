@@ -10,14 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a8f55a5d968504541a37bc347e9f5857, type: 3}
-  m_Name: Armor_01
+  m_Name: Armor_02
   m_EditorClassIdentifier: 
-  armorId: 400
-  armorName: TEST Helmet
+  armorId: 401
+  armorName: TEST Chest
   description: 
-  slot: 0
+  slot: 1
   icon: {fileID: 21300000, guid: e8c032b41bd8f6246965d85ba8d351f1, type: 3}
   statBonuses:
-  - statType: 5
-    value: 5
+  - statType: 1
+    value: 10
     bonusType: 0
+  - statType: 5
+    value: 10
+    bonusType: 1

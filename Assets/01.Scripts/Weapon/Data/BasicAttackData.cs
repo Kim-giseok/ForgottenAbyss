@@ -23,7 +23,7 @@ public class BasicAttackData
 
         var status = caster.GetComponent<PlayerStatus>();
         if (status != null)
-            result.baseAttack = status.stats[StatType.ATK];
+            result.baseAttack = status.GetStat(StatType.ATK);
 
         result.weaponAttack = WeaponManager.Instance.GetCurrentWeaponAttack();
         result.comboMultiplier = comboMultiplier;
