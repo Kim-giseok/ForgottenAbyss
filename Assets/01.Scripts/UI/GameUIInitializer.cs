@@ -25,7 +25,7 @@ public class GameUIInitializer : MonoBehaviour
 
         if (UIManager.Instance == null)
         {
-            GameObject prefab = Resources.Load<GameObject>("Prefabs/UI/UICanvas");
+            GameObject prefab = Resources.Load<GameObject>("Prefabs/UI/UIManager");
 
             if (prefab != null)
             {
