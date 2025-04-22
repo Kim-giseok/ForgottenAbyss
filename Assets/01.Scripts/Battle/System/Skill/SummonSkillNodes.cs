@@ -95,7 +95,7 @@ public class ComboDashAttack : Node
     public override void Update()
     {
         // 제한시간이 지나면 종료
-        if(currTime > 3f) { SetStatus(Status.Fail); }
+        // if(currTime > 3f) { SetStatus(Status.Fail); }
     }
 
     //do: 이동을 인식하는 것도 필요

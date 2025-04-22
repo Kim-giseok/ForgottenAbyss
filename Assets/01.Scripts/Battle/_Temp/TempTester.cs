@@ -23,7 +23,6 @@ public class TempTester: MonoBehaviour
 
       if (Input.GetKeyDown(KeyCode.K))
       {
-         BoltsPool.Instance.Create(transform, Bolts.Type.Linear);
          // for(int index = 0; index < 5; index++) {BoltsPool.Instance.Create(transform, Bolts.Type.Test);}
       }
    }

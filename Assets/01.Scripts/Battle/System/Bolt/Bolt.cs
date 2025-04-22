@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class Bolt: MonoBehaviour
 {
@@ -12,7 +13,7 @@ public class Bolt: MonoBehaviour
     // 공통변수
     public float currTime { get; private set; } = 0f;
     public float currNodeTime { get; private set; } = 0f;
-    [HideInInspector] public Vector3 currDirection; // 발사체의 방향은 공통 변수로 관리
+    [HideInInspector] public Vector2 direction; // 발사체의 방향은 공통 변수로 관리
     
     // Node가 자체적으로 가진다. - 총 합에 해당하는 duration
     public float duration;
@@ -29,9 +30,28 @@ public class Bolt: MonoBehaviour
     protected List<BoltEffect> effects = new();
     
     public void SetSprite(Sprite sprite) => renderer.sprite = sprite;
-    public void SetSize(float size) => transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y, 1);
+    public Bolt SetSize(float size)
+    {
+        transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y, 1);
+        return this;
+    }
+
     public void AddEffect(BoltEffect effect) => effects.Add(effect);
     public void Play() => this.isStarted = true;
+
+    public Bolt SetDirection(Vector2 direction)
+    {
+        this.direction = direction;
+        this.direction.Normalize();
+        return this;
+    }
+
+    public Bolt Fire()
+    {
+        gameObject.SetActive(true);
+        Play();
+        return this;
+    }
 
     private void Awake()
     {
@@ -75,11 +95,13 @@ public class Bolt: MonoBehaviour
         // 레이어 자체는 모두 감지가 필요하므로 충돌 비교 레이어를 필드로 따로 둠
         if (hitBox.ownerLayer == other.gameObject.layer) return;
        
-        BoltsPool.Instance.Destroy(gameObject);
-
         foreach (BoltEffect effect in effects)
         {
             effect.Execute(other);
         }
+        
+        Debug.Log(other.gameObject.name);
+        
+        BoltsPool.Instance.Destroy(gameObject);
     }
 }

@@ -16,7 +16,6 @@ public class AgisSpreadShot : Node
             controller.transform.SetParent(sContorller.eController.transform);
         }
         
-
         // for (int degree = 0; degree <= 360; degree += 20)
         // {
             // 튕기는 발사체가 좋을 듯
@@ -25,7 +24,14 @@ public class AgisSpreadShot : Node
 
     public override void Update()
     {
-        if(currTime >= duration) { SetStatus(Status.Success); return; }
+        if (currTime >= duration)
+        {
+            if (controller is SummonController { isPlayerCaster: false } sContorller)
+            {
+                BoltsPool.Instance.Create(controller.transform, Bolts.Type.Linear).SetDirection(sContorller.castingDirection).Fire();
+            }
+            SetStatus(Status.Success); return;
+        }
     }
 
     public override void End()
@@ -100,9 +106,9 @@ public class MoveNode : Node
             for (int i = 0; i < bulletCount; i++)
             {
                 float angle = i * angleStep * Mathf.Deg2Rad;
-                Vector2 dir = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * radius;
+                Vector2 direction = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * radius;
 
-                ((EnemyController)controller).statusHandler.castingDirection = dir;
+                ((EnemyController)controller).statusHandler.castingDirection = direction;
                 BoltsPool.Instance.CreateSummon(controller.transform, SummonSkillManager.Skill.Agis);
             }
             

@@ -108,7 +108,7 @@ public class BoltsPool : MonoBehaviour // 단위 미사일
     }
 
     // ReSharper disable Unity.PerformanceAnalysis
-    public void Create(Transform parent, Bolts.Type boltType)
+    public Bolt Create(Transform parent, Bolts.Type boltType)
     {
         var instance = rangeBoltList.Find(bolt => !bolt.activeSelf);
         
@@ -125,12 +125,10 @@ public class BoltsPool : MonoBehaviour // 단위 미사일
         // 플레이어 피봇 문제로 위치 조정 필요
         instance.transform.position = parent.position + (Vector3.up * 0.5f);
         
-        instance.SetActive(true);
-        bolt.currDirection = parent.transform.right;
-        
-        bolt.machine.Clear();
+        bolt.direction = parent.transform.right;
         bolt.machine.Define(Bolts.Get(boltType));
-        bolt.Play();
+        
+        return bolt;
     }
     
     public void Destroy(GameObject instance)

@@ -13,7 +13,7 @@ public class BoltLinearNode : BoltNode
         {
             Next();
         }
-        bolt.rigidbody.velocity = bolt.currDirection * bolt.speed;
+        bolt.rigidbody.velocity = bolt.direction * bolt.speed;
     }
 }
 

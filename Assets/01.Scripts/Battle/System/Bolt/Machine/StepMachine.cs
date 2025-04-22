@@ -47,8 +47,10 @@ public class StepMachine
         isRunning = true;
     }
 
+    // Start가 종속된 부분 변경 필요
     public void Define(BoltNode[] nodes)
     {
+        nodeList.Clear();
         nodeList.AddRange(nodes);
         
         // next로 하면 첫번째가 아닌 현상 발생
