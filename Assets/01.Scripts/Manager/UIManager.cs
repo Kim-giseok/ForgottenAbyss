@@ -8,6 +8,8 @@ public class UIManager : MonoBehaviour
     public SettingsMenu settingsMenu;
     public WeaponSwapper weaponSwapper;
     public ConfirmationUI confirmationUI;
+    public GameObject npcText;
+    public GameObject shopUI;
 
     private void Awake()
     {
