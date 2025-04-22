@@ -19,10 +19,10 @@ public class EquipmentManager : Singleton<EquipmentManager>
             return;
         }
 
-        Init();
+        Find();
     }
 
-    private void Init()
+    private void Find()
     {
         playerStatus = FindObjectOfType<Player>().GetComponent<CharacterStatus>();
     }
