@@ -548,6 +548,14 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8728192386599502514, guid: d1c2fe897324d1d4ca88169e9f737467, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8728192386599502514, guid: d1c2fe897324d1d4ca88169e9f737467, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -723,7 +731,7 @@ GameObject:
   - component: {fileID: 345323571}
   - component: {fileID: 345323570}
   - component: {fileID: 345323569}
-  m_Layer: 10
+  m_Layer: 7
   m_Name: Platform
   m_TagString: Ground
   m_Icon: {fileID: 0}
@@ -1028,11 +1036,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3592222812765152639, guid: 6dc31ed564c18ca4b9568794c27595d7, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -15.95
+      value: -14.59
       objectReference: {fileID: 0}
     - target: {fileID: 3592222812765152639, guid: 6dc31ed564c18ca4b9568794c27595d7, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -3.2
+      value: 3.91
       objectReference: {fileID: 0}
     - target: {fileID: 3592222812765152639, guid: 6dc31ed564c18ca4b9568794c27595d7, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1223,6 +1231,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 1424171431}
+  mainCamera: {fileID: 0}
 --- !u!4 &901175353
 Transform:
   m_ObjectHideFlags: 0

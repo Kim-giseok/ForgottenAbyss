@@ -327,6 +327,11 @@ public class ControllerPlayer : MonoBehaviour
             ChangeState(PlayerState.Climb);
         }
 
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Climb") && inputVec.y < 0)
+        {
+            ChangeState(PlayerState.Climb);
+        }
+
         if (states.ContainsKey(currentState))
         {
             states[currentState].OnTriggerStay(collision);
