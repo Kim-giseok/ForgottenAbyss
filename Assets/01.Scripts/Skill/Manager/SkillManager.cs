@@ -124,10 +124,15 @@ public class SkillManager : Singleton<SkillManager>
     private int GetSlotIndexBySkillId(int skillId)
     {
         var sc = WeaponManager.Instance.skillController;
-        if (skillId == sc.memorySkillItem?.memoryPieceId) return 0;
+        if (IsMemorySkill(skillId)) return 0;
         if (skillId == sc.combatId) return 1;
         if (skillId == sc.skill01Id) return 2;
         if (skillId == sc.skill02Id) return 3;
         return -1;
+    }
+    public SkillInstance GetSkillInstance(int skillId)
+    {
+        skillInstances.TryGetValue(skillId, out var instance);
+        return instance;
     }
 }

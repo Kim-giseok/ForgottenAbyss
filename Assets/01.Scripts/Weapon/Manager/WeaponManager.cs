@@ -170,8 +170,6 @@ public class WeaponManager : Singleton<WeaponManager>
             return;
         }
 
-        skillController.memorySkillItem = currentMemorySO.skillItem;
-
         SkillManager.Instance.SetMemorySkill(memorySO);
 
         if (skillUI == null)
@@ -256,11 +254,6 @@ public class WeaponManager : Singleton<WeaponManager>
                 skillController.combatId = currentWeaponSO.rangedAttackData.id;
                 skillController.rangedAttack.SetRangedAttackData(currentWeaponSO.rangedAttackData);
             }
-        }
-
-        if (currentMemorySO != null)
-        {
-            skillController.memorySkillItem = currentMemorySO.skillItem;
         }
     }
 
@@ -358,8 +351,6 @@ public class WeaponManager : Singleton<WeaponManager>
     {
         currentMemorySO = null;
         currentMemoryData = null;
-
-        skillController.memorySkillItem = null;
 
         skillUI.ClearSkillIcon(SkillSlotType.Memory);
 

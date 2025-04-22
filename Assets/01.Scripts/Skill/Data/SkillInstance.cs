@@ -9,9 +9,9 @@ public class SkillInstance
     public int skillId;
     public SkillSourceType sourceType;
 
-    public SkillData data;                   // 무기 스킬용
+    public SkillData data;
     public SkillVisualSO visual;            // 공통 비주얼
-    public SkillExecutionSO execution;      // 무기 스킬용
+    public SkillExecutionSO execution;      // 스킬
 
     public MemoryPieceSO memorySO;      // 기억 스킬용
 
@@ -30,9 +30,6 @@ public class SkillInstance
         sourceType = SkillSourceType.Memory;
         this.memorySO = memorySO;
         skillId = memorySO.currentMemoryPieceId;
-
-        // 이펙트 등 추가하고 싶다면 여기서 SO 따로 부여 가능
-        // 예: visual = memoryItem.skillVisualSO;
     }
 
     public void Execute(GameObject caster)
