@@ -25,5 +25,6 @@ public class ConfirmationUI : BaseUI
     void ClickEnter()
     {
         onClick?.Invoke();
+        gameObject.SetActive(false);
     }
 }
