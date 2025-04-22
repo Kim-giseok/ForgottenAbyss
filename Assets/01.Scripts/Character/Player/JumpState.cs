@@ -5,6 +5,9 @@ using UnityEngine;
 public class JumpState : PlayerStateMachine
 {
     public JumpState(ControllerPlayer player) : base(player) { }
+
+    private bool isFastFalling = false;
+    private float fastFallSpeed = 15f;
     public override void Enter()
     {
         // 첫 점프인지 더블 점프인지 확인
@@ -34,13 +37,25 @@ public class JumpState : PlayerStateMachine
     }
     public override void FixedUpdate()
     {
-        player.rigid.velocity = new Vector2(player.inputVec.x * player.speed, player.rigid.velocity.y);
+        if (isFastFalling)
+        {
+            player.rigid.velocity = new Vector2(0, -fastFallSpeed);
+        }
+        else
+        {
+            player.rigid.velocity = new Vector2(player.inputVec.x * player.speed, player.rigid.velocity.y);
+        }
         player.UpdateDirection();
         player.IgnorePlatformCollision();
     }
 
     public override void OnJump()
     {
+        if (player.inputVec.y < 0)
+        {
+            ActivateFastFall();
+            return;
+        }
         // 추가 점프가 가능하면 다시 자기 자신의 Enter() 호출
         if (player.currentJumpCount < player.jumplimit)
         {
@@ -67,15 +82,20 @@ public class JumpState : PlayerStateMachine
             }
         }
     }
-    public override void Update()
+    private void ActivateFastFall()
     {
-        //player.IgnorePlatformCollision();
-        //// 벽 감지 및 입력 조건 확인
-        //if (player.isWallDetected )
-        //{
-            
-        //    player.ChangeState(PlayerState.Climb);
-        //    Debug.Log("Climb");
-        //}
+        if (!isFastFalling)
+        {
+            isFastFalling = true;
+                       
+            // 플레이어가 움직이지 않도록 수평 속도를 0으로 설정
+            player.rigid.velocity = new Vector2(0, -fastFallSpeed);
+                        
+        }
+    }
+
+    public override void Exit()
+    {
+        isFastFalling = false; // 상태 종료 시 빠른 낙하 상태 초기화
     }
 }
