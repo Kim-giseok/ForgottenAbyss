@@ -1,25 +1,26 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
 
 public class GoldManager : MonoBehaviour
 {
     public static GoldManager Instance { get; private set; }
 
     [SerializeField] private int currentGold = 1000; // 현재 소지 금액
-    [SerializeField] private List<TextMeshProUGUI> goldTexts;
+
+    // 이벤트 선언
+    public event Action<int> OnGoldChanged;
 
     private void Awake()
     {
-        // 싱글톤 패턴
         if (Instance == null)
             Instance = this;
         else
             Destroy(gameObject);
 
-        UpdateGoldUI();
+        // 초기 UI업데이트
+        OnGoldChanged?.Invoke(currentGold);
     }
 
     public int GetGold() => currentGold;
@@ -29,7 +30,7 @@ public class GoldManager : MonoBehaviour
         if (currentGold >= amount)
         {
             currentGold -= amount;
-            UpdateGoldUI();
+            OnGoldChanged?.Invoke(currentGold);
             return true;
         }
         return false;
@@ -38,14 +39,6 @@ public class GoldManager : MonoBehaviour
     public void AddGold(int amount)
     {
         currentGold += amount;
-        UpdateGoldUI();
-    }
-
-    private void UpdateGoldUI()
-    {
-        foreach (var goldtxt in goldTexts)
-        {
-            goldtxt.text = currentGold.ToString() + "";
-        }
+        OnGoldChanged?.Invoke(currentGold);
     }
 }
