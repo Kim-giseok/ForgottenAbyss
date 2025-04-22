@@ -30,6 +30,8 @@ public class DataManager : Singleton<DataManager>
     public Dictionary<int, ArmorSO> armorSODic = new();
     public List<ArmorSO> armorSOList;
 
+    public bool IsInitialized { get; private set; } = false;
+
     private void Awake()
     {
         LoadAllData();
@@ -48,6 +50,8 @@ public class DataManager : Singleton<DataManager>
 
         LoadArmorData();
         InitArmorSO();
+
+        IsInitialized = true;
     }
 
     private void LoadSkillData()

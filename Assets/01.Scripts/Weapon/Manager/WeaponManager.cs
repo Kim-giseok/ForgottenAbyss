@@ -43,9 +43,10 @@ public class WeaponManager : Singleton<WeaponManager>
 
     IEnumerator Start()
     {
+        yield return new WaitUntil(() => DataManager.Instance.IsInitialized);
         yield return new WaitUntil(() => skillUI.IsInitialized);
+
         LoadWeaponState();
-        //EquipDefaultWeapons();
     }
 
     private void Update()
