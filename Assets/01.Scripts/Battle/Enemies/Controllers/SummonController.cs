@@ -3,19 +3,26 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
 
-// 중간에 풀어도 될 듯
+// feat: 플레이어 인풋 연결
 public class SummonController: EnemyBaseController
 {
     public int hitInformation; // 현재 공격에 대한 정보를 저장받는다.
     
     public Transform caster {get; private set;}
+    public bool isPlayerCaster { get; private set; } = false;
+    
+    public ControllerPlayer pController { get; private set; }
+    public EnemyController eController { get; private set; }
+    
+    
+    
     private bool isCasterAttached = true;
 
     public Rigidbody2D cRigidbody {get; private set;}
     private Collider2D cCollider;
     private SpriteRenderer cRenderer;
     
-    public Vector2 playerDirection {get; private set;}
+    public Vector2 direction {get; private set;}
     
     // ReSharper disable Unity.PerformanceAnalysis
     public void SetCaster(Transform currCaster ,bool isAttached = false)
@@ -23,12 +30,20 @@ public class SummonController: EnemyBaseController
         caster = currCaster;
         cRigidbody  = caster.GetComponent<Rigidbody2D>();
         cRenderer = caster.GetComponent<SpriteRenderer>();
+
+        if (caster.TryGetComponent(out ControllerPlayer pController))
+        {
+            this.pController = pController;
+            isPlayerCaster = true;
+        }
         
         isCasterAttached = isAttached;
         
         if (!isCasterAttached) return;
         // 플레이어 비/활성화가 잠시 필요 - agent 쪽에서 인식 처리만 잘되면 됨
         cRenderer.enabled = false;
+        // 서먼 스킬을 사용하는 동안은 무적 처리
+        pController.isInvincible = true; 
     }
     
     public void ExecuteSkill(SummonSkillManager.Skill skillName)
@@ -48,6 +63,7 @@ public class SummonController: EnemyBaseController
         isCasterAttached = false;
         cRigidbody.velocity = Vector2.zero;
         cRenderer.enabled = true;
+        if(isPlayerCaster) { pController.isInvincible = false; }
     }
     
     private void Update()
@@ -61,10 +77,16 @@ public class SummonController: EnemyBaseController
         if (!isCasterAttached) return;
         cRigidbody.velocity = Vector2.zero;
         cRenderer.enabled = true;
+        if(isPlayerCaster) { pController.isInvincible = false; }
     }
 
     private void OnMove(InputValue value)
     {
-        playerDirection = value.Get<Vector2>().normalized;
+        direction = value.Get<Vector2>().normalized;
+    }
+
+    private void OnAttack(InputValue value)
+    {
+        
     }
 }
