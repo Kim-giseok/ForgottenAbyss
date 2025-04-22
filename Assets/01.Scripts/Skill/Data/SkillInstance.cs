@@ -1,4 +1,3 @@
-using Unity.VisualScripting;
 using UnityEngine;
 using System.Collections;
 
@@ -13,7 +12,7 @@ public class SkillInstance
     public SkillVisualSO visual;            // 공통 비주얼
     public SkillExecutionSO execution;      // 스킬
 
-    public MemoryPieceSO memorySO;      // 기억 스킬용
+    public MemoryPieceSO memorySO;          // 기억 스킬용
 
     public SkillInstance(SkillData data)
     {
@@ -37,10 +36,12 @@ public class SkillInstance
         switch (sourceType)
         {
             case SkillSourceType.Weapon:
-                execution?.Execute(caster, null, data);
+                if (execution != null && data != null)
+                    execution.Execute(caster, null, data);
                 break;
             case SkillSourceType.Memory:
-                memorySO?.skillItem?.Use();
+                if (memorySO != null && memorySO.skillItem != null)
+                    memorySO.skillItem.Use();
                 break;
         }
     }
@@ -77,34 +78,41 @@ public class SkillInstance
 
         GameObject effect = EffectPool.Instance.SpawnEffect(visual.effectKey, pos, spawnPoint.rotation);
 
-        switch (WeaponManager.Instance.GetCurrentWeaponData().Type)
+        var weaponData = WeaponManager.Instance.GetCurrentWeaponData();
+        if (weaponData == null) yield break;
+
+        switch (weaponData.Type)
         {
             case WeaponType.Bow:
-                effect.GetComponent<PiercingArrowEffect>()?.Initialize(pos, dir);
+                var arrow = effect.GetComponent<PiercingArrowEffect>();
+                if (arrow != null) arrow.Initialize(pos, dir);
                 break;
             case WeaponType.Sword:
-                effect.GetComponent<DashTrailEffect>()?.Initialize(pos, dir);
+                var trail = effect.GetComponent<DashTrailEffect>();
+                if (trail != null) trail.Initialize(pos, dir);
                 break;
         }
     }
 
     public float GetCooldown()
     {
-        return sourceType switch
-        {
-            SkillSourceType.Weapon => data?.CoolTime ?? 0f,
-            SkillSourceType.Memory => memorySO?.skillItem?.coolTime ?? 0f,
-            _ => 0f
-        };
+        if (sourceType == SkillSourceType.Weapon)
+            return data != null ? data.CoolTime : 0f;
+
+        if (sourceType == SkillSourceType.Memory && memorySO != null && memorySO.skillItem != null)
+            return memorySO.skillItem.coolTime;
+
+        return 0f;
     }
 
     public Sprite GetIcon()
     {
-        return sourceType switch
-        {
-            SkillSourceType.Weapon => visual?.skillIcon,
-            SkillSourceType.Memory => memorySO?.icon,
-            _ => null
-        };
+        if (sourceType == SkillSourceType.Weapon)
+            return visual != null ? visual.skillIcon : null;
+
+        if (sourceType == SkillSourceType.Memory && memorySO != null)
+            return memorySO.icon;
+
+        return null;
     }
 }

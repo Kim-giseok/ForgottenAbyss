@@ -106,8 +106,8 @@ public class SkillManager : Singleton<SkillManager>
         yield return StartCoroutine(instance.ResetAnimator(anim));
 
         int slotIndex = GetSlotIndexBySkillId(instance.skillId);
-        if (slotIndex >= 0)
-            skillUI?.HideSkillSetting(slotIndex, instance.GetCooldown());
+        if (slotIndex >= 0 && skillUI != null)
+            skillUI.HideSkillSetting(slotIndex, instance.GetCooldown());
     }
 
     private void UpdateCooldown(SkillInstance instance)
