@@ -28,6 +28,18 @@ public class EquipmentManager : Singleton<EquipmentManager>
         DontDestroyOnLoad(gameObject);
     }
 
+    private IEnumerator Start()
+    {
+        yield return new WaitUntil(() => FindObjectOfType<Player>() != null);
+
+        Find();
+
+        yield return new WaitUntil(() => playerStatus.stats != null && playerStatus.stats.Count > 0);
+
+        LoadEquippedArmors();
+        Debug.Log("[Start] 플레이어 초기화 후 장비 장착 완료");
+    }
+
     private void Find()
     {
         playerStatus = FindObjectOfType<Player>().GetComponent<CharacterStatus>();
@@ -56,10 +68,7 @@ public class EquipmentManager : Singleton<EquipmentManager>
 
         yield return new WaitUntil(() => playerStatus.stats != null && playerStatus.stats.Count > 0);
 
-        foreach (var armor in equippedArmors.Values)
-        {
-            ApplyStatBonus(armor);
-        }
+        ReapplyArmorStats();
 
         Debug.Log($"[SceneLoaded] {SceneManager.GetActiveScene().name} → 플레이어 찾기 및 장비 스탯 재적용 완료");
     }
@@ -161,6 +170,14 @@ public class EquipmentManager : Singleton<EquipmentManager>
 
             playerStatus.SetStat(statType, restoredValue);
             Debug.Log($"[RemoveStatBonus] {statType}: {currentValue} → {restoredValue}");
+        }
+    }
+
+    private void ReapplyArmorStats()
+    {
+        foreach (var armor in equippedArmors.Values)
+        {
+            ApplyStatBonus(armor);
         }
     }
 
