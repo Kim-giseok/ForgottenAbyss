@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Summon
@@ -12,6 +13,8 @@ namespace Summon
         }
     }
     
+    
+    // 캐릭터 비활성화로 인한 리지드 바디 직접 참조 문제 발생
     public class DashAttack : Node
     {
         public override void Start()
@@ -77,6 +80,47 @@ namespace Summon
         public override void End()
         {
             controller.animnHandler.SetSpeed(1f);
+        }
+    }
+}
+
+// 플레이어의 인풋을 받도록 처리
+public class ComboDashAttack : Node
+{
+    private List<string> combo = new() { "Combo1", "Combo2", "Combo3" };
+
+    public override void Start()
+    {
+        context.Set("combo", 0);
+    }
+    
+    public override void OnPressed()
+    {
+        if (controller is not SummonController sController) return;
+        
+        int currComboCount = context.Get<int>("combo");
+        
+        controller.animnHandler.Play(combo[currComboCount]);
+
+        controller.rigidbody.velocity = Vector2.zero;
+        controller.rigidbody.gravityScale = 0f;
+        controller.rigidbody.drag = 4f;
+        controller.rigidbody.AddForce(sController.direction * 40f, ForceMode2D.Impulse);
+        
+        context.Set("combo", currComboCount + 1);
+    }
+
+    public override void OnAnimated(AnimationStatus status, AnimatorStateInfo animInfo)
+    {
+        if (status == AnimationStatus.End)
+        {
+            int currComboCount = context.Get<int>("combo");
+
+            if (currComboCount == combo.Count)
+            {
+                SetStatus(Status.Success);
+                return;
+            }
         }
     }
 }

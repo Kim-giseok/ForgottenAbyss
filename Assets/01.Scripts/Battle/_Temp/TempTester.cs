@@ -15,7 +15,8 @@ public class TempTester: MonoBehaviour
    {
       if (Input.GetKeyDown(KeyCode.L))
       {
-         BoltManager.Instance.CreateSummon(transform, SummonSkillManager.Skill.DashAttack, true);
+         // BoltManager.Instance.CreateSummon(transform, SummonSkillManager.Skill.DashAttack, true);
+         BoltManager.Instance.CreateSummon(transform, SummonSkillManager.Skill.ComboDashAttack, true);
       }
    }
 

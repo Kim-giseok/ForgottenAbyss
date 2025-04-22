@@ -68,8 +68,8 @@ public class SummonController: EnemyBaseController
     
     private void Update()
     {
-        if (!isCasterAttached) return;
-        caster.transform.position = transform.position;
+        if (Input.GetKeyDown(KeyCode.V)) { machine.currNode.OnPressed(); }
+        if (isCasterAttached) { caster.transform.position = transform.position; }
     }
 
     private void OnDestroy()
@@ -80,13 +80,10 @@ public class SummonController: EnemyBaseController
         if(isPlayerCaster) { pController.isInvincible = false; }
     }
 
+    // 현재 노드에게 알림 - 인식은 되는 것으로 확인됨
     private void OnMove(InputValue value)
     {
+        // 현재 다이렉션을 입력 값으로 적용
         direction = value.Get<Vector2>().normalized;
-    }
-
-    private void OnAttack(InputValue value)
-    {
-        
     }
 }
