@@ -7,6 +7,7 @@ public class UIManager : MonoBehaviour
     public InventoryUI inventoryUI;
     public SettingsMenu settingsMenu;
     public WeaponSwapper weaponSwapper;
+    public ConfirmationUI confirmationUI;
 
     private void Awake()
     {
