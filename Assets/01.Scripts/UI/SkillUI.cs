@@ -192,4 +192,37 @@ public class SkillUI : MonoBehaviour
                 Debug.LogWarning($"[SkillUI] hideSkillTimeTexts[{i}]가 null입니다.");
         }
     }
+
+    public void ClearSkillIcon(SkillSlotType type)
+    {
+        int idx = (int)type;
+
+        if (idx >= 0 && idx < skillIcons.Length && skillIcons[idx] != null)
+        {
+            skillIcons[idx].sprite = null; 
+            skillIcons[idx].enabled = false;          
+        }
+
+        if (idx >= 0 && idx < hideSkillImages.Length && hideSkillImages[idx] != null)
+        {
+            hideSkillImages[idx].fillAmount = 0f;  
+        }
+
+        if (idx >= 0 && idx < hideSkillTimeTexts.Length && hideSkillTimeTexts[idx] != null)
+        {
+            hideSkillTimeTexts[idx].text = ""; 
+        }
+
+        if (idx >= 0 && idx < hideSkillButtons.Length && hideSkillButtons[idx] != null)
+        {
+            hideSkillButtons[idx].SetActive(false); 
+        }
+
+        if (idx >= 0 && idx < isHideSkills.Length)
+        {
+            isHideSkills[idx] = false; 
+        }
+
+        Debug.Log($"[SkillUI] ClearSkillIcon: {type} 초기화 완료");
+    }
 }

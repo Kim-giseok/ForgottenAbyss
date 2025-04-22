@@ -51,13 +51,9 @@ public class WeaponManager : Singleton<WeaponManager>
     private void Update()
     {
 #if UNITY_EDITOR
-        if (Input.GetKeyDown(KeyCode.Alpha8))
-        {
-            Debug_EquipTestWeapon();  // 검 장착
-        }
         if (Input.GetKeyDown(KeyCode.Alpha9))
         {
-            Debug_EquipTestBow();     // 활 장착
+            ClearWeaponSaveData();
         }
         if (Input.GetKeyDown(KeyCode.Alpha0))
         {
@@ -334,6 +330,50 @@ public class WeaponManager : Singleton<WeaponManager>
         }
 
         Debug.Log("[Load] 무기 및 기억 조각 상태 로드 완료");
+    }
+
+    public void UnequipWeapon()
+    {
+        currentWeaponSO = null;
+        currentWeaponData = null;
+
+        skillController.skill01Id = -1;
+        skillController.skill02Id = -1;
+
+        if (skillUI != null)
+        {
+            skillUI.ClearSkillIcon(SkillSlotType.Skill01);
+            skillUI.ClearSkillIcon(SkillSlotType.Skill02);
+            skillUI.ClearSkillIcon(SkillSlotType.Basic);
+        }
+
+        if (swapper != null)
+            swapper.ClearWeaponIcons();
+
+        Debug.Log("[Clear] 무기 장착 해제 완료");
+    }
+
+    public void UnequipMemoryPiece()
+    {
+        currentMemorySO = null;
+        currentMemoryData = null;
+
+        skillController.memorySkillItem = null;
+
+        skillUI.ClearSkillIcon(SkillSlotType.Memory);
+
+        Debug.Log("[Clear] 기억 조각 장착 해제 완료");
+    }
+
+
+    public void ClearWeaponSaveData()
+    {
+        PlayerPrefs.DeleteKey("WeaponSaveData");
+        PlayerPrefs.Save();
+
+        UnequipWeapon();
+        UnequipMemoryPiece();
+        Debug.Log("[Clear] 무기 및 기억 조각 저장 데이터 초기화 완료");
     }
 
 #if UNITY_EDITOR

@@ -102,4 +102,18 @@ public class WeaponSwapper : MonoBehaviour
         if (frontImage != null) frontImage.sprite = frontIcon;
         if (backImage != null) backImage.sprite = backIcon;
     }
+
+    public void ClearWeaponIcons()
+    {
+        Image frontImage = frontWeapon.GetComponent<Image>();
+        Image backImage = backWeapon.GetComponent<Image>();
+
+        if (frontImage != null)
+            frontImage.sprite = null;
+
+        if (backImage != null)
+            backImage.sprite = null;
+
+        Debug.Log("[WeaponSwapper] 무기 아이콘 초기화 완료");
+    }
 }
