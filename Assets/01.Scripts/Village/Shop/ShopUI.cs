@@ -11,22 +11,34 @@ public class ShopUI : MonoBehaviour
 
     private void OnEnable() => InitializeShop();
 
-    void InitializeShop()
+    private void InitializeShop()
     {
+        // 기존 슬롯 비활성화만
         foreach (Transform child in slotParent)
         {
-            Destroy(child.gameObject); // 초기화
+            child.gameObject.SetActive(false);
         }
 
-        foreach (var item in shopItems)
+        // 필요한 만큼 새로 생성 or 재활성화
+        for (int i = 0; i < shopItems.Count; i++)
         {
-            GameObject slotGO = Instantiate(slotPrefab, slotParent);
-            Debug.Log($"[ShopUI] 슬롯 생성됨: {slotGO.name}");
+            GameObject slotGO;
+
+            if (i < slotParent.childCount)
+            {
+                slotGO = slotParent.GetChild(i).gameObject;
+                slotGO.SetActive(true);
+            }
+            else
+            {
+                slotGO = Instantiate(slotPrefab, slotParent);
+            }
+
             var slotUI = slotGO.GetComponent<ShopSlotUI>();
-            slotUI.Setup(item, this); // ShopUI를 넘김
+            slotUI.Setup(shopItems[i], this);
         }
 
-        detailPanel.Hide(); // 초기엔 상세 패널 숨김
+        detailPanel.Hide();
     }
 
     // 슬롯에서 호출됨
