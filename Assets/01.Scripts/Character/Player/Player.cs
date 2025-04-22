@@ -60,7 +60,7 @@ public class Player : MonoBehaviour, IDamagable
     public void GetDamage(float damage)
     {
         float def = playerstatus.stats[StatType.DEF];
-        float damageReductionRate = def / (100f + def);
+        float damageReductionRate = def / (defenseFactor + def);
         float finalDamage = damage * (1f - damageReductionRate);
         float hp = playerstatus.stats[StatType.CurrentHP] - finalDamage;
 

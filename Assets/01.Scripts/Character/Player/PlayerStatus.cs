@@ -65,6 +65,7 @@ public class PlayerStatus : CharacterStatus
         stats[StatType.EXP] = 0f; //초기 경험치
         stats[StatType.MaxEXP] = 0f; //초기 경험치
         stats[StatType.GOLD] = 0f; //초기 골드
+        stats[StatType.SPEED] = 3f; //초기 골드
     }
 
     // 레벨별 스탯 증가량 초기화

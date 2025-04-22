@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class PlayerUIBinder : MonoBehaviour
 {
@@ -13,14 +14,28 @@ public class PlayerUIBinder : MonoBehaviour
 
     private void OnEnable()
     {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+
+        // 이미 존재하는 경우 대비
         if (playerStatus != null)
             playerStatus.OnStatChanged += HandleStatChanged;
     }
 
     private void OnDisable()
     {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+
         if (playerStatus != null)
             playerStatus.OnStatChanged -= HandleStatChanged;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        var newStatus = FindObjectOfType<PlayerStatus>();
+        if (newStatus != null)
+        {
+            BindStatus(newStatus);
+        }
     }
 
     public void BindStatus(PlayerStatus status)
