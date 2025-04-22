@@ -168,11 +168,7 @@ public class ControllerPlayer : MonoBehaviour
         }
 
         UpdateGroundCheck();
-        //if (!isDashing && !isAttacking)
-        //{
-        //    rigid.velocity = new Vector2(inputVec.x * speed, rigid.velocity.y);
-        //    UpdateDirection();
-        //}
+      
     }
 
     void OnMove(InputValue value)
@@ -186,27 +182,7 @@ public class ControllerPlayer : MonoBehaviour
         }
     }
 
-    //void OnJump(InputValue value)
-    //{
-    //    if (value.isPressed && !isAttacking && currentJumpCount < jumplimit) //점프 가능 조건
-    //        if (isGround)
-    //        {
-    //            rigid.velocity = new Vector2(rigid.velocity.x, 0); // y축 속도 초기화
-    //            rigid.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
-    //            isGround = false;
-    //            animator.SetBool("IsJump", true);
-    //            currentJumpCount = 1;
-
-    //            StartCoroutine(IgnorePlatformCollision(true));
-    //            StartCoroutine(ResetIgnoreCollision(0.5f));
-    //        }
-    //        else if (currentJumpCount < jumplimit)
-    //        {
-    //            rigid.velocity = new Vector2(rigid.velocity.x, 0); // y축 속도 초기화
-    //            rigid.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
-    //            currentJumpCount++;
-    //        }
-    //}
+   
     void OnJump(InputValue value)
     {
         if (!isAlive) return;
@@ -243,35 +219,12 @@ public class ControllerPlayer : MonoBehaviour
         }
     }
 
-    //public void OnAttack(InputValue value) //일반공격 키 입력
-    //{
-    //    if (value.isPressed && !isDashing && !isAttacking )
-    //    {
-    //        StartCoroutine (Attack());
-    //    }
-    //}
-
-    //void OnFirstSkill() //1번스킬 키 입력
-    //{
-    //    Debug.Log("S: 스킬1");
-    //}
-
-    //void OnSecondSkill() //2번스킬 키 입력
-    //{
-    //    Debug.Log("D: 스킬2");
-    //}
-
-    //void OnSpecialSkill() //특수스킬 키 입력
-    //{
-    //    Debug.Log("R: 특수 스킬");
-    //}
+    
 
     void OnInteraction() //상호 작용 키 입력
     {
         if (!isAlive) return;
-        //Vector2 origin = transform.position;
-        //Vector2 direction = transform.right;
-        //interaction.Interact(origin, direction);
+       
         if (states.ContainsKey(currentState))
         {
             states[currentState].OnInteraction();
@@ -325,33 +278,7 @@ public class ControllerPlayer : MonoBehaviour
 
     public void OnCollisionEnter2D(Collision2D collision)
     {
-        //// 무적 상태일 때는 충돌 무시
-        //if (isInvincible && ((1 << collision.gameObject.layer) & invincibilityLayerMask) != 0)
-        //{
-        //    Debug.Log("1");
-        //    // 적이나 투사체 등과의 충돌 무시
-        //    Physics2D.IgnoreCollision(playerCollider, collision.collider, true);
-        //    return;
-        //}
-
-        //if (collision.gameObject.CompareTag("Ground"))
-        //{
-        //    isGround = true;
-        //    animator.SetBool("IsJump", false);
-        //    currentJumpCount = 0;
-
-        //    if (isIgnoringCollision) //땅에 닿으면 무시 상태 해제
-        //    {
-        //        StartCoroutine(IgnorePlatformCollision(false));
-        //        isIgnoringCollision = false;
-        //    }
-        //}
-        //else if (isIgnoringCollision) //다른 물체와 충돌 시 무시 상태 해제
-        //{
-        //    StartCoroutine(IgnorePlatformCollision(false));
-        //    isIgnoringCollision = false;
-        //}
-
+       
         // 현재 상태에 충돌 이벤트 전달
         if (states.ContainsKey(currentState))
         {
@@ -364,18 +291,9 @@ public class ControllerPlayer : MonoBehaviour
             animator.SetBool("IsJump", false);
             currentJumpCount = 0;
             rigid.velocity = Vector3.zero;
-
-            //if (isIgnoringCollision)
-            //{
-            //    StartCoroutine(IgnorePlatformCollision(false));
-            //    isIgnoringCollision = false;
-            //}
+           
         }
-        //else if (isIgnoringCollision)
-        //{
-        //StartCoroutine(IgnorePlatformCollision(false));
-        //isIgnoringCollision = false;
-        //}
+       
         if (collision.gameObject.layer == LayerMask.NameToLayer("Wall"))
         {
             Debug.Log("1");
@@ -468,36 +386,7 @@ public class ControllerPlayer : MonoBehaviour
         }
     }
 
-    //public void CheckWall()
-    //{
-    //    Vector2 direction = transform.right;
-    //    wallHit = Physics2D.Raycast(transform.position, direction, wallDistance, wallLayer);
-
-    //    Debug.DrawRay(transform.position, direction * wallDistance, Color.green);
-
-    //    if(isWallDetected = wallHit.collider != null)
-    //    {
-    //        Debug.Log("벽감지"); 
-    //    }
-    //}
-
-    //public IEnumerator Dash()
-    //{
-    //    isDashing = true; //대쉬 시작
-    //    SetInvincibility(true); //무적 상태 시작
-
-    //    Vector2 dashDirection = new Vector2(inputVec.x, 0); //현재 이동 방향
-    //    rigid.velocity = new Vector2(dashDirection.x * dashDistance / dashTime, rigid.velocity.y);
-
-
-    //    yield return new WaitForSeconds(dashTime);
-
-    //    isDashing = false; //대쉬 종료
-    //    SetInvincibility(false); //무적 상태 종료
-
-    //    rigid.velocity = new Vector2(inputVec.x * speed, rigid.velocity.y); //원래 속도로 복귀
-    //}
-
+   
     public IEnumerator Attack()
     {
         isAttacking = true;
@@ -540,33 +429,7 @@ public class ControllerPlayer : MonoBehaviour
         }
     }
 
-    //public IEnumerator IgnorePlatformCollision(bool ignore) //플랫폼 콜라이더 무시
-    //{
-    //    isIgnoringCollision = ignore;
-
-    //    //플랫폼 레이어의 모든 콜라이더 찾기
-    //    Collider2D[] platformColliders = Physics2D.OverlapCircleAll(transform.position, 10f, platformLayerMask);
-
-    //    foreach (Collider2D platformCollider in platformColliders) //콜라이더 무시
-    //    {
-    //        if(platformCollider != null && platformCollider.CompareTag("Ground"))
-    //        {
-    //            Physics2D.IgnoreCollision(playerCollider, platformCollider, ignore);
-    //        }
-    //    }
-
-    //    yield return null;
-    //}
-
-    //public IEnumerator ResetIgnoreCollision(float delay) //콜라이더 무시 상태 초기화
-    //{
-    //    yield return new WaitForSeconds(delay);
-
-
-    //    StartCoroutine(IgnorePlatformCollision(false));
-    //    isIgnoringCollision = false;
-    //}
-
+   
     public IEnumerator InvincibleEffect()
     {
         while (isInvincible)
