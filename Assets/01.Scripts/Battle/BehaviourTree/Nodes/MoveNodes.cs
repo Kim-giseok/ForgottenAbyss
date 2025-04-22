@@ -137,7 +137,7 @@ public class MovePlatformNode : Node
         
         controller.collider.isTrigger = true;
         controller.rigidbody.gravityScale = 0;
-        controller.rigidbody.isKinematic = true;
+        // controller.rigidbody.isKinematic = true;
     }
 
     public override void Update()
@@ -159,7 +159,7 @@ public class MovePlatformNode : Node
     public override void End()
     {
         controller.collider.isTrigger = false;
-        controller.rigidbody.isKinematic = false;
+        // controller.rigidbody.isKinematic = false;
         controller.rigidbody.gravityScale = 2;
     }
 }

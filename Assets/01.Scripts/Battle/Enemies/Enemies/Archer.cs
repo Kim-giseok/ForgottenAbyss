@@ -23,7 +23,7 @@ public class RangeMultiAttackNode : Node
         {
             for (int currDegree = -20; currDegree <= 20; currDegree += 10)
             {
-                BoltManager.Instance.CreateProjectile(controller.transform, 10, index: index, degree: BoltManager.GetDegreeByDirection(controller.agent.GetDirection()) + currDegree);
+                BoltsPool.Instance.Create(controller.transform, 10, index: index, degree: BoltsPool.GetDegreeByDirection(controller.agent.GetDirection()) + currDegree);
             }
         }
     }

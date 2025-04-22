@@ -1,21 +1,23 @@
 using System;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 
 // direction to degree 같은 것이 필요 할 듯
 // 빌더 패턴으로 관리해보면 어떨까? 아무튼 조합의 형태를 띄어야 함
-public class BoltManager : MonoBehaviour // 단위 미사일
+public class BoltsPool : MonoBehaviour // 단위 미사일
 {
-    public static BoltManager Instance { get; private set; }
-    public enum ProjectileType { Linear, Guided, Reflection, Fuse, Parabola }
+    public static BoltsPool Instance { get; private set; }
     
-    public GameObject meleeProjectile;
+    public GameObject meleeBolt;
+    public GameObject rangeBolt;
+    public GameObject summon;
+
     public List<GameObject> projectileList; // sprite만 바뀌고 속성이 자유자제라면?
     
-    public GameObject summon;
-    
+
+    public List<GameObject> rangeBoltList { get; private set; } = new();
     public List<(int index, GameObject instance)> currProjectiles = new(); // notice : HitBox를 가지고 있는 편이 비용 감소
     public List<(GameObject owner, HitBox hitBox)> currMeleeProjectiles = new(); // 만약 여기서 등록하는 경우, 몬스터가 죽으면 함께 제거 필요
 
@@ -45,12 +47,7 @@ public class BoltManager : MonoBehaviour // 단위 미사일
     public void CreateMelee(Transform parent, float power, Vector2? startPos = null, Vector2? size = null)
     {
         var instance = parent.GetComponentInChildren<HitBox>(true)?.gameObject; // 찾는 방법 필요
-        
-        if (!instance)
-        {
-            instance = Instantiate(meleeProjectile, parent);
-            instance.transform.SetParent(parent);
-        }
+        if (!instance) { instance = Instantiate(meleeBolt, parent); }
         
         // if (startPos == null) instance.transform.localPosition = transform.right;
         instance.transform.localPosition = startPos ?? transform.right;
@@ -80,14 +77,16 @@ public class BoltManager : MonoBehaviour // 단위 미사일
     // 사이즈 포함
     // 반사 또는 유도
     // 빌더 패턴으로 조립 필요
+    // 모든 프로젝타일을 재사용하는 방향으로 변경
     // ReSharper disable Unity.PerformanceAnalysis
-    public void CreateProjectile(Transform parent, float power, Vector2 startPos = default,  int index = 0, float degree = 0, bool isLocalPosition = true) // melee attack인 경우 우연히 두번 켜지는 현상 방지 필요
+    public void Create(Transform parent, float power, Vector2 startPos = default,  int index = 0, float degree = 0, bool isLocalPosition = true) // melee attack인 경우 우연히 두번 켜지는 현상 방지 필요
     {
-        // notice: 인덱스가 의미가 없는 게 sprite를 바꿀 예정 
-        var instance = currProjectiles.Find(projectile => projectile.index == index && !projectile.instance.activeSelf).instance;
+        // 비활성화된 프로젝타일 찾기
+        var instance = currProjectiles.Find(projectile => !projectile.instance.activeSelf).instance;
         if (!instance)
         {
-            instance  = Instantiate(projectileList[index], Vector2.zero, Quaternion.identity, transform); // 발사체는 프로젝타일 매니저에서 관리 - 생성되고 바로 발사되선 안됨
+            // 발사체는 프로젝타일 매니저에서 관리 - 생성되고 바로 발사되선 안됨
+            instance  = Instantiate(projectileList[index], Vector2.zero, Quaternion.identity, transform); 
             currProjectiles.Add((index, instance));
         }
 
@@ -106,12 +105,32 @@ public class BoltManager : MonoBehaviour // 단위 미사일
         instance.transform.position = parent.position;
         
         instance.SetActive(true);
-
     }
 
-    public void Repeat()
+    // ReSharper disable Unity.PerformanceAnalysis
+    public void Create(Transform parent, Bolts.Type boltType)
     {
+        var instance = rangeBoltList.Find(bolt => !bolt.activeSelf);
         
+        if (!instance)
+        {
+            instance = Instantiate(rangeBolt, Vector2.zero, Quaternion.identity, transform);
+            rangeBoltList.Add(instance);
+        }
+
+        Bolt bolt = instance.GetComponent<Bolt>();
+        HitBox hitBox = bolt.hitBox;
+        hitBox.SetOwner(parent);
+        
+        // 플레이어 피봇 문제로 위치 조정 필요
+        instance.transform.position = parent.position + (Vector3.up * 0.5f);
+        
+        instance.SetActive(true);
+        bolt.currDirection = parent.transform.right;
+        
+        bolt.machine.Clear();
+        bolt.machine.Define(Bolts.Get(boltType));
+        bolt.Play();
     }
     
     public void Destroy(GameObject instance)

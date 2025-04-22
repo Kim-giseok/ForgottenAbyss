@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3616434473055466624}
   - component: {fileID: 4479239807371024688}
   m_Layer: 0
-  m_Name: ProjectileManager
+  m_Name: BoltsPool
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -44,9 +44,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b789a0f138edc40019a1e3c345c1ae4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  meleeProjectile: {fileID: 5517578377726573177, guid: 5c05695596bbd471383c9f0db3a06f9f, type: 3}
+  meleeBolt: {fileID: 5517578377726573177, guid: 5c05695596bbd471383c9f0db3a06f9f, type: 3}
+  rangeBolt: {fileID: 3259581741971495899, guid: 8cad8a6ceed6843c7aba179b3bfb841e, type: 3}
+  summon: {fileID: 7497637913887331557, guid: 5d1311ff813884a3292d6d99a0765fe2, type: 3}
   projectileList:
   - {fileID: 3259581741971495899, guid: 8cad8a6ceed6843c7aba179b3bfb841e, type: 3}
   - {fileID: 627798757939685993, guid: 2666d7c2d12b541048822ac896578b5d, type: 3}
   - {fileID: 5596202441015006934, guid: d08e3f9f8c12e45bfb4104b385dcfaca, type: 3}
-  summon: {fileID: 7497637913887331557, guid: 5d1311ff813884a3292d6d99a0765fe2, type: 3}

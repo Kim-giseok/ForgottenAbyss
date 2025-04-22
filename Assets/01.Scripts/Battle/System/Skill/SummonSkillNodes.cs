@@ -38,7 +38,7 @@ namespace Summon
             
             if (status == AnimationStatus.Start)
             {
-                BoltManager.Instance.CreateMelee(controller.transform, 10f, Vector2.zero, Vector2.one * 2);
+                BoltsPool.Instance.CreateMelee(controller.transform, 10f, Vector2.zero, Vector2.one * 2);
                 return;
             }
             
@@ -52,7 +52,7 @@ namespace Summon
         public override void End()
         {
             controller.animnHandler.SetSpeed(1f);
-            BoltManager.Instance.DestroyMelee(controller.transform);
+            BoltsPool.Instance.DestroyMelee(controller.transform);
         }
     }
 
@@ -67,8 +67,8 @@ namespace Summon
 
         public override void OnAnimatedEvent(bool isFire)
         {
-            if (isFire) BoltManager.Instance.CreateMelee(controller.transform, 10f, Vector2.zero, Vector2.one * 2);
-            else BoltManager.Instance.DestroyMelee(controller.transform);
+            if (isFire) BoltsPool.Instance.CreateMelee(controller.transform, 10f, Vector2.zero, Vector2.one * 2);
+            else BoltsPool.Instance.DestroyMelee(controller.transform);
         }
 
         public override void OnAnimated(AnimationStatus status, AnimatorStateInfo animInfo)
@@ -84,7 +84,6 @@ namespace Summon
     }
 }
 
-// 플레이어의 인풋을 받도록 처리
 public class ComboDashAttack : Node
 {
     private List<string> combo = new() { "Combo1", "Combo2", "Combo3" };
@@ -93,7 +92,13 @@ public class ComboDashAttack : Node
     {
         context.Set("combo", 0);
     }
-    
+    public override void Update()
+    {
+        // 제한시간이 지나면 종료
+        if(currTime > 3f) { SetStatus(Status.Fail); }
+    }
+
+    //do: 이동을 인식하는 것도 필요
     public override void OnPressed()
     {
         if (controller is not SummonController sController) return;
@@ -107,13 +112,26 @@ public class ComboDashAttack : Node
         controller.rigidbody.drag = 4f;
         controller.rigidbody.AddForce(sController.direction * 40f, ForceMode2D.Impulse);
         
+        // 공격 방향으로 Z축 회전
+        float angle = Mathf.Atan2(sController.direction.y, Mathf.Abs(sController.direction.x)) * Mathf.Rad2Deg;
+        controller.transform.rotation = Quaternion.Euler(0, sController.direction.x < 0 ? 180 : 0, angle); 
+        
         context.Set("combo", currComboCount + 1);
     }
 
     public override void OnAnimated(AnimationStatus status, AnimatorStateInfo animInfo)
     {
-        if (status == AnimationStatus.End)
+        if(!animInfo.IsName("Combo1") && !animInfo.IsName("Combo2") && !animInfo.IsName("Combo3")) return;
+        
+        if (status == AnimationStatus.Start)
         {
+            BoltsPool.Instance.CreateMelee(controller.transform, 10f, Vector2.zero, Vector2.one * 2);
+        }
+        
+        if(status == AnimationStatus.End)
+        {
+            BoltsPool.Instance.DestroyMelee(controller.transform);
+            
             int currComboCount = context.Get<int>("combo");
 
             if (currComboCount == combo.Count)
@@ -122,5 +140,10 @@ public class ComboDashAttack : Node
                 return;
             }
         }
+    }
+
+    public override void End()
+    {
+        BoltsPool.Instance.DestroyMelee(controller.transform);
     }
 }

@@ -32,12 +32,12 @@ public class SSDashAttack : Node
         if (!animInfo.IsName("Combo1") && !animInfo.IsName("Combo2") && !animInfo.IsName("Combo3")) return;
         if (status == AnimationStatus.Start)
         {
-            BoltManager.Instance.CreateMelee(controller.transform, 10f);
+            BoltsPool.Instance.CreateMelee(controller.transform, 10f);
         }
         
         if (status == AnimationStatus.End)
         {
-            BoltManager.Instance.DestroyMelee(controller.transform);
+            BoltsPool.Instance.DestroyMelee(controller.transform);
             SetStatus(Status.Success);
         }
     }

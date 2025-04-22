@@ -15,6 +15,8 @@ public class GhostTrailRenderer : MonoBehaviour
     {
         var parentRenderer = GetComponentInParent<SpriteRenderer>();
         spriteRenderers.Add(parentRenderer);
+        
+        // 부모 렌더러 없으면 오류 발생
         isFlip = parentRenderer.flipX;
 
         foreach (Transform child in transform)

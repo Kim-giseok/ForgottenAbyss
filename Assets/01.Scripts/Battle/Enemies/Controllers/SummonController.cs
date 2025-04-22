@@ -7,8 +7,11 @@ using UnityEngine.Serialization;
 // feat: 플레이어 인풋 연결
 public class SummonController: EnemyBaseController
 {
+    // 발사 직전 캡처링 형태로 정보 등록
     public int hitInformation; // 현재 공격에 대한 정보를 저장받는다.
-    
+    public Vector2 castingDirection;
+    // public EnemyStatusHandler statusHandler {get; private set;} 
+
     public Transform caster {get; private set;}
     public bool isPlayerCaster { get; private set; } = false;
     
@@ -20,7 +23,6 @@ public class SummonController: EnemyBaseController
     public Rigidbody2D cRigidbody {get; private set;}
     private Collider2D cCollider;
     private SpriteRenderer cRenderer;
-    
     public Vector2 direction {get; private set;}
     
     // ReSharper disable Unity.PerformanceAnalysis
@@ -34,6 +36,14 @@ public class SummonController: EnemyBaseController
         {
             this.pController = pController;
             isPlayerCaster = true;
+        }
+
+        if (caster.TryGetComponent(out EnemyController eController))
+        {
+            this.eController = eController;
+            // statusHandler인 경우 깊은 복사가 필요해질 수 있음
+            castingDirection = eController.statusHandler.castingDirection;
+            isPlayerCaster = false;
         }
         
         isCasterAttached = isAttached;
@@ -68,8 +78,7 @@ public class SummonController: EnemyBaseController
     private void Start()
     {
         renderer.material.SetFloat("_YValue", 0);
-        StartCoroutine(PlaySpawnAnimation(4f));
-        
+        StartCoroutine(PlaySpawnAnimation(3f));
     }
 
     private IEnumerator PlaySpawnAnimation(float speed)
@@ -82,7 +91,6 @@ public class SummonController: EnemyBaseController
             renderer.material.SetFloat("_YValue", newYValue);
             yield return null;
         }
-        renderer.color = Color.black;
     }
     
     private void Update()

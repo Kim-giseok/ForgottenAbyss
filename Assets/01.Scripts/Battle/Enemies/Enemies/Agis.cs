@@ -1,24 +1,26 @@
 using UnityEngine;
 
-public class SpreadShotNode : Node
+public class AgisSpreadShot : Node
 {
     private readonly float duration = 2f;
     private readonly Vector2 direction;
 
-    public SpreadShotNode(Vector2 direction)
-    {
-        this.direction = direction;
-    }
     public override void Start() // 한번 더 실행하는 현상 발생
     {
         controller.rigidbody.drag = 10f;
-        controller.rigidbody.AddForce(direction * 20f, ForceMode2D.Impulse);
 
-        for (int degree = 0; degree <= 360; degree += 20)
+        // 따라오지 않는 현상 수정 필요
+        if (controller is SummonController { isPlayerCaster: false } sContorller)
         {
-            // 튕기는 발사체가 좋을 듯
-            BoltManager.Instance.CreateProjectile(controller.transform, 10f, degree: degree, index: 1);
+            controller.rigidbody.AddForce(sContorller.castingDirection, ForceMode2D.Impulse);
+            controller.transform.SetParent(sContorller.eController.transform);
         }
+        
+
+        // for (int degree = 0; degree <= 360; degree += 20)
+        // {
+            // 튕기는 발사체가 좋을 듯
+        // }
     }
 
     public override void Update()
@@ -36,7 +38,7 @@ public class SummoningAllNode : Node
 {
     public override void Start()
     {
-        BoltManager.Instance.CreateSummon(controller.transform, SummonSkillManager.Skill.Agis, false);
+        BoltsPool.Instance.CreateSummon(controller.transform, SummonSkillManager.Skill.Agis, false);
     }
 
     public override void Update()
@@ -91,7 +93,19 @@ public class MoveNode : Node
         
         if (!Mathf.Approximately(Mathf.Floor(currTime / 3), Mathf.Floor((currTime - Time.deltaTime) / 3)))
         {
-            BoltManager.Instance.CreateSummon(controller.transform, SummonSkillManager.Skill.Agis, false);
+            int bulletCount = 9;
+            float angleStep = 360f / bulletCount;
+            float radius = 32f;
+
+            for (int i = 0; i < bulletCount; i++)
+            {
+                float angle = i * angleStep * Mathf.Deg2Rad;
+                Vector2 dir = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * radius;
+
+                ((EnemyController)controller).statusHandler.castingDirection = dir;
+                BoltsPool.Instance.CreateSummon(controller.transform, SummonSkillManager.Skill.Agis);
+            }
+            
         }
         
         controller.rigidbody.velocity = new Vector2(velocityX, controller.rigidbody.velocity.y);

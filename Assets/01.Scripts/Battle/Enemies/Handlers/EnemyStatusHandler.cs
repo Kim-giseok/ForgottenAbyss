@@ -20,4 +20,5 @@ public class EnemyStatusHandler
     public bool isCombat = false; // 한번 전투 중이면 지속 체크
     
     public Vector2 castingDirection; // 스킬을 발사하는 방향
+    public float castingDegree;
 }

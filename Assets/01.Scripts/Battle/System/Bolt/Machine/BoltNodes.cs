@@ -2,9 +2,49 @@ using UnityEngine;
 
 public class BoltLinearNode : BoltNode
 {
+    public override void Start()
+    {
+    }
+
     public override void Update()
     {
+        // 비율 개념으로 가져는 것도 좋을 듯
+        if (time >= 0.4f)
+        {
+            Next();
+        }
         bolt.rigidbody.velocity = bolt.currDirection * bolt.speed;
+    }
+}
+
+public class BoltTestDownNode : BoltNode
+{
+    public override void Start()
+    {
+        bolt.rigidbody.velocity = Vector2.zero;
+    }
+    public override void Update()
+    {
+        bolt.rigidbody.velocity = Vector2.down * bolt.speed;
+    }
+}
+
+public class RandomSpreadNode : BoltNode
+{
+    public override void Start()
+    {
+        bolt.rigidbody.drag = 10;
+        bolt.rigidbody.AddForce(new Vector2(Random.Range(-4f, 4f), 4f) * 10f, ForceMode2D.Impulse);
+    }
+
+    public override void Update()
+    {
+        if (time >= 0.4f) { Next(); }
+    }
+
+    public override void End()
+    {
+        bolt.rigidbody.drag = 0;
     }
 }
 
@@ -41,3 +81,14 @@ public class BoltDecrescendoNode : BoltNode
 }
 
 public class BoltRecursiveNode : BoltNode {}
+
+public class BlackHoleNode : BoltNode
+{
+    public override void Start() {}
+
+    public override void Update()
+    {
+        var player = GameObject.FindGameObjectWithTag("Player");
+    }
+    
+}

@@ -10,7 +10,7 @@ public class MemorySkillItem: Item
 
     public override bool Use()
     {
-        BoltManager.Instance.CreateSummon(GameManager.Instance.player.transform, skillName, isRide);
+        BoltsPool.Instance.CreateSummon(GameManager.Instance.player.transform, skillName, isRide);
         return true;
     }
 }

@@ -93,14 +93,14 @@ public class Enemies
             Enemy.MudEye,
             new SelectorNode(
                 new SequenceNode(new HitNode(), new DieNode()),
-                new SequenceNode(new IdleNode(1))
+                new SequenceNode(new IdleNode(1), new MudControlnode())
                 )
         },
         {
             Enemy.MudChildHand,
             new SelectorNode(
                 new SequenceNode(new HitNode(), new DieNode()),
-                new SequenceNode(new IdleNode(1), new PatrolMove(1))
+                new SequenceNode(new IdleNode(1))
             )
         }
     };

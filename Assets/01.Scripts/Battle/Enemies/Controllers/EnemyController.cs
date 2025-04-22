@@ -17,8 +17,9 @@ public class EnemyController : EnemyBaseController, IDamagable
     public EnemyResourceHandler resourceHandler { get; private set; }
     public EnemyStatusHandler statusHandler { get; private set; }
     public EnemyRewardHandler rewardHandler { get; private set; }
-    
-    public List<EnemyController> children { get; private set; } 
+
+    // children 시스템 등록
+    // public List<EnemyController> children; 
     
     protected override void Awake()
     {
@@ -36,15 +37,6 @@ public class EnemyController : EnemyBaseController, IDamagable
         // animationHandler.SetController(EnemiesAnimator.animators["NightBone"]);
         // 에러처리 필요
         machine.Define(Enemies.Get(name)); // 각 개체별 생성되는 방식
-
-        foreach (Transform child in transform)
-        {
-            if (child.TryGetComponent(out EnemyController econtroller))
-            {
-                children.Add(econtroller);
-                child.SetParent(null);
-            }  
-        }
         
         try { MapSpawnManager.Instance.SpawnedMap.monsterManager.AddList(this); }
         catch { Debug.Log("there is no MapspawnManager"); }

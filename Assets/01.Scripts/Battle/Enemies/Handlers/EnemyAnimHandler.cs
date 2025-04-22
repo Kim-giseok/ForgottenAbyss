@@ -50,6 +50,7 @@ public class EnemyAnimHandler: MonoBehaviour
 
             if (controller.machine.currNode == null) return;
             
+            // 에러 발생 확인 필요
             controller.machine.currNode.SetController(controller);
             controller.machine.currNode.OnAnimated(Node.AnimationStatus.End, stateInfo);
         }   

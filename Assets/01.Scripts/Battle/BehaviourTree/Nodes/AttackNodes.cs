@@ -17,11 +17,11 @@ public class MeleeAttack : Node
         if (isFire)
         {
             // 데미지나 사이즈등은 추상화로 접급
-            BoltManager.Instance.CreateMelee(controller.transform, controller.combatHandler.power);
+            BoltsPool.Instance.CreateMelee(controller.transform, controller.combatHandler.power);
         }
         else
         {
-            BoltManager.Instance.DestroyMelee(controller.transform);
+            BoltsPool.Instance.DestroyMelee(controller.transform);
         }
     }
 
@@ -34,7 +34,7 @@ public class MeleeAttack : Node
     
     public override void End() // notice: 공격 중 피격 당하는 경우
     {
-        BoltManager.Instance.DestroyMelee(controller.transform);
+        BoltsPool.Instance.DestroyMelee(controller.transform);
     }
 }
 
@@ -58,7 +58,7 @@ public class RangeAttackNode : Node
         // 콜백으로 공격 방식 추상화
         if (isFire)
         {
-            BoltManager.Instance.CreateProjectile(controller.transform, 10, index: index, degree: BoltManager.GetDegreeByDirection(controller.agent.GetDirection()));
+            BoltsPool.Instance.Create(controller.transform, 10, index: index, degree: BoltsPool.GetDegreeByDirection(controller.agent.GetDirection()));
         }
     }
     
