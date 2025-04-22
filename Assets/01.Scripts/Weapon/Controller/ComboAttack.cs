@@ -85,8 +85,6 @@ public class ComboAttack : MonoBehaviour
 
     public void EndComboAttack()
     {
-        Debug.Log("EndComboAttack 호출됨");
-
         if (this == null)
         {
             Debug.LogWarning("EndComboAttack: this == null");
@@ -103,7 +101,6 @@ public class ComboAttack : MonoBehaviour
         if (this == null || animator == null || !gameObject.activeInHierarchy)
             return;
 
-        Debug.Log("EndComboAttack: 상태 리셋 진행");
 
         IsAttacking = false;
         attackIndex = 0;
@@ -111,16 +108,6 @@ public class ComboAttack : MonoBehaviour
         inputCombo = false;
         canNextCombo = false;
         animator.Play("Idle");
-
-        //if (this == null || animator == null || !gameObject.activeInHierarchy)
-        //    return;
-
-        //IsAttacking = false;
-        //attackIndex = 0;
-        //animator.SetInteger("AttackCombo", 0);
-        //inputCombo = false;
-        //canNextCombo = false;
-        //animator.Play("Idle");
     }
 
     void OnAttackReset()

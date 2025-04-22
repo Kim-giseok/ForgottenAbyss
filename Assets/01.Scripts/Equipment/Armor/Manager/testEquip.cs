@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class ArmorTestEquip : MonoBehaviour
 {
-    [SerializeField] private string testArmorName = "Armor_01"; // Resources/Armor 폴더에 있는 SO 이름
+    [SerializeField] private int testArmorID = 400; // Resources/Armor 폴더에 있는 SO 이름
 
     private void Update()
     {
@@ -14,13 +14,13 @@ public class ArmorTestEquip : MonoBehaviour
 
     private void TryEquipArmor()
     {
-        if (DataManager.Instance.armorSODic.TryGetValue(testArmorName, out var armorSO))
+        if (DataManager.Instance.armorSODic.TryGetValue(testArmorID, out var armorSO))
         {
             EquipmentManager.Instance.EquipArmor(armorSO);
         }
         else
         {
-            Debug.LogWarning($"[Test] ArmorSO '{testArmorName}'을 찾을 수 없습니다.");
+            Debug.LogWarning($"[Test] ArmorSO ID : '{testArmorID}'을 찾을 수 없습니다.");
         }
     }
 }
