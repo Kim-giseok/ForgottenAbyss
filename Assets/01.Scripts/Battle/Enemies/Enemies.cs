@@ -61,7 +61,7 @@ public class Enemies
             new SelectorNode(
                 new SequenceNode(new HitNode(), new DieNode()), 
                 new SequenceNode(
-                    new SequenceNode( new TracingNode(), new MovePlatformNode(), new TracingNode()),
+                    new SequenceNode( new TracingNode(), new TracingNode()),
                     new SequenceNode(new StopNode(), new RandomNode(new()
                     {
                         (0.2f, new SequenceNode(new ChargingNode(2f), new ExplosionNode())),

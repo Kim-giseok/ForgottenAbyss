@@ -1,5 +1,7 @@
 using UnityEngine;
 
+// 그라운드 체크 동시에 하기
+// 경사 각도도 계산하기
 public class PlatformDetector: MonoBehaviour
 {
     private GameObject target;
@@ -24,7 +26,8 @@ public class PlatformDetector: MonoBehaviour
 
         // RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 1f, NavSurface.Instance.layerMask);
         RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 1f, LayerMask.GetMask("Ground"));
-        Debug.Log(hit.collider);
+        // Debug.Log(hit.collider.name);
+        
         if (!hit.collider) return;
         
         Vector3 hitPoint = hit.point;

@@ -903,12 +903,20 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 528653691613724365, guid: 60c12acf29de746988d88d96501fa54b, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 528653691613724365, guid: 60c12acf29de746988d88d96501fa54b, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 528653691613724365, guid: 60c12acf29de746988d88d96501fa54b, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -7.3
+      value: -7.04
       objectReference: {fileID: 0}
     - target: {fileID: 528653691613724365, guid: 60c12acf29de746988d88d96501fa54b, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -2.62
+      value: -1.91
       objectReference: {fileID: 0}
     - target: {fileID: 528653691613724365, guid: 60c12acf29de746988d88d96501fa54b, type: 3}
       propertyPath: m_LocalPosition.z
@@ -985,6 +993,10 @@ PrefabInstance:
     - target: {fileID: 7280594894658608456, guid: 60c12acf29de746988d88d96501fa54b, type: 3}
       propertyPath: m_Color.r
       value: 0.7169812
+      objectReference: {fileID: 0}
+    - target: {fileID: 7280594894658608456, guid: 60c12acf29de746988d88d96501fa54b, type: 3}
+      propertyPath: m_SortingOrder
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7280594894658608456, guid: 60c12acf29de746988d88d96501fa54b, type: 3}
       propertyPath: m_WasSpriteAssigned
@@ -1257,8 +1269,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7b2e218ff6e467ba5c60d5f8722b71b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hitBox: {fileID: 0}
+  currTime: 0
+  currDirection: {x: 0, y: 0}
   duration: 0
   speed: 0
+  renderer: {fileID: 0}
+  animator: {fileID: 0}
+  animHandler: {fileID: 0}
 --- !u!114 &1239088653
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2751,12 +2769,20 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 528653691613724365, guid: 60c12acf29de746988d88d96501fa54b, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 528653691613724365, guid: 60c12acf29de746988d88d96501fa54b, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 528653691613724365, guid: 60c12acf29de746988d88d96501fa54b, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 7.79
+      value: 7.12
       objectReference: {fileID: 0}
     - target: {fileID: 528653691613724365, guid: 60c12acf29de746988d88d96501fa54b, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -2.64
+      value: -1.99
       objectReference: {fileID: 0}
     - target: {fileID: 528653691613724365, guid: 60c12acf29de746988d88d96501fa54b, type: 3}
       propertyPath: m_LocalPosition.z
@@ -2829,6 +2855,10 @@ PrefabInstance:
     - target: {fileID: 7280594894658608456, guid: 60c12acf29de746988d88d96501fa54b, type: 3}
       propertyPath: m_Color.r
       value: 0.7169812
+      objectReference: {fileID: 0}
+    - target: {fileID: 7280594894658608456, guid: 60c12acf29de746988d88d96501fa54b, type: 3}
+      propertyPath: m_SortingOrder
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7280594894658608456, guid: 60c12acf29de746988d88d96501fa54b, type: 3}
       propertyPath: m_WasSpriteAssigned

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -17,6 +18,8 @@ public class EnemyController : EnemyBaseController, IDamagable
     public EnemyStatusHandler statusHandler { get; private set; }
     public EnemyRewardHandler rewardHandler { get; private set; }
     
+    public List<EnemyController> children { get; private set; } 
+    
     protected override void Awake()
     {
         base.Awake();
@@ -29,11 +32,19 @@ public class EnemyController : EnemyBaseController, IDamagable
     public void Start()
     {
         maxHealth = health; // 리소스 시스템 구현 필요
-        // Debug.Log(name.ToString());
         // 애니메이터 자동 등록
         // animationHandler.SetController(EnemiesAnimator.animators["NightBone"]);
         // 에러처리 필요
         machine.Define(Enemies.Get(name)); // 각 개체별 생성되는 방식
+
+        foreach (Transform child in transform)
+        {
+            if (child.TryGetComponent(out EnemyController econtroller))
+            {
+                children.Add(econtroller);
+                child.SetParent(null);
+            }  
+        }
         
         try { MapSpawnManager.Instance.SpawnedMap.monsterManager.AddList(this); }
         catch { Debug.Log("there is no MapspawnManager"); }

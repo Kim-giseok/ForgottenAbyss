@@ -1,5 +1,13 @@
 using UnityEngine;
 
+public class BoltLinearNode : BoltNode
+{
+    public override void Update()
+    {
+        bolt.rigidbody.velocity = bolt.currDirection * bolt.speed;
+    }
+}
+
 public class BoltGuidedNode : BoltNode
 {
     public override void Update()

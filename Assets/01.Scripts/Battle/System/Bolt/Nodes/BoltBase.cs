@@ -3,12 +3,12 @@ using UnityEngine;
 public class BoltNode
 {
     public StepMachine machine;
-    public Bolt controller;
+    public Bolt bolt;
 
-    public void Connect(StepMachine machine, Bolt controller)
+    public void Connect(StepMachine machine)
     {
         this.machine = machine;
-        this.controller = controller;
+        this.bolt = this.machine.bolt;
     }
     
     public virtual void Start() {}

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
@@ -13,8 +14,6 @@ public class SummonController: EnemyBaseController
     
     public ControllerPlayer pController { get; private set; }
     public EnemyController eController { get; private set; }
-    
-    
     
     private bool isCasterAttached = true;
 
@@ -64,6 +63,26 @@ public class SummonController: EnemyBaseController
         cRigidbody.velocity = Vector2.zero;
         cRenderer.enabled = true;
         if(isPlayerCaster) { pController.isInvincible = false; }
+    }
+
+    private void Start()
+    {
+        renderer.material.SetFloat("_YValue", 0);
+        StartCoroutine(PlaySpawnAnimation(4f));
+        
+    }
+
+    private IEnumerator PlaySpawnAnimation(float speed)
+    {
+        float currentYValue = 0f;
+        while (currentYValue < 1f)
+        {
+            currentYValue = renderer.material.GetFloat("_YValue");
+            float newYValue = Mathf.MoveTowards(currentYValue, 1f, Time.deltaTime * speed);
+            renderer.material.SetFloat("_YValue", newYValue);
+            yield return null;
+        }
+        renderer.color = Color.black;
     }
     
     private void Update()

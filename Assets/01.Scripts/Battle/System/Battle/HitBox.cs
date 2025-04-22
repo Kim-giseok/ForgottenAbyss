@@ -58,7 +58,6 @@ public class HitBox : MonoBehaviour // 1회 공격 당의 캐싱이 필요할 �
 
         ControllerPlayer player = other.gameObject.GetComponent<ControllerPlayer>();
 
-        if(player != null && !player.isInvincible)
-            damagable.GetDamage(damage);
+        if (player != null && !player.isInvincible) { damagable.GetDamage(damage); }
     }
 }

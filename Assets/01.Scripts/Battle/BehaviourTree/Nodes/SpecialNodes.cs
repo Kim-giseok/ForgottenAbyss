@@ -33,7 +33,7 @@ public class HitNode : Node
         // Vector2 direction = (controller.agent.player.transform.position - controller.transform.position).normalized;
         // controller.Flip(direction.x > 0);
         
-        if(eController.statusHandler.isIgnoreHitAction) eController.spriteRenderer.color = Color.red;
+        if(eController.statusHandler.isIgnoreHitAction) eController.renderer.color = Color.red;
         eController.animnHandler.Play("Hit");
         eController.statusHandler.isHit = false;
 

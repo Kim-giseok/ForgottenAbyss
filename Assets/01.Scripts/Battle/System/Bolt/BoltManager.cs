@@ -114,7 +114,7 @@ public class BoltManager : MonoBehaviour // 단위 미사일
         
     }
     
-    public void DestroyProjectile(GameObject instance)
+    public void Destroy(GameObject instance)
     {
         var selectedProjectile = currProjectiles.Find(projectile => projectile.instance == instance).instance;
         instance.SetActive(false);

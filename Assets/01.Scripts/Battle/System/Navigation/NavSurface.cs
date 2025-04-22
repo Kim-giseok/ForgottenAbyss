@@ -67,8 +67,6 @@ public class NavSurface : MonoBehaviour
             var point = new Vector2(transform.position.x + coordX + 0.5f, transform.position.y + coordY + 0.5f);
             var hit = Physics2D.OverlapBox(point, new Vector2(0.9f, 0.9f), 0f, 1 << layerMask);
             
-            Debug.Log(hit.ToString());
-            
             if (hit)
             {
                 var downWall = cells.Find(cell => Mathf.Approximately(cell.WorldPos.x, point.x) && Mathf.Approximately(cell.WorldPos.y, point.y - 1));

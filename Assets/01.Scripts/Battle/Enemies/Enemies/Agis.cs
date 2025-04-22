@@ -36,7 +36,7 @@ public class SummoningAllNode : Node
 {
     public override void Start()
     {
-        BoltManager.Instance.CreateSummon(controller.transform, SummonSkillManager.Skill.BossSkill, false);
+        BoltManager.Instance.CreateSummon(controller.transform, SummonSkillManager.Skill.Agis, false);
     }
 
     public override void Update()
@@ -49,7 +49,6 @@ public class SummoningNode : Node
 {
     public override void Start()
     {
-        BoltManager.Instance.CreateSummon(controller.transform, SummonSkillManager.Skill.BossSkill2, false);
         // ProjectileManager.Instance.CreateSummon(controller.transform, SummonSkillManager.Skill.BossSkill3, false);
     }
 
@@ -92,7 +91,7 @@ public class MoveNode : Node
         
         if (!Mathf.Approximately(Mathf.Floor(currTime / 3), Mathf.Floor((currTime - Time.deltaTime) / 3)))
         {
-            BoltManager.Instance.CreateSummon(controller.transform, SummonSkillManager.Skill.BossSkill, false);
+            BoltManager.Instance.CreateSummon(controller.transform, SummonSkillManager.Skill.Agis, false);
         }
         
         controller.rigidbody.velocity = new Vector2(velocityX, controller.rigidbody.velocity.y);
