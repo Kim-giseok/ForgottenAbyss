@@ -155,7 +155,7 @@ public class SkillController : Singleton<SkillController>
             SkillManager.Instance.TryUseSkill(skillId, skillSpawnPoint2);
         }
 
-        if (SkillManager.Instance.GetCurrentMemorySkillData()?.memoryPieceId == skillId)
+        if (SkillManager.Instance.IsMemorySkill(skillId))
         {
             GameManager.Instance.player.controller.isInvincible = true;
 
@@ -173,7 +173,18 @@ public class SkillController : Singleton<SkillController>
 
     public float GetAnimPlayTime(int skillId)
     {
+        if (SkillManager.Instance.IsMemorySkill(skillId))
+        {
+            return 1.0f;
+        }
+
         SkillData skilldata = DataManager.Instance.GetSkillData(skillId);
+        if (skilldata == null)
+        {
+            Debug.LogWarning($"SkillData not found for skillId: {skillId}");
+            return 0.5f;
+        }
+
         SkillVisualSO skillVisual = DataManager.Instance.GetSkillVisualSO(skilldata.Name + "_Visual");
 
         if (skillVisual == null || skillVisual.animationSpeed <= 0f)

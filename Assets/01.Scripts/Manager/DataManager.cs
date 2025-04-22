@@ -113,6 +113,11 @@ public class DataManager : Singleton<DataManager>
         return null;
     }
 
+    public bool HasSkillData(int skillId)
+    {
+        return skillDataList.Skills.Exists(skill => skill.Id == skillId);
+    }
+
     private void LoadWeaponData()
     {
         TextAsset json = Resources.Load<TextAsset>("Json/WeaponData");

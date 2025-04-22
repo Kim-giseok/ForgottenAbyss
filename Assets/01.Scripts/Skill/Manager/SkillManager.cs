@@ -6,8 +6,9 @@ using UnityEngine;
 public class SkillManager : Singleton<SkillManager>
 {
     private Dictionary<int, float> nextAvailableTimes = new();
-    private List<int> currentWeaponSkillIds = new();
+    private Dictionary<int, SkillInstance> skillInstances = new();
     private MemoryPieceSO currentMemoryPiece;
+
     public SkillUI skillUI;
 
     private void Awake()
@@ -32,47 +33,46 @@ public class SkillManager : Singleton<SkillManager>
 
     public void SetCurrentWeaponSkills(int weaponId)
     {
+        skillInstances.Clear();
+
         var weaponData = DataManager.Instance.GetWeaponData(weaponId);
         if (weaponData == null) return;
 
-        currentWeaponSkillIds.Clear();
-
-        switch (weaponData.Type)
-        {
-            case WeaponType.Sword:
-                currentWeaponSkillIds.Add(weaponData.ComboAttack);
-                break;
-            case WeaponType.Bow:
-                currentWeaponSkillIds.Add(weaponData.RangedAttack);
-                break;
-        }
-
-        currentWeaponSkillIds.Add(weaponData.Skill1Id);
-        currentWeaponSkillIds.Add(weaponData.Skill2Id);
+        TryAddSkillInstance(weaponData.ComboAttack);
+        TryAddSkillInstance(weaponData.RangedAttack);
+        TryAddSkillInstance(weaponData.Skill1Id);
+        TryAddSkillInstance(weaponData.Skill2Id);
     }
 
     public void SetMemorySkill(MemoryPieceSO memorySO)
     {
         if (memorySO == null || memorySO.skillItem == null) return;
-        currentMemoryPiece = memorySO;
+
+        int memoryId = memorySO.currentMemoryPieceId;
+
+        if (!skillInstances.ContainsKey(memoryId))
+            skillInstances[memoryId] = new SkillInstance(memorySO);
     }
 
-    public MemorySkillItem GetCurrentMemorySkillData() => currentMemoryPiece?.skillItem;
-
-    private int GetSlotIndexBySkillId(int skillId)
+    private void TryAddSkillInstance(int skillId)
     {
-        var sc = WeaponManager.Instance.skillController;
-        if (skillId == sc.memorySkillItem?.memoryPieceId) return 0;
-        if (skillId == sc.combatId) return 1;
-        if (skillId == sc.skill01Id) return 2;
-        if (skillId == sc.skill02Id) return 3;
-        return -1;
+        if (DataManager.Instance.HasSkillData(skillId))
+        {
+            var data = DataManager.Instance.GetSkillData(skillId);
+            skillInstances[skillId] = new SkillInstance(data);
+        }
     }
 
-    private bool IsMemorySkill(int skillId) => skillId == GetCurrentMemorySkillData()?.memoryPieceId;
+    public bool IsSkillEquipped(int skillId)
+    {
+        bool isMemory = currentMemoryPiece != null &&
+                        currentMemoryPiece.skillItem != null &&
+                        currentMemoryPiece.skillItem.memoryPieceId == skillId;
 
-    public bool IsSkillEquipped(int skillId) =>
-        skillId == GetCurrentMemorySkillData()?.memoryPieceId || currentWeaponSkillIds.Contains(skillId);
+        bool isWeaponSkill = skillInstances.ContainsKey(skillId);
+
+        return isMemory || isWeaponSkill;
+    }
 
     private bool IsOnCooldown(int skillId)
     {
@@ -89,97 +89,45 @@ public class SkillManager : Singleton<SkillManager>
         if (!IsSkillEquipped(skillId)) return;
         if (IsOnCooldown(skillId)) return;
 
-        if (IsMemorySkill(skillId))
-            ExecuteMemorySkill(skillId);
-        else
-            ExecuteWeaponSkill(skillId, spawnPoint);
-
-        UpdateCooldown(skillId);
+        var instance = skillInstances[skillId];
+        StartCoroutine(ExecuteSkill(instance, spawnPoint));
+        UpdateCooldown(instance);
     }
 
-    private void ExecuteMemorySkill(int skillId)
+    private IEnumerator ExecuteSkill(SkillInstance instance, Transform spawnPoint)
     {
-        var memoryItem = GetCurrentMemorySkillData();
-        memoryItem?.Use();
-        skillUI?.HideSkillSetting((int)SkillSlotType.Memory, 5f); // 임시 쿨타임
+        Animator anim = spawnPoint.GetComponentInParent<Animator>();
+        instance.PlayAnimation(anim);
+
+        StartCoroutine(instance.ResetAnimator(anim));
+        StartCoroutine(instance.PlayEffect(spawnPoint));
+        instance.Execute(GameManager.Instance.player.gameObject);
+
+        yield return StartCoroutine(instance.ResetAnimator(anim));
+
+        int slotIndex = GetSlotIndexBySkillId(instance.skillId);
+        if (slotIndex >= 0)
+            skillUI?.HideSkillSetting(slotIndex, instance.GetCooldown());
     }
 
-    private void ExecuteWeaponSkill(int skillId, Transform spawnPoint)
+    private void UpdateCooldown(SkillInstance instance)
     {
-        var skillData = DataManager.Instance.GetSkillData(skillId);
-        if (skillData == null) return;
-
-        PlaySkillAnimation(skillData, spawnPoint);
-        PlaySkillEffect(skillData, spawnPoint);
-        ExecuteSkillLogic(skillData);
-        skillUI?.HideSkillSetting(GetSlotIndexBySkillId(skillId), skillData.CoolTime);
+        nextAvailableTimes[instance.skillId] = Time.time + instance.GetCooldown();
     }
 
-    private void PlaySkillAnimation(SkillData skillData, Transform spawnPoint)
+    public bool IsMemorySkill(int skillId)
     {
-        var visual = DataManager.Instance.GetSkillVisualSO(skillData.VisualSOName);
-        if (visual == null) return;
-
-        var anim = spawnPoint.GetComponentInParent<Animator>();
-        if (anim == null) return;
-
-        anim.SetBool("IsAttacking", true);
-        anim.speed = visual.animationSpeed;
-
-        if (!string.IsNullOrEmpty(visual.animationName))
-            anim.Play(visual.animationName);
-
-        StartCoroutine(ResetAnimator(anim, visual.resetTime));
+        return currentMemoryPiece != null && currentMemoryPiece.skillItem != null &&
+               currentMemoryPiece.skillItem.memoryPieceId == skillId;
     }
 
-    private void PlaySkillEffect(SkillData skillData, Transform spawnPoint)
+    private int GetSlotIndexBySkillId(int skillId)
     {
-        var visual = DataManager.Instance.GetSkillVisualSO(skillData.VisualSOName);
-        if (visual == null || visual.skillEffectPrefab == null || visual.isTogether) return;
-
-        StartCoroutine(EffectCoroutine(visual, spawnPoint));
-    }
-
-    private void ExecuteSkillLogic(SkillData skillData)
-    {
-        var exec = DataManager.Instance.GetSkillExecutionSO(skillData.ExecutionSOName);
-        exec?.Execute(GameManager.Instance.player.gameObject, null, skillData);
-    }
-
-    private void UpdateCooldown(int skillId)
-    {
-        var skillData = DataManager.Instance.GetSkillData(skillId);
-        if (skillData != null)
-            nextAvailableTimes[skillId] = Time.time + skillData.CoolTime;
-        else if (IsMemorySkill(skillId))
-            nextAvailableTimes[skillId] = Time.time + 5f; // 임시
-    }
-
-    private IEnumerator ResetAnimator(Animator anim, float delay)
-    {
-        yield return new WaitForSeconds(delay);
-        anim.speed = 1.0f;
-        anim.SetBool("IsAttacking", false);
-    }
-
-    private IEnumerator EffectCoroutine(SkillVisualSO visual, Transform spawnPoint)
-    {
-        if (visual.effectDelay > 0f)
-            yield return new WaitForSeconds(visual.effectDelay);
-
-        Vector3 dir = spawnPoint.right;
-        Vector3 pos = spawnPoint.position + dir * visual.effectXOffset + Vector3.up * visual.effectYOffset;
-
-        var effect = EffectPool.Instance.SpawnEffect(visual.effectKey, pos, spawnPoint.rotation);
-
-        switch (WeaponManager.Instance.GetCurrentWeaponData().Type)
-        {
-            case WeaponType.Bow:
-                effect.GetComponent<PiercingArrowEffect>()?.Initialize(pos, dir);
-                break;
-            case WeaponType.Sword:
-                effect.GetComponent<DashTrailEffect>()?.Initialize(pos, dir);
-                break;
-        }
+        var sc = WeaponManager.Instance.skillController;
+        if (skillId == sc.memorySkillItem?.memoryPieceId) return 0;
+        if (skillId == sc.combatId) return 1;
+        if (skillId == sc.skill01Id) return 2;
+        if (skillId == sc.skill02Id) return 3;
+        return -1;
     }
 }
