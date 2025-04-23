@@ -4,12 +4,16 @@ public class UIManager : MonoBehaviour
 {
     public static UIManager Instance { get; private set; }
 
+    [Header("ScreenUI")]
     public InventoryUI inventoryUI;
     public SettingsMenu settingsMenu;
     public WeaponSwapper weaponSwapper;
     public ConfirmationUI confirmationUI;
-    public GameObject npcText;
     public GameObject shopUI;
+
+    [Header("WorldUI")]
+    public RectTransform worldSpaceCanvas;
+    public GameObject npcText;
 
     private void Awake()
     {
@@ -26,4 +30,11 @@ public class UIManager : MonoBehaviour
     public void ToggleInventory() => inventoryUI?.ToggleInventory();
     public void ToggleSettings() => settingsMenu?.ToggleSettingsMenu();
     public void SwapWeapons() => weaponSwapper?.SwapWeapons();
+
+    public void OnGuidUI(MonoBehaviour gameobject)
+    {
+        Vector3 position = gameobject.transform.position + Vector3.up * 1.5f;
+        npcText.transform.position = position;
+        npcText.SetActive(true);
+    }
 }
