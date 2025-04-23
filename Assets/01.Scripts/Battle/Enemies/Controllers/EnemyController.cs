@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -16,6 +17,9 @@ public class EnemyController : EnemyBaseController, IDamagable
     public EnemyResourceHandler resourceHandler { get; private set; }
     public EnemyStatusHandler statusHandler { get; private set; }
     public EnemyRewardHandler rewardHandler { get; private set; }
+
+    // children 시스템 등록
+    // public List<EnemyController> children; 
     
     protected override void Awake()
     {
@@ -28,8 +32,7 @@ public class EnemyController : EnemyBaseController, IDamagable
     
     public void Start()
     {
-        maxHealth = health;
-        // Debug.Log(name.ToString());
+        maxHealth = health; // 리소스 시스템 구현 필요
         // 애니메이터 자동 등록
         // animationHandler.SetController(EnemiesAnimator.animators["NightBone"]);
         // 에러처리 필요
@@ -40,9 +43,11 @@ public class EnemyController : EnemyBaseController, IDamagable
     }
 
 
-    public void GetDamage(float damage) // notice: summon은 제외
+    public void GetDamage(float damage)
     {
         // resourceHandler에서 처리
+        
+        // 방어력 개념도 구현하기
         health -= damage;
         statusHandler.stamina -= 1;
         if (statusHandler.stamina <= 0) { statusHandler.stamina = 3; }

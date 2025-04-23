@@ -68,7 +68,13 @@ public class EnemyAgent : MonoBehaviour
 
     public Vector2 GetDirection()
     {
-        // if (!target) return GameObject.FindWithTag("Player").transform.right; // enemy와 summon이 공통으로 사용하면서 문제가 발생함
         return (tCollider.bounds.center - transform.position).normalized;
+    }
+
+    public float GetDegree()
+    {
+        Vector2 currDirection = (tCollider.bounds.center - transform.position).normalized;
+        float degree = Mathf.Atan2(currDirection.y, currDirection.x) * Mathf.Rad2Deg;
+        return degree;
     }
 }
