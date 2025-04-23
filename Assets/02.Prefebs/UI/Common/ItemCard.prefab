@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 7546898433433632814}
   - component: {fileID: 7318001676301285984}
   - component: {fileID: 4245541050710299796}
-  - component: {fileID: 3419863616584219637}
   m_Layer: 5
   m_Name: Icon
   m_TagString: Untagged
@@ -76,18 +75,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &3419863616584219637
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 844100428783781172}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5602c545d2e7dfd4da86766b7300921f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1154199032165463647
 GameObject:
   m_ObjectHideFlags: 0
@@ -99,7 +86,6 @@ GameObject:
   - component: {fileID: 1277598489723387576}
   - component: {fileID: 393593135283125408}
   - component: {fileID: 4639147408979236151}
-  - component: {fileID: 773554165039812469}
   m_Layer: 5
   m_Name: NameText
   m_TagString: Untagged
@@ -223,18 +209,6 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!114 &773554165039812469
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1154199032165463647}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5602c545d2e7dfd4da86766b7300921f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &5534478186965633187
 GameObject:
   m_ObjectHideFlags: 0
@@ -519,7 +493,6 @@ GameObject:
   - component: {fileID: 3937124741155688931}
   - component: {fileID: 4597948369949963912}
   - component: {fileID: 6605243070623344780}
-  - component: {fileID: 6724474857507334756}
   m_Layer: 5
   m_Name: PriceText
   m_TagString: Untagged
@@ -643,15 +616,3 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!114 &6724474857507334756
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7921348278684457517}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5602c545d2e7dfd4da86766b7300921f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

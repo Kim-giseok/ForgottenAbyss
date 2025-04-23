@@ -26,7 +26,6 @@ public class ShopDetailPanel : MonoBehaviour
 
         buyButton.onClick.RemoveAllListeners();
         buyButton.onClick.AddListener(Buy);
-        Debug.Log("[ShopDetailPanel] 구매 버튼에 리스너 등록됨");
 
         gameObject.SetActive(true);
     }
@@ -38,7 +37,6 @@ public class ShopDetailPanel : MonoBehaviour
 
     private void Buy()
     {
-        Debug.Log("[ShopDetailPanel] Buy 호출됨!");
         if (GoldManager.Instance.SpendGold(currentData.price))
         {
             Inventory.Instance.AddItem(currentData.item);
