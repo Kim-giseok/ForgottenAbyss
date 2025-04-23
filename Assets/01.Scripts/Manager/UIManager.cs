@@ -4,12 +4,15 @@ public class UIManager : MonoBehaviour
 {
     public static UIManager Instance { get; private set; }
 
+    [Header("ScreenUI")]
     public InventoryUI inventoryUI;
     public SettingsMenu settingsMenu;
     public WeaponSwapper weaponSwapper;
     public ConfirmationUI confirmationUI;
-    public GameObject npcText;
     public GameObject shopUI;
+
+    [Header("WorldUI")]
+    public GameObject npcText;
 
     private void Awake()
     {
