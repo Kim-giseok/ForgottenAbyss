@@ -52,7 +52,7 @@ namespace Summon
         public override void End()
         {
             controller.animnHandler.SetSpeed(1f);
-            BoltsPool.Instance.DestroyMelee(controller.transform);
+            BoltsPool.Instance.DisableMelee(controller.transform);
         }
     }
 
@@ -68,7 +68,7 @@ namespace Summon
         public override void OnAnimatedEvent(bool isFire)
         {
             if (isFire) BoltsPool.Instance.CreateMelee(controller.transform, 10f, Vector2.zero, Vector2.one * 2);
-            else BoltsPool.Instance.DestroyMelee(controller.transform);
+            else BoltsPool.Instance.DisableMelee(controller.transform);
         }
 
         public override void OnAnimated(AnimationStatus status, AnimatorStateInfo animInfo)
@@ -130,7 +130,7 @@ public class ComboDashAttack : Node
         
         if(status == AnimationStatus.End)
         {
-            BoltsPool.Instance.DestroyMelee(controller.transform);
+            BoltsPool.Instance.DisableMelee(controller.transform);
             
             int currComboCount = context.Get<int>("combo");
 
@@ -144,6 +144,6 @@ public class ComboDashAttack : Node
 
     public override void End()
     {
-        BoltsPool.Instance.DestroyMelee(controller.transform);
+        BoltsPool.Instance.DisableMelee(controller.transform);
     }
 }

@@ -80,9 +80,9 @@ public class BoltDecrescendoNode : BoltNode
     }
 }
 
-public class BoltRecursiveNode : BoltNode {}
+public class RecursiveBolt : BoltNode {}
 
-public class BlackHoleNode : BoltNode
+public class BlackHoleBolt : BoltNode
 {
     public override void Start()
     {
@@ -97,4 +97,9 @@ public class BlackHoleNode : BoltNode
         var direction = (bolt.transform.position - player.transform.position).normalized;
         player.GetComponent<Rigidbody2D>().AddForce(direction * 10f, ForceMode2D.Force);
     }
+}
+
+public class HealBolt : BoltNode
+{
+    
 }

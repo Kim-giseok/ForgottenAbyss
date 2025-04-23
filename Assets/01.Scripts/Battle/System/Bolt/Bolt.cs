@@ -13,11 +13,11 @@ public class Bolt: MonoBehaviour
     // 공통변수
     public float currTime { get; private set; } = 0f;
     public float currNodeTime { get; private set; } = 0f;
-    [HideInInspector] public Vector2 direction; // 발사체의 방향은 공통 변수로 관리
+    public Vector2 direction { get; private set; } // 발사체의 방향은 공통 변수로 관리
     
     // Node가 자체적으로 가진다. - 총 합에 해당하는 duration
-    public float duration;
-    public float speed;
+    public float duration { get; private set; } = 1;
+    public float speed { get; private set; } = 10;
 
     // transform 에서 사이즈도 처리
     public Rigidbody2D rigidbody { get; private set; }
@@ -28,7 +28,7 @@ public class Bolt: MonoBehaviour
     
     public StepMachine machine { get; private set; } // 등록 자체를 순차 등록
     protected List<BoltEffect> effects = new();
-    
+
     public void SetSprite(Sprite sprite) => renderer.sprite = sprite;
     public Bolt SetSize(float size)
     {
@@ -36,13 +36,38 @@ public class Bolt: MonoBehaviour
         return this;
     }
 
+    public Bolt SetDamage(float damage)
+    {
+        hitBox.SetDamage(damage);
+        return this;
+    }
+
+    public Bolt SetEffect(BoltEffect effect)
+    {
+        effects.Add(effect);
+        return this;
+    }
+
     public void AddEffect(BoltEffect effect) => effects.Add(effect);
-    public void Play() => this.isStarted = true;
+    private void Play() => this.isStarted = true;
+
+    public Bolt SetSpeed(float speed)
+    {
+        this.speed = speed;
+        return this;
+    }
 
     public Bolt SetDirection(Vector2 direction)
     {
         this.direction = direction;
         this.direction.Normalize();
+        return this;
+    }
+
+    public Bolt SetDegree(float degree)
+    {
+        float radian = degree * Mathf.Deg2Rad; 
+        direction = new Vector2(Mathf.Cos(radian), Mathf.Sin(radian));
         return this;
     }
 
@@ -79,12 +104,13 @@ public class Bolt: MonoBehaviour
     private void OnDisable()
     {
         machine.Clear();
+        effects.Clear();
         isStarted = false;
     }
 
     protected virtual void FixedUpdate()
     {
-        if (currTime >= duration) { BoltsPool.Instance.Destroy(gameObject); }
+        if (currTime >= duration) { BoltsPool.Instance.Disable(gameObject); }
     }
 
     protected virtual void OnTriggerEnter2D(Collider2D other)
@@ -102,6 +128,6 @@ public class Bolt: MonoBehaviour
         
         Debug.Log(other.gameObject.name);
         
-        BoltsPool.Instance.Destroy(gameObject);
+        BoltsPool.Instance.Disable(gameObject);
     }
 }

@@ -9,13 +9,21 @@ public class HitBox : MonoBehaviour // 1회 공격 당의 캐싱이 필요할 �
     
     private Collider2D collider;
 
-    public void SetDamage(float damage)
+    public HitBox SetDamage(float damage)
     {
         this.damage = damage;
+        return this;
     }
-    public void SetOwner(Transform owner)
+    public HitBox SetOwner(Transform owner)
     {
         this.ownerLayer = owner.gameObject.layer;
+        return this;
+    }
+
+    public HitBox SetLocalPos(Vector2 position)
+    {
+        this.transform.localPosition = position;
+        return this;
     }
 
     private void Awake()

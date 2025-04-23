@@ -21,7 +21,7 @@ public class MeleeAttack : Node
         }
         else
         {
-            BoltsPool.Instance.DestroyMelee(controller.transform);
+            BoltsPool.Instance.DisableMelee(controller.transform);
         }
     }
 
@@ -34,7 +34,7 @@ public class MeleeAttack : Node
     
     public override void End() // notice: 공격 중 피격 당하는 경우
     {
-        BoltsPool.Instance.DestroyMelee(controller.transform);
+        BoltsPool.Instance.DisableMelee(controller.transform);
     }
 }
 
@@ -58,7 +58,7 @@ public class RangeAttackNode : Node
         // 콜백으로 공격 방식 추상화
         if (isFire)
         {
-            BoltsPool.Instance.Create(controller.transform, 10, index: index, degree: BoltsPool.GetDegreeByDirection(controller.agent.GetDirection()));
+            BoltsPool.Instance.Create(controller.transform, Bolts.Type.Linear).SetDamage(10).SetDirection(controller.agent.GetDirection()).Fire();
         }
     }
     

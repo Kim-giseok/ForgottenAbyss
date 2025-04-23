@@ -12,7 +12,7 @@ public class HealNode : Node
         {
             if (hit.gameObject == controller.gameObject) continue;
             if (!hit.TryGetComponent(out EnemyController econtoller)) continue;
-            BoltsPool.Instance.Create(hit.transform, 0, index: 2);
+            BoltsPool.Instance.Create(hit.transform, Bolts.Type.Heal);
             if(econtoller.health <= 30) econtoller.health += 10;
         }
     }

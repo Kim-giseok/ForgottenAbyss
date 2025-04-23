@@ -12,7 +12,7 @@ public class ExplosionNode : Node
     public override void OnAnimatedEvent(bool isFire)
     {
         if (isFire) BoltsPool.Instance.CreateMelee(controller.transform, 10f, Vector2.zero, Vector2.one * 2);
-        else BoltsPool.Instance.DestroyMelee(controller.transform);
+        else BoltsPool.Instance.DisableMelee(controller.transform);
     }
 
     public override void OnAnimated(AnimationStatus status, AnimatorStateInfo animInfo)

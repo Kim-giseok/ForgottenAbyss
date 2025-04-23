@@ -37,7 +37,7 @@ public class SSDashAttack : Node
         
         if (status == AnimationStatus.End)
         {
-            BoltsPool.Instance.DestroyMelee(controller.transform);
+            BoltsPool.Instance.DisableMelee(controller.transform);
             SetStatus(Status.Success);
         }
     }

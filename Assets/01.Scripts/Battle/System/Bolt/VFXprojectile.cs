@@ -28,7 +28,7 @@ public class VFXprojectile: MonoBehaviour
         currentTime += Time.deltaTime;
         if (currentTime >= 1f)
         {
-            BoltsPool.Instance.Destroy(gameObject);
+            BoltsPool.Instance.Disable(gameObject);
         }
     }
 }

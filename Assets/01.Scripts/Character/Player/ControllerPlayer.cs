@@ -513,7 +513,7 @@ public class ControllerPlayer : MonoBehaviour
               
         isAttacking = false;
         animator.SetBool("IsAttacking", false);
-        BoltsPool.Instance.DestroyMelee(transform);
+        BoltsPool.Instance.DisableMelee(transform);
 
         // ���� ���� �� ����Ű�� ������ �����ִٸ� �ӵ� ����
         if (inputVec.x != 0)
