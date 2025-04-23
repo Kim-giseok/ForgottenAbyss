@@ -8,6 +8,7 @@ using UnityEngine.EventSystems;
 public class ItemUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     public Item item; // 아이템 데이터
+    private bool isDraggable = true;
     private CanvasGroup canvasGroup; // 드래그할 때 UI 투명도 설정
     private RectTransform rectTransform; // 드래그 UI 위치 설정
     private Image iconImage;
@@ -24,6 +25,11 @@ public class ItemUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
         iconImage = GetComponent<Image>(); // 아이콘 변경용
 
         dragCanvas = GameObject.Find("DragCanvas")?.GetComponent<Canvas>(); // 드래그용
+    }
+
+    public void SetDraggable(bool canDrag)
+    {
+        isDraggable = canDrag;
     }
 
     // 아이템 설정

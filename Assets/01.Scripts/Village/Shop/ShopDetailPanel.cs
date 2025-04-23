@@ -37,6 +37,30 @@ public class ShopDetailPanel : MonoBehaviour
 
     private void Buy()
     {
+        if (currentData == null)
+        {
+            Debug.LogError("[Buy] currentData가 null입니다!");
+            return;
+        }
+
+        if (currentData.item == null)
+        {
+            Debug.LogError("[Buy] currentData.item이 null입니다!");
+            return;
+        }
+
+        if (Inventory.Instance == null)
+        {
+            Debug.LogError("[Buy] Inventory.Instance가 null입니다!");
+            return;
+        }
+
+        if (GoldManager.Instance == null)
+        {
+            Debug.LogError("[Buy] GoldManager.Instance가 null입니다!");
+            return;
+        }
+
         if (GoldManager.Instance.SpendGold(currentData.price))
         {
             Inventory.Instance.AddItem(currentData.item);
