@@ -34,7 +34,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.2, y: 0.2, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2155130199354259982}
@@ -81,7 +81,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 3
-  m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 1e77cf5b3ab5741a1a7ac724095beda9, type: 3}
   m_Color: {r: 1, g: 0, b: 0.9318118, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -212,9 +212,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targets: []
-  direction: {x: 0, y: 0}
-  duration: 2
-  speed: 20
 --- !u!96 &3658234777301750846
 TrailRenderer:
   serializedVersion: 3

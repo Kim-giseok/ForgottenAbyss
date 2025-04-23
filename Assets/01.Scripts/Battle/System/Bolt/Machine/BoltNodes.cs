@@ -1,18 +1,15 @@
 using UnityEngine;
 
-public class BoltLinearNode : BoltNode
+public class LinearBolt : BoltNode
 {
     public override void Start()
     {
+        Debug.Log(bolt.direction);
     }
 
     public override void Update()
     {
-        // 비율 개념으로 가져는 것도 좋을 듯
-        if (time >= 0.4f)
-        {
-            Next();
-        }
+        if (time >= 0.4f) Next();
         bolt.rigidbody.velocity = bolt.direction * bolt.speed;
     }
 }
@@ -29,7 +26,7 @@ public class BoltTestDownNode : BoltNode
     }
 }
 
-public class RandomSpreadNode : BoltNode
+public class RandomSpreadBolt : BoltNode
 {
     public override void Start()
     {
@@ -37,15 +34,9 @@ public class RandomSpreadNode : BoltNode
         bolt.rigidbody.AddForce(new Vector2(Random.Range(-4f, 4f), 4f) * 10f, ForceMode2D.Impulse);
     }
 
-    public override void Update()
-    {
-        if (time >= 0.4f) { Next(); }
-    }
+    public override void Update() { if (time >= 0.4f) Next(); }
 
-    public override void End()
-    {
-        bolt.rigidbody.drag = 0;
-    }
+    public override void End() { bolt.rigidbody.drag = 0; }
 }
 
 public class BoltGuidedNode : BoltNode
@@ -72,12 +63,16 @@ public class BoltWaitNode : BoltNode {}
 
 public class BoltCrescendoNode : BoltNode {}
 
-public class BoltDecrescendoNode : BoltNode
+public class DecrescendoBolt : BoltNode
 {
     public override void Start()
     {
-        // controller.rigidbody.AddForce(, ForceMode2D.Impulse);
+        bolt.rigidbody.velocity = Vector2.zero;
+        bolt.rigidbody.drag = 8f;
+        bolt.rigidbody.AddForce(bolt.direction * 24f, ForceMode2D.Impulse);
     }
+    public override void Update() { if (time >= 0.2f) Next(); }
+    public override void End() { bolt.rigidbody.drag = 0; }
 }
 
 public class RecursiveBolt : BoltNode {}

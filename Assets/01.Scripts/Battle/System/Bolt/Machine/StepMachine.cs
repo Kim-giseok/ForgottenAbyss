@@ -6,7 +6,7 @@ public class StepMachine
 {
     public Bolt bolt;
     
-    public List<BoltNode> nodeList = new();
+    public List<BoltNode> nodes = new();
     public BoltNode currNode;
 
 
@@ -31,15 +31,15 @@ public class StepMachine
         
         if (currNode != null) { currNode?.End(); }
         
-        int currIndex = nodeList.IndexOf(currNode);
+        int currIndex = nodes.IndexOf(currNode);
         
-        // 종료인 경우 체크 필요
-        if (currIndex == nodeList.Count - 1)
+        // 종료인 경우 - destroy 할 것인지 체크 필요
+        if (currIndex == nodes.Count - 1)
         {
             return;
         }
         
-        currNode = nodeList[currIndex + 1];
+        currNode = nodes[currIndex + 1];
         
         currNode.Connect(this);
         currNode.Start();
@@ -50,10 +50,13 @@ public class StepMachine
     // Start가 종속된 부분 변경 필요
     public void Define(BoltNode[] nodes)
     {
-        nodeList.Clear();
-        nodeList.AddRange(nodes);
-        
-        // next로 하면 첫번째가 아닌 현상 발생
+        this.nodes.Clear();
+        this.nodes.AddRange(nodes);
+    }
+
+    // next로 하면 첫번째가 아닌 현상 발생
+    public void Start()
+    {
         currNode = nodes[0];
         currNode.Connect(this);
         currNode.Start();
@@ -62,6 +65,6 @@ public class StepMachine
 
     public void Clear()
     {
-        nodeList.Clear();
+        nodes.Clear();
     }
 }

@@ -23,7 +23,12 @@ public class RangeMultiAttackNode : Node
         {
             for (int currDegree = -20; currDegree <= 20; currDegree += 10)
             {
-                BoltsPool.Instance.Create(controller.transform, Bolts.Type.Linear).SetDamage(10).SetDegree(controller.agent.GetDegree() + currDegree).Fire();
+                BoltsPool.Instance.Create(controller.transform, Bolts.Type.Decrescendo)
+                    .SetSize(1.4f)
+                    .SetDamage(10)
+                    .SetDegree(controller.agent.GetDegree() + currDegree)
+                    .SetDuration(0.6f)
+                    .Fire();
             }
         }
     }

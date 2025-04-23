@@ -1,8 +1,5 @@
-using System;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class Bolt: MonoBehaviour
 {
@@ -32,13 +29,19 @@ public class Bolt: MonoBehaviour
     public void SetSprite(Sprite sprite) => renderer.sprite = sprite;
     public Bolt SetSize(float size)
     {
-        transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y, 1);
+        transform.localScale = new Vector3(size, size, 1);
         return this;
     }
 
     public Bolt SetDamage(float damage)
     {
         hitBox.SetDamage(damage);
+        return this;
+    }
+    
+    public Bolt SetDuration(float duration)
+    {
+        this.duration = duration;
         return this;
     }
 
@@ -66,14 +69,17 @@ public class Bolt: MonoBehaviour
 
     public Bolt SetDegree(float degree)
     {
-        float radian = degree * Mathf.Deg2Rad; 
+        float radian = degree * Mathf.Deg2Rad;
+        transform.rotation = Quaternion.Euler(0, 0, degree);
         direction = new Vector2(Mathf.Cos(radian), Mathf.Sin(radian));
         return this;
     }
 
+    // ReSharper disable Unity.PerformanceAnalysis
     public Bolt Fire()
     {
         gameObject.SetActive(true);
+        machine.Start();
         Play();
         return this;
     }
@@ -105,6 +111,7 @@ public class Bolt: MonoBehaviour
     {
         machine.Clear();
         effects.Clear();
+        rigidbody.velocity = Vector2.zero;
         isStarted = false;
     }
 
