@@ -6,14 +6,12 @@ public class EnemyBaseController: MonoBehaviour
     public BTMachine machine { get; protected set; }
     public Collider2D collider { get; protected set; }
     public Rigidbody2D rigidbody { get; protected set; }
-    public SpriteRenderer spriteRenderer { get; protected set; }
+    public SpriteRenderer renderer { get; protected set; }
     public Material material { get; protected set; }
-    public EnemyAnimationHandler animationHandler { get; protected set; }
+    public EnemyAnimHandler animnHandler { get; protected set; }
     public EnemyCombatHandler combatHandler { get; protected set; }
     public EnemyDetectHandler detectHandler { get; protected set; }
     
-    
-    public float animationValue = 1; // 애니메이터에서 직접 컨트롤 가능
 
     protected virtual void Awake()
     {
@@ -21,9 +19,9 @@ public class EnemyBaseController: MonoBehaviour
 
         collider = GetComponent<Collider2D>();
         rigidbody = GetComponent<Rigidbody2D>();
-        spriteRenderer = GetComponent<SpriteRenderer>(); 
-        material = spriteRenderer.material;
-        animationHandler = GetComponent<EnemyAnimationHandler>();
+        renderer = GetComponent<SpriteRenderer>(); 
+        material = renderer.material;
+        animnHandler = GetComponent<EnemyAnimHandler>();
 
         combatHandler = new EnemyCombatHandler();
         detectHandler = GetComponent<EnemyDetectHandler>();
@@ -34,7 +32,6 @@ public class EnemyBaseController: MonoBehaviour
     
     protected void FixedUpdate()
     {
-        material.SetFloat("_YValue", animationValue);
         machine.Run();
     }
 

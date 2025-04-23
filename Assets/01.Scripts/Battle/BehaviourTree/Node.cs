@@ -55,4 +55,6 @@ public abstract class Node
     
     // 타겟 감지 등의 정보
     public virtual void OnAgentDetected() {}
+
+    public virtual void OnPressed() { }
 }

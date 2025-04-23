@@ -11,7 +11,7 @@ public class SSDashAttack : Node
     public override void Start()
     {
         
-        controller.animationHandler.Play(animationName);
+        controller.animnHandler.Play(animationName);
         controller.LookTarget();
 
         controller.rigidbody.velocity = Vector2.zero;
@@ -32,12 +32,12 @@ public class SSDashAttack : Node
         if (!animInfo.IsName("Combo1") && !animInfo.IsName("Combo2") && !animInfo.IsName("Combo3")) return;
         if (status == AnimationStatus.Start)
         {
-            ProjectileManager.Instance.CreateMeleeProjectile(controller.transform, 10f);
+            BoltsPool.Instance.CreateMelee(controller.transform, 10f);
         }
         
         if (status == AnimationStatus.End)
         {
-            ProjectileManager.Instance.DestroyMeleeProjectile(controller.transform);
+            BoltsPool.Instance.DisableMelee(controller.transform);
             SetStatus(Status.Success);
         }
     }
@@ -57,7 +57,7 @@ public class RandomCoolTimeNode : Node
         
         controller.rigidbody.velocity = new Vector2(0, controller.rigidbody.velocity.y);
         
-        controller.animationHandler.Play("Idle");
+        controller.animnHandler.Play("Idle");
     }
 
     public override void Update()
@@ -79,7 +79,7 @@ public class CoolTimeNode : Node
     public CoolTimeNode(float duration) => this.duration = duration;
     public override void Start()
     {
-        controller.animationHandler.Play("Idle");
+        controller.animnHandler.Play("Idle");
     }
 
     public override void Update()

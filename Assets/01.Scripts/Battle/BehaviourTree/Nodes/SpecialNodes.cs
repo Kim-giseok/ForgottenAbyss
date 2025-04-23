@@ -33,8 +33,8 @@ public class HitNode : Node
         // Vector2 direction = (controller.agent.player.transform.position - controller.transform.position).normalized;
         // controller.Flip(direction.x > 0);
         
-        if(eController.statusHandler.isIgnoreHitAction) eController.spriteRenderer.color = Color.red;
-        eController.animationHandler.Play("Hit");
+        if(eController.statusHandler.isIgnoreHitAction) eController.renderer.color = Color.red;
+        eController.animnHandler.Play("Hit");
         eController.statusHandler.isHit = false;
 
         // 애니메이션이 바로 바뀌어 꺼지는 현상과 충돌
@@ -58,7 +58,7 @@ public class DieNode : Node
         controller.rigidbody.velocity = Vector3.zero; // fix: 넉백으로 날라가는 현상 발생
         controller.rigidbody.isKinematic = true;
         
-        eController.animationHandler.Play("Die");
+        eController.animnHandler.Play("Die");
     }
 
     public override void OnAnimated(AnimationStatus status, AnimatorStateInfo animInfo)

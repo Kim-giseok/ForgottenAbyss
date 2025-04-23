@@ -6,13 +6,13 @@ public class ExplosionNode : Node
 {
     public override void Start()
     {
-        controller.animationHandler.Play("Explosion");
+        controller.animnHandler.Play("Explosion");
     }
 
     public override void OnAnimatedEvent(bool isFire)
     {
-        if (isFire) ProjectileManager.Instance.CreateMeleeProjectile(controller.transform, 10f, Vector2.zero, Vector2.one * 2);
-        else ProjectileManager.Instance.DestroyMeleeProjectile(controller.transform);
+        if (isFire) BoltsPool.Instance.CreateMelee(controller.transform, 10f, Vector2.zero, Vector2.one * 2);
+        else BoltsPool.Instance.DisableMelee(controller.transform);
     }
 
     public override void OnAnimated(AnimationStatus status, AnimatorStateInfo animInfo)
@@ -34,7 +34,7 @@ public class ChargingNode : Node
     
     public override void Start()
     {
-        controller.animationHandler.Play("Charging");
+        controller.animnHandler.Play("Charging");
     }
 
     public override void Update()
@@ -48,6 +48,8 @@ public class StopNode : Node
 {
     public override void Start()
     {
+        if(controller.agent.status != EnemyAgent.Status.Tracked) { SetStatus(Status.Fail); return; }
+
         controller.rigidbody.velocity = Vector2.zero;
         SetStatus(Status.Success);
         return;
