@@ -274,6 +274,7 @@ MonoBehaviour:
   weaponSwapper: {fileID: 1999460310867667560}
   confirmationUI: {fileID: 6968817081733371553}
   shopUI: {fileID: 7716064142032176616}
+  worldSpaceCanvas: {fileID: 5114644040752067485}
   npcText: {fileID: 9094123894243894956}
 --- !u!1 &119458485303015413
 GameObject:
@@ -6918,7 +6919,7 @@ GameObject:
   - component: {fileID: 6666381296284285678}
   - component: {fileID: 8462482707064546969}
   m_Layer: 0
-  m_Name: Canvas
+  m_Name: WorldSpaceCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6933,7 +6934,7 @@ RectTransform:
   m_GameObject: {fileID: 5390788115588000849}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.01, y: 0.01, z: 1}
+  m_LocalScale: {x: 0.00926, y: 0.00926, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3195778317646192087}
@@ -10698,7 +10699,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &3195778317646192087
 RectTransform:
   m_ObjectHideFlags: 0
@@ -10716,8 +10717,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_AnchoredPosition: {x: 260, y: -174}
+  m_SizeDelta: {x: 100, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4237795720223496707
 CanvasRenderer:

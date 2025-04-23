@@ -33,7 +33,7 @@ public class NPC : MonoBehaviour, IInteractable
     {
         if (collision != null && collision.CompareTag("Player"))
         {
-            npcText.SetActive(true);
+            UIManager.Instance.OnGuidUI(this);
         }
     }
 

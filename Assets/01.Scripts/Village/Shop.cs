@@ -20,7 +20,7 @@ public class Shop : MonoBehaviour, IInteractable
     {
         if(collision != null && collision.CompareTag("Player"))
         {
-            shopText.SetActive(true);
+            UIManager.Instance.OnGuidUI(this);
         }
     }
 
