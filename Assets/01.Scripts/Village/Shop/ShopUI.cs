@@ -1,7 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class ShopUI : MonoBehaviour
 {
@@ -10,15 +13,28 @@ public class ShopUI : MonoBehaviour
     [SerializeField] private GameObject slotPrefab; // 슬롯 프리펩
     [SerializeField] private ShopDetailPanel detailPanel; //아이템 상세 패널 연결
 
-    private ItemType currentFilterType = ItemType.Equip; // 기본 필터 타입
+    [Header ("Tabs")]
+    [SerializeField] private List<Button> tabButtons;
+    [SerializeField] private Color selectedColor;
+    [SerializeField] private Color normalColor;
 
-    private void OnEnable() => InitializeShop();
+    private Button currentSelectedTab;
 
+    private ItemType currentFilterType = ItemType.Equip; // 기본 시작 탭
+
+    private void OnEnable()
+    {
+        InitializeShop();
+
+        EventSystem.current.SetSelectedGameObject(tabButtons[0].gameObject);
+        UpdateTabButtonVisuals();
+    }
+
+    // 상점 초기화
     private void InitializeShop()
     {
         ShowFilteredItems(currentFilterType);
         detailPanel.Hide();
-
     }
 
     public void OnClickTab(string typeStr)
@@ -27,6 +43,51 @@ public class ShopUI : MonoBehaviour
         {
             currentFilterType = parsedType;
             ShowFilteredItems(parsedType);
+
+            UpdateTabButtonVisuals(); // 탭 시각 효과
+        }
+    }
+    // 탭버튼 색상 조절
+    private void UpdateTabButtonVisuals()
+    {
+        foreach (var tab in tabButtons)
+        {
+            var colors = tab.colors;
+            colors.normalColor = normalColor;
+            colors.highlightedColor = normalColor;
+            colors.pressedColor = normalColor;
+            colors.selectedColor = normalColor;
+            tab.colors = colors;
+
+            // 텍스트 색상 기본값으로 되돌리기
+            var text = tab.GetComponentInChildren<TextMeshProUGUI>();
+            if (text != null)
+            {
+                text.color = Color.black; // 기본 텍스트 색
+            }
+        }
+
+        if (EventSystem.current.currentSelectedGameObject != null)
+        {
+            Button selectedButton = EventSystem.current.currentSelectedGameObject.GetComponent<Button>();
+            if (selectedButton != null)
+            {
+                var colors = selectedButton.colors;
+                colors.normalColor = selectedColor;
+                colors.highlightedColor = selectedColor;
+                colors.pressedColor = selectedColor;
+                colors.selectedColor = selectedColor;
+                selectedButton.colors = colors;
+
+                // 텍스트 색상 강조
+                var text = selectedButton.GetComponentInChildren<TextMeshProUGUI>();
+                if (text != null)
+                {
+                    text.color = Color.white; // 강조된 텍스트 색
+                }
+
+                currentSelectedTab = selectedButton;
+            }
         }
     }
 
