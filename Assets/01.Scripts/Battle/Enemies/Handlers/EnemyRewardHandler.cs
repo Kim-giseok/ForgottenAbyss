@@ -8,6 +8,7 @@ public class EnemyRewardHandler : MonoBehaviour
 
     public GameObject GetRewardItem()
     {
-        return items[Random.Range(0, items.Count)];
+        if (items is { Count: > 0 }) { return items[Random.Range(0, items.Count)]; }
+        return null;
     }
 }

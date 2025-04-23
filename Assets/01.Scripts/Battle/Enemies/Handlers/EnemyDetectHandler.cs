@@ -1,5 +1,6 @@
 using UnityEngine;
 
+// 센서 시스템에 종속되도록 변경 필요
 // EnemyDetectHandler - monoBehaviour 아니여도 될 듯
 public class EnemyDetectHandler : MonoBehaviour
 {
@@ -69,11 +70,13 @@ public class EnemyDetectHandler : MonoBehaviour
         Gizmos.DrawCube(new Vector2(collider.bounds.center.x, collider.bounds.min.y), new Vector2(collider.bounds.size.x, groundBoxSize));
     }
 
+    // 플랫폼 체커로 같이 체크
     private bool IsGrounded()
     {
         return Physics2D.OverlapBox(new Vector2(collider.bounds.center.x, collider.bounds.min.y), new Vector2(collider.bounds.size.x, groundBoxSize), 0, 1 << LayerMask.GetMask("Ground"));
     }
 
+    // 플랫폼 체커를 통해 좌우 최대 체크해서 비교하는 방식으로 변경하기
     // movementHandler를 통해서 같이 적용해야하는 걸까?
     private bool IsWalkable()
     {
@@ -85,6 +88,7 @@ public class EnemyDetectHandler : MonoBehaviour
         return hit.collider;
     }
 
+    // collider box 형태로 변경
     private bool IsWall() // 앞쪽의 
     {
         Vector2 startPos = new Vector2(transform.eulerAngles.y == 0 ? collider.bounds.max.x : collider.bounds.min.x, collider.bounds.center.y);

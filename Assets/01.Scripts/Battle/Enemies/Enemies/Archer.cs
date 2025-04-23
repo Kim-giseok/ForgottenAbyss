@@ -1,18 +1,10 @@
-// Attack은 추상화할 수 있는 편
-
 using UnityEngine;
 
 public class RangeMultiAttackNode : Node
 {
-    private readonly int index;
-
-    public RangeMultiAttackNode(int index)
-    {
-        this.index = index;
-    }
     public override void Start()
     {
-        controller.animationHandler.Play("Attack");
+        controller.animnHandler.Play("Attack");
         controller.LookTarget();
     }
     
@@ -23,7 +15,13 @@ public class RangeMultiAttackNode : Node
         {
             for (int currDegree = -20; currDegree <= 20; currDegree += 10)
             {
-                ProjectileManager.Instance.CreateProjectile(controller.transform, 10, index: index, degree: ProjectileManager.GetDegreeByDirection(controller.agent.GetDirection()) + currDegree);
+                BoltsPool.Instance.Create(controller.transform, Bolts.Type.Decrescendo)
+                    .SetSprite("arrow")
+                    .SetSize(1f)
+                    .SetDamage(10)
+                    .SetDegree(controller.agent.GetDegree() + currDegree)
+                    .SetDuration(0.6f)
+                    .Fire();
             }
         }
     }
@@ -39,7 +37,7 @@ public class PlayRollingAnimation : Node
 {
     public override void Start()
     {
-        controller.animationHandler.Play("Rolling");
+        controller.animnHandler.Play("Rolling");
     }
 
     public override void OnAnimated(AnimationStatus status, AnimatorStateInfo animInfo)

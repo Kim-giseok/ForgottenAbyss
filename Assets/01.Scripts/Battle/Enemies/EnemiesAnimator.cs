@@ -16,7 +16,6 @@ public class EnemiesAnimator
             string path = AssetDatabase.GUIDToAssetPath(guid);
             RuntimeAnimatorController animator = AssetDatabase.LoadAssetAtPath<RuntimeAnimatorController>(path);
             
-            Debug.Log(animator.name);
             animators.Add(animator.name, animator);
         }
     }

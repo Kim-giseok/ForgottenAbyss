@@ -13,7 +13,7 @@ public class IdleNode : Node
     public override void Start()
     {
         controller.rigidbody.velocity = new Vector2(0, controller.rigidbody.velocity.y);
-        controller.animationHandler.Play("Idle");
+        controller.animnHandler.Play("Idle");
     }
 
     public override void Update()
@@ -41,14 +41,14 @@ public class PatrolMove : Node
         controller.Flip(direction == Vector2.right);
         
         // 단일인 경우 문제 발생
-        // Debug.Log(controller.detectHandler.isWalkable);
+        
         if (!controller.detectHandler.isWalkable)
         {
             controller.Flip(direction != Vector2.right);
             SetStatus(Status.Fail); return;
         } 
      
-        controller.animationHandler.Play("Run");
+        controller.animnHandler.Play("Run");
     }
 
     public override void Update()
@@ -82,15 +82,25 @@ public class TracingNode : Node
         // 추적이 완료되면 무한 재귀 발생
         if(controller.agent.status == EnemyAgent.Status.None) { SetStatus(Status.Fail); return; }
         if(controller.agent.status == EnemyAgent.Status.Tracked) { SetStatus(Status.Success); return; }
-        controller.animationHandler.Play("Run");
+        controller.animnHandler.Play("Run");
     }
     
     public override void Update()
     {
-        // 플랫폼을 우선 체크하여 넘어갈 수 없는 상황이라면 점프(이때 
+        // 플랫폼을 우선 체크하여 넘어갈 수 없는 상황이라면 점프
         
         controller.LookTarget();
         // bug: 추적 방향이 위쪽이면 속도까지 줄어드는 문제 발생
+        
+        // NavSurface.Instance.targetPlatforms.ContainsKey(controller.agent.target)
+        
+        // if (NavSurface.Instance.targetPlatforms[controller.agent.target] !=
+        //     NavSurface.Instance.targetPlatforms[controller.gameObject])
+        // {
+        //     // 플랫폼 이동과 추적 간의 순서는 좀 더 생각해보기
+        //     SetStatus(Status.Success);            
+        // }
+        
         controller.rigidbody.velocity = new Vector2(controller.agent.GetDirection().x * controller.agent.tracingSpeed, controller.rigidbody.velocity.y);
     }
     
@@ -106,6 +116,51 @@ public class TracingNode : Node
         {
             controller.rigidbody.AddForce(Vector2.up * 6, ForceMode2D.Impulse); // 높이가 달라지면?
         }
+    }
+}
+
+
+public class MovePlatformNode : Node
+{
+    public override void Start()
+    {
+        if (NavSurface.Instance.targetPlatforms[controller.agent.target] == NavSurface.Instance.targetPlatforms[controller.gameObject])
+        {
+            // 플랫폼 이동과 추적 간의 순서는 좀 더 생각해보기
+            SetStatus(Status.Success);
+            return;
+        }
+        
+        var targetPlatform = NavSurface.Instance.platforms.Find(platform => platform.id == NavSurface.Instance.targetPlatforms[controller.agent.target]);
+        Vector2 destination = targetPlatform.centerCell.WorldPos;
+        context.Set("destination", new Vector3(destination.x, destination.y, 0));
+        
+        controller.collider.isTrigger = true;
+        controller.rigidbody.gravityScale = 0;
+        // controller.rigidbody.isKinematic = true;
+    }
+
+    public override void Update()
+    {
+        Vector3 destination = context.Get<Vector3>("destination") + Vector3.up;
+        // 박싱으로 인한 성능 문제 예상해보기
+        Vector3 direction = (destination - controller.transform.position).normalized;
+        controller.transform.position += direction * (Time.deltaTime * 6f);  // 이동
+
+        // 목표에 거의 도달하면 완료
+        if (Vector3.Distance(destination, controller.transform.position) < 0.5f)
+        {
+            // 중앙까지는 잘 도착햇지만 다시 플레이어 추적을 해야해서 에러남
+            Debug.Log(3);
+            SetStatus(Status.Success);
+        }
+    }
+
+    public override void End()
+    {
+        controller.collider.isTrigger = false;
+        // controller.rigidbody.isKinematic = false;
+        controller.rigidbody.gravityScale = 2;
     }
 }
 
