@@ -85,4 +85,9 @@ public class InventoryUI : MonoBehaviour
     {
         inventoryPanel.SetActive(false);
     }
+
+    public void Close()
+    {
+        inventoryPanel.SetActive(false);
+    }
 }

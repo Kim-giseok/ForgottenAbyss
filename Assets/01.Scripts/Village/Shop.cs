@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -14,6 +15,14 @@ public class Shop : MonoBehaviour, IInteractable
         //shopUI.SetActive(false);
         //shopText.SetActive(false);
         playerInput = GameObject.FindWithTag("Player").GetComponent<PlayerInput>();
+    }
+
+    private void Update()
+    {
+        if (shopUI.activeSelf && Input.GetKeyDown(KeyCode.Escape))
+        {
+            OnClickExit();
+        }
     }
 
     public void OnTriggerEnter2D(Collider2D collision)
@@ -48,5 +57,7 @@ public class Shop : MonoBehaviour, IInteractable
     {
         shopUI.SetActive(false);
         playerInput.enabled = true;
+
+        UIManager.Instance?.inventoryUI?.Close();
     }
 }
