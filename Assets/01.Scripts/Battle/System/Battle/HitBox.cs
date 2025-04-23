@@ -5,17 +5,25 @@ public class HitBox : MonoBehaviour // 1회 공격 당의 캐싱이 필요할 �
 {
     private float damage;
     // hitBox 자체는 default Layer 어야 트리거 인식 자체는 하게 된다.
-    private LayerMask? ownerLayer = null;
+    public LayerMask? ownerLayer { get; private set; } = null;
     
     private Collider2D collider;
 
-    public void SetDamage(float damage)
+    public HitBox SetDamage(float damage)
     {
         this.damage = damage;
+        return this;
     }
-    public void SetOwner(Transform owner)
+    public HitBox SetOwner(Transform owner)
     {
         this.ownerLayer = owner.gameObject.layer;
+        return this;
+    }
+
+    public HitBox SetLocalPos(Vector2 position)
+    {
+        this.transform.localPosition = position;
+        return this;
     }
 
     private void Awake()
@@ -58,7 +66,6 @@ public class HitBox : MonoBehaviour // 1회 공격 당의 캐싱이 필요할 �
 
         ControllerPlayer player = other.gameObject.GetComponent<ControllerPlayer>();
 
-        if(player != null && !player.isInvincible)
-            damagable.GetDamage(damage);
+        if (player != null && !player.isInvincible) { damagable.GetDamage(damage); }
     }
 }

@@ -58,7 +58,7 @@ Transform:
   m_GameObject: {fileID: 4305877575381008247}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.95, y: -0.45, z: 0}
+  m_LocalPosition: {x: 0.85, y: 0, z: 0}
   m_LocalScale: {x: 2, y: 2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -205,8 +205,8 @@ CapsuleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.05, y: 0}
-  m_Size: {x: 0.6666667, y: 0.9583333}
+  m_Offset: {x: 0, y: 0.47}
+  m_Size: {x: 0.4, y: 0.94}
   m_Direction: 0
 --- !u!114 &3864158756469090155
 MonoBehaviour:
@@ -237,4 +237,4 @@ MonoBehaviour:
   - I'm Npc
   - Get your memories back
   TalkPoint: {fileID: 6251170967264887007}
-  talkBoxPrefab: {fileID: 3024580940593636155, guid: 8ace32e088952d74191c1d70ba30651c, type: 3}
+  talkBoxPrefab: {fileID: 4908839959083242141, guid: 8ace32e088952d74191c1d70ba30651c, type: 3}

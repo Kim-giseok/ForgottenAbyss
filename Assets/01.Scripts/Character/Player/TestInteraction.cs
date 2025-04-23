@@ -5,10 +5,12 @@ using UnityEngine;
 public class TestInteraction : MonoBehaviour, IInteractable
 {
     public GameObject interactable;
+
     public void ReadyInteraction()
     {
 
     }
+
     public void ActiveInteraction()
     {
         HideFlatform();

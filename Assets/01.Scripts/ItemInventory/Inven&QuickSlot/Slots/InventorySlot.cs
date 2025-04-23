@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
+public enum SlotMode { Editable, ReadOnly }
 public class InventorySlot : SlotBase
 {
+    public SlotMode mode = SlotMode.Editable; // 기본값은 일반모드
     private ItemUI itemUI;
 
     private void Awake()
@@ -30,6 +32,7 @@ public class InventorySlot : SlotBase
         if (itemUI != null)
         {
             itemUI.SetItem(item);
+            itemUI.SetDraggable(mode == SlotMode.Editable); // 모드별 드래그 여부
             itemUI.gameObject.SetActive(true); // 아이템 들어왔을 때만 활성화
         }
     }

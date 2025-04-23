@@ -6,7 +6,7 @@ public class NpcSentence : MonoBehaviour
 {
     public string[] sentences;
     public Transform TalkPoint;
-    public GameObject talkBoxPrefab;
+    public TalkSystem talkBoxPrefab;
     
     public void TalkNpc()
     {
@@ -15,8 +15,7 @@ public class NpcSentence : MonoBehaviour
             return; // 이미 대화창이 있으면 더 이상 생성X
         }
 
-        GameObject gameObject = Instantiate(talkBoxPrefab);
-        gameObject.GetComponent<TalkSystem>().Ondialogue(sentences, TalkPoint);
+        TalkSystem gameObject = Instantiate(talkBoxPrefab);
+        gameObject.Ondialogue(sentences, TalkPoint);
     }
-
 }

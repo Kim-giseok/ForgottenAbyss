@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine.InputSystem;
 
 public class UIInputHandler : MonoBehaviour
 {
@@ -13,7 +14,7 @@ public class UIInputHandler : MonoBehaviour
         keyActions = new Dictionary<KeyCode, Action>
         {
             { KeyCode.I, () => UIManager.Instance?.ToggleInventory() },
-            { KeyCode.Escape, () => UIManager.Instance?.ToggleSettings() },
+            { KeyCode.Escape, HandleEscapeKey }
             //{ KeyCode.Tab, () => UIManager.Instance?.SwapWeapons() }
         };
     }
@@ -26,6 +27,27 @@ public class UIInputHandler : MonoBehaviour
             {
                 entry.Value?.Invoke();
             }
+        }
+    }
+
+    private void HandleEscapeKey()
+    {
+        if (UIManager.Instance.shopUI.activeSelf)
+        {
+            // 상점이 열린 상태면 상점만 닫음
+            UIManager.Instance.shopUI.SetActive(false);
+            GameObject player = GameObject.FindWithTag("Player");
+            if (player != null)
+            {
+                PlayerInput playerInput = player.GetComponent<PlayerInput>();
+                if (playerInput != null) playerInput.enabled = true;
+            }
+
+        }
+        else
+        {
+            //상점이 안열려 있으면 설정창 열기
+            UIManager.Instance?.ToggleSettings();
         }
     }
 }

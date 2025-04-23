@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -9,7 +10,7 @@ public class MeleeAttack : Node
     public override void Start()
     {
         controller.LookTarget();
-        controller.animationHandler.Play("Attack");
+        controller.animnHandler.Play("Attack");
     }
 
     public override void OnAnimatedEvent(bool isFire)
@@ -17,11 +18,11 @@ public class MeleeAttack : Node
         if (isFire)
         {
             // 데미지나 사이즈등은 추상화로 접급
-            ProjectileManager.Instance.CreateMeleeProjectile(controller.transform, controller.combatHandler.power);
+            BoltsPool.Instance.CreateMelee(controller.transform, controller.combatHandler.power);
         }
         else
         {
-            ProjectileManager.Instance.DestroyMeleeProjectile(controller.transform);
+            BoltsPool.Instance.DisableMelee(controller.transform);
         }
     }
 
@@ -34,22 +35,15 @@ public class MeleeAttack : Node
     
     public override void End() // notice: 공격 중 피격 당하는 경우
     {
-        ProjectileManager.Instance.DestroyMeleeProjectile(controller.transform);
+        BoltsPool.Instance.DisableMelee(controller.transform);
     }
 }
 
-// Attack은 추상화할 수 있는 편
 public class RangeAttackNode : Node
 {
-    private readonly int index;
-
-    public RangeAttackNode(int index)
-    {
-        this.index = index;
-    }
     public override void Start()
     {
-        controller.animationHandler.Play("Attack");
+        controller.animnHandler.Play("Attack");
         controller.LookTarget();
     }
     
@@ -58,7 +52,7 @@ public class RangeAttackNode : Node
         // 콜백으로 공격 방식 추상화
         if (isFire)
         {
-            ProjectileManager.Instance.CreateProjectile(controller.transform, 10, index: index, degree: ProjectileManager.GetDegreeByDirection(controller.agent.GetDirection()));
+            BoltsPool.Instance.Create(controller.transform, Bolts.Type.Linear).SetDamage(10).SetDirection(controller.agent.GetDirection()).Fire();
         }
     }
     
@@ -69,29 +63,34 @@ public class RangeAttackNode : Node
     }
 }
 
-// 초기에 방향을 결정해서 쏜다는 점 만 추가됨
-public class RangeToTargetNode : Node
+public class RangeAttack : Node
 {
-    public override void Start()
-    {
-        // controller.animationHandler.Set(EnemyAnimationHandler.Attack); // 공통 부분
-    }
-
-    public override void OnAnimatedEvent(bool isFire)
+    public static readonly Node Piercing = new RangeAttack((controller, isFire) =>
     {
         if (isFire)
         {
+            BoltsPool.Instance.Create(controller.transform, Bolts.Type.Laser)
+                .SetDirection(controller.agent.GetDirection())
+                // .SetTrailCurve(BoltsPool.TrailType.Laser)
+                .SetEffect(Bolts.EffectType.Penetration)
+                .SetSpeed(20f)
+                .Fire();
         }
-    }
-
-
-    public override void End() // 애니메이션 끝나지 않았는데 공격 당하는 경우( 공격 노드에서 처리)
+    }); 
+    
+    private readonly Action<EnemyBaseController, bool> callback;
+    public RangeAttack(Action<EnemyBaseController, bool> callback) => this.callback = callback;
+    public override void Start()
     {
+        controller.animnHandler.Play("Attack");
+        controller.LookTarget();
     }
-}
-
-// 동시 다발적으로 발사하는 경우 - 이 부분도 일반 공격으로부터 파생 가능
-public class ParallelShotNode : Node
-{
-    private Vector2 direction;
+    
+    public override void OnAnimatedEvent(bool isFire) => callback(controller, isFire);
+    
+    public override void OnAnimated(AnimationStatus status, AnimatorStateInfo animInfo)
+    {
+        if (!animInfo.IsName("Attack")) return;
+        if (status == AnimationStatus.End) { SetStatus(Status.Success); }
+    }
 }

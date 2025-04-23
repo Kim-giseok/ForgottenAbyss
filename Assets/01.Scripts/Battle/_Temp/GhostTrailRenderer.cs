@@ -6,16 +6,23 @@ public class GhostTrailRenderer : MonoBehaviour
     private List<SpriteRenderer> spriteRenderers = new();
     private List<Vector3> lastPositions = new();
 
-    public int frameDelay = 3;
+    public int frameDelay;
     private int frameCounter = 0;
+
+    private bool isFlip = false;
     
     void Start()
     {
-        spriteRenderers.Add(transform.parent.GetComponent<SpriteRenderer>());
+        var parentRenderer = GetComponentInParent<SpriteRenderer>();
+        spriteRenderers.Add(parentRenderer);
+        
+        // 부모 렌더러 없으면 오류 발생
+        isFlip = parentRenderer.flipX;
 
         foreach (Transform child in transform)
         {
             SpriteRenderer renderer = child.GetComponent<SpriteRenderer>();
+            renderer.flipX = isFlip;
             spriteRenderers.Add(renderer);
         }
 
