@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,9 +10,27 @@ public class ShopUI : MonoBehaviour
     [SerializeField] private GameObject slotPrefab; // 슬롯 프리펩
     [SerializeField] private ShopDetailPanel detailPanel; //아이템 상세 패널 연결
 
+    private ItemType currentFilterType = ItemType.Equip; // 기본 필터 타입
+
     private void OnEnable() => InitializeShop();
 
     private void InitializeShop()
+    {
+        ShowFilteredItems(currentFilterType);
+        detailPanel.Hide();
+
+    }
+
+    public void OnClickTab(string typeStr)
+    {
+        if (Enum.TryParse(typeStr, out ItemType parsedType))
+        {
+            currentFilterType = parsedType;
+            ShowFilteredItems(parsedType);
+        }
+    }
+
+    private void ShowFilteredItems(ItemType type)
     {
         // 기존 슬롯 비활성화만
         foreach (Transform child in slotParent)
@@ -19,14 +38,17 @@ public class ShopUI : MonoBehaviour
             child.gameObject.SetActive(false);
         }
 
-        // 필요한 만큼 새로 생성 or 재활성화
+        // 타입에 맞는 아이템만 슬롯에 표시
+        int activeIndex = 0;
         for (int i = 0; i < shopItems.Count; i++)
         {
-            GameObject slotGO;
+            if (shopItems[i].item.itemType != type)
+                continue;
 
-            if (i < slotParent.childCount)
+            GameObject slotGO;
+            if (activeIndex < slotParent.childCount)
             {
-                slotGO = slotParent.GetChild(i).gameObject;
+                slotGO = slotParent.GetChild(activeIndex).gameObject;
                 slotGO.SetActive(true);
             }
             else
@@ -36,9 +58,9 @@ public class ShopUI : MonoBehaviour
 
             var slotUI = slotGO.GetComponent<ShopSlotUI>();
             slotUI.Setup(shopItems[i], this);
-        }
 
-        detailPanel.Hide();
+            activeIndex++;
+        }
     }
 
     // 슬롯에서 호출됨

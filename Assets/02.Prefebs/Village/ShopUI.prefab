@@ -2081,7 +2081,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 8689425083622736661}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 4091869722241382129}
+        m_TargetAssemblyTypeName: ShopUI, Assembly-CSharp
+        m_MethodName: OnClickTab
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Equip
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &5234112245689095291
 GameObject:
   m_ObjectHideFlags: 0
@@ -2202,7 +2214,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 4949372093970850736}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 4091869722241382129}
+        m_TargetAssemblyTypeName: ShopUI, Assembly-CSharp
+        m_MethodName: OnClickTab
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Etc
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &5238168134060009793
 GameObject:
   m_ObjectHideFlags: 0
@@ -2437,7 +2461,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 6426867012789208277}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 4091869722241382129}
+        m_TargetAssemblyTypeName: ShopUI, Assembly-CSharp
+        m_MethodName: OnClickTab
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Consumable
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &6247883121186303384
 GameObject:
   m_ObjectHideFlags: 0
@@ -3199,7 +3235,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5451561520951067479, guid: d38b25c7ba9b5b941a3a0d101c9a8dd1, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 560
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5451561520951067479, guid: d38b25c7ba9b5b941a3a0d101c9a8dd1, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -3349,7 +3385,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5451561520951067479, guid: d38b25c7ba9b5b941a3a0d101c9a8dd1, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 340
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5451561520951067479, guid: d38b25c7ba9b5b941a3a0d101c9a8dd1, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -3499,7 +3535,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5451561520951067479, guid: d38b25c7ba9b5b941a3a0d101c9a8dd1, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 780
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5451561520951067479, guid: d38b25c7ba9b5b941a3a0d101c9a8dd1, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -3649,7 +3685,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5451561520951067479, guid: d38b25c7ba9b5b941a3a0d101c9a8dd1, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 120
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5451561520951067479, guid: d38b25c7ba9b5b941a3a0d101c9a8dd1, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -3906,7 +3942,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5451561520951067479, guid: d38b25c7ba9b5b941a3a0d101c9a8dd1, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 1000
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5451561520951067479, guid: d38b25c7ba9b5b941a3a0d101c9a8dd1, type: 3}
       propertyPath: m_AnchoredPosition.y
