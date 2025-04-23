@@ -403,13 +403,13 @@ public class ControllerPlayer : MonoBehaviour
 
         yield return new WaitForSeconds(0.35f);
 
-        ProjectileManager.Instance.CreateMeleeProjectile(transform, 10);
+        BoltsPool.Instance.CreateMelee(transform, 10);
 
         yield return new WaitForSeconds(0.1f);
               
         isAttacking = false;
         animator.SetBool("IsAttacking", false);
-        ProjectileManager.Instance.DestroyMeleeProjectile(transform);
+        BoltsPool.Instance.DestroyMelee(transform);
 
         // ���� ���� �� ����Ű�� ������ �����ִٸ� �ӵ� ����
         if (inputVec.x != 0)
