@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -22,6 +23,8 @@ public class Bolt: MonoBehaviour
     public SpriteRenderer renderer { get; private set; }
     // 애니메이터는 한개지만 내부 애니메이션 실행을 목적으로 이용
     public BoltAnimHandler animHandler { get; private set; }
+    public TrailRenderer trailRenderer { get; private set; }
+    public LineRenderer lineRenderer { get; private set; }
     
     public StepMachine machine { get; private set; } // 등록 자체를 순차 등록
     protected List<BoltEffect> effects = new();
@@ -45,9 +48,15 @@ public class Bolt: MonoBehaviour
         return this;
     }
 
-    public Bolt SetEffect(BoltEffect effect)
+    public Bolt SetEffect(Bolts.EffectType effectType)
     {
-        effects.Add(effect);
+        effects.Add(Bolts.GetEffect(effectType));
+        return this;
+    }
+
+    public Bolt SetSprite(string name)
+    { 
+        renderer.sprite = BoltsPool.Instance.GetSprite(name);
         return this;
     }
 
@@ -72,6 +81,17 @@ public class Bolt: MonoBehaviour
         float radian = degree * Mathf.Deg2Rad;
         transform.rotation = Quaternion.Euler(0, 0, degree);
         direction = new Vector2(Mathf.Cos(radian), Mathf.Sin(radian));
+        direction.Normalize();
+        return this;
+    }
+    
+    public Bolt SetTrailCurve(BoltsPool.TrailType trailType)
+    {
+        // Find 방식 비용 문제 발생
+        // var selectedCurve = BoltsPool.Instance.trailAnimCurves[trailType];
+        // trailRenderer.widthCurve = selectedCurve.curve;
+
+        if (trailType == BoltsPool.TrailType.Laser) { trailRenderer.time = 1f; }
         return this;
     }
 
@@ -89,10 +109,14 @@ public class Bolt: MonoBehaviour
         rigidbody = GetComponent<Rigidbody2D>();
         collider = GetComponent<Collider2D>();
         renderer = GetComponent<SpriteRenderer>();
+        trailRenderer = GetComponent<TrailRenderer>();
+        lineRenderer = GetComponent<LineRenderer>();
         
         animHandler = GetComponent<BoltAnimHandler>();
         hitBox = GetComponent<HitBox>();
         machine = new(this);
+        
+        Debug.Log("awake");
     }
     protected void Update()
     {
@@ -101,7 +125,7 @@ public class Bolt: MonoBehaviour
         machine.Run();
     }
 
-    protected virtual void OnEnable()
+    private void OnEnable()
     {
         currTime = 0;
     }
@@ -111,7 +135,11 @@ public class Bolt: MonoBehaviour
     {
         machine.Clear();
         effects.Clear();
+        animHandler.Play("None");
         rigidbody.velocity = Vector2.zero;
+
+        trailRenderer.time = 0.2f;
+        
         isStarted = false;
     }
 
@@ -124,17 +152,15 @@ public class Bolt: MonoBehaviour
     {
         // 그라운드, 플레이어, 에너미 와의 충돌이 아닌 경우 무시 필요(임시 해결) // 총알끼리 부딪힘
         if (other.gameObject.layer == LayerMask.NameToLayer("Default") || other.gameObject.layer == gameObject.layer) return;
-        
         // 레이어 자체는 모두 감지가 필요하므로 충돌 비교 레이어를 필드로 따로 둠
         if (hitBox.ownerLayer == other.gameObject.layer) return;
        
         foreach (BoltEffect effect in effects)
         {
+            effect.Connect(this);
             effect.Execute(other);
         }
-        
-        Debug.Log(other.gameObject.name);
-        
-        BoltsPool.Instance.Disable(gameObject);
+
+        if (effects.Count == 0) { BoltsPool.Instance.Disable(gameObject); }
     }
 }

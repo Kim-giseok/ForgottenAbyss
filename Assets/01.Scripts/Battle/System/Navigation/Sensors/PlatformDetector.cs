@@ -23,10 +23,9 @@ public class PlatformDetector: MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (!collision.TryGetComponent(out Collider2D tilemapCollider) || collision.gameObject.layer != NavSurface.Instance.layerMask) return;
-
-        // RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 1f, NavSurface.Instance.layerMask);
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 1f, LayerMask.GetMask("Ground"));
-        // Debug.Log(hit.collider.name);
+        
+        // 플레이어는 transform.position이 바닥이지만 일반적인 경우 중앙부터 - 수정 필요
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 10f, LayerMask.GetMask("Ground"));
         
         if (!hit.collider) return;
         
@@ -36,7 +35,7 @@ public class PlatformDetector: MonoBehaviour
         var curTile = NavSurface.Instance.cells.Find(cell => cell.tilePos == new Vector3Int(cellPos.x, cellPos.y - 1, 0));
         
         if (curTile == null) return;
-
+        
         NavSurface.Instance.targetPlatforms[target] = curTile.platformID;
     }
 }

@@ -18,6 +18,13 @@ public class BoltsPool : MonoBehaviour // 단위 미사일
     private List<(Transform parent, HitBox hitBox)> currMelees = new(); // 만약 여기서 등록하는 경우, 몬스터가 죽으면 함께 제거 필요
     private List<SummonController> currSummons = new();
     
+    [Serializable] public class SpriteInfo { public string name; public Sprite sprite; }
+    public List<SpriteInfo> sprites;
+    
+    public enum TrailType { Base, Laser }
+    [Serializable] public class TrailAnimCurve { [FormerlySerializedAs("name")] public TrailType type; public AnimationCurve curve; }
+    public List<TrailAnimCurve> trailAnimCurves;
+    
     private void Awake()
     {
         if (Instance) return;
@@ -32,6 +39,11 @@ public class BoltsPool : MonoBehaviour // 단위 미사일
         {
             currMelees.Clear();
         };
+    }
+
+    public Sprite GetSprite(string spriteName)
+    {
+        return sprites.Find(sprite => sprite.name == spriteName).sprite;
     }
     
     public static float GetDegree(Vector2 direction)
@@ -86,6 +98,7 @@ public class BoltsPool : MonoBehaviour // 단위 미사일
         {
             GameObject instance = Instantiate(Bolt, Vector2.zero, Quaternion.identity, transform);
             bolt = instance.GetComponent<Bolt>();
+            
             currBolts.Add(bolt);
         }
 
@@ -93,7 +106,8 @@ public class BoltsPool : MonoBehaviour // 단위 미사일
         hitBox.SetOwner(parent);
         
         // 플레이어 피봇 문제로 위치 조정 필요
-        bolt.transform.position = parent.position + (Vector3.up * 0.5f);
+        // bolt.transform.position = parent.position + (Vector3.up * 0.5f);
+        bolt.transform.position = parent.position;
         
         bolt.SetDirection(parent.transform.right);
         bolt.machine.Define(Bolts.Get(boltType));

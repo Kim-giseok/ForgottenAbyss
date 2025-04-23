@@ -5,9 +5,11 @@ public class Bolts
     public enum Type { 
         Linear, 
         BlackHole,
-        Test,
+        Rain,
         Heal,
-        Decrescendo
+        Decrescendo,
+        Recursive,
+        Laser,
     }
     public enum EffectType { Penetration, Reflection }
     public static BoltNode[] Get(Type type) => boltNodes[type];
@@ -17,12 +19,18 @@ public class Bolts
 
     private static Dictionary<Type, BoltNode[]> boltNodes = new() {
         { Type.Linear , new BoltNode[] { new LinearBolt() } },
+        { Type.Laser, new BoltNode[] { new LaserBolt() }},
         { Type.BlackHole , new BoltNode[]{ new BlackHoleBolt() }},
-        { Type.Test, new BoltNode[] { new RandomSpreadBolt(), new BoltTestDownNode() }},
+        { Type.Rain, new BoltNode[] { new RainBolt() }},
         { Type.Heal, new BoltNode[] { new HealBolt() }},
         { Type.Decrescendo, new BoltNode[] { new DecrescendoBolt() }},
+        { Type.Recursive, new BoltNode[] { new RecursiveBolt(), new RecursiveBolt(), new RecursiveBolt(), new RecursiveBolt()}}
     };
 
-    private static Dictionary<EffectType, BoltEffect> effects = new() { };
+    private static Dictionary<EffectType, BoltEffect> effects = new()
+    {
+        { EffectType.Reflection, new ReflectionEffect() },
+        { EffectType.Penetration , new PiercingEffect() }
+    };
 
 }

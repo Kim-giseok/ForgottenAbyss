@@ -57,6 +57,11 @@ public class NavSurface : MonoBehaviour
         ScanArea();
     }
 
+    public int GetTarget(GameObject target)
+    {
+        return targetPlatforms[target];
+    }
+
     void ScanArea()
     {
         // 그냥 wall point에만 그리는 것은 어떨까?

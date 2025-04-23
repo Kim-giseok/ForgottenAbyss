@@ -3,8 +3,10 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
-public class LightHandler: MonoBehaviour
+public class GlobalLightHandler: MonoBehaviour
 {
+    public static GlobalLightHandler Instance { get; private set; }
+    
     private Light2D light;
     
     public Color startColor;
@@ -35,7 +37,6 @@ public class LightHandler: MonoBehaviour
         float currTime = 0f;
         while (currTime < 1f)
         {
-            Debug.Log(currTime);
             currTime += Time.deltaTime / duration;
             light.color = Color.Lerp(from, to, currTime);
             yield return null;

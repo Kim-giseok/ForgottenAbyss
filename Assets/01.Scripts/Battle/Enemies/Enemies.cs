@@ -28,7 +28,7 @@ public class Enemies
             Enemy.Archer,
             new SelectorNode(
                 new SequenceNode(new HitNode(), new DieNode()),
-                new SequenceNode(new TracingNode(), new StopNode(), new ChargingNode(1f), new RangeMultiAttackNode(0)),
+                new SequenceNode(new TracingNode(), new StopNode(), new ChargingNode(1f), new RangeMultiAttackNode()),
                 new SequenceNode(new IdleNode(1), new PatrolMove(1))
                 )
         },
@@ -47,10 +47,10 @@ public class Enemies
                     new ChargingNode(1f),
                     new RandomNode(new()
                     {
-                        // 스킬을 사용한 경우 마나와 쿨타임 정보 가지는 방식 필요
-                        // 연속 공격이 왜 안됨(애님메이션 관련 문제)
-                        (0.2f, new SequenceNode( new RangeAttackNode(1), new IdleNode(0.05f), new RangeAttackNode(1))),
-                        (1f, new RangeAttackNode(1))
+                    //     // 스킬을 사용한 경우 마나와 쿨타임 정보 가지는 방식 필요
+                    //     // 연속 공격이 왜 안됨(애님메이션 관련 문제)
+                    (0.9f, new SequenceNode( RangeAttack.Piercing, new IdleNode(0.05f), RangeAttack.Piercing)),
+                    (1f, RangeAttack.Piercing)
                     }),
                     new CoolTimeNode(0.5f)), 
                 new SequenceNode(new IdleNode(1), new PatrolMove(1)))
@@ -86,7 +86,8 @@ public class Enemies
             Enemy.Wizard,
             new SelectorNode(
                 new SequenceNode(new HitNode(), new DieNode()), 
-                    new SequenceNode(new IdleNode(4), new HealNode())
+                    new SequenceNode(new TracingNode(), new StopNode(), new WizadRecursiveNode(), new IdleNode(3f)),
+                    new SequenceNode(new IdleNode(3), new HealNode())
                 )
         },
         {
@@ -100,7 +101,7 @@ public class Enemies
             Enemy.MudChildHand,
             new SelectorNode(
                 new SequenceNode(new HitNode(), new DieNode()),
-                new SequenceNode(new IdleNode(1))
+                new SequenceNode(new MudHandIdleNode())
             )
         }
     };

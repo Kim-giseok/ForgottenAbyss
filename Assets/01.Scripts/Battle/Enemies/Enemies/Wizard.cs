@@ -23,3 +23,32 @@ public class HealNode : Node
         if(status == AnimationStatus.End) { SetStatus(Status.Success); return; }
     }
 }
+
+
+public class WizadRecursiveNode : Node
+{
+    public override void Start()
+    {
+        controller.animnHandler.Play("Attack");
+        controller.LookTarget();
+    }
+    
+    public override void OnAnimatedEvent(bool isFire)
+    {
+        // 콜백으로 공격 방식 추상화
+        if (isFire)
+        {
+            BoltsPool.Instance.Create(controller.transform, Bolts.Type.Recursive)
+            .SetDamage(10)
+            .SetDegree(controller.agent.GetDegree())
+            .SetDuration(1f)
+            .Fire();
+        }
+    }
+    
+    public override void OnAnimated(AnimationStatus status, AnimatorStateInfo animInfo)
+    {
+        if (!animInfo.IsName("Attack")) return;
+        if (status == AnimationStatus.End) { SetStatus(Status.Success); }
+    }
+}

@@ -1,15 +1,7 @@
-// Attack은 추상화할 수 있는 편
-
 using UnityEngine;
 
 public class RangeMultiAttackNode : Node
 {
-    private readonly int index;
-
-    public RangeMultiAttackNode(int index)
-    {
-        this.index = index;
-    }
     public override void Start()
     {
         controller.animnHandler.Play("Attack");
@@ -24,7 +16,8 @@ public class RangeMultiAttackNode : Node
             for (int currDegree = -20; currDegree <= 20; currDegree += 10)
             {
                 BoltsPool.Instance.Create(controller.transform, Bolts.Type.Decrescendo)
-                    .SetSize(1.4f)
+                    .SetSprite("arrow")
+                    .SetSize(1f)
                     .SetDamage(10)
                     .SetDegree(controller.agent.GetDegree() + currDegree)
                     .SetDuration(0.6f)

@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.Tilemaps;
@@ -23,9 +24,31 @@ public class TempTester: MonoBehaviour
 
       if (Input.GetKeyDown(KeyCode.K))
       {
-         // for(int index = 0; index < 5; index++) {BoltsPool.Instance.Create(transform, Bolts.Type.Test);}
-         // BoltsPool.Instance.Create(transform, Bolts.Type.Linear).SetDirection(transform.right).SetSpeed(100).SetDamage(50).Fire();
+         BoltsPool.Instance.Create(transform, Bolts.Type.Linear)
+            .SetSprite("arrow")
+            .SetSpeed(20f)
+            .SetSize(1f)
+            .SetEffect(Bolts.EffectType.Reflection)
+            .Fire();
+      }
+
+      if (Input.GetKeyDown(KeyCode.M))
+      {
+         StartCoroutine(FireBoltsSequentially(30, 0.1f));
+      }
+
+      if (Input.GetKeyDown(KeyCode.J))
+      {
+         BoltsPool.Instance.Create(transform, Bolts.Type.BlackHole).Fire();
       }
    }
 
+   private IEnumerator FireBoltsSequentially(int count, float delay)
+   {
+      for (int i = 0; i < count; i++)
+      {
+         BoltsPool.Instance.Create(transform, Bolts.Type.Rain).Fire();
+         yield return new WaitForSeconds(delay);
+      }
+   }
 }

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Summon
@@ -95,7 +96,7 @@ public class ComboDashAttack : Node
     public override void Update()
     {
         // 제한시간이 지나면 종료
-        // if(currTime > 3f) { SetStatus(Status.Fail); }
+        if(currTime > 3f) { SetStatus(Status.Fail); }
     }
 
     //do: 이동을 인식하는 것도 필요
@@ -104,6 +105,7 @@ public class ComboDashAttack : Node
         if (controller is not SummonController sController) return;
         
         int currComboCount = context.Get<int>("combo");
+        if (currComboCount > 2) return;
         
         controller.animnHandler.Play(combo[currComboCount]);
 

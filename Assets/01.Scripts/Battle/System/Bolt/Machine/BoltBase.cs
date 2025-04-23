@@ -32,7 +32,7 @@ public class BoltNode
 
 public abstract class BoltEffect
 {
-    public Bolt controller { get; private set; }
-    public void Connect(Bolt controller) => this.controller = controller;
+    public Bolt bolt { get; private set; }
+    public void Connect(Bolt controller) => this.bolt = controller;
     public abstract void Execute(Collider2D other);
 }
