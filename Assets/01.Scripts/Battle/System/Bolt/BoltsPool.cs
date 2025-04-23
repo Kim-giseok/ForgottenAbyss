@@ -14,9 +14,9 @@ public class BoltsPool : MonoBehaviour // 단위 미사일
     public GameObject Bolt;
     public GameObject Summon;
 
-    private List<GameObject> currBolts { get; set; } = new();
+    private List<Bolt> currBolts { get; set; } = new();
     private List<(Transform parent, HitBox hitBox)> currMelees = new(); // 만약 여기서 등록하는 경우, 몬스터가 죽으면 함께 제거 필요
-    private List<GameObject> currSummons = new();
+    private List<SummonController> currSummons = new();
     
     private void Awake()
     {
@@ -80,21 +80,20 @@ public class BoltsPool : MonoBehaviour // 단위 미사일
     // ReSharper disable Unity.PerformanceAnalysis
     public Bolt Create(Transform parent, Bolts.Type boltType)
     {
-        var instance = currBolts.Find(bolt => !bolt.activeSelf);
-        Debug.Log(instance);
+        Bolt bolt = currBolts.Find(bolt => !bolt.gameObject.activeSelf);
         
-        if (!instance)
+        if (!bolt)
         {
-            instance = Instantiate(this.Bolt, Vector2.zero, Quaternion.identity, transform);
-            currBolts.Add(instance);
+            GameObject instance = Instantiate(Bolt, Vector2.zero, Quaternion.identity, transform);
+            bolt = instance.GetComponent<Bolt>();
+            currBolts.Add(bolt);
         }
 
-        Bolt bolt = instance.GetComponent<Bolt>();
         HitBox hitBox = bolt.hitBox;
         hitBox.SetOwner(parent);
         
         // 플레이어 피봇 문제로 위치 조정 필요
-        instance.transform.position = parent.position + (Vector3.up * 0.5f);
+        bolt.transform.position = parent.position + (Vector3.up * 0.5f);
         
         bolt.SetDirection(parent.transform.right);
         bolt.machine.Define(Bolts.Get(boltType));
@@ -109,16 +108,23 @@ public class BoltsPool : MonoBehaviour // 단위 미사일
     
     // 팩토리 패턴과 빌더 패턴을 합쳐서 사용하고 싶다. - summon도 재사용 개념이 필요한지 확인해보기
     // 각도로 넣어주기 
+    // ReSharper disable Unity.PerformanceAnalysis
     public SummonController CreateSummon(Transform parent, SummonSkillManager.Skill skill, bool isAttached = false)
     {
-        // notice: 플레이어 위치로 인한 보정 필요
-        GameObject instance = Instantiate(Summon, new Vector2(parent.transform.position.x, parent.transform.position.y + 0.8f), Quaternion.identity); 
-        instance.gameObject.layer = parent.gameObject.layer;
+        SummonController currSummon = currSummons.Find(summon => !summon.gameObject.activeSelf);
+        if (!currSummon)
+        {
+            GameObject instance = Instantiate(Summon, new Vector2(parent.transform.position.x, parent.transform.position.y + 0.8f), Quaternion.identity);
+            currSummon = instance.GetComponent<SummonController>();
+            currSummons.Add(currSummon);
+        }
         
-        SummonController summonController = instance.GetComponent<SummonController>();
-        summonController.SetCaster(parent, isAttached);
-        summonController.ExecuteSkill(skill);
+        // notice: 플레이어 위치로 인한 보정 필요
+        currSummon.gameObject.layer = parent.gameObject.layer;
+        
+        currSummon.SetCaster(parent, isAttached);
+        currSummon.ExecuteSkill(skill);
 
-        return summonController;
+        return currSummon;
     }
 }
