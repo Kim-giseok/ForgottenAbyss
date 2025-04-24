@@ -1,21 +1,27 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class NpcSentence : MonoBehaviour
 {
     public string[] sentences;
-    public Transform TalkPoint;
-    public TalkSystem talkBoxPrefab;
+    [SerializeField] UnityEvent displayEndEvents;
     
     public void TalkNpc()
     {
-        if (FindObjectOfType<TalkSystem>() != null)
-        {
-            return; // 이미 대화창이 있으면 더 이상 생성X
-        }
+        StartCoroutine(DisplayEachSentence());
+    }
 
-        TalkSystem gameObject = Instantiate(talkBoxPrefab);
-        gameObject.Ondialogue(sentences, TalkPoint);
+    IEnumerator DisplayEachSentence()
+    {
+        foreach (var sentnece in sentences)
+        {
+            Debug.Log(sentnece);
+            UIManager.Instance.OnTalk(this, sentnece);
+            yield return new WaitForSecondsRealtime(sentences.Length * 0.5f);
+        }
+        UIManager.Instance.OffTalk();
+        displayEndEvents.Invoke();
     }
 }
