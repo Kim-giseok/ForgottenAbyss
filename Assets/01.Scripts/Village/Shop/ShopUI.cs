@@ -124,6 +124,9 @@ public class ShopUI : MonoBehaviour
 
             activeIndex++;
         }
+
+        // LayoutGroup ∏Æ∫ÙµÂ
+        LayoutRebuilder.ForceRebuildLayoutImmediate(slotParent.GetComponent<RectTransform>());
     }
 
     // ΩΩ∑‘ø°º≠ »£√‚µ 
