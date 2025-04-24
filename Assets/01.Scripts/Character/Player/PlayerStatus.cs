@@ -241,6 +241,8 @@ public class PlayerStatus : CharacterStatus
         // 스탯 포인트 추가
         AddStatPoints(statPointsPerLevel);
 
+        Debug.Log($"투자 가능 포인트: {availableStatPoints}");
+
         stats[StatType.CurrentHP] = stats[StatType.MaxHP];
         stats[StatType.CurrentMP] = stats[StatType.MaxMP];
 
