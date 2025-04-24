@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: -3678734713885142071}
   - component: {fileID: -1265359502176364130}
   - component: {fileID: 2040290271737414899}
+  - component: {fileID: 8248385261168387614}
   m_Layer: 9
   m_Name: Ghost
   m_TagString: Untagged
@@ -58,7 +59,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: a246676e0ed7a461ab0192c3fb52f752, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -80,7 +81,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 1319537085, guid: c15e185ac2d364045a6cd9d6d50f8678, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0, b: 0.95380974, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -185,7 +186,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68e4352b8584b49edb0f5da93bdaf397, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animationValue: 1
   health: 30
   attack: 10
   name: 3
@@ -218,5 +218,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 46c040b7a0f8f4dad9d0d516dc583541, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8248385261168387614
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5864516369699684868}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c4bb51360b54991a6817ec21e18b9d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

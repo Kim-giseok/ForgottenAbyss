@@ -27,12 +27,12 @@ public abstract class SkillExecutionSO : ScriptableObject
         var enemy = target.GetComponent<EnemyController>();
         if (enemy != null)
         {
-            float damage = castData.CalculateDamage();
-            Debug.Log($"damage : {damage}");
-            enemy.GetDamage(damage);
+            var result = castData.CalculateDamage();
+            Debug.Log($"damage : {result.damage}");
+            enemy.GetDamage(result.damage);
 
             Vector3 worldPos = target.transform.position + Vector3.up * 1f;
-            DamageTextManager.Instance.ShowDamage(worldPos, (int)damage);
+            DamageTextManager.Instance.ShowDamage(worldPos, (int)result.damage, result.isCrit);
         }
     }
 

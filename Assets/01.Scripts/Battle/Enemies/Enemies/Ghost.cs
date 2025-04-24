@@ -5,3 +5,8 @@ public class GhostSummoningNode : Node
         controller.animnHandler.Play("Summoning");
     }
 }
+
+public class GhostTeleportNode : Node
+{
+    
+}

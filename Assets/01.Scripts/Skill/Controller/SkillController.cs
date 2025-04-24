@@ -1,18 +1,18 @@
 using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.XR;
+using UnityEngine.SceneManagement;
 
 public class SkillController : Singleton<SkillController>
 {
     public ComboAttack comboAttack;
     public RangedAttack rangedAttack;
 
-    public int combatId;
-    public int skill01Id;
-    public int skill02Id;
-    public MemorySkillItem memorySkillItem;
+    public CombatInstance combatSkill;
+    public SkillInstance skill01;
+    public SkillInstance skill02;
+    public SkillInstance memorySkill;
 
     public Transform skillSpawnPoint;
     public Transform skillSpawnPoint2;
@@ -33,163 +33,157 @@ public class SkillController : Singleton<SkillController>
             Destroy(gameObject);
             return;
         }
+    }
 
-        Init();
+    private void Start()
+    {
+        Initialized();
+    }
+
+    private void Initialized()
+    {
+        var weaponManager = WeaponManager.Instance;
+        var skillManager = SkillManager.Instance;
+
+        var weaponSO = weaponManager.GetCurrentWeaponSO();
+        var weaponData = weaponManager.GetCurrentWeaponData();
+
+        if (weaponSO == null || weaponData == null) return;
+
+        switch (weaponData.Type)
+        {
+            case WeaponType.Sword:
+                var combo = GetComponent<ComboAttack>();
+                combatSkill = new CombatInstance(combo, weaponSO.comboAttackData);
+                break;
+
+            case WeaponType.Bow:
+                var ranged = GetComponent<RangedAttack>();
+                combatSkill = new CombatInstance(ranged, weaponSO.rangedAttackData);
+                break;
+        }
+
+        Debug.Log($"[Combat] 무기 타입: {weaponData.Type}, 연결 완료");
+
+        if (skillManager != null)
+        {
+            skill01 = skillManager.GetSkillInstance(weaponData.Skill1Id);
+            skill02 = skillManager.GetSkillInstance(weaponData.Skill2Id);
+
+            if (skillManager.currentMemoryPiece != null)
+            {
+                var memoryId = skillManager.currentMemoryPiece.currentMemoryPieceId;
+                memorySkill = skillManager.GetSkillInstance(memoryId);
+            }
+
+            Debug.Log("[SkillController] 스킬 연결 완료");
+        }
     }
 
     private void Update()
     {
-        if(ActionBufferUtil.Instance != null)
+        if (ActionBufferUtil.Instance != null)
             ActionBufferUtil.Instance.Update();
-
-        //Debug.Log($"[DEBUG] combo: {comboAttack.IsAttacking}, ranged: {rangedAttack.IsAttacking}, skill: {isSkillPlaying}");
     }
 
     void OnAttack(InputValue value)
     {
         if (isSkillPlaying || isGettingHit || isDead) return;
 
-        var weaponData = WeaponManager.Instance.GetCurrentWeaponData();
-        if (weaponData == null)
-        {
-            Debug.LogWarning("기본 공격: 무기가 장착되어 있지 않음.");
-            return;
-        }
-
         if (IsTurning())
         {
             ActionBufferUtil.Instance.BufferAction(
                 "NormalAttack",
                 () => !IsTurning() && !isSkillPlaying,
-                () =>
-                {
-                    if (WeaponManager.Instance.GetCurrentWeaponData().Type == WeaponType.Sword)
-                    {
-                        comboAttack?.HandleAttackInput();
-                    }
-                    else if (WeaponManager.Instance.GetCurrentWeaponData().Type == WeaponType.Bow)
-                    {
-                        rangedAttack?.HandleAttackInput();
-                    }
-                }
-            );
+                () => combatSkill.Execute());
         }
         else
         {
-            if (WeaponManager.Instance.GetCurrentWeaponData().Type == WeaponType.Sword)
-            {
-                comboAttack?.HandleAttackInput();
-            }
-            else if (WeaponManager.Instance.GetCurrentWeaponData().Type == WeaponType.Bow)
-            {
-                rangedAttack?.HandleAttackInput();
-            }
+            combatSkill.Execute();
         }
 
-        Debug.Log("A: 일반공격");
+        Debug.Log("A: 기본 공격");
     }
 
     void OnFirstSkill(InputValue value)
     {
         if (isGettingHit || isDead) return;
-        TryBufferOrExecuteSkill(skill01Id, "FirstSkill");
+        TryBufferOrExecuteSkill(skill01, "FirstSkill");
         Debug.Log("S: 스킬1");
     }
 
     void OnSecondSkill(InputValue value)
     {
         if (isGettingHit || isDead) return;
-        TryBufferOrExecuteSkill(skill02Id, "SecondSkill");
+        TryBufferOrExecuteSkill(skill02, "SecondSkill");
         Debug.Log("D: 스킬2");
     }
 
     void OnSpecialSkill(InputValue value)
     {
         if (isGettingHit || isDead) return;
-
-        if (memorySkillItem == null)
+        if (memorySkill == null)
         {
-            Debug.LogWarning("기억 스킬 x");
+            Debug.LogWarning("기억 스킬이 장착되지 않았습니다.");
             return;
         }
-
-        TryBufferOrExecuteSkill(memorySkillItem.memoryPieceId, "SpecialSkill");
-        //memorySkillItem.Use();
+        TryBufferOrExecuteSkill(memorySkill, "SpecialSkill");
         Debug.Log("R: 기억 스킬");
     }
 
-    public void SetSkillPlaying(bool value)
-    {
-        isSkillPlaying = value;
-    }
-
-    public void OnSetSkillFalse()
-    {
-        isSkillPlaying = false;
-    }
+    public void SetSkillPlaying(bool value) => isSkillPlaying = value;
+    public void OnSetSkillFalse() => isSkillPlaying = false;
 
     public bool IsTurning()
     {
         AnimatorStateInfo stateInfo = GameManager.Instance.player.animator.GetCurrentAnimatorStateInfo(0);
-        if (stateInfo.IsTag("Turn") || stateInfo.IsTag("Fall"))
-            return true;
-        else return false;
+        return stateInfo.IsTag("Turn") || stateInfo.IsTag("Fall");
     }
 
     public bool IsAttacking()
     {
-        return comboAttack.IsAttacking || rangedAttack.IsAttacking || isSkillPlaying;
+        return (comboAttack != null && comboAttack.IsAttacking) ||
+               (rangedAttack != null && rangedAttack.IsAttacking) ||
+               isSkillPlaying;
     }
 
-    IEnumerator UseSkillRoutine(int skillId)
+    IEnumerator UseSkillRoutine(SkillInstance instance)
     {
         isSkillPlaying = true;
 
-        if (WeaponManager.Instance.GetCurrentWeaponData().Type == WeaponType.Sword)
-        {
-            SkillManager.Instance.TryUseSkill(skillId, skillSpawnPoint);
-        }
+        var spawnPoint = WeaponManager.Instance.GetCurrentWeaponData().Type == WeaponType.Sword ? skillSpawnPoint : skillSpawnPoint2;
+        SkillManager.Instance.TryUseSkill(instance, spawnPoint);
 
-        else if(WeaponManager.Instance.GetCurrentWeaponData().Type == WeaponType.Bow)
-        {
-            SkillManager.Instance.TryUseSkill(skillId, skillSpawnPoint2);
-        }
-
-        if (SkillManager.Instance.GetCurrentMemorySkillData()?.memoryPieceId == skillId)
+        if (SkillManager.Instance.IsMemorySkill(instance))
         {
             GameManager.Instance.player.controller.isInvincible = true;
-
             yield return new WaitForSeconds(3.0f);
-
             GameManager.Instance.player.controller.isInvincible = false;
         }
         else
         {
-            yield return new WaitForSeconds(GetAnimPlayTime(skillId));
+            yield return new WaitForSeconds(GetAnimPlayTime(instance));
         }
 
         isSkillPlaying = false;
     }
 
-    public float GetAnimPlayTime(int skillId)
+    public float GetAnimPlayTime(SkillInstance instance)
     {
-        SkillData skilldata = DataManager.Instance.GetSkillData(skillId);
-        SkillVisualSO skillVisual = DataManager.Instance.GetSkillVisualSO(skilldata.Name + "_Visual");
+        if (SkillManager.Instance.IsMemorySkill(instance))
+            return 1.0f;
 
-        if (skillVisual == null || skillVisual.animationSpeed <= 0f)
-        {
-            Debug.LogWarning($"SkillVisualSO missing or invalid for skillId: {skillId}");
+        if (instance == null || instance.visual == null || instance.visual.animationSpeed <= 0f)
             return 0.5f;
-        }
 
-        return skillVisual.animPlayTime / skillVisual.animationSpeed;
+        return instance.visual.animPlayTime / instance.visual.animationSpeed;
     }
 
-    private void TryBufferOrExecuteSkill(int skillId, string bufferName)
+    private void TryBufferOrExecuteSkill(SkillInstance instance, string bufferName)
     {
-        if (!SkillManager.Instance.IsSkillEquipped(skillId))
+        if (!SkillManager.Instance.IsSkillEquipped(instance))
         {
-            Debug.LogWarning($"Skill ID {skillId} is not equipped.");
+            Debug.LogWarning($"Skill ID {instance} is not equipped.");
             return;
         }
 
@@ -200,45 +194,39 @@ public class SkillController : Singleton<SkillController>
             ActionBufferUtil.Instance.BufferAction(
                 bufferName,
                 () => !IsTurning() && !IsAttacking(),
-                () => StartCoroutine(UseSkillRoutine(skillId))
-            );
+                () => StartCoroutine(UseSkillRoutine(instance)));
         }
         else
         {
-            StartCoroutine(UseSkillRoutine(skillId));
+            StartCoroutine(UseSkillRoutine(instance));
         }
     }
 
-    public void SetGettingHit(bool value)
-    {
-        isGettingHit = value;
-    }
-
-    public void SetDead(bool value)
-    {
-        isDead = value;
-    }
+    public void SetGettingHit(bool value) => isGettingHit = value;
+    public void SetDead(bool value) => isDead = value;
 
     public void ResetAttack()
     {
         isSkillPlaying = false;
 
-        if (comboAttack != null && comboAttack.gameObject != null)
+        if (comboAttack != null && comboAttack.gameObject.activeInHierarchy)
         {
             comboAttack.EndComboAttack();
         }
         else
         {
-            Debug.LogWarning("comboAttack이 Destroy되어 null입니다.");
+            comboAttack = FindObjectOfType<ComboAttack>();
+            Debug.LogWarning("comboAttack이 null이거나 Destroy됨 → 재연결 시도");
         }
 
-        if (rangedAttack != null && rangedAttack.gameObject != null)
+        if (rangedAttack != null && rangedAttack.gameObject.activeInHierarchy)
         {
             rangedAttack.EndRangedAttack();
         }
         else
         {
-            Debug.LogWarning("rangedAttack이 Destroy되어 null입니다.");
+            rangedAttack = FindObjectOfType<RangedAttack>();
+            Debug.LogWarning("rangedAttack이 null이거나 Destroy됨 → 재연결 시도");
         }
     }
 }

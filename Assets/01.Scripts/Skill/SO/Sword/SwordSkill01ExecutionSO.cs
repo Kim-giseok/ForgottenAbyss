@@ -39,4 +39,16 @@ public class SwordSkill01ExecutionSO : SkillExecutionSO
 
         DebugDrawUtil.DrawCircle(center, range, Color.red);
     }
+
+    public SwordSkill01ExecutionSO Clone()
+    {
+        SwordSkill01ExecutionSO clone = CreateInstance<SwordSkill01ExecutionSO>();
+
+        clone.range = this.range;
+        clone.targetLayer = this.targetLayer;
+        clone.delayBetweenHits = this.delayBetweenHits;
+        clone.effectKey = this.effectKey;
+
+        return clone;
+    }
 }

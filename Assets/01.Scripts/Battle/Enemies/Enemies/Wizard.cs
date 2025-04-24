@@ -12,7 +12,7 @@ public class HealNode : Node
         {
             if (hit.gameObject == controller.gameObject) continue;
             if (!hit.TryGetComponent(out EnemyController econtoller)) continue;
-            BoltsPool.Instance.Create(hit.transform, Bolts.Type.Heal);
+            BoltsPool.Instance.Create(hit.transform, Bolts.Type.Heal).SetSize(1f).Fire();
             if(econtoller.health <= 30) econtoller.health += 10;
         }
     }
@@ -39,10 +39,8 @@ public class WizadRecursiveNode : Node
         if (isFire)
         {
             BoltsPool.Instance.Create(controller.transform, Bolts.Type.Recursive)
-            .SetDamage(10)
-            .SetDegree(controller.agent.GetDegree())
-            .SetDuration(1f)
-            .Fire();
+                .SetSize(0.6f).SetDamage(10).SetSpeed(4).SetDegree(controller.agent.GetDegree())
+                .SetEffect(Bolts.EffectType.Penetration).SetDuration(1.6f).Fire();
         }
     }
     

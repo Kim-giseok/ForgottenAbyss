@@ -18,7 +18,7 @@ public class MeleeAttack : Node
         if (isFire)
         {
             // 데미지나 사이즈등은 추상화로 접급
-            BoltsPool.Instance.CreateMelee(controller.transform, controller.combatHandler.power);
+            BoltsPool.Instance.CreateMelee(controller.transform, controller.combatHandler.power).Fire();
         }
         else
         {
@@ -55,38 +55,6 @@ public class RangeAttackNode : Node
             BoltsPool.Instance.Create(controller.transform, Bolts.Type.Linear).SetDamage(10).SetDirection(controller.agent.GetDirection()).Fire();
         }
     }
-    
-    public override void OnAnimated(AnimationStatus status, AnimatorStateInfo animInfo)
-    {
-        if (!animInfo.IsName("Attack")) return;
-        if (status == AnimationStatus.End) { SetStatus(Status.Success); }
-    }
-}
-
-public class RangeAttack : Node
-{
-    public static readonly Node Piercing = new RangeAttack((controller, isFire) =>
-    {
-        if (isFire)
-        {
-            BoltsPool.Instance.Create(controller.transform, Bolts.Type.Laser)
-                .SetDirection(controller.agent.GetDirection())
-                // .SetTrailCurve(BoltsPool.TrailType.Laser)
-                .SetEffect(Bolts.EffectType.Penetration)
-                .SetSpeed(20f)
-                .Fire();
-        }
-    }); 
-    
-    private readonly Action<EnemyBaseController, bool> callback;
-    public RangeAttack(Action<EnemyBaseController, bool> callback) => this.callback = callback;
-    public override void Start()
-    {
-        controller.animnHandler.Play("Attack");
-        controller.LookTarget();
-    }
-    
-    public override void OnAnimatedEvent(bool isFire) => callback(controller, isFire);
     
     public override void OnAnimated(AnimationStatus status, AnimatorStateInfo animInfo)
     {

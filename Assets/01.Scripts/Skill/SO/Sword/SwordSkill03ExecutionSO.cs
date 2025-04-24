@@ -66,4 +66,14 @@ public class SwordSkill03ExecutionSO : SkillExecutionSO
         yield return new WaitForSeconds(duration);
         GameManager.Instance.player.controller.isInvincible = false;
     }
+
+    public SwordSkill03ExecutionSO Clone()
+    {
+        SwordSkill03ExecutionSO clone = CreateInstance<SwordSkill03ExecutionSO>();
+
+        clone.range = this.range;
+        clone.effectRange = this.effectRange;
+
+        return clone;
+    }
 }

@@ -49,20 +49,20 @@ public class PlayerProjectile : MonoBehaviour
                 comboMultiplier: comboMultiplier// 타수에 따른 계수
                 );
 
-                float damage = data.CalculateDamage();
+                var result = data.CalculateDamage();
 
                 if (other.GetComponent<EnemyController>() != null) {
                     
-                    damageable.GetDamage(damage);
+                    damageable.GetDamage(result.damage);
 
                     Vector3 textPosition = other.transform.position + Vector3.up * 1f;
-                    DamageTextManager.Instance.ShowDamage(textPosition, (int)damage);
+                    DamageTextManager.Instance.ShowDamage(textPosition, (int)result.damage, result.isCrit);
                     CameraShake.Instance.Shake(0.1f, 0.2f);
                 }
 
                 if(other.GetComponent<LaberDamagerble>() != null)
                 {
-                    damageable.GetDamage(damage);
+                    damageable.GetDamage(result.damage);
                 }
             }
             ReturnToPool();

@@ -59,6 +59,21 @@ public class Bolt: MonoBehaviour
         renderer.sprite = BoltsPool.Instance.GetSprite(name);
         return this;
     }
+    
+    
+    public Bolt SetPosition(Vector3 position)
+    {
+        transform.position = position;
+        return this;
+    }
+
+    public Bolt SetVFX()
+    {
+        hitBox.gameObject.SetActive(false);
+        hitBox.SetDamage(0);
+        effects.Add(Bolts.GetEffect(Bolts.EffectType.Penetration));
+        return this;
+    }
 
     public void AddEffect(BoltEffect effect) => effects.Add(effect);
     private void Play() => this.isStarted = true;
@@ -84,6 +99,12 @@ public class Bolt: MonoBehaviour
         direction.Normalize();
         return this;
     }
+
+    public Bolt SetRenderer(Action<SpriteRenderer> callback)
+    {
+        callback?.Invoke(renderer);
+        return this;
+    }
     
     public Bolt SetTrailCurve(BoltsPool.TrailType trailType)
     {
@@ -92,6 +113,12 @@ public class Bolt: MonoBehaviour
         // trailRenderer.widthCurve = selectedCurve.curve;
 
         if (trailType == BoltsPool.TrailType.Laser) { trailRenderer.time = 1f; }
+        return this;
+    }
+    
+    public Bolt SetKnockBack(float amount)
+    {
+        hitBox.SetKnockBack(amount);
         return this;
     }
 
@@ -115,8 +142,6 @@ public class Bolt: MonoBehaviour
         animHandler = GetComponent<BoltAnimHandler>();
         hitBox = GetComponent<HitBox>();
         machine = new(this);
-        
-        Debug.Log("awake");
     }
     protected void Update()
     {
@@ -128,11 +153,18 @@ public class Bolt: MonoBehaviour
     private void OnEnable()
     {
         currTime = 0;
+        hitBox.gameObject.SetActive(true);
     }
 
     // 삭제가 없으므로
     private void OnDisable()
     {
+        // fix: 시간이 완료된 경우 마지막 노드로 클리어 필요
+        renderer.sprite = BoltsPool.Instance.GetSprite("circle");
+        renderer.color = Color.white;
+        transform.localScale = new Vector3(0.2f, 0.2f, 1);
+        
+        
         machine.Clear();
         effects.Clear();
         animHandler.Play("None");
@@ -141,6 +173,7 @@ public class Bolt: MonoBehaviour
         trailRenderer.time = 0.2f;
         
         isStarted = false;
+        
     }
 
     protected virtual void FixedUpdate()

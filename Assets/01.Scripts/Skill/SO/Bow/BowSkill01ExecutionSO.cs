@@ -48,4 +48,16 @@ public class BowSkill01ExecutionSO : SkillExecutionSO
 
         DebugDrawUtil.DrawBox(center, size, angle, Color.red, 0.5f);
     }
+
+    public BowSkill01ExecutionSO Clone()
+    {
+        BowSkill01ExecutionSO clone = CreateInstance<BowSkill01ExecutionSO>();
+
+        clone.range = this.range;
+        clone.hitMask = this.hitMask;
+        clone.damageDelay = this.damageDelay;
+        clone.hitRadius = this.hitRadius;
+
+        return clone;
+    }
 }

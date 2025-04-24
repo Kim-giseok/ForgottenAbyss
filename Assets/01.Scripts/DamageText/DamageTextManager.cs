@@ -18,12 +18,12 @@ public class DamageTextManager : Singleton <DamageTextManager>
         Init();
     }
 
-    public void ShowDamage(Vector3 position, int damage)
+    public void ShowDamage(Vector3 position, int damage, bool isCritical)
     {
         GameObject obj = DamageTextPool.Instance.Get();
         obj.transform.position = position;
 
-        obj.GetComponent<DamageText>().Setup(damage);
+        obj.GetComponent<DamageText>().Setup(damage, isCritical);
     }
 
     public void ShowDeath()
