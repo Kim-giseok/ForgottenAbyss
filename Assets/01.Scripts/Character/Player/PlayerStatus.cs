@@ -66,6 +66,9 @@ public class PlayerStatus : CharacterStatus
         stats[StatType.MaxEXP] = 0f; //초기 경험치
         stats[StatType.GOLD] = 0f; //초기 골드
         stats[StatType.SPEED] = 3f; //초기 골드
+        stats[StatType.CRITICAL] = 1f; //초기 크리티컬 확률
+        stats[StatType.CRITICAL_DAMAGE] = 1.2f; //초기 크리티컬 데미지 비율
+        stats[StatType.COOLDOWN_REDUCTION] = 1f; //초기 쿨타임 감소 비율
     }
 
     // 레벨별 스탯 증가량 초기화

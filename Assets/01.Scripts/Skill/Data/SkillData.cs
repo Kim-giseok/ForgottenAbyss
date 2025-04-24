@@ -16,6 +16,7 @@ public class SkillData
     public string Name;
     public string Description;
     public float CoolTime;
+    public int MpCost;
     public float DamageMultiplier;
     public string VisualSOName;
     public string ExecutionSOName;

@@ -94,6 +94,20 @@ public class SkillInstance
         }
     }
 
+    public int GetMpCost()
+    {
+        switch (sourceType)
+        {
+            case SkillSourceType.Weapon:
+                return data != null ? data.MpCost : 0;
+            case SkillSourceType.Memory:
+                return memorySO != null && memorySO.skillItem != null
+                    ? memorySO.skillItem.MpCost : 0;
+            default:
+                return 0;
+        }
+    }
+
     // 여기에 쿨감 적용
     public float GetCooldown()
     {
@@ -106,15 +120,13 @@ public class SkillInstance
             baseCd = memorySO.skillItem.coolTime;
 
         var status = GameManager.Instance.player.GetComponent<PlayerStatus>();
-        float coolReductionPercent = 0f;
 
-        if (status != null)
-        {
-            //coolReductionPercent = status.GetStat(StatType.CooldownReduction);  < 쿨타임 감소 적용시
-        }
+        float coolReductionPercent = status != null
+            ? status.GetStat(StatType.COOLDOWN_REDUCTION)  // < 쿨감 적용시
+            : 0f;
 
         // 쿨감 비율 계산(제한 최대 50%)
-        float coolReductionRatio = Mathf.Clamp(coolReductionPercent / 100f, 0f, 0.5f);
+        float coolReductionRatio = Mathf.Clamp(coolReductionPercent, 0f, 0.5f);
 
         // 최종 쿨타임 계산 : 기본 쿨타임 * (1 - 쿨감 비율)
         float finalCd = baseCd * (1f - coolReductionRatio);

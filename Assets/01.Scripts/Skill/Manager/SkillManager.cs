@@ -90,6 +90,9 @@ public class SkillManager : Singleton<SkillManager>
         if (IsOnCooldown(skillId)) return;
 
         var instance = skillInstances[skillId];
+
+        if(!IsEnoughCost(instance)) return;
+
         StartCoroutine(ExecuteSkill(instance, spawnPoint));
         UpdateCooldown(instance);
     }
@@ -113,6 +116,22 @@ public class SkillManager : Singleton<SkillManager>
     private void UpdateCooldown(SkillInstance instance)
     {
         nextAvailableTimes[instance.skillId] = Time.time + instance.GetCooldown();
+    }
+
+    private bool IsEnoughCost(SkillInstance instance)
+    {
+        int cost = instance.GetMpCost();
+
+        var playerStatus = GameManager.Instance.player.GetComponent<PlayerStatus>();
+        if (playerStatus == null) return false;
+
+        if (playerStatus.stats[StatType.CurrentMP] >= cost)
+        {
+            playerStatus.stats[StatType.CurrentMP] -= cost;
+            return true;
+        }
+
+        return false;
     }
 
     public bool IsMemorySkill(int skillId)

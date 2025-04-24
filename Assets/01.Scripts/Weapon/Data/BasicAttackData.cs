@@ -32,8 +32,8 @@ public class BasicAttackData
         else
         {
             result.baseAttack = status.GetStat(StatType.ATK);
-            //result.critChance = status.GetStat(StatType.CritChance) / 100f;
-            //result.critDamageMultiplier = 1 + (status.GetStat(StatType.CritDamage) / 100f); < 추후 크리티컬 적용시
+            result.critChance = status.GetStat(StatType.CRITICAL);
+            result.critDamageMultiplier = status.GetStat(StatType.CRITICAL_DAMAGE);  // < 추후 크리티컬 적용시
         }
 
         result.weaponAttack = WeaponManager.Instance.GetCurrentWeaponAttack();
