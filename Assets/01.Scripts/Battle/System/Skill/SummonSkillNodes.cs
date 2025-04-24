@@ -35,7 +35,11 @@ public class DashAttack : Node
         
         if (status == AnimationStatus.Start)
         {
-            BoltsPool.Instance.CreateMelee(controller.transform, 10f, Vector2.zero, Vector2.one * 2);
+            BoltsPool.Instance.CreateMelee(controller.transform)
+                .SetLocalPos(Vector2.zero)
+                .SetDamage(20)
+                .SetSize(2f)
+                .Fire();
             return;
         }
         
@@ -64,7 +68,14 @@ public class Explosion : Node
 
     public override void OnAnimatedEvent(bool isFire)
     {
-        if (isFire) BoltsPool.Instance.CreateMelee(controller.transform, 10f, Vector2.zero, Vector2.one * 2);
+        if (isFire)
+        {
+            BoltsPool.Instance.CreateMelee(controller.transform)
+                .SetLocalPos(Vector2.zero)
+                .SetDamage(20)
+                .SetSize(2f)
+                .Fire();
+        }
         else BoltsPool.Instance.DisableMelee(controller.transform);
     }
 
@@ -133,7 +144,11 @@ public class ComboDashAttack : Node
         
         if (status == AnimationStatus.Start)
         {
-            BoltsPool.Instance.CreateMelee(controller.transform, 10f, Vector2.zero, Vector2.one * 2);
+            BoltsPool.Instance.CreateMelee(controller.transform)
+                .SetLocalPos(Vector2.zero)
+                .SetDamage(20)
+                .SetSize(2f)
+                .Fire();
         }
         
         if(status == AnimationStatus.End)

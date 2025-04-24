@@ -53,7 +53,7 @@ public class BoltsPool : MonoBehaviour // 단위 미사일
 
     // ReSharper disable Unity.PerformanceAnalysis
     // HitBox 자체 전달로 빌더 패턴 적용
-    public HitBox CreateMelee(Transform parent, float power, Vector2? startPos = null, Vector2? size = null)
+    public HitBox CreateMelee(Transform parent, float power = 10)
     {
         var currMelee = currMelees.Find(melee => melee.parent == parent);
         if (!currMelee.hitBox)
@@ -65,15 +65,13 @@ public class BoltsPool : MonoBehaviour // 단위 미사일
         
         HitBox hitBox = currMelee.hitBox;
         
-        hitBox.transform.localPosition = startPos ?? transform.right;
-        hitBox.transform.localScale = size ?? Vector3.one;
+        hitBox.transform.localPosition = Vector3.right;
+        hitBox.transform.localScale = Vector3.one;
         
         // bug: 충돌이 우선 발생하여 인식하지 못하는 현상 발생
         hitBox.SetDamage(power);
         hitBox.SetOwner(parent);
         
-        hitBox.gameObject.SetActive(true);
-
         return hitBox;
     }
 

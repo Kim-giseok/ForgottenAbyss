@@ -6,7 +6,7 @@ using UnityEngine;
 public class Enemies
 {
     // notice: enum을 추가하면 한칸씩 밀리는 현상 발생
-    public enum Enemy { Test, Agis, Archer, Ghost, GhostChild, Gunner, NightBone, SwordShadow, Wizard, MudEye, MudChildHand }
+    public enum Enemy { Test, Agis, Archer, Ghost, GhostChild, Gunner, NightBone, SwordShadow, Wizard, MudEye, MudChildHand, Bringer }
     public static Node Get(Enemy enemy) => behaviour[enemy];
 
     private static Dictionary<Enemy, Node> behaviour = new()
@@ -35,7 +35,8 @@ public class Enemies
         {
             Enemy.Ghost,
             new SelectorNode(
-                new SequenceNode(new HitNode(), new DieNode())
+                new SequenceNode(new HitNode(), new DieNode()),
+                new SequenceNode(new IdleNode(1), new PatrolMove(1))
             )
         },
         {
@@ -86,8 +87,8 @@ public class Enemies
             Enemy.Wizard,
             new SelectorNode(
                 new SequenceNode(new HitNode(), new DieNode()), 
-                    new SequenceNode(new TracingNode(), new StopNode(), new WizadRecursiveNode(), new IdleNode(3f)),
-                    new SequenceNode(new IdleNode(3), new HealNode())
+                    new SequenceNode( new StopNode(), new IdleNode(1.6f), new WizadRecursiveNode(), new IdleNode(1.6f)),
+                    new SequenceNode(new IdleNode(1.6f), new HealNode())
                 )
         },
         {
@@ -104,6 +105,14 @@ public class Enemies
                 new SequenceNode(new HitNode(), new DieNode()),
                 new SequenceNode(new MudAggroNode(), new MudCastingNode(), new MudAttackNode(), new MudIdleNode())
             )
+        },
+        {
+            Enemy.Bringer,
+            new SelectorNode(
+                new SequenceNode(new HitNode(), new DieNode()),
+                new SequenceNode(new TracingNode(), new StopNode(), new BringerAttackNode(), new IdleNode(1f)),
+                new SequenceNode(new IdleNode(1), new PatrolMove(1))
+                )
         }
     };
 }

@@ -68,8 +68,12 @@ public class RecursiveBolt : BoltNode
 {
     public override void Start()
     {
-        bolt.animHandler.Play("Heal");
-        bolt.transform.position += (new Vector3(bolt.direction.x, bolt.direction.y, 0));
+        bolt.animHandler.Play("Soul");
+        
+        // 플레이어 위치 의존적인 부분 처리 필요
+        // bolt.transform.position += (new Vector3(bolt.direction.x, bolt.direction.y, 0));
+        Vector2 direction = (GameManager.Instance.player.transform.position - bolt.transform.position).normalized;
+        bolt.transform.position += (new Vector3(direction.x, direction.y, 0));
     }
 
     public override void Update() { if (currTime >= 0.2f) Next(); }

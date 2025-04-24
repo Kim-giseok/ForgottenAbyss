@@ -24,10 +24,13 @@ public class HitNode : Node
     
     public override void Start()
     {
+
         // do: 시퀀스를 통행 애초에 진입이 안되도록 노드 지정
         if (controller is not EnemyController eController) return;
         if (!eController.statusHandler.isHit) { SetStatus(Status.Fail); return; }
         if(eController.health <= 0) { SetStatus(Status.Success); return; }
+
+        Debug.Log(1);
      
         // 타격 받은 쪽으로 회전
         // Vector2 direction = (controller.agent.player.transform.position - controller.transform.position).normalized;
@@ -39,6 +42,7 @@ public class HitNode : Node
 
         // 애니메이션이 바로 바뀌어 꺼지는 현상과 충돌
         if (eController.statusHandler.isIgnoreHitAction && currTime >= 0.2f) { SetStatus(Status.Fail); }
+        
     }
 
     public override void OnAnimated(AnimationStatus status, AnimatorStateInfo animInfo)

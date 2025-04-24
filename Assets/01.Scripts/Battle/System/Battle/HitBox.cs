@@ -22,17 +22,37 @@ public class HitBox : MonoBehaviour // 1회 공격 당의 캐싱이 필요할 �
         this.ownerLayer = owner.gameObject.layer;
         return this;
     }
+    
+    public HitBox SetSize(float size)
+    {
+        transform.localScale = new Vector3(size, size, 1f);
+        return this;
+    }
+
+    public HitBox SetSize(float x, float y)
+    {
+        transform.localScale = new Vector3(x, y, 1f);
+        return this;
+    }
 
     public HitBox SetLocalPos(Vector2 position)
     {
-        this.transform.localPosition = position;
+        transform.localPosition = position;
         return this;
     }
     
-    public void SetKnockBack(float knockBackForce)
+    public HitBox SetKnockBack(float knockBackForce)
     {
         isKnockBack = true;
         this.knockBackForce = knockBackForce;
+
+        return this;
+    }
+
+    public HitBox Fire()
+    {
+        gameObject.SetActive(true);
+        return this;
     }
 
     private void Awake()

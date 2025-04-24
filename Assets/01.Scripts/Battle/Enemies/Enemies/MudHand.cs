@@ -69,7 +69,7 @@ public class MudAttackNode : Node
             Collider2D[] nearColiders = Physics2D.OverlapCircleAll(controller.transform.position, 1f, LayerMask.GetMask("Ground"));
             foreach (var nearCollider in nearColiders) { Physics2D.IgnoreCollision(controller.collider, nearCollider, true); }
 
-            BoltsPool.Instance.CreateMelee(controller.transform, 40f);
+            BoltsPool.Instance.CreateMelee(controller.transform, 40f).Fire();
             controller.rigidbody.AddForce(controller.agent.GetDirection() * 4f, ForceMode2D.Impulse);
             return;
         }

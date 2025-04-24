@@ -18,7 +18,7 @@ public class MeleeAttack : Node
         if (isFire)
         {
             // 데미지나 사이즈등은 추상화로 접급
-            BoltsPool.Instance.CreateMelee(controller.transform, controller.combatHandler.power);
+            BoltsPool.Instance.CreateMelee(controller.transform, controller.combatHandler.power).Fire();
         }
         else
         {

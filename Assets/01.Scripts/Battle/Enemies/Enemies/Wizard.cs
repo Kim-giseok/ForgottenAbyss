@@ -39,10 +39,8 @@ public class WizadRecursiveNode : Node
         if (isFire)
         {
             BoltsPool.Instance.Create(controller.transform, Bolts.Type.Recursive)
-            .SetDamage(10)
-            .SetDegree(controller.agent.GetDegree())
-            .SetDuration(1f)
-            .Fire();
+                .SetSize(0.6f).SetDamage(10).SetSpeed(4).SetDegree(controller.agent.GetDegree())
+                .SetEffect(Bolts.EffectType.Penetration).SetDuration(1.6f).Fire();
         }
     }
     
