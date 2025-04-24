@@ -37,4 +37,28 @@ public class SkillVisualSO : ScriptableObject
     public float effectDelay;
 
     public bool isTogether;
+
+    public SkillVisualSO Clone()
+    {
+        // 새로운 인스턴스 생성
+        SkillVisualSO clone = CreateInstance<SkillVisualSO>();
+
+        clone.skillId = this.skillId;
+        clone.executionSO = this.executionSO;
+        clone.skillIcon = this.skillIcon;
+        clone.skillEffectPrefab = this.skillEffectPrefab;
+        clone.skillSound = this.skillSound;
+        clone.animationName = this.animationName;
+        clone.animationSpeed = this.animationSpeed;
+        clone.resetTime = this.resetTime;
+        clone.animPlayTime = this.animPlayTime;
+        clone.effectKey = this.effectKey;
+        clone.useEffectOffset = this.useEffectOffset;
+        clone.effectXOffset = this.effectXOffset;
+        clone.effectYOffset = this.effectYOffset;
+        clone.effectDelay = this.effectDelay;
+        clone.isTogether = this.isTogether;
+
+        return clone;
+    }
 }

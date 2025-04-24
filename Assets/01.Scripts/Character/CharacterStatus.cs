@@ -14,7 +14,10 @@ public enum StatType
     EXP,
     MaxEXP,
     GOLD,
-    SPEED
+    SPEED,
+    CRITICAL,
+    CRITICAL_DAMAGE,
+    COOLDOWN_REDUCTION
 }
 public class CharacterStatus : MonoBehaviour
 {

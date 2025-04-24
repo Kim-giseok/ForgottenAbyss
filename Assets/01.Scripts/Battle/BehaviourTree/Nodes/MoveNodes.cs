@@ -124,14 +124,14 @@ public class MovePlatformNode : Node
 {
     public override void Start()
     {
-        if (NavSurface.Instance.targetPlatforms[controller.agent.target] == NavSurface.Instance.targetPlatforms[controller.gameObject])
+        if (NavSurface.Instance.GetPlatformId(controller.agent.target) == NavSurface.Instance.GetPlatformId(controller.gameObject))
         {
             // 플랫폼 이동과 추적 간의 순서는 좀 더 생각해보기
             SetStatus(Status.Success);
             return;
         }
         
-        var targetPlatform = NavSurface.Instance.platforms.Find(platform => platform.id == NavSurface.Instance.targetPlatforms[controller.agent.target]);
+        var targetPlatform = NavSurface.Instance.platforms.Find(platform => platform.id == NavSurface.Instance.GetPlatformId(controller.agent.target));
         Vector2 destination = targetPlatform.centerCell.WorldPos;
         context.Set("destination", new Vector3(destination.x, destination.y, 0));
         

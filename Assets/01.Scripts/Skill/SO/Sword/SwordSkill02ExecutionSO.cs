@@ -92,4 +92,19 @@ public class SwordSkill02ExecutionSO : SkillExecutionSO
         CameraShake.Instance.Shake(0.2f, 0.3f);
         DebugDrawUtil.DrawBox(center, size, angle, Color.red, 0.5f);
     }
+
+    public SwordSkill02ExecutionSO Clone()
+    {
+        SwordSkill02ExecutionSO clone = CreateInstance<SwordSkill02ExecutionSO>();
+
+        clone.dashDistance = this.dashDistance;
+        clone.dashDuration = this.dashDuration;
+        clone.effectKey = this.effectKey;
+        clone.damageDelay = this.damageDelay;
+        clone.hitRadius = this.hitRadius;
+        clone.targetLayer = this.targetLayer;
+        clone.obstacleLayer = this.obstacleLayer;
+
+        return clone;
+    }
 }

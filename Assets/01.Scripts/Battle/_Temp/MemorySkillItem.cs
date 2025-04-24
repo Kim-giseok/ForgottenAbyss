@@ -6,6 +6,7 @@ public class MemorySkillItem: Item
     public SummonSkillManager.Skill skillName;
     public int memoryPieceId;
     public float coolTime;
+    public int MpCost;
     public bool isRide;
 
     public override bool Use()

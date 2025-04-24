@@ -6,7 +6,7 @@ using UnityEngine;
 public class Enemies
 {
     // notice: enum을 추가하면 한칸씩 밀리는 현상 발생
-    public enum Enemy { Test, Agis, Archer, Ghost, GhostChild, Gunner, NightBone, SwordShadow, Wizard, MudEye, MudChildHand }
+    public enum Enemy { Test, Agis, Archer, Ghost, GhostChild, Gunner, NightBone, SwordShadow, Wizard, MudEye, MudHand, Bringer }
     public static Node Get(Enemy enemy) => behaviour[enemy];
 
     private static Dictionary<Enemy, Node> behaviour = new()
@@ -35,7 +35,8 @@ public class Enemies
         {
             Enemy.Ghost,
             new SelectorNode(
-                new SequenceNode(new HitNode(), new DieNode())
+                new SequenceNode(new HitNode(), new DieNode()),
+                new SequenceNode(new IdleNode(1), new PatrolMove(1))
             )
         },
         {
@@ -49,8 +50,8 @@ public class Enemies
                     {
                     //     // 스킬을 사용한 경우 마나와 쿨타임 정보 가지는 방식 필요
                     //     // 연속 공격이 왜 안됨(애님메이션 관련 문제)
-                    (0.9f, new SequenceNode( RangeAttack.Piercing, new IdleNode(0.05f), RangeAttack.Piercing)),
-                    (1f, RangeAttack.Piercing)
+                    (0.9f, new SequenceNode( new GunnerRangeAttack(), new IdleNode(0.05f), new GunnerRangeAttack())),
+                    (1f, new GunnerRangeAttack())
                     }),
                     new CoolTimeNode(0.5f)), 
                 new SequenceNode(new IdleNode(1), new PatrolMove(1)))
@@ -86,23 +87,32 @@ public class Enemies
             Enemy.Wizard,
             new SelectorNode(
                 new SequenceNode(new HitNode(), new DieNode()), 
-                    new SequenceNode(new TracingNode(), new StopNode(), new WizadRecursiveNode(), new IdleNode(3f)),
-                    new SequenceNode(new IdleNode(3), new HealNode())
+                    new SequenceNode( new StopNode(), new IdleNode(1.6f), new WizadRecursiveNode(), new IdleNode(1.6f)),
+                    new SequenceNode(new IdleNode(1.6f), new HealNode())
                 )
         },
         {
             Enemy.MudEye,
             new SelectorNode(
                 new SequenceNode(new HitNode(), new DieNode()),
-                new SequenceNode(new IdleNode(1), new MudControlnode())
+                // new SequenceNode(new MudWarpNode(), new MudWarpNode(), new MudWarpNode())
+                new SequenceNode(new IdleNode(1), new MudSpawnNode())
                 )
         },
         {
-            Enemy.MudChildHand,
+            Enemy.MudHand,
             new SelectorNode(
                 new SequenceNode(new HitNode(), new DieNode()),
-                new SequenceNode(new MudHandIdleNode())
+                new SequenceNode(new MudAggroNode(), new MudCastingNode(), new MudAttackNode(), new MudIdleNode())
             )
+        },
+        {
+            Enemy.Bringer,
+            new SelectorNode(
+                new SequenceNode(new HitNode(), new DieNode()),
+                new SequenceNode(new TracingNode(), new StopNode(), new BringerAttackNode(), new IdleNode(1f)),
+                new SequenceNode(new IdleNode(1), new PatrolMove(1))
+                )
         }
     };
 }

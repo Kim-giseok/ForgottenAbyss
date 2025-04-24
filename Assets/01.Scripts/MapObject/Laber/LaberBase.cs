@@ -13,7 +13,7 @@ public class LaberBase : MonoBehaviour
         if (isSwitched) return;
         laberAnim?.SetFloat("Active", 1);
         foreach (var targetMachine in targetMachines)
-            targetMachine.Active();
+            targetMachine.Active(this);
         isSwitched = true;
     }
 

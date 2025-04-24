@@ -27,7 +27,10 @@ public class Platform
 {
     public int id = -1;
     public List<Cell> cells = new();
+    
+    public Cell startCell => cells[0];
     public Cell centerCell => cells[cells.Count / 2];
+    public Cell endCell => cells[^1];
 }
 
 public class NavSurface : MonoBehaviour
@@ -56,8 +59,13 @@ public class NavSurface : MonoBehaviour
         cells.Clear();
         ScanArea();
     }
+    
+    public Platform GetPlatform(GameObject target)
+    {
+        return platforms.Find(platform => platform.id == GetPlatformId(target));
+    }
 
-    public int GetTarget(GameObject target)
+    public int GetPlatformId(GameObject target)
     {
         return targetPlatforms[target];
     }

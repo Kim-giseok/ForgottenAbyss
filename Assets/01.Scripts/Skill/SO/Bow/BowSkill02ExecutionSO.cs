@@ -80,4 +80,17 @@ public class BowSkill02ExecutionSO : SkillExecutionSO
 
         return result;
     }
+
+    public BowSkill02ExecutionSO Clone()
+    {
+        BowSkill02ExecutionSO clone = CreateInstance<BowSkill02ExecutionSO>();
+
+        clone.skillEffectKey = this.skillEffectKey;
+        clone.shotCount = this.shotCount;
+        clone.angleBetweenShots = this.angleBetweenShots;
+        clone.delayBetweenShots = this.delayBetweenShots;
+        clone.targetLayer = this.targetLayer;
+
+        return clone;
+    }
 }

@@ -11,12 +11,40 @@ public class PlayerStatus : CharacterStatus
     // 레벨별 스탯 증가량
     private Dictionary<int, Dictionary<StatType, float>> levelStats = new Dictionary<int, Dictionary<StatType, float>>();
 
+    // 스탯 포인트 관련 변수
+    [SerializeField] private int availableStatPoints; // 사용 가능한 스탯 포인트
+    [SerializeField] private int statPointsPerLevel; // 레벨업 시 획득하는 스탯 포인트
+
+    // 스탯별 투자 가능 최대치
+    private Dictionary<StatType, int> maxStatInvestment = new Dictionary<StatType, int>();
+    // 스탯별 투자된 포인트
+    private Dictionary<StatType, int> investedStatPoints = new Dictionary<StatType, int>();
+    // 스탯 포인트당 스탯 증가량
+    private Dictionary<StatType, float> statPointIncrease = new Dictionary<StatType, float>();
+
     private int maxLevel = 999;
+
+    // 스탯 포인트 변경 이벤트
+    public delegate void StatPointsChangedHandler(int points);
+    public event StatPointsChangedHandler OnStatPointsChanged;
+
+    private StatType[] investableStats = new StatType[]
+    {
+        StatType.ATK,
+        StatType.CRITICAL,
+        StatType.MaxHP,
+        StatType.DEF,
+        StatType.SPEED
+    };
+
+    [SerializeField] private GameObject[] StatButtons; // 스탯을 찍는 버튼들
+    
     private void Awake()
     {
         InitializeStats();
         InitializeLevelStats();
         InitializeExpRequired();
+        InitializeStatPointSystem();
     }
 
     private void Start()
@@ -52,6 +80,28 @@ public class PlayerStatus : CharacterStatus
         }
 
         TestExp();
+
+        // 테스트용 스탯 포인트 투자
+        if (Input.GetKeyDown(KeyCode.Q)) // ATK에 스탯 포인트 투자
+        {
+            InvestStatPoint(StatType.ATK);
+        }
+        if (Input.GetKeyDown(KeyCode.W)) // CRITICAL에 스탯 포인트 투자
+        {
+            InvestStatPoint(StatType.CRITICAL);
+        }
+        if (Input.GetKeyDown(KeyCode.E)) // MaxHP에 스탯 포인트 투자
+        {
+            InvestStatPoint(StatType.MaxHP);
+        }
+        if (Input.GetKeyDown(KeyCode.R)) // DEF에 스탯 포인트 투자
+        {
+            InvestStatPoint(StatType.DEF);
+        }
+        if (Input.GetKeyDown(KeyCode.T)) // SPEED에 스탯 포인트 투자
+        {
+            InvestStatPoint(StatType.SPEED);
+        }
     }
     private void InitializeStats()
     {
@@ -66,6 +116,9 @@ public class PlayerStatus : CharacterStatus
         stats[StatType.MaxEXP] = 0f; //초기 경험치
         stats[StatType.GOLD] = 0f; //초기 골드
         stats[StatType.SPEED] = 3f; //초기 골드
+        stats[StatType.CRITICAL] = 50f; //초기 크리티컬 확률
+        stats[StatType.CRITICAL_DAMAGE] = 150f; //초기 크리티컬 데미지 비율
+        stats[StatType.COOLDOWN_REDUCTION] = 40f; //초기 쿨타임 감소 비율
     }
 
     // 레벨별 스탯 증가량 초기화
@@ -97,6 +150,50 @@ public class PlayerStatus : CharacterStatus
 
         int currentLevel = (int)stats[StatType.LEVEL];
         stats[StatType.MaxEXP] = expRequiredForLevel[currentLevel];
+    }
+    // 스탯 포인트 시스템 초기화
+    private void InitializeStatPointSystem()
+    {
+        // 각 스탯별 투자된 포인트 초기화
+        foreach (StatType statType in investableStats)
+        {
+            investedStatPoints[statType] = 0;
+        }
+
+        // 스탯 포인트당 증가량 설정
+        statPointIncrease[StatType.ATK] = 1f;       // 공격력 증가량
+        statPointIncrease[StatType.CRITICAL] = 1f;  // 치명타 확률 증가량
+        statPointIncrease[StatType.MaxHP] = 10f;    // 최대 체력 증가량
+        statPointIncrease[StatType.DEF] = 1f;       // 방어력 증가량
+        statPointIncrease[StatType.SPEED] = 0.2f;   // 이동속도 증가량
+
+        // 최대 투자 가능 포인트 설정
+        maxStatInvestment[StatType.ATK] = 10;      // 최대 ATK 투자 포인트
+        maxStatInvestment[StatType.CRITICAL] = 10;  // 최대 CRITICAL 투자 포인트 (최대 50% 추가)
+        maxStatInvestment[StatType.MaxHP] = 10;    // 최대 MaxHP 투자 포인트
+        maxStatInvestment[StatType.DEF] = 10;      // 최대 DEF 투자 포인트
+        maxStatInvestment[StatType.SPEED] = 10;     // 최대 SPEED 투자 포인트
+    }
+
+    // 스탯 이름 반환 (UI 표시용)
+    //public string GetStatName(StatType statType)
+    //{
+    //    if (statNames.ContainsKey(statType))
+    //    {
+    //        return statNames[statType];
+    //    }
+    //    // 기본값으로 스탯 타입 이름 사용
+    //    return statType.ToString();
+    //}
+
+    // 스탯 포인트 투자 시 증가량 반환
+    public float GetStatIncreasePerPoint(StatType statType)
+    {
+        if (statPointIncrease.ContainsKey(statType))
+        {
+            return statPointIncrease[statType];
+        }
+        return 0f;
     }
 
     // 경험치 획득 메서드
@@ -143,6 +240,11 @@ public class PlayerStatus : CharacterStatus
         // 레벨에 따른 스탯 증가
         ApplyLevelStats(newLevel);
 
+        // 스탯 포인트 추가
+        AddStatPoints(statPointsPerLevel);
+
+        Debug.Log($"투자 가능 포인트: {availableStatPoints}");
+
         stats[StatType.CurrentHP] = stats[StatType.MaxHP];
         stats[StatType.CurrentMP] = stats[StatType.MaxMP];
 
@@ -174,6 +276,128 @@ public class PlayerStatus : CharacterStatus
         }
     }
 
+    // 스탯 포인트 추가    
+    public void AddStatPoints(int points)
+    {
+        availableStatPoints += points;
+        OnStatPointsChanged?.Invoke(availableStatPoints);
+    }
+
+    // 스탯 포인트 투자
+    public bool InvestStatPoint(StatType statType)
+    {
+        // 투자 가능한 스탯인지 확인
+        bool isInvestable = false;
+        foreach (StatType type in investableStats)
+        {
+            if (type == statType)
+            {
+                isInvestable = true;
+                break;
+            }
+        }
+               
+        // 사용 가능한 스탯 포인트가 있는지 확인
+        if (availableStatPoints <= 0)
+        {
+            Debug.LogWarning("사용 가능한 스탯 포인트가 없습니다.");
+            return false;
+        }
+
+        // 최대 투자 가능 포인트를 초과하는지 확인
+        if (investedStatPoints[statType] >= maxStatInvestment[statType])
+        {
+            Debug.LogWarning($"{statType}에 더 이상 스탯 포인트를 투자할 수 없습니다. (최대: {maxStatInvestment[statType]})");
+            return false;
+        }
+
+        // 스탯 포인트 사용
+        availableStatPoints--;
+        investedStatPoints[statType]++;
+
+        // 스탯 증가 적용
+        float newValue = stats[statType] + statPointIncrease[statType];
+        SetStat(statType, newValue);
+
+        // 현재 체력도 함께 증가 (MaxHP 포인트 투자시)
+        if (statType == StatType.MaxHP)
+        {
+            float currentHP = stats[StatType.CurrentHP];
+            float increase = statPointIncrease[StatType.MaxHP];
+            SetStat(StatType.CurrentHP, currentHP + increase);
+        }
+
+        // 스탯 포인트 변경 이벤트 발생
+        OnStatPointsChanged?.Invoke(availableStatPoints);
+
+        Debug.Log($"{statType}에 스탯 포인트를 투자했습니다. ({statType}: +{statPointIncrease[statType]}, 총 투자: {investedStatPoints[statType]}/{maxStatInvestment[statType]})");
+        Debug.Log($"남은 스탯 포인트: {availableStatPoints}");
+
+        return true;
+    }
+
+    // 스탯 포인트 리셋 (모든 투자 취소)
+    public void ResetStatPoints()
+    {
+        int totalPoints = 0;
+
+        // 각 스탯 원래 값으로 복원 및 투자 포인트 회수
+        foreach (StatType statType in investableStats)
+        {
+            if (investedStatPoints.ContainsKey(statType))
+            {
+                // 투자된 포인트 회수
+                int pointsInvested = investedStatPoints[statType];
+                totalPoints += pointsInvested;
+
+                // 원래 스탯 값 계산 (현재 값 - 투자로 인한 증가량)
+                float originalValue = stats[statType] - (pointsInvested * statPointIncrease[statType]);
+                SetStat(statType, originalValue);
+
+                // 투자된 포인트 초기화
+                investedStatPoints[statType] = 0;
+            }
+        }
+
+        // MaxHP 변경 시 CurrentHP도 조정
+        if (investedStatPoints.ContainsKey(StatType.MaxHP))
+        {
+            float currentHPRatio = stats[StatType.CurrentHP] / stats[StatType.MaxHP];
+            SetStat(StatType.CurrentHP, stats[StatType.MaxHP] * currentHPRatio);
+        }
+
+        // 사용 가능한 스탯 포인트 복원
+        availableStatPoints += totalPoints;
+        OnStatPointsChanged?.Invoke(availableStatPoints);
+
+        Debug.Log($"모든 스탯 포인트가 초기화되었습니다. (사용 가능한 포인트: {availableStatPoints})");
+    }
+
+    // 현재 사용 가능한 스탯 포인트를 반환
+    public int GetAvailableStatPoints()
+    {
+        return availableStatPoints;
+    }
+
+    // 특정 스탯에 투자된 포인트를 반환
+    public int GetInvestedStatPoints(StatType statType)
+    {
+        if (investedStatPoints.ContainsKey(statType))
+        {
+            return investedStatPoints[statType];
+        }
+        return 0;
+    }
+
+    // 특정 스탯의 최대 투자 가능 포인트를 반환
+    public int GetMaxStatInvestment(StatType statType)
+    {
+        if (maxStatInvestment.ContainsKey(statType))
+        {
+            return maxStatInvestment[statType];
+        }
+        return 0;
+    }
     private void GetGold() //골드 획득 
     {
 

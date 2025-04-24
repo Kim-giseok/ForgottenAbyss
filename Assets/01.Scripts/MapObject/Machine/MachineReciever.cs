@@ -7,9 +7,9 @@ public class MachineReciever : Machine
     [SerializeField] GameObject[] recieveItem;
     [SerializeField] int recieveNum;
 
-    public override void Active()
+    public override void Active(LaberBase rootlaber)
     {
-        base.Active();
+        base.Active(rootlaber);
         ActionAfterAnimation(RecieveObject);
     }
 

@@ -75,6 +75,10 @@ public class BTMachine
     public void Define(Node newNode)    
     {
         rootNode = new RootNode(newNode);
+    }
+
+    public void Start()
+    {
         SetCurrentNode(rootNode);
     }
 

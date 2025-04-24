@@ -177,7 +177,7 @@ public class HomingArrowEffect : MonoBehaviour
             skillExecutionSO.ExecuteSkill(caster, target.gameObject, skillData);
 
             // 카메라 쉐이크
-            //CameraShake.Instance.Shake(0.1f, 0.2f);
+            CameraShake.Instance.Shake(0.1f, 0.2f);
         }
         StartCoroutine(DisableAfterDelay(stayDuration));
     }

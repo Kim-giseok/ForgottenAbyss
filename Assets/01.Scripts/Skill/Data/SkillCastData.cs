@@ -8,6 +8,8 @@ public class SkillCastData
     public float baseAttack;
     public float weaponAttack;
     public float skillMultiplier;
+    public float critChance;
+    public float critDamageMultiplier;
 
     public Vector3 position => caster.transform.position;
 
@@ -24,11 +26,11 @@ public class SkillCastData
         {
             Debug.Log("status 가 널입니다.");
         }
-
-
-        if (status != null)
+        else
         {
             result.baseAttack = status.GetStat(StatType.ATK);
+            result.critChance = status.GetStat(StatType.CRITICAL) / 100f;
+            result.critDamageMultiplier = status.GetStat(StatType.CRITICAL_DAMAGE) / 100f;  // << 추후 크리티컬 적용시
         }
             
 
@@ -38,7 +40,7 @@ public class SkillCastData
         return result;
     }
 
-    public float CalculateDamage()
+    public DamageResult CalculateDamage()
     {
         return DamageCalculator.CalculateDamage(this);
     }

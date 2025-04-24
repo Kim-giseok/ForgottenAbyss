@@ -17,13 +17,21 @@ public class TalkSystem : MonoBehaviour
 
     private void Awake()
     {
-        playerInput = GameObject.FindWithTag("Player").GetComponent<PlayerInput>();
+        playerInput = GameManager.Instance.player.GetComponent<PlayerInput>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
     }
 
+    public void Ondialogue(string sentence)
+    {
+        if (!gameObject.activeSelf) gameObject.SetActive(true);
+            NpcText.text = sentence;
+            spriteRenderer.size = new Vector2(NpcText.preferredWidth + 1.0f, NpcText.preferredHeight + 0.5f);
+    }
 
     public void Ondialogue(string[] lines, Transform talkPoint)
     {
+        if (!gameObject.activeSelf) gameObject.SetActive(true);
+
         transform.position = talkPoint.position;
         sentences = new Queue<string>();
         sentences.Clear();
@@ -47,7 +55,7 @@ public class TalkSystem : MonoBehaviour
             yield return new WaitForSeconds(2f);
             
         }
-        Destroy(gameObject);
+        gameObject.SetActive(false);
         playerInput.enabled = true;
     }
 }

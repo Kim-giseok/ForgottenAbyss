@@ -23,8 +23,30 @@ public class SummonController: EnemyBaseController
     public Rigidbody2D cRigidbody {get; private set;}
     private Collider2D cCollider;
     private SpriteRenderer cRenderer;
+
+    public float degree;
     public Vector2 direction {get; private set;}
     
+    public void SecDirection(Vector2 direction) => this.direction = direction;
+    
+    public SummonController SetCastingDirection(Vector2 direction)
+    {
+        this.castingDirection = direction;
+        return this;
+    }
+
+    public SummonController SetPosition(Vector2 position)
+    {
+        this.transform.position = position;
+        return this;
+    }
+
+    public SummonController Fire()
+    {
+        machine.Start();
+        return this;
+    }
+
     // ReSharper disable Unity.PerformanceAnalysis
     public void SetCaster(Transform currCaster ,bool isAttached = false)
     {
@@ -98,7 +120,7 @@ public class SummonController: EnemyBaseController
     
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.V)) { machine.currNode.OnPressed(); }
+        if (Input.GetKeyDown(KeyCode.V)) { machine.currNode.OnPressed(); } // 임시 등록
         if (isCasterAttached) { caster.transform.position = transform.position; }
     }
 
