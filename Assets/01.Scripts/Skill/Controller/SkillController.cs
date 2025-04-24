@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.XR;
 using UnityEngine.SceneManagement;
 
 public class SkillController : Singleton<SkillController>
@@ -31,6 +32,51 @@ public class SkillController : Singleton<SkillController>
         {
             Destroy(gameObject);
             return;
+        }
+    }
+
+    private void Start()
+    {
+        Initialized();
+    }
+
+    private void Initialized()
+    {
+        var weaponManager = WeaponManager.Instance;
+        var skillManager = SkillManager.Instance;
+
+        var weaponSO = weaponManager.GetCurrentWeaponSO();
+        var weaponData = weaponManager.GetCurrentWeaponData();
+
+        if (weaponSO == null || weaponData == null) return;
+
+        switch (weaponData.Type)
+        {
+            case WeaponType.Sword:
+                var combo = GetComponent<ComboAttack>();
+                combatSkill = new CombatInstance(combo, weaponSO.comboAttackData);
+                break;
+
+            case WeaponType.Bow:
+                var ranged = GetComponent<RangedAttack>();
+                combatSkill = new CombatInstance(ranged, weaponSO.rangedAttackData);
+                break;
+        }
+
+        Debug.Log($"[Combat] 무기 타입: {weaponData.Type}, 연결 완료");
+
+        if (skillManager != null)
+        {
+            skill01 = skillManager.GetSkillInstance(weaponData.Skill1Id);
+            skill02 = skillManager.GetSkillInstance(weaponData.Skill2Id);
+
+            if (skillManager.currentMemoryPiece != null)
+            {
+                var memoryId = skillManager.currentMemoryPiece.currentMemoryPieceId;
+                memorySkill = skillManager.GetSkillInstance(memoryId);
+            }
+
+            Debug.Log("[SkillController] 스킬 연결 완료");
         }
     }
 

@@ -165,6 +165,9 @@ public class WeaponManager : Singleton<WeaponManager>
             return;
         }
 
+        currentMemorySO = memorySO;
+        currentMemoryData = DataManager.Instance.GetMemoryPieceData(memorySO.currentMemoryPieceId);
+
         var memory = new SkillInstance(memorySO);
         memorySkillInstance = memory;
 

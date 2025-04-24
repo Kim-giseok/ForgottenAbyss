@@ -6,8 +6,9 @@ using UnityEngine;
 public class SkillManager : Singleton<SkillManager>
 {
     private Dictionary<int, float> nextAvailableTimes = new();
-    private Dictionary<int, SkillInstance> skillInstances = new();
-    private MemoryPieceSO currentMemoryPiece;
+    public Dictionary<int, SkillInstance> skillInstances = new();
+
+    public MemoryPieceSO currentMemoryPiece;
 
     public SkillUI skillUI;
 
@@ -71,6 +72,7 @@ public class SkillManager : Singleton<SkillManager>
         if (controller != null)
         {
             controller.memorySkill = GetSkillInstance(memoryId);
+            Debug.Log($"[MemorySkill] 등록 완료: {controller.memorySkill.memorySO.displayName}");
         }
     }
 
