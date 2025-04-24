@@ -58,6 +58,6 @@ public class Shop : MonoBehaviour, IInteractable
         shopUI.SetActive(false);
         playerInput.enabled = true;
 
-        UIManager.Instance?.inventoryUI?.Close();
+        UIManager.Instance?.CloseInventory();
     }
 }

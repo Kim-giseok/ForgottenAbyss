@@ -1,33 +1,59 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
-using UnityEngine.VFX;
+using UnityEngine.UI;
 
 public class InventoryUIManager : MonoBehaviour
 {
     public GameObject inventoryPanel;
+    [SerializeField] private Button closeButton;
     public List<InventorySlot> slots = new List<InventorySlot>();
+
+    private void Awake()
+    {
+        slots = GetComponentsInChildren<InventorySlot>(true).ToList();
+    }
+
+    private void Start()
+    {
+        inventoryPanel.SetActive(false); // 처음에 꺼두기
+        if (closeButton != null)
+            closeButton.onClick.AddListener(Close);
+    }
 
     private void OnEnable()
     {
-        Inventory.Instance.onItemChanged += UpdateUI;
-        UpdateUI();
+        if (Inventory.Instance != null)
+        {
+            Inventory.Instance.onItemChanged += UpdateUI;
+            UpdateUI();
+        }
     }
 
     private void OnDisable()
     {
-        Inventory.Instance.onItemChanged -= UpdateUI;
+        if (Inventory.Instance != null)
+            Inventory.Instance.onItemChanged -= UpdateUI;
     }
 
     public void ToggleInventory()
     {
         bool isOpen = inventoryPanel.activeSelf;
+        Debug.Log($"ToggleInventory 호출됨 → 현재 상태: {isOpen}");
+
         inventoryPanel.SetActive(!isOpen);
+        Debug.Log($"inventoryPanel.SetActive({!isOpen}) 실행됨");
 
         if (!isOpen)
         {
-            UpdateUI();// 열 때 갱신
+            UpdateUI();
+            Debug.Log("UpdateUI 호출됨");
         }
+        //bool isOpen = inventoryPanel.activeSelf;
+        //inventoryPanel.SetActive(!isOpen);
+
+        //if (!isOpen) UpdateUI();
     }
 
     public void UpdateUI()
@@ -40,5 +66,10 @@ public class InventoryUIManager : MonoBehaviour
             else
                 slots[i].ClearSlot();
         }
+    }
+
+    public void Close()
+    {
+        inventoryPanel.SetActive(false);
     }
 }
