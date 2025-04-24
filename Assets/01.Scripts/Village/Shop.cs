@@ -7,7 +7,6 @@ using UnityEngine.InputSystem;
 public class Shop : MonoBehaviour, IInteractable
 {
     public GameObject shopUI => UIManager.Instance.shopUI;
-    public GameObject shopText => UIManager.Instance.npcText;
     PlayerInput playerInput;
 
     private void Awake()
@@ -37,14 +36,14 @@ public class Shop : MonoBehaviour, IInteractable
     {
         if (collision != null && collision.CompareTag("Player"))
         {
-            shopText.SetActive(false);
+            UIManager.Instance.OffGuidUI();
         }
     }
 
     public void ActiveInteraction()
     {
         playerInput.enabled = false;
-        shopText.SetActive(false);
+        UIManager.Instance.OffGuidUI();
         shopUI.SetActive(true);
     }
 
