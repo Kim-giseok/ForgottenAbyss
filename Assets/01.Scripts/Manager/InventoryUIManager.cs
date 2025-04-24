@@ -8,68 +8,71 @@ public class InventoryUIManager : MonoBehaviour
 {
     public GameObject inventoryPanel;
     [SerializeField] private Button closeButton;
+
     public List<InventorySlot> slots = new List<InventorySlot>();
 
     private void Awake()
     {
+        // 슬롯 자동 할당
         slots = GetComponentsInChildren<InventorySlot>(true).ToList();
     }
 
     private void Start()
     {
-        inventoryPanel.SetActive(false); // 처음에 꺼두기
+        inventoryPanel.SetActive(false); // 시작 시 꺼두기
         if (closeButton != null)
             closeButton.onClick.AddListener(Close);
+
+        // 이벤트 연결
+        StartCoroutine(WaitForInventoryReady());
     }
 
-    private void OnEnable()
+    private IEnumerator WaitForInventoryReady()
     {
-        if (Inventory.Instance != null)
-        {
-            Inventory.Instance.onItemChanged += UpdateUI;
-            UpdateUI();
-        }
-    }
+        yield return new WaitUntil(() => Inventory.Instance != null);
 
-    private void OnDisable()
-    {
-        if (Inventory.Instance != null)
-            Inventory.Instance.onItemChanged -= UpdateUI;
+        Inventory.Instance.onItemChanged -= UpdateUI; // 중복방지
+        Inventory.Instance.onItemChanged += UpdateUI;
+
+        UpdateUI(); // 초기 상태 갱신
     }
 
     public void ToggleInventory()
     {
         bool isOpen = inventoryPanel.activeSelf;
-        Debug.Log($"ToggleInventory 호출됨 → 현재 상태: {isOpen}");
-
         inventoryPanel.SetActive(!isOpen);
-        Debug.Log($"inventoryPanel.SetActive({!isOpen}) 실행됨");
+
+        Debug.Log($"[InventoryUIManager] ToggleInventory 호출됨 → 상태: {!isOpen}");
 
         if (!isOpen)
         {
-            UpdateUI();
-            Debug.Log("UpdateUI 호출됨");
-        }
-        //bool isOpen = inventoryPanel.activeSelf;
-        //inventoryPanel.SetActive(!isOpen);
-
-        //if (!isOpen) UpdateUI();
-    }
-
-    public void UpdateUI()
-    {
-        var items = Inventory.Instance.items;
-        for (int i = 0; i < slots.Count; i++)
-        {
-            if (i < items.Count)
-                slots[i].SetItem(items[i]);
-            else
-                slots[i].ClearSlot();
+            UpdateUI(); // 열 때 갱신
         }
     }
 
     public void Close()
     {
         inventoryPanel.SetActive(false);
+    }
+
+    public void UpdateUI()
+    {
+        if (Inventory.Instance == null) return;
+
+        var items = Inventory.Instance.items;
+
+        for (int i = 0; i < slots.Count; i++)
+        {
+            if (i < items.Count && items[i] != null)
+            {
+                slots[i].SetItem(items[i]);
+            }
+            else
+            {
+                slots[i].ClearSlot();
+            }
+        }
+
+        Debug.Log($"[InventoryUIManager] UpdateUI 완료: {items.Count}개 아이템 표시됨");
     }
 }
