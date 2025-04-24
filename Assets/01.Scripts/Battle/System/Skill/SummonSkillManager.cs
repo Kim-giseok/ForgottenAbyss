@@ -1,10 +1,9 @@
 using System.Collections.Generic;
-using Summon;
 using UnityEngine;
 
 public class SummonSkillManager
 {
-    public enum Skill { DashAttack, ComboDashAttack, Agis}
+    public enum Skill { DashAttack, ComboDashAttack, Agis, Heal, ArcherArrow, MudWave, MudEye}
     public enum EnemySkill {}
     
     // 여기서 enemy도 연결해주면 되지 않을까?
@@ -15,6 +14,10 @@ public class SummonSkillManager
         { Skill.ComboDashAttack, (Enemies.Enemy.SwordShadow, new SequenceNode(new InitNode(new Vector2(1.8f, 1.8f)), new ComboDashAttack())) },
         // bug: 사이즈 지정하기 전에 이미 생성되어버려서 큰 대상이 나타나는 문제 발생
         { Skill.Agis, (Enemies.Enemy.Agis, new SequenceNode(new InitNode(new Vector2(0.4f, 0.4f)), new AgisSpreadShot())) },
+        { Skill.Heal, (Enemies.Enemy.Wizard, new SkillHealNode()) },
+        { Skill.ArcherArrow, (Enemies.Enemy.Archer, new RangeMultiAttackNode()) },
+        { Skill.MudWave, (Enemies.Enemy.MudHand, new SequenceNode(new MudCastingNode(), new MudAttackNode())) },
+        { Skill.MudEye, (Enemies.Enemy.MudEye, new RangeMultiAttackNode()) }
         
         // 사방으로 복제하기(적이 사용하려는 목적으로 이용)
         // 직접적으로 전달해줄 수 없으므로 내부 변수 등의 이용이 필요

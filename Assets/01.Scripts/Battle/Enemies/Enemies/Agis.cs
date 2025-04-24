@@ -10,10 +10,10 @@ public class AgisSpreadShot : Node
         controller.rigidbody.drag = 10f;
 
         // 따라오지 않는 현상 수정 필요
-        if (controller is SummonController { isPlayerCaster: false } sContorller)
+        if (controller is SummonController sContorller)
         {
             controller.rigidbody.AddForce(sContorller.castingDirection, ForceMode2D.Impulse);
-            controller.transform.SetParent(sContorller.eController.transform);
+            // controller.transform.SetParent(sContorller.eController.transform);
         }
      
         // 애니메이션 도중 스프라이트 컬러 변경되지 않는 현상 발생
@@ -24,9 +24,15 @@ public class AgisSpreadShot : Node
     {
         if (currTime >= duration)
         {
-            if (controller is SummonController { isPlayerCaster: false } sContorller)
+            Vector2[] directions = { Vector2.up, Vector2.down, Vector2.right, Vector2.left };
+
+            foreach (var dir in directions)
             {
-                BoltsPool.Instance.Create(controller.transform, Bolts.Type.Linear).SetDirection(sContorller.castingDirection).Fire();
+                BoltsPool.Instance
+                    .Create(controller.transform, Bolts.Type.Linear)
+                    .SetDirection(dir)
+                    .SetSpeed(16f)
+                    .Fire();
             }
             SetStatus(Status.Success); return;
         }
@@ -35,19 +41,6 @@ public class AgisSpreadShot : Node
     public override void End()
     {
         controller.rigidbody.drag = 0f;
-    }
-}
-
-public class SummoningAllNode : Node
-{
-    public override void Start()
-    {
-        BoltsPool.Instance.CreateSummon(controller.transform, SummonSkillManager.Skill.Agis, false);
-    }
-
-    public override void Update()
-    {
-        if(currTime >= 1f) { SetStatus(Status.Success); return; }
     }
 }
 

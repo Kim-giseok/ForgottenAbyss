@@ -5,17 +5,9 @@ public class BoltNode
     public StepMachine machine;
     public Bolt bolt;
     
-    // 노드별 개별 타임 체크 필요 
-    public float currTime;
-    public float time
-    {
-        get
-        {
-            return bolt.currTime;
-        }
-    }
+    public float currTime => bolt.currTime - machine.snapshotTime;
+    public BoltContext context = new();
 
-    // ReSharper disable Unity.PerformanceAnalysis
     public void Next() => machine.Next();
 
     public void Connect(StepMachine machine)
@@ -23,6 +15,8 @@ public class BoltNode
         this.machine = machine;
         bolt = this.machine.bolt;
     }
+
+    public void Awake() { machine.snapshotTime = bolt.currTime; }
     
     public virtual void Start() {}
     public virtual void Update() {}

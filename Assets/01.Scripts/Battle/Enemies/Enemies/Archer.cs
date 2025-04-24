@@ -5,7 +5,7 @@ public class RangeMultiAttackNode : Node
     public override void Start()
     {
         controller.animnHandler.Play("Attack");
-        controller.LookTarget();
+        if (controller is EnemyController) { controller.LookTarget(); }
     }
     
     public override void OnAnimatedEvent(bool isFire)
@@ -15,13 +15,34 @@ public class RangeMultiAttackNode : Node
         {
             for (int currDegree = -20; currDegree <= 20; currDegree += 10)
             {
-                BoltsPool.Instance.Create(controller.transform, Bolts.Type.Decrescendo)
-                    .SetSprite("arrow")
-                    .SetSize(1f)
-                    .SetDamage(10)
-                    .SetDegree(controller.agent.GetDegree() + currDegree)
-                    .SetDuration(0.6f)
-                    .Fire();
+                if (controller is EnemyController)
+                {
+                    BoltsPool.Instance.Create(controller.transform, Bolts.Type.Decrescendo)
+                        .SetSprite("arrow")
+                        .SetSize(1f)
+                        .SetDamage(10)
+                        .SetSpeed(30)
+                        .SetDegree(controller.agent.GetDegree() + currDegree)
+                        .SetDuration(0.6f)
+                        .Fire();
+                }
+            }
+            
+            if (controller is SummonController sController)
+            {
+                for (int currDegree = 0; currDegree <= 360; currDegree += 30)
+                {
+                    BoltsPool.Instance.Create(controller.transform, Bolts.Type.Decrescendo)
+                        .SetSprite("arrow")
+                        .SetSize(1f)
+                        .SetDamage(4)
+                        .SetKnockBack(4)
+                        // .SetEffect(Bolts.EffectType.Penetration)
+                        .SetSpeed(60)
+                        .SetDegree(currDegree)
+                        .SetDuration(0.4f)
+                        .Fire();
+                }
             }
         }
     }

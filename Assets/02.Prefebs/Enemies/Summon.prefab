@@ -82,7 +82,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 0}
-  m_Color: {r: 0.3529412, g: 0.3529412, b: 0.3529412, a: 0.78431374}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -189,6 +189,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hitInformation: 0
   castingDirection: {x: 0, y: 0}
+  degree: 0
 --- !u!114 &3404792826332666430
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -52,8 +52,8 @@ public class BoltsPool : MonoBehaviour // 단위 미사일
     }
 
     // ReSharper disable Unity.PerformanceAnalysis
-    // do: 사이즈의 조절, 모양의 변경 등의 관리 필요
-    public HitBox CreateMelee(Transform parent, float power, Vector2? startPos = null, Vector2? size = null)
+    // HitBox 자체 전달로 빌더 패턴 적용
+    public HitBox CreateMelee(Transform parent, float power = 10)
     {
         var currMelee = currMelees.Find(melee => melee.parent == parent);
         if (!currMelee.hitBox)
@@ -65,15 +65,13 @@ public class BoltsPool : MonoBehaviour // 단위 미사일
         
         HitBox hitBox = currMelee.hitBox;
         
-        hitBox.transform.localPosition = startPos ?? transform.right;
-        hitBox.transform.localScale = size ?? Vector3.one;
+        hitBox.transform.localPosition = Vector3.right;
+        hitBox.transform.localScale = Vector3.one;
         
         // bug: 충돌이 우선 발생하여 인식하지 못하는 현상 발생
         hitBox.SetDamage(power);
         hitBox.SetOwner(parent);
         
-        hitBox.gameObject.SetActive(true);
-
         return hitBox;
     }
 
@@ -98,7 +96,6 @@ public class BoltsPool : MonoBehaviour // 단위 미사일
         {
             GameObject instance = Instantiate(Bolt, Vector2.zero, Quaternion.identity, transform);
             bolt = instance.GetComponent<Bolt>();
-            
             currBolts.Add(bolt);
         }
 
@@ -110,6 +107,7 @@ public class BoltsPool : MonoBehaviour // 단위 미사일
         bolt.transform.position = parent.position;
         
         bolt.SetDirection(parent.transform.right);
+        
         bolt.machine.Define(Bolts.Get(boltType));
         
         return bolt;
@@ -125,15 +123,13 @@ public class BoltsPool : MonoBehaviour // 단위 미사일
     // ReSharper disable Unity.PerformanceAnalysis
     public SummonController CreateSummon(Transform parent, SummonSkillManager.Skill skill, bool isAttached = false)
     {
-        currSummons.RemoveAll(s => s == null || s.gameObject == null);
-
-        SummonController currSummon = currSummons.Find(summon => !summon.gameObject.activeSelf);
-        if (currSummon == null)
-        {
+        // SummonController currSummon = currSummons.Find(summon => !summon.gameObject.activeSelf);
+        // if (!currSummon)
+        // {
             GameObject instance = Instantiate(Summon, new Vector2(parent.transform.position.x, parent.transform.position.y + 0.8f), Quaternion.identity);
-            currSummon = instance.GetComponent<SummonController>();
-            currSummons.Add(currSummon);
-        }
+            SummonController currSummon = instance.GetComponent<SummonController>();
+            // currSummons.Add(currSummon);
+        // }
         
         // notice: 플레이어 위치로 인한 보정 필요
         currSummon.gameObject.layer = parent.gameObject.layer;
