@@ -8,7 +8,7 @@ public class Machine : MonoBehaviour
     [SerializeField] protected Animator machineAnim;
     protected bool isActivated = false;
 
-    public virtual void Active()
+    public virtual void Active(LaberBase rootlaber)
     {
         if (isActivated) return;
         machineAnim.SetFloat("Active", 1);

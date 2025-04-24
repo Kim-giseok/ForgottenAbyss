@@ -6,9 +6,9 @@ public class MachineTalk : MachineLoop
 {
     [SerializeField] NpcSentence sentence;
 
-    public override void Active()
+    public override void Active(LaberBase rootlaber)
     {
-        base.Active();
+        base.Active(rootlaber);
         DisplaySentence();
     }
 

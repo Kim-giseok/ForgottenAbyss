@@ -7,9 +7,10 @@ public class MachineLoop : Machine
     [SerializeField] LaberBase rootLaber;
     [SerializeField] float waitTime;
 
-    public override void Active()
+    public override void Active(LaberBase rootlaber)
     {
-        base.Active();
+        rootLaber = rootlaber;
+        base.Active(rootlaber);
         ActionAfterAnimation(UnActive, waitTime);
     }
 

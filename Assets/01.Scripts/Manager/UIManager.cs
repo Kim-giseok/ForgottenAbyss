@@ -36,12 +36,19 @@ public class UIManager : MonoBehaviour
     {
         Vector3 position = gameobject.transform.position + Vector3.up * 1.5f;
         npcText.transform.position = position;
-        npcText.SetActive(true);
+
+        if (!npcText.activeSelf)
+            npcText.SetActive(true);
+    }
+
+    public void OffGuidUI()
+    {
+        if (npcText.activeSelf)
+            npcText.SetActive(false);
     }
 
     public void OnTalk(NpcSentence sentence)
     {
-        talkBox.gameObject.SetActive(true);
         talkBox.Ondialogue(sentence.sentences, sentence.transform);
     }
 }

@@ -17,13 +17,15 @@ public class TalkSystem : MonoBehaviour
 
     private void Awake()
     {
-        playerInput = GameObject.FindWithTag("Player").GetComponent<PlayerInput>();
+        playerInput = GameManager.Instance.player.GetComponent<PlayerInput>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
     }
 
 
     public void Ondialogue(string[] lines, Transform talkPoint)
     {
+        if (!gameObject.activeSelf) gameObject.SetActive(true);
+
         transform.position = talkPoint.position;
         sentences = new Queue<string>();
         sentences.Clear();
