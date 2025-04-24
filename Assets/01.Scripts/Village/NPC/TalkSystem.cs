@@ -21,6 +21,12 @@ public class TalkSystem : MonoBehaviour
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
     }
 
+    public void Ondialogue(string sentence)
+    {
+        if (!gameObject.activeSelf) gameObject.SetActive(true);
+            NpcText.text = sentence;
+            spriteRenderer.size = new Vector2(NpcText.preferredWidth + 1.0f, NpcText.preferredHeight + 0.5f);
+    }
 
     public void Ondialogue(string[] lines, Transform talkPoint)
     {
