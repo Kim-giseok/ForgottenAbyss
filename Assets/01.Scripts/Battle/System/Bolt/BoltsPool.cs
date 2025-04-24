@@ -125,8 +125,10 @@ public class BoltsPool : MonoBehaviour // 단위 미사일
     // ReSharper disable Unity.PerformanceAnalysis
     public SummonController CreateSummon(Transform parent, SummonSkillManager.Skill skill, bool isAttached = false)
     {
+        currSummons.RemoveAll(s => s == null || s.gameObject == null);
+
         SummonController currSummon = currSummons.Find(summon => !summon.gameObject.activeSelf);
-        if (!currSummon)
+        if (currSummon == null)
         {
             GameObject instance = Instantiate(Summon, new Vector2(parent.transform.position.x, parent.transform.position.y + 0.8f), Quaternion.identity);
             currSummon = instance.GetComponent<SummonController>();

@@ -42,6 +42,7 @@ public class SkillManager : Singleton<SkillManager>
         TryAddSkillInstance(weaponData.RangedAttack);
         TryAddSkillInstance(weaponData.Skill1Id);
         TryAddSkillInstance(weaponData.Skill2Id);
+        SetMemorySkill(currentMemoryPiece);
     }
 
     public void SetMemorySkill(MemoryPieceSO memorySO)
@@ -52,6 +53,8 @@ public class SkillManager : Singleton<SkillManager>
 
         if (!skillInstances.ContainsKey(memoryId))
             skillInstances[memoryId] = new SkillInstance(memorySO);
+
+        currentMemoryPiece = memorySO;
     }
 
     private void TryAddSkillInstance(int skillId)
