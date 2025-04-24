@@ -6658,6 +6658,34 @@ PrefabInstance:
       propertyPath: sentences.Array.data[2]
       value: You are equipped with weapons.
       objectReference: {fileID: 0}
+    - target: {fileID: 1580853053219079757, guid: 2cbf6a9ab79343745b0a8e36d979f394, type: 3}
+      propertyPath: displayEndEvents.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1580853053219079757, guid: 2cbf6a9ab79343745b0a8e36d979f394, type: 3}
+      propertyPath: displayEndEvents.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1580853053219079757, guid: 2cbf6a9ab79343745b0a8e36d979f394, type: 3}
+      propertyPath: displayEndEvents.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 9001277642429235885}
+    - target: {fileID: 1580853053219079757, guid: 2cbf6a9ab79343745b0a8e36d979f394, type: 3}
+      propertyPath: displayEndEvents.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1580853053219079757, guid: 2cbf6a9ab79343745b0a8e36d979f394, type: 3}
+      propertyPath: displayEndEvents.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: GiveWeapon
+      objectReference: {fileID: 0}
+    - target: {fileID: 1580853053219079757, guid: 2cbf6a9ab79343745b0a8e36d979f394, type: 3}
+      propertyPath: displayEndEvents.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: WeaponChest, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 1580853053219079757, guid: 2cbf6a9ab79343745b0a8e36d979f394, type: 3}
+      propertyPath: displayEndEvents.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 2113587801728021610, guid: 2cbf6a9ab79343745b0a8e36d979f394, type: 3}
       propertyPath: m_Name
       value: WeaponEvent
@@ -6705,14 +6733,17 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2113587801728021610, guid: 2cbf6a9ab79343745b0a8e36d979f394, type: 3}
+      insertIndex: 3
+      addedObject: {fileID: 9001277642429235885}
   m_SourcePrefab: {fileID: 100100000, guid: 2cbf6a9ab79343745b0a8e36d979f394, type: 3}
 --- !u!114 &3698826228347117189 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: -4285949415951177594, guid: 2cbf6a9ab79343745b0a8e36d979f394, type: 3}
   m_PrefabInstance: {fileID: 8633929820296246787}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 7675569199379382889}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9bf8f461b7dcc0540954581ae508320a, type: 3}
@@ -6723,6 +6754,23 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3050901875184515690, guid: 2cbf6a9ab79343745b0a8e36d979f394, type: 3}
   m_PrefabInstance: {fileID: 8633929820296246787}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &7675569199379382889 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2113587801728021610, guid: 2cbf6a9ab79343745b0a8e36d979f394, type: 3}
+  m_PrefabInstance: {fileID: 8633929820296246787}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &9001277642429235885
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7675569199379382889}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d4dd2febf21e6b4e8315ca528232991, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &9163521463352822516
 PrefabInstance:
   m_ObjectHideFlags: 0
