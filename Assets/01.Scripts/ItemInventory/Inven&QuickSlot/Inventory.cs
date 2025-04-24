@@ -8,36 +8,26 @@ public class Inventory : MonoBehaviour
     public static Inventory Instance; //싱글톤
 
     public List<Item> items = new List<Item>(); // 아이템 목록
-    public int capacity = 10;
-
     public event Action onItemChanged; // 슬롯 개수 변경 시 호출
 
 
     void Awake()
     {
-        if (Instance != null)
-        {
-            Destroy(gameObject);
-            return;
-        }
-        Instance = this;
+        if (Instance == null) Instance = this;
+        else Destroy(gameObject);
     }
 
     // 아이템 추가
     public bool AddItem(Item item)
     {
-        if (item == null)
-        {
-            return false;
-        }
-
-        if (items.Count >= capacity)
-        {
-            return false;
-        }
-
         items.Add(item);
         onItemChanged?.Invoke();
         return true;
+    }
+    // 아이템 제거
+    public void RemoveItem(Item item)
+    {
+        items.Remove(item);
+        onItemChanged?.Invoke();
     }
 }
