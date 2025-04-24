@@ -9,7 +9,7 @@ public class StepMachine
     public List<BoltNode> nodes = new();
     public BoltNode currNode;
 
-
+    public float snapshotTime = 0f;
     public bool isRunning = false;
     
     // notice: bolt만 변경한다면 재사용하도록 가능한지 체크
@@ -24,7 +24,17 @@ public class StepMachine
         currNode.Update();
     }
 
-    //
+    // ReSharper disable Unity.PerformanceAnalysis
+    public void SetNode(int index)
+    {
+        currNode = nodes[index];
+        
+        currNode.Connect(this);
+        currNode.Awake();
+        currNode.Start();
+        isRunning = true;
+    }
+
     public void Next()
     {
         isRunning = false;
@@ -39,12 +49,7 @@ public class StepMachine
             return;
         }
         
-        currNode = nodes[currIndex + 1];
-        
-        currNode.Connect(this);
-        currNode.Start();
-        
-        isRunning = true;
+        SetNode(currIndex + 1);
     }
 
     // Start가 종속된 부분 변경 필요
@@ -55,13 +60,7 @@ public class StepMachine
     }
 
     // next로 하면 첫번째가 아닌 현상 발생
-    public void Start()
-    {
-        currNode = nodes[0];
-        currNode.Connect(this);
-        currNode.Start();
-        isRunning = true;
-    }
+    public void Start() { SetNode(0); }
 
     public void Clear()
     {

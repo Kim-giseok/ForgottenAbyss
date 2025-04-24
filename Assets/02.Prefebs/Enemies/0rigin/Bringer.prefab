@@ -35,7 +35,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 2.83, z: 0}
-  m_LocalScale: {x: 1.7, y: 1.4, z: 1}
+  m_LocalScale: {x: 1.6, y: 1.4, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 871651696276608350}
@@ -189,9 +189,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68e4352b8584b49edb0f5da93bdaf397, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 10
+  health: 100
   attack: 3
-  name: 6
+  name: 11
 --- !u!114 &2641232239533573338
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -205,11 +205,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   status: 0
-  detectedDistance: 6
-  stoppingDistance: 2
+  detectedDistance: 8
+  stoppingDistance: 4
   boundaryDistance: 0
   defenseDistance: 0
-  tracingSpeed: 4
+  tracingSpeed: 3
   combatDuration: 0
 --- !u!114 &4059513922184957893
 MonoBehaviour:
