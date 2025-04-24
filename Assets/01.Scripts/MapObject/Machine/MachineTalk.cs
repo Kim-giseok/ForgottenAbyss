@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class MachineTalk : MachineLoop
 {
-    [SerializeField] string sentence;
-    [SerializeField] float delayTime;
+    [SerializeField] NpcSentence sentence;
 
     public override void Active()
     {
@@ -15,18 +14,6 @@ public class MachineTalk : MachineLoop
 
     void DisplaySentence()
     {
-        StartCoroutine(CoroutineDisplay());
-    }
-
-    IEnumerator CoroutineDisplay()
-    {
-        Time.timeScale = 0f;
-        string[] sentences = sentence.Split("\\n");
-        foreach (var txt in sentences)
-        {
-            Debug.Log(txt);
-            yield return new WaitForSecondsRealtime(delayTime);
-        }
-        Time.timeScale = 1f;
+        sentence.TalkNpc();
     }
 }

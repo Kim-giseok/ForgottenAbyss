@@ -14,6 +14,7 @@ public class UIManager : MonoBehaviour
     [Header("WorldUI")]
     public RectTransform worldSpaceCanvas;
     public GameObject npcText;
+    public TalkSystem talkBox;
 
     private void Awake()
     {
@@ -36,5 +37,11 @@ public class UIManager : MonoBehaviour
         Vector3 position = gameobject.transform.position + Vector3.up * 1.5f;
         npcText.transform.position = position;
         npcText.SetActive(true);
+    }
+
+    public void OnTalk(NpcSentence sentence)
+    {
+        talkBox.gameObject.SetActive(true);
+        talkBox.Ondialogue(sentence.sentences, sentence.transform);
     }
 }

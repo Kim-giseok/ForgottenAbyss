@@ -6599,10 +6599,6 @@ PrefabInstance:
     m_TransformParent: {fileID: 8114895564495346819}
     m_Modifications:
     - target: {fileID: -4285949415951177594, guid: 2cbf6a9ab79343745b0a8e36d979f394, type: 3}
-      propertyPath: sentence
-      value: Hi\nI'm NPC\nFind your memory
-      objectReference: {fileID: 0}
-    - target: {fileID: -4285949415951177594, guid: 2cbf6a9ab79343745b0a8e36d979f394, type: 3}
       propertyPath: delayTime
       value: 2
       objectReference: {fileID: 0}
@@ -6610,6 +6606,22 @@ PrefabInstance:
       propertyPath: rootLaber
       value: 
       objectReference: {fileID: 4263429615369525729}
+    - target: {fileID: 1580853053219079757, guid: 2cbf6a9ab79343745b0a8e36d979f394, type: 3}
+      propertyPath: sentences.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1580853053219079757, guid: 2cbf6a9ab79343745b0a8e36d979f394, type: 3}
+      propertyPath: sentences.Array.data[0]
+      value: Hi
+      objectReference: {fileID: 0}
+    - target: {fileID: 1580853053219079757, guid: 2cbf6a9ab79343745b0a8e36d979f394, type: 3}
+      propertyPath: sentences.Array.data[1]
+      value: I'm NPC
+      objectReference: {fileID: 0}
+    - target: {fileID: 1580853053219079757, guid: 2cbf6a9ab79343745b0a8e36d979f394, type: 3}
+      propertyPath: sentences.Array.data[2]
+      value: Find your memory
+      objectReference: {fileID: 0}
     - target: {fileID: 2113587801728021610, guid: 2cbf6a9ab79343745b0a8e36d979f394, type: 3}
       propertyPath: m_Name
       value: Talk

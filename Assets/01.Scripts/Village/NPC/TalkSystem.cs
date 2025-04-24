@@ -47,7 +47,7 @@ public class TalkSystem : MonoBehaviour
             yield return new WaitForSeconds(2f);
             
         }
-        Destroy(gameObject);
+        gameObject.SetActive(false);
         playerInput.enabled = true;
     }
 }

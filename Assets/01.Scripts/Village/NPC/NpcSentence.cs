@@ -5,8 +5,6 @@ using UnityEngine;
 public class NpcSentence : MonoBehaviour
 {
     public string[] sentences;
-    public Transform TalkPoint;
-    public TalkSystem talkBoxPrefab;
     
     public void TalkNpc()
     {
@@ -15,7 +13,6 @@ public class NpcSentence : MonoBehaviour
             return; // 이미 대화창이 있으면 더 이상 생성X
         }
 
-        TalkSystem gameObject = Instantiate(talkBoxPrefab);
-        gameObject.Ondialogue(sentences, TalkPoint);
+        UIManager.Instance.OnTalk(this);
     }
 }

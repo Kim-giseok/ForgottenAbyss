@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3050901875184515690}
   - component: {fileID: -4285949415951177594}
-  - component: {fileID: 198129360556558101}
+  - component: {fileID: 1580853053219079757}
   - component: {fileID: 2552249430622463951}
   m_Layer: 0
   m_Name: Talk
@@ -48,9 +48,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   machineAnim: {fileID: 2552249430622463951}
-  sentence: TestTalk\nTestTalk2
-  delayTime: 0
---- !u!114 &198129360556558101
+  rootLaber: {fileID: 0}
+  waitTime: 0
+  sentence: {fileID: 1580853053219079757}
+--- !u!114 &1580853053219079757
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -59,10 +60,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 2113587801728021610}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0c653c23b13451d45a00f1609302bd4f, type: 3}
+  m_Script: {fileID: 11500000, guid: fc8cc23607f355545b64ad8dfc0dd081, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  machineAnim: {fileID: 2552249430622463951}
+  sentences: []
+  TalkPoint: {fileID: 0}
+  talkBoxPrefab: {fileID: 0}
 --- !u!95 &2552249430622463951
 Animator:
   serializedVersion: 5
