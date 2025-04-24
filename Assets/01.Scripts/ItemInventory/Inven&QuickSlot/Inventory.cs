@@ -40,17 +40,4 @@ public class Inventory : MonoBehaviour
         onItemChanged?.Invoke();
         return true;
     }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        Debug.LogWarning(collision.gameObject.name);
-        if (collision.CompareTag("FieldItem"))
-        {
-            FieldItem fieldItem = collision.GetComponent<FieldItem>();
-            if (AddItem(fieldItem.GetItem()))
-            {
-                fieldItem.DestroyItem();
-            }
-        }
-    }
 }
