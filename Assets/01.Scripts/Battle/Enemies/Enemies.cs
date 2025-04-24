@@ -6,7 +6,7 @@ using UnityEngine;
 public class Enemies
 {
     // notice: enum을 추가하면 한칸씩 밀리는 현상 발생
-    public enum Enemy { Test, Agis, Archer, Ghost, GhostChild, Gunner, NightBone, SwordShadow, Wizard, MudEye, MudChildHand, Bringer }
+    public enum Enemy { Test, Agis, Archer, Ghost, GhostChild, Gunner, NightBone, SwordShadow, Wizard, MudEye, MudHand, Bringer }
     public static Node Get(Enemy enemy) => behaviour[enemy];
 
     private static Dictionary<Enemy, Node> behaviour = new()
@@ -95,12 +95,12 @@ public class Enemies
             Enemy.MudEye,
             new SelectorNode(
                 new SequenceNode(new HitNode(), new DieNode()),
-                new SequenceNode(new MudWarpNode(), new MudWarpNode(), new MudWarpNode())
-                // new SequenceNode(new MudMoveNode(new Vector2(-1, -1)), new MudMoveNode(new Vector2(1, 1)), new MudMoveNode(new Vector2(1, -1)), new MudMoveNode(new Vector2(-1, 1)), new IdleNode(3), new MudSpawnNode())
+                // new SequenceNode(new MudWarpNode(), new MudWarpNode(), new MudWarpNode())
+                new SequenceNode(new IdleNode(1), new MudSpawnNode())
                 )
         },
         {
-            Enemy.MudChildHand,
+            Enemy.MudHand,
             new SelectorNode(
                 new SequenceNode(new HitNode(), new DieNode()),
                 new SequenceNode(new MudAggroNode(), new MudCastingNode(), new MudAttackNode(), new MudIdleNode())

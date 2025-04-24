@@ -30,8 +30,6 @@ public class HitNode : Node
         if (!eController.statusHandler.isHit) { SetStatus(Status.Fail); return; }
         if(eController.health <= 0) { SetStatus(Status.Success); return; }
 
-        Debug.Log(1);
-     
         // 타격 받은 쪽으로 회전
         // Vector2 direction = (controller.agent.player.transform.position - controller.transform.position).normalized;
         // controller.Flip(direction.x > 0);

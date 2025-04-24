@@ -37,7 +37,7 @@ public class MudCastingNode : Node
 
     public override void Update()
     {
-        controller.LookTarget();
+        if(controller is EnemyController) { controller.LookTarget(); }
     }
 
     public override void OnAnimated(AnimationStatus status, AnimatorStateInfo animInfo)
@@ -54,7 +54,7 @@ public class MudAttackNode : Node
     public override void Start()
     {
         controller.animnHandler.Play("Attack");
-        controller.LookTarget();
+        if(controller is EnemyController) { controller.LookTarget(); }
         // controller.rigidbody.drag = 4f;
     }
     
@@ -70,7 +70,10 @@ public class MudAttackNode : Node
             foreach (var nearCollider in nearColiders) { Physics2D.IgnoreCollision(controller.collider, nearCollider, true); }
 
             BoltsPool.Instance.CreateMelee(controller.transform, 40f).Fire();
-            controller.rigidbody.AddForce(controller.agent.GetDirection() * 4f, ForceMode2D.Impulse);
+
+            if(controller is EnemyController) { controller.rigidbody.AddForce(controller.agent.GetDirection() * 4f, ForceMode2D.Impulse); }
+            if(controller is SummonController sController) { controller.rigidbody.AddForce(Vector2.right * 4f, ForceMode2D.Impulse); }
+            
             return;
         }
 

@@ -18,9 +18,10 @@ public class EnemyRespawnManager: Singleton<EnemyRespawnManager>
         }
     }
     
-    public void Generate(Enemies.Enemy enemy, Vector2 position)
+    public GameObject Generate(Enemies.Enemy enemy, Vector2 position)
     {
         GameObject instance = Instantiate(_enemyList[enemy]);
         instance.transform.position = position;
+        return instance;
     }
 }
