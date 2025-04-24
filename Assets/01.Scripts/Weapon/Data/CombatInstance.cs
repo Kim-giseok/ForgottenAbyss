@@ -36,11 +36,9 @@ public class CombatInstance
         switch (weaponType)
         {
             case WeaponType.Sword:
-                //comboAttack.SetComboData(comboSO);
                 comboAttack.HandleAttackInput();
                 break;
             case WeaponType.Bow:
-                //rangedAttack.SetRangedAttackData(rangedSO);
                 rangedAttack.HandleAttackInput();
                 break;
         }

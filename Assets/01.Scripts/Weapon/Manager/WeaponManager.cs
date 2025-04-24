@@ -124,8 +124,8 @@ public class WeaponManager : Singleton<WeaponManager>
         var skill01Data = DataManager.Instance.GetSkillData(selectedWeapon.skill01SO.skillId);
         var skill02Data = DataManager.Instance.GetSkillData(selectedWeapon.skill02SO.skillId);
 
-        var skillInstance01 = new SkillInstance(skill01Data);
-        var skillInstance02 = new SkillInstance(skill02Data);
+        var skillInstance01 = new SkillInstance(skill01Data).Clone();
+        var skillInstance02 = new SkillInstance(skill02Data).Clone();
 
         weaponSkillInstances.Add(skillInstance01);
         weaponSkillInstances.Add(skillInstance02);
@@ -168,7 +168,7 @@ public class WeaponManager : Singleton<WeaponManager>
         currentMemorySO = memorySO;
         currentMemoryData = DataManager.Instance.GetMemoryPieceData(memorySO.currentMemoryPieceId);
 
-        var memory = new SkillInstance(memorySO);
+        var memory = new SkillInstance(memorySO).Clone();
         memorySkillInstance = memory;
 
         SkillManager.Instance.SetMemorySkill(memorySkillInstance.memorySO);

@@ -98,7 +98,7 @@ public class SkillManager : Singleton<SkillManager>
         if (DataManager.Instance.HasSkillData(skillId))
         {
             var data = DataManager.Instance.GetSkillData(skillId);
-            skillInstances[skillId] = new SkillInstance(data);
+            skillInstances[skillId] = new SkillInstance(data).Clone();
         }
     }
 

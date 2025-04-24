@@ -31,6 +31,35 @@ public class SkillInstance
         skillId = memorySO.currentMemoryPieceId;
     }
 
+    public SkillInstance Clone()
+    {
+        SkillInstance clone;
+
+        if (sourceType == SkillSourceType.Weapon)
+        {
+            SkillData clonedData = data.Clone();
+            SkillVisualSO clonedVisual = visual != null ? visual : null;
+            SkillExecutionSO clonedExecution = execution != null ? execution : null;
+
+            clone = new SkillInstance(clonedData)
+            {
+                visual = clonedVisual,
+                execution = clonedExecution
+            };
+        }
+        else
+        {
+            MemoryPieceSO clonedMemorySO = memorySO != null ? memorySO : null;
+
+            clone = new SkillInstance(clonedMemorySO)
+            {
+                memorySO = clonedMemorySO
+            };
+        }
+
+        return clone;
+    }
+
     public void Execute(GameObject caster)
     {
         switch (sourceType)

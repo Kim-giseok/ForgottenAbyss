@@ -58,7 +58,7 @@ public class SkillUI : MonoBehaviour
         {
             hideSkillButtons[skillNum].SetActive(true); // 버튼 할성화
             getSkillTimes[skillNum] = coolTime; // 쿨타임 설정 (외부에서 받은 값)
-            skillTimes[skillNum] = coolTime;    // 총 쿨타임 기록도 갱신
+            //skillTimes[skillNum] = coolTime;    // 총 쿨타임 기록도 갱신  < 쿨타임 ui 업데이트에 문제가 있어 제거함 이후 정상작동됨
             isHideSkills[skillNum] = true; // 스킬이 활성화됨
 
             // 해당 설정에 대한 코루틴 실행
