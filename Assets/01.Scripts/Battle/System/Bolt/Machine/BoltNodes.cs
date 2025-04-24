@@ -4,7 +4,7 @@ public class LinearBolt : BoltNode
 {
     public override void Update()
     {
-        if (time >= 0.4f) Next();
+        if (currTime >= 0.4f) Next();
         bolt.rigidbody.velocity = bolt.direction * bolt.speed;
     }
 }
@@ -18,7 +18,7 @@ public class RainBolt : BoltNode
         bolt.rigidbody.AddForce(new Vector2(Random.Range(-8f, 8f), 4f) * 40f, ForceMode2D.Impulse);
     }
 
-    public override void Update() { if (time >= 0.4f) Next(); }
+    public override void Update() { if (currTime >= 0.4f) Next(); }
 
     public override void End()
     {
@@ -58,9 +58,9 @@ public class DecrescendoBolt : BoltNode
     {
         bolt.rigidbody.velocity = Vector2.zero;
         bolt.rigidbody.drag = 8f;
-        bolt.rigidbody.AddForce(bolt.direction * 24f, ForceMode2D.Impulse);
+        bolt.rigidbody.AddForce(bolt.direction * bolt.speed, ForceMode2D.Impulse);
     }
-    public override void Update() { if (time >= 0.2f) Next(); }
+    public override void Update() { if (currTime >= 0.2f) Next(); }
     public override void End() { bolt.rigidbody.drag = 0; }
 }
 
@@ -68,11 +68,15 @@ public class RecursiveBolt : BoltNode
 {
     public override void Start()
     {
-        bolt.animHandler.Play("Heal");
-        bolt.transform.position += (new Vector3(bolt.direction.x, bolt.direction.y, 0));
+        bolt.animHandler.Play("Soul");
+        
+        // 플레이어 위치 의존적인 부분 처리 필요
+        // bolt.transform.position += (new Vector3(bolt.direction.x, bolt.direction.y, 0));
+        Vector2 direction = (GameManager.Instance.player.transform.position - bolt.transform.position).normalized;
+        bolt.transform.position += (new Vector3(direction.x, direction.y, 0));
     }
 
-    public override void Update() { if (time >= 0.2f) Next(); }
+    public override void Update() { if (currTime >= 0.2f) Next(); }
 }
 
 public class BlackHoleBolt : BoltNode
@@ -80,16 +84,29 @@ public class BlackHoleBolt : BoltNode
     // 앞으로 발사를 조금 넣어두는 게 좋을 듯
     public override void Start()
     {
+        bolt.animHandler.Play("BlackHole");
+        bolt.renderer.color = Color.black;
+        
         bolt.rigidbody.drag = 10;
         bolt.rigidbody.AddForce(new Vector2(Random.Range(-4f, 4f), 4f) * 10f, ForceMode2D.Impulse);
     }
 
     public override void Update()
     {
-        var player = GameObject.FindGameObjectWithTag("Player");
-        
-        var direction = (bolt.transform.position - player.transform.position).normalized;
-        player.GetComponent<Rigidbody2D>().AddForce(direction * 10f, ForceMode2D.Force);
+        RaycastHit2D[] hits = Physics2D.CircleCastAll(bolt.transform.position, 4f, Vector2.down,  LayerMask.GetMask("Player", "Enemy"));
+        foreach (var hit in hits)
+        {
+            if (!hit.rigidbody) continue;
+            var direction = (bolt.transform.position - hit.transform.position).normalized;
+            hit.rigidbody.AddForce(direction * 10f, ForceMode2D.Force);
+        }
+    }
+
+    public override void End()
+    {
+        bolt.animHandler.Play("None");
+        bolt.renderer.color = Color.white;
+        bolt.rigidbody.drag = 0;
     }
 }
 
@@ -117,4 +134,11 @@ public class LaserBolt : BoltNode
     }
 }
 
-public class HealBolt : BoltNode { }
+public class HealBolt : BoltNode
+{
+    public override void Start()
+    {
+        bolt.SetSize(1f);
+        bolt.animHandler.Play("Heal");
+    }
+}
