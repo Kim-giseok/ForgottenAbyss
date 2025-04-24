@@ -126,7 +126,7 @@ public class SkillInstance
             : 0f;
 
         // 쿨감 비율 계산(제한 최대 50%)
-        float coolReductionRatio = Mathf.Clamp(coolReductionPercent, 0f, 0.5f);
+        float coolReductionRatio = Mathf.Clamp(coolReductionPercent / 100f, 0f, 0.5f);
 
         // 최종 쿨타임 계산 : 기본 쿨타임 * (1 - 쿨감 비율)
         float finalCd = baseCd * (1f - coolReductionRatio);

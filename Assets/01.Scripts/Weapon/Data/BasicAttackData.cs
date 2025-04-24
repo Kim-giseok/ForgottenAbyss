@@ -32,8 +32,8 @@ public class BasicAttackData
         else
         {
             result.baseAttack = status.GetStat(StatType.ATK);
-            result.critChance = status.GetStat(StatType.CRITICAL);
-            result.critDamageMultiplier = status.GetStat(StatType.CRITICAL_DAMAGE);  // < 추후 크리티컬 적용시
+            result.critChance = status.GetStat(StatType.CRITICAL) / 100f;
+            result.critDamageMultiplier = status.GetStat(StatType.CRITICAL_DAMAGE) / 100f;  // < 추후 크리티컬 적용시
         }
 
         result.weaponAttack = WeaponManager.Instance.GetCurrentWeaponAttack();
@@ -42,7 +42,7 @@ public class BasicAttackData
         return result;
     }
 
-    public float CalculateDamage()
+    public DamageResult CalculateDamage()
     {
         return DamageCalculator.CalculateBasicDamage(this);
     }

@@ -1,42 +1,42 @@
 using UnityEngine;
 
+public struct DamageResult
+{
+    public float damage;
+    public bool isCrit;
+}
+
 public static class DamageCalculator
 {
-    public static float CalculateDamage(SkillCastData castData)
+    public static DamageResult CalculateDamage(SkillCastData castData)
     {
         // 기본 데미지
         float damage = (castData.baseAttack + castData.weaponAttack) * castData.skillMultiplier;
 
         // 크리티컬 판정
         bool isCrit = Random.value < castData.critChance;
+        float finalDmg = isCrit ? damage * castData.critDamageMultiplier : damage;
 
-        if (isCrit)
-        {
-            damage *= castData.critDamageMultiplier;
-            Debug.Log($"(({castData.baseAttack} + {castData.weaponAttack}) * {castData.skillMultiplier}) * {castData.critDamageMultiplier} = {damage}");
-        }
-        else
-            Debug.Log($"{castData.baseAttack} + {castData.weaponAttack} * {castData.skillMultiplier} = {damage}");
+        Debug.Log(isCrit
+            ? $"CRIT! ({damage}) * {castData.critDamageMultiplier} = {finalDmg}"
+            : $"{damage}");
 
-        return damage;
+        return new DamageResult { damage = finalDmg, isCrit = isCrit };
     }
 
-    public static float CalculateBasicDamage(BasicAttackData baData)
+    public static DamageResult CalculateBasicDamage(BasicAttackData baData)
     {
         // 기본 데미지
         float damage = (baData.baseAttack + baData.weaponAttack) * baData.comboMultiplier;
 
         // 크리티컬 판정
         bool isCrit = Random.value < baData.critChance;
+        float finalDmg = isCrit ? damage * baData.critDamageMultiplier : damage;
 
-        if (isCrit)
-        {
-            damage *= baData.critDamageMultiplier;
-            Debug.Log($"(({baData.baseAttack} + {baData.weaponAttack}) * {baData.comboMultiplier}) * {baData.critDamageMultiplier} = {damage}");
-        }
-        else
-            Debug.Log($"{baData.baseAttack} + {baData.weaponAttack} * {baData.comboMultiplier} = {damage}");
+        Debug.Log(isCrit
+            ? $"CRIT! ({damage}) * {baData.critDamageMultiplier} = {finalDmg}"
+            : $"{damage}");
 
-        return damage;
+        return new DamageResult { damage = finalDmg, isCrit = isCrit };
     }
 }
