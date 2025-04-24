@@ -33,16 +33,25 @@ public class SkillManager : Singleton<SkillManager>
 
     public void SetCurrentWeaponSkills(int weaponId)
     {
-        skillInstances.Clear();
+        ClearSkill();
 
         var weaponData = DataManager.Instance.GetWeaponData(weaponId);
         if (weaponData == null) return;
 
-        TryAddSkillInstance(weaponData.ComboAttack);
-        TryAddSkillInstance(weaponData.RangedAttack);
         TryAddSkillInstance(weaponData.Skill1Id);
         TryAddSkillInstance(weaponData.Skill2Id);
-        SetMemorySkill(currentMemoryPiece);
+
+        var controller = SkillController.Instance;
+        if (controller != null)
+        {
+            controller.skill01 = GetSkillInstance(weaponData.Skill1Id);
+            controller.skill02 = GetSkillInstance(weaponData.Skill2Id);
+        }
+
+        if (currentMemoryPiece != null)
+        {
+            SetMemorySkill(currentMemoryPiece);
+        }
     }
 
     public void SetMemorySkill(MemoryPieceSO memorySO)
@@ -55,6 +64,31 @@ public class SkillManager : Singleton<SkillManager>
             skillInstances[memoryId] = new SkillInstance(memorySO);
 
         currentMemoryPiece = memorySO;
+        Debug.Log(currentMemoryPiece.name);
+
+        TryAddSkillInstance(currentMemoryPiece.currentMemoryPieceId);
+        var controller = SkillController.Instance;
+        if (controller != null)
+        {
+            controller.memorySkill = GetSkillInstance(memoryId);
+        }
+    }
+
+    private void ClearSkill()
+    {
+        SkillInstance memorySkill = null;
+        if (currentMemoryPiece != null)
+        {
+            int memoryId = currentMemoryPiece.currentMemoryPieceId;
+            skillInstances.TryGetValue(memoryId, out memorySkill);
+        }
+
+        skillInstances.Clear();
+
+        if (memorySkill != null && currentMemoryPiece != null)
+        {
+            skillInstances[currentMemoryPiece.currentMemoryPieceId] = memorySkill;
+        }
     }
 
     private void TryAddSkillInstance(int skillId)
@@ -66,35 +100,38 @@ public class SkillManager : Singleton<SkillManager>
         }
     }
 
-    public bool IsSkillEquipped(int skillId)
+    public bool IsSkillEquipped(SkillInstance instance)
     {
+        if (instance == null)
+        {
+            Debug.LogWarning("SkillInstance가 null입니다.");
+            return false;
+        }
+
         bool isMemory = currentMemoryPiece != null &&
                         currentMemoryPiece.skillItem != null &&
-                        currentMemoryPiece.skillItem.memoryPieceId == skillId;
+                        currentMemoryPiece.skillItem.memoryPieceId == instance.skillId;
 
-        bool isWeaponSkill = skillInstances.ContainsKey(skillId);
+        bool isWeaponSkill = skillInstances.ContainsKey(instance.skillId);
 
         return isMemory || isWeaponSkill;
     }
 
-    private bool IsOnCooldown(int skillId)
+    private bool IsOnCooldown(SkillInstance instance)
     {
-        if (nextAvailableTimes.TryGetValue(skillId, out float nextTime) && Time.time < nextTime)
+        if (nextAvailableTimes.TryGetValue(instance.skillId, out float nextTime) && Time.time < nextTime)
         {
-            Debug.Log($"Skill {skillId} is on cooldown. {nextTime - Time.time:F1}s left.");
+            Debug.Log($"Skill {instance.skillId} is on cooldown. {nextTime - Time.time:F1}s left.");
             return true;
         }
         return false;
     }
 
-    public void TryUseSkill(int skillId, Transform spawnPoint)
+    public void TryUseSkill(SkillInstance instance, Transform spawnPoint)
     {
-        if (!IsSkillEquipped(skillId)) return;
-        if (IsOnCooldown(skillId)) return;
-
-        var instance = skillInstances[skillId];
-
-        if(!IsEnoughCost(instance)) return;
+        if (!IsSkillEquipped(instance)) return;
+        if (IsOnCooldown(instance)) return;
+        if (!IsEnoughCost(instance)) return;
 
         StartCoroutine(ExecuteSkill(instance, spawnPoint));
         UpdateCooldown(instance);
@@ -137,21 +174,25 @@ public class SkillManager : Singleton<SkillManager>
         return false;
     }
 
-    public bool IsMemorySkill(int skillId)
+    public bool IsMemorySkill(SkillInstance instance)
     {
-        return currentMemoryPiece != null && currentMemoryPiece.skillItem != null &&
-               currentMemoryPiece.skillItem.memoryPieceId == skillId;
+        return currentMemoryPiece != null &&
+               currentMemoryPiece.skillItem != null &&
+               currentMemoryPiece.skillItem.memoryPieceId == instance.skillId;
     }
 
     private int GetSlotIndexBySkillId(int skillId)
     {
         var sc = WeaponManager.Instance.skillController;
-        if (IsMemorySkill(skillId)) return 0;
-        if (skillId == sc.combatId) return 1;
-        if (skillId == sc.skill01Id) return 2;
-        if (skillId == sc.skill02Id) return 3;
+
+        if (currentMemoryPiece != null && currentMemoryPiece.skillItem != null && currentMemoryPiece.skillItem.memoryPieceId == skillId)
+            return 0;
+        if (sc.skill01 != null && sc.skill01.skillId == skillId) return 2;
+        if (sc.skill02 != null && sc.skill02.skillId == skillId) return 3;
+
         return -1;
     }
+
     public SkillInstance GetSkillInstance(int skillId)
     {
         skillInstances.TryGetValue(skillId, out var instance);

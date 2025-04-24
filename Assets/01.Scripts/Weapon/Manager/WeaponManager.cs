@@ -20,6 +20,9 @@ public class WeaponManager : Singleton<WeaponManager>
     private SkillUI skillUI;
     private int previousWeaponId = -1;
 
+    private List<SkillInstance> weaponSkillInstances = new();
+    private SkillInstance memorySkillInstance;
+
     private void OnEnable()
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
@@ -109,48 +112,49 @@ public class WeaponManager : Singleton<WeaponManager>
         }
 
         currentWeaponSO = selectedWeapon;
-
-   
         currentWeaponData = DataManager.Instance.GetWeaponData(selectedWeapon.currentWeaponId);
+
         if (currentWeaponData == null)
         {
             Debug.LogWarning($"WeaponData not found for ID {selectedWeapon.currentWeaponId}");
         }
 
-        // 스킬 ID 설정
-        skillController.skill01Id = selectedWeapon.skill01SO.skillId;
-        skillController.skill02Id = selectedWeapon.skill02SO.skillId;
-
-        SkillManager.Instance.SetCurrentWeaponSkills(currentWeaponData.Id);
-
-        if (skillUI == null)
-            skillUI = FindObjectOfType<SkillUI>();
-
-        skillUI.SetSkillIcon(SkillSlotType.Skill01, selectedWeapon.skill01SO.skillIcon);
-        skillUI.SetSkillIcon(SkillSlotType.Skill02, selectedWeapon.skill02SO.skillIcon);
-
+        // 스킬 등록
+        weaponSkillInstances.Clear();
         var skill01Data = DataManager.Instance.GetSkillData(selectedWeapon.skill01SO.skillId);
         var skill02Data = DataManager.Instance.GetSkillData(selectedWeapon.skill02SO.skillId);
 
-        skillUI.SetSkillCooldownTime(SkillSlotType.Skill01, skill01Data.CoolTime);
-        skillUI.SetSkillCooldownTime(SkillSlotType.Skill02, skill02Data.CoolTime);
+        var skillInstance01 = new SkillInstance(skill01Data);
+        var skillInstance02 = new SkillInstance(skill02Data);
 
+        weaponSkillInstances.Add(skillInstance01);
+        weaponSkillInstances.Add(skillInstance02);
+
+        // UI 연동
+        if (skillUI == null)
+            skillUI = FindObjectOfType<SkillUI>();
+
+        skillUI.SetSkillIcon(SkillSlotType.Skill01, skillInstance01.GetIcon());
+        skillUI.SetSkillIcon(SkillSlotType.Skill02, skillInstance02.GetIcon());
+        skillUI.SetSkillCooldownTime(SkillSlotType.Skill01, skillInstance01.GetCooldown());
+        skillUI.SetSkillCooldownTime(SkillSlotType.Skill02, skillInstance02.GetCooldown());
         skillUI.LoadCooldownFromWeapon(selectedWeapon.currentWeaponId);
 
+        // 무기 타입에 따른 기본 공격 세팅
         if (currentWeaponData.Type == WeaponType.Sword && selectedWeapon.comboAttackData != null)
         {
-            skillController.combatId = selectedWeapon.comboAttackData.id;
             skillController.comboAttack.SetComboData(selectedWeapon.comboAttackData);
-            if (skillUI != null)
-                skillUI.SetSkillIcon(SkillSlotType.Basic, selectedWeapon.comboAttackData.icon);
+            skillController.combatSkill = new CombatInstance(skillController.comboAttack, selectedWeapon.comboAttackData);
+            skillUI.SetSkillIcon(SkillSlotType.Basic, selectedWeapon.comboAttackData.icon);
         }
         else if (currentWeaponData.Type == WeaponType.Bow && selectedWeapon.rangedAttackData != null)
         {
-            skillController.combatId = selectedWeapon.rangedAttackData.id;
             skillController.rangedAttack.SetRangedAttackData(selectedWeapon.rangedAttackData);
-            if (skillUI != null)
-                skillUI.SetSkillIcon(SkillSlotType.Basic, selectedWeapon.rangedAttackData.icon);
+            skillController.combatSkill = new CombatInstance(skillController.rangedAttack, selectedWeapon.rangedAttackData);
+            skillUI.SetSkillIcon(SkillSlotType.Basic, selectedWeapon.rangedAttackData.icon);
         }
+
+        SkillManager.Instance.SetCurrentWeaponSkills(selectedWeapon.currentWeaponId);
     }
 
     public void EquipMemoryPiece(MemoryPieceSO memorySO)
@@ -161,30 +165,13 @@ public class WeaponManager : Singleton<WeaponManager>
             return;
         }
 
-        currentMemorySO = memorySO;
-        currentMemoryData = DataManager.Instance.GetMemoryPieceData(memorySO.currentMemoryPieceId);
+        var memory = new SkillInstance(memorySO);
+        memorySkillInstance = memory;
 
-        if (currentMemoryData == null)
-        {
-            Debug.LogWarning($"MemoryPieceData not found for ID {memorySO.currentMemoryPieceId}");
-            return;
-        }
+        SkillManager.Instance.SetMemorySkill(memorySkillInstance.memorySO);
 
-        SkillManager.Instance.SetMemorySkill(memorySO);
-
-        if (skillUI == null)
-            skillUI = FindObjectOfType<SkillUI>();
-
-        skillUI.SetSkillIcon(SkillSlotType.Memory, memorySO.icon);
-
-        if (memorySO.skillItem != null)
-        {
-            skillUI.SetSkillCooldownTime(SkillSlotType.Memory, memorySO.skillItem.coolTime);
-        }
-        else
-        {
-            Debug.LogWarning("SkillItem이 비어 있어 쿨타임을 설정할 수 없습니다.");
-        }
+        skillUI.SetSkillIcon(SkillSlotType.Memory, memorySkillInstance.GetIcon());
+        skillUI.SetSkillCooldownTime(SkillSlotType.Memory, memorySkillInstance.GetCooldown());
     }
 
     public float GetCurrentWeaponAttack()
@@ -197,6 +184,17 @@ public class WeaponManager : Singleton<WeaponManager>
 
     public MemoryPieceData GetCurrentMemoryPieceData() => currentMemoryData;
     public MemoryPieceSO GetCurrentMemoryPieceSO() => currentMemorySO;
+
+    public SkillInstance GetWeaponSkillInstance(int index)
+    {
+        if (index < 0 || index >= weaponSkillInstances.Count) return null;
+        return weaponSkillInstances[index];
+    }
+
+    public SkillInstance GetMemorySkillInstance()
+    {
+        return memorySkillInstance;
+    }
 
     public void SwapWeapon()
     {
@@ -236,22 +234,15 @@ public class WeaponManager : Singleton<WeaponManager>
 
         if (currentWeaponSO != null)
         {
-            skillController.skill01Id = currentWeaponSO.skill01SO.skillId;
-            skillController.skill02Id = currentWeaponSO.skill02SO.skillId;
-
             if (currentWeaponData == null)
-            {
                 currentWeaponData = DataManager.Instance.GetWeaponData(currentWeaponSO.currentWeaponId);
-            }
 
             if (currentWeaponData.Type == WeaponType.Sword && currentWeaponSO.comboAttackData != null)
             {
-                skillController.combatId = currentWeaponSO.comboAttackData.id;
                 skillController.comboAttack.SetComboData(currentWeaponSO.comboAttackData);
             }
             else if (currentWeaponData.Type == WeaponType.Bow && currentWeaponSO.rangedAttackData != null)
             {
-                skillController.combatId = currentWeaponSO.rangedAttackData.id;
                 skillController.rangedAttack.SetRangedAttackData(currentWeaponSO.rangedAttackData);
             }
         }
@@ -331,8 +322,8 @@ public class WeaponManager : Singleton<WeaponManager>
         currentWeaponSO = null;
         currentWeaponData = null;
 
-        skillController.skill01Id = -1;
-        skillController.skill02Id = -1;
+        skillController.skill01 = null;
+        skillController.skill02 = null;
 
         if (skillUI != null)
         {
