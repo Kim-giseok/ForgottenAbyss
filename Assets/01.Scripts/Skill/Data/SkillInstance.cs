@@ -94,6 +94,7 @@ public class SkillInstance
         }
     }
 
+    // 여기에 쿨감 적용
     public float GetCooldown()
     {
         if (sourceType == SkillSourceType.Weapon)
