@@ -16,12 +16,6 @@ public class TempTester: MonoBehaviour
 
    private void Update()
    {
-      if (Input.GetKeyDown(KeyCode.L))
-      {
-         // BoltManager.Instance.CreateSummon(transform, SummonSkillManager.Skill.DashAttack, true);
-         BoltsPool.Instance.CreateSummon(transform, SummonSkillManager.Skill.ComboDashAttack, true);
-      }
-
       if (Input.GetKeyDown(KeyCode.K))
       {
          BoltsPool.Instance.Create(transform, Bolts.Type.Linear)
@@ -39,7 +33,22 @@ public class TempTester: MonoBehaviour
 
       if (Input.GetKeyDown(KeyCode.J))
       {
-         BoltsPool.Instance.Create(transform, Bolts.Type.BlackHole).Fire();
+         BoltsPool.Instance.Create(transform, Bolts.Type.BlackHole).SetSize(4).Fire();
+      }
+
+      if (Input.GetKeyDown(KeyCode.L))
+      {
+         BoltsPool.Instance.CreateSummon(transform, SummonSkillManager.Skill.ComboDashAttack, true);
+      }
+      
+      if (Input.GetKeyDown(KeyCode.P))
+      {
+         BoltsPool.Instance.CreateSummon(transform, SummonSkillManager.Skill.Heal, true);
+      }
+
+      if (Input.GetKeyDown(KeyCode.O))
+      {
+         BoltsPool.Instance.CreateSummon(transform, SummonSkillManager.Skill.ArcherArrow, true);
       }
    }
 

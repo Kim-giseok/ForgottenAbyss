@@ -49,8 +49,8 @@ public class Enemies
                     {
                     //     // 스킬을 사용한 경우 마나와 쿨타임 정보 가지는 방식 필요
                     //     // 연속 공격이 왜 안됨(애님메이션 관련 문제)
-                    (0.9f, new SequenceNode( RangeAttack.Piercing, new IdleNode(0.05f), RangeAttack.Piercing)),
-                    (1f, RangeAttack.Piercing)
+                    (0.9f, new SequenceNode( new GunnerRangeAttack(), new IdleNode(0.05f), new GunnerRangeAttack())),
+                    (1f, new GunnerRangeAttack())
                     }),
                     new CoolTimeNode(0.5f)), 
                 new SequenceNode(new IdleNode(1), new PatrolMove(1)))
@@ -94,14 +94,15 @@ public class Enemies
             Enemy.MudEye,
             new SelectorNode(
                 new SequenceNode(new HitNode(), new DieNode()),
-                new SequenceNode(new IdleNode(1), new MudControlnode())
+                new SequenceNode(new MudWarpNode(), new MudWarpNode(), new MudWarpNode())
+                // new SequenceNode(new MudMoveNode(new Vector2(-1, -1)), new MudMoveNode(new Vector2(1, 1)), new MudMoveNode(new Vector2(1, -1)), new MudMoveNode(new Vector2(-1, 1)), new IdleNode(3), new MudSpawnNode())
                 )
         },
         {
             Enemy.MudChildHand,
             new SelectorNode(
                 new SequenceNode(new HitNode(), new DieNode()),
-                new SequenceNode(new MudHandIdleNode())
+                new SequenceNode(new MudAggroNode(), new MudCastingNode(), new MudAttackNode(), new MudIdleNode())
             )
         }
     };

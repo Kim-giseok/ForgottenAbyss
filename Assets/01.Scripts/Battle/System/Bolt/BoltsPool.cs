@@ -52,7 +52,7 @@ public class BoltsPool : MonoBehaviour // 단위 미사일
     }
 
     // ReSharper disable Unity.PerformanceAnalysis
-    // do: 사이즈의 조절, 모양의 변경 등의 관리 필요
+    // HitBox 자체 전달로 빌더 패턴 적용
     public HitBox CreateMelee(Transform parent, float power, Vector2? startPos = null, Vector2? size = null)
     {
         var currMelee = currMelees.Find(melee => melee.parent == parent);
@@ -98,7 +98,6 @@ public class BoltsPool : MonoBehaviour // 단위 미사일
         {
             GameObject instance = Instantiate(Bolt, Vector2.zero, Quaternion.identity, transform);
             bolt = instance.GetComponent<Bolt>();
-            
             currBolts.Add(bolt);
         }
 
@@ -110,6 +109,7 @@ public class BoltsPool : MonoBehaviour // 단위 미사일
         bolt.transform.position = parent.position;
         
         bolt.SetDirection(parent.transform.right);
+        
         bolt.machine.Define(Bolts.Get(boltType));
         
         return bolt;
@@ -125,13 +125,13 @@ public class BoltsPool : MonoBehaviour // 단위 미사일
     // ReSharper disable Unity.PerformanceAnalysis
     public SummonController CreateSummon(Transform parent, SummonSkillManager.Skill skill, bool isAttached = false)
     {
-        SummonController currSummon = currSummons.Find(summon => !summon.gameObject.activeSelf);
-        if (!currSummon)
-        {
+        // SummonController currSummon = currSummons.Find(summon => !summon.gameObject.activeSelf);
+        // if (!currSummon)
+        // {
             GameObject instance = Instantiate(Summon, new Vector2(parent.transform.position.x, parent.transform.position.y + 0.8f), Quaternion.identity);
-            currSummon = instance.GetComponent<SummonController>();
-            currSummons.Add(currSummon);
-        }
+            SummonController currSummon = instance.GetComponent<SummonController>();
+            // currSummons.Add(currSummon);
+        // }
         
         // notice: 플레이어 위치로 인한 보정 필요
         currSummon.gameObject.layer = parent.gameObject.layer;

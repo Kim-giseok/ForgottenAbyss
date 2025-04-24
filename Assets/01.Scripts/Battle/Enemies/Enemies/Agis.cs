@@ -26,7 +26,16 @@ public class AgisSpreadShot : Node
         {
             if (controller is SummonController { isPlayerCaster: false } sContorller)
             {
-                BoltsPool.Instance.Create(controller.transform, Bolts.Type.Linear).SetDirection(sContorller.castingDirection).Fire();
+                Vector2[] directions = { Vector2.up, Vector2.down, Vector2.right, Vector2.left };
+
+                foreach (var dir in directions)
+                {
+                    BoltsPool.Instance
+                        .Create(controller.transform, Bolts.Type.Linear)
+                        .SetDirection(dir)
+                        .SetSpeed(16f)
+                        .Fire();
+                }
             }
             SetStatus(Status.Success); return;
         }

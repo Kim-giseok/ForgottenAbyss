@@ -23,7 +23,10 @@ public class SummonController: EnemyBaseController
     public Rigidbody2D cRigidbody {get; private set;}
     private Collider2D cCollider;
     private SpriteRenderer cRenderer;
+
+    public float degree;
     public Vector2 direction {get; private set;}
+    public void SecDirection(Vector2 direction) => this.direction = direction;
     
     // ReSharper disable Unity.PerformanceAnalysis
     public void SetCaster(Transform currCaster ,bool isAttached = false)

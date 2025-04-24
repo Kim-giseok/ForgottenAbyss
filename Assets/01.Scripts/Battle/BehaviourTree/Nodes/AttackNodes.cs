@@ -62,35 +62,3 @@ public class RangeAttackNode : Node
         if (status == AnimationStatus.End) { SetStatus(Status.Success); }
     }
 }
-
-public class RangeAttack : Node
-{
-    public static readonly Node Piercing = new RangeAttack((controller, isFire) =>
-    {
-        if (isFire)
-        {
-            BoltsPool.Instance.Create(controller.transform, Bolts.Type.Laser)
-                .SetDirection(controller.agent.GetDirection())
-                // .SetTrailCurve(BoltsPool.TrailType.Laser)
-                .SetEffect(Bolts.EffectType.Penetration)
-                .SetSpeed(20f)
-                .Fire();
-        }
-    }); 
-    
-    private readonly Action<EnemyBaseController, bool> callback;
-    public RangeAttack(Action<EnemyBaseController, bool> callback) => this.callback = callback;
-    public override void Start()
-    {
-        controller.animnHandler.Play("Attack");
-        controller.LookTarget();
-    }
-    
-    public override void OnAnimatedEvent(bool isFire) => callback(controller, isFire);
-    
-    public override void OnAnimated(AnimationStatus status, AnimatorStateInfo animInfo)
-    {
-        if (!animInfo.IsName("Attack")) return;
-        if (status == AnimationStatus.End) { SetStatus(Status.Success); }
-    }
-}

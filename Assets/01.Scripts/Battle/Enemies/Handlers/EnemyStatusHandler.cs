@@ -4,6 +4,7 @@ using UnityEngine;
 public class EnemyStatusHandler
 {
     public bool isIgnoreHitAction = false; // 원거리 친구만 false
+    public Vector3 startPosition;
     
     public bool isHit = false;
     public bool isDefense = false;

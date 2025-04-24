@@ -8,6 +8,9 @@ public class HitBox : MonoBehaviour // 1회 공격 당의 캐싱이 필요할 �
     public LayerMask? ownerLayer { get; private set; } = null;
     
     private Collider2D collider;
+    
+    public bool isKnockBack = false;
+    public float knockBackForce = 0f;
 
     public HitBox SetDamage(float damage)
     {
@@ -24,6 +27,12 @@ public class HitBox : MonoBehaviour // 1회 공격 당의 캐싱이 필요할 �
     {
         this.transform.localPosition = position;
         return this;
+    }
+    
+    public void SetKnockBack(float knockBackForce)
+    {
+        isKnockBack = true;
+        this.knockBackForce = knockBackForce;
     }
 
     private void Awake()
@@ -45,6 +54,9 @@ public class HitBox : MonoBehaviour // 1회 공격 당의 캐싱이 필요할 �
     private void OnDisable()
     {
         collider.enabled = false;
+        
+        isKnockBack = false;
+        knockBackForce = 0f;
     }
 
     
@@ -57,6 +69,8 @@ public class HitBox : MonoBehaviour // 1회 공격 당의 캐싱이 필요할 �
         
         if (!other.TryGetComponent(out IDamagable damagable) || ownerLayer == other.gameObject.layer) return;
 
+        
+        if (isKnockBack && other.attachedRigidbody) { other.attachedRigidbody.AddForce((other.transform.position - transform.position).normalized * knockBackForce, ForceMode2D.Impulse); }
         // notice: 캐스팅 대상이 플레이어인 경우
         if (other.gameObject.layer == LayerMask.NameToLayer("Enemy"))
         {
@@ -64,8 +78,12 @@ public class HitBox : MonoBehaviour // 1회 공격 당의 캐싱이 필요할 �
             return;
         }
 
+        // notice: getComponent 비용이 크니 방어처리를 GetDamage 쪽에서 해주는 게 좋을 듯
         ControllerPlayer player = other.gameObject.GetComponent<ControllerPlayer>();
 
-        if (player != null && !player.isInvincible) { damagable.GetDamage(damage); }
+        if (player && !player.isInvincible)
+        {
+            damagable.GetDamage(damage);
+        }
     }
 }

@@ -3,13 +3,12 @@ using System.Collections.Generic;
 
 public class EnemyBoards
 {
-    public Dictionary<Enemies.Enemy, Func<EnemyBoard>> boards = new()
+    public EnemyBoard Create(Enemies.Enemy enemy)
     {
-        { Enemies.Enemy.NightBone, () => new NightBoneBoard() }
-    };
-
-    public EnemyBoard CreateBoard(Enemies.Enemy enemy)
-    {
-        return boards[enemy]();
+        return enemy switch
+        {
+            Enemies.Enemy.NightBone => new NightBoneBoard(),
+            _ => throw new ArgumentException($"Board for {enemy} is not defined.")
+        };
     }
 }
