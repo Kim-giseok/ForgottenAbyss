@@ -10,6 +10,8 @@ public class BasicAttackData
     public float baseAttack;
     public float weaponAttack;
     public float comboMultiplier;
+    public float critChance;
+    public float critDamageMultiplier;
 
     public Vector3 position => caster.transform.position;
 
@@ -22,8 +24,17 @@ public class BasicAttackData
         result.target = target;
 
         var status = caster.GetComponent<PlayerStatus>();
-        if (status != null)
+
+        if (status == null)
+        {
+            Debug.Log("status 가 널입니다.");
+        }
+        else
+        {
             result.baseAttack = status.GetStat(StatType.ATK);
+            //result.critChance = status.GetStat(StatType.CritChance) / 100f;
+            //result.critDamageMultiplier = 1 + (status.GetStat(StatType.CritDamage) / 100f); < 추후 크리티컬 적용시
+        }
 
         result.weaponAttack = WeaponManager.Instance.GetCurrentWeaponAttack();
         result.comboMultiplier = comboMultiplier;

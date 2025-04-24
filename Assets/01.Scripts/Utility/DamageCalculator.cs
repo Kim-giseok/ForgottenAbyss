@@ -2,20 +2,41 @@ using UnityEngine;
 
 public static class DamageCalculator
 {
-    // 여기에 크리티컬 적용
     public static float CalculateDamage(SkillCastData castData)
     {
-        Debug.Log($"{castData.baseAttack} + {castData.weaponAttack} * {castData.skillMultiplier} = " +
-            $"{(castData.baseAttack + castData.weaponAttack) * castData.skillMultiplier}");
+        // 기본 데미지
+        float damage = (castData.baseAttack + castData.weaponAttack) * castData.skillMultiplier;
 
-        return (castData.baseAttack + castData.weaponAttack) * castData.skillMultiplier;
+        // 크리티컬 판정
+        bool isCrit = Random.value < castData.critChance;
+
+        if (isCrit)
+        {
+            damage *= castData.critDamageMultiplier;
+            Debug.Log($"(({castData.baseAttack} + {castData.weaponAttack}) * {castData.skillMultiplier}) * {castData.critDamageMultiplier} = {damage}");
+        }
+        else
+            Debug.Log($"{castData.baseAttack} + {castData.weaponAttack} * {castData.skillMultiplier} = {damage}");
+
+        return damage;
     }
 
     public static float CalculateBasicDamage(BasicAttackData baData)
     {
-        Debug.Log($"{baData.baseAttack} + {baData.weaponAttack} * {baData.comboMultiplier} = " +
-            $"{(baData.baseAttack + baData.weaponAttack) * baData.comboMultiplier}");
+        // 기본 데미지
+        float damage = (baData.baseAttack + baData.weaponAttack) * baData.comboMultiplier;
 
-        return (baData.baseAttack + baData.weaponAttack) * baData.comboMultiplier;
+        // 크리티컬 판정
+        bool isCrit = Random.value < baData.critChance;
+
+        if (isCrit)
+        {
+            damage *= baData.critDamageMultiplier;
+            Debug.Log($"(({baData.baseAttack} + {baData.weaponAttack}) * {baData.comboMultiplier}) * {baData.critDamageMultiplier} = {damage}");
+        }
+        else
+            Debug.Log($"{baData.baseAttack} + {baData.weaponAttack} * {baData.comboMultiplier} = {damage}");
+
+        return damage;
     }
 }
