@@ -7,7 +7,7 @@ public class PlayerInteraction : MonoBehaviour
 {
     public float interactionRange; //상호작용 범위
     public LayerMask interactableLayer; //상호작용 가능한 오브젝트의 레이어
-    
+
     public void Update()
     {
         Vector2 rayOrigin = new Vector2(transform.position.x, transform.position.y + GetComponent<Collider2D>().bounds.extents.y); ; // Raycast 시작점
@@ -19,7 +19,7 @@ public class PlayerInteraction : MonoBehaviour
     public void Interact(Vector2 origin, Vector2 direction)
     {
         RaycastHit2D hit = Physics2D.Raycast(origin, direction, interactionRange, interactableLayer); // 2D Raycast
-       
+
         if (hit.collider != null)
         {
             IInteractable interactable = hit.collider.GetComponent<IInteractable>();
@@ -31,4 +31,15 @@ public class PlayerInteraction : MonoBehaviour
         }
     }
 
-}  
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (!collision.TryGetComponent<IInteractable>(out var interact)) return;
+        UIManager.Instance.OnGuidUI(collision.gameObject);
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (!collision.TryGetComponent<IInteractable>(out var interact)) return;
+        UIManager.Instance.OffGuidUI();
+    }
+}

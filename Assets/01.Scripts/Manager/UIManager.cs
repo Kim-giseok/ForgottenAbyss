@@ -32,9 +32,9 @@ public class UIManager : MonoBehaviour
     public void ToggleSettings() => settingsMenu?.ToggleSettingsMenu();
     public void SwapWeapons() => weaponSwapper?.SwapWeapons();
 
-    public void OnGuidUI(MonoBehaviour gameobject)
+    public void OnGuidUI(GameObject gameobject)
     {
-        Vector3 position = gameobject.transform.position + Vector3.up * 1.5f;
+        Vector3 position = gameobject.transform.position + Vector3.up * 1.5f * gameObject.transform.localScale.y;
         npcText.transform.position = position;
 
         if (!npcText.activeSelf)
