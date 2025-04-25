@@ -80,7 +80,7 @@ public class SummonController: EnemyBaseController
         pController.isInvincible = true; 
     }
     
-    public void ExecuteSkill(SummonSkillManager.Skill skillName)
+    public void Define(SummonSkillManager.Skill skillName)
     {
         var (enemy, node) = SummonSkillManager.skills[skillName];
         animnHandler.SetController(EnemiesAnimator.animators[enemy.ToString()]);

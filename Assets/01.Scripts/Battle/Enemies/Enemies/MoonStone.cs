@@ -66,15 +66,13 @@ public class MoonAttack1 : Node
     public override void Start()
     {
         controller.rigidbody.drag = 4f;
-        controller.rigidbody.AddForce(new Vector2(32f, 0), ForceMode2D.Impulse);
+        controller.rigidbody.AddForce(new Vector2(16f, 0), ForceMode2D.Impulse);
         controller.animnHandler.Play("Attack");
     }
 
     public override void OnAnimated(AnimationStatus status, AnimatorStateInfo animInfo)
     {
-        Debug.Log(status);
         if (!animInfo.IsName("Attack")) return;
-        
         if (status == AnimationStatus.End) { SetStatus(Status.Success); return; }
     }
 

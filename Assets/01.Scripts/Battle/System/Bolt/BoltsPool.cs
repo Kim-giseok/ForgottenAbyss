@@ -94,6 +94,7 @@ public class BoltsPool : MonoBehaviour // 단위 미사일
         
         if (!bolt)
         {
+            // idea: start 될 때 Bolt가 스스로 bolts에 자신을 등록하면 GetComponent를 하지 않아도 되지 않을까?
             GameObject instance = Instantiate(Bolt, Vector2.zero, Quaternion.identity, transform);
             bolt = instance.GetComponent<Bolt>();
             currBolts.Add(bolt);
@@ -135,7 +136,7 @@ public class BoltsPool : MonoBehaviour // 단위 미사일
         currSummon.gameObject.layer = parent.gameObject.layer;
         
         currSummon.SetCaster(parent, isAttached);
-        currSummon.ExecuteSkill(skill);
+        currSummon.Define(skill);
 
         return currSummon;
     }
