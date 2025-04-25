@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class UIManager : MonoBehaviour
@@ -5,7 +6,7 @@ public class UIManager : MonoBehaviour
     public static UIManager Instance { get; private set; }
 
     [Header("ScreenUI")]
-    public InventoryUI inventoryUI;
+    public InventoryUIManager inventoryUI;
     public SettingsMenu settingsMenu;
     public WeaponSwapper weaponSwapper;
     public ConfirmationUI confirmationUI;
@@ -29,6 +30,7 @@ public class UIManager : MonoBehaviour
     }
 
     public void ToggleInventory() => inventoryUI?.ToggleInventory();
+    public void CloseInventory() => inventoryUI?.Close();
     public void ToggleSettings() => settingsMenu?.ToggleSettingsMenu();
     public void SwapWeapons() => weaponSwapper?.SwapWeapons();
 
@@ -57,5 +59,15 @@ public class UIManager : MonoBehaviour
     {
         if (talkBox.gameObject.activeSelf)
             talkBox.gameObject.SetActive(false);
+    }
+
+    public void HideAllUI()
+    {
+        gameObject.SetActive(false);
+    }
+
+    public void ShowAllUI()
+    {
+        gameObject.SetActive(true);
     }
 }

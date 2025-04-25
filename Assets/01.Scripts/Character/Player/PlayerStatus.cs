@@ -94,10 +94,10 @@ public class PlayerStatus : CharacterStatus
         {
             InvestStatPoint(StatType.MaxHP);
         }
-        if (Input.GetKeyDown(KeyCode.R)) // DEF에 스탯 포인트 투자
-        {
-            InvestStatPoint(StatType.DEF);
-        }
+        //if (Input.GetKeyDown(KeyCode.R)) // DEF에 스탯 포인트 투자
+        //{
+        //    InvestStatPoint(StatType.DEF);
+        //}
         if (Input.GetKeyDown(KeyCode.T)) // SPEED에 스탯 포인트 투자
         {
             InvestStatPoint(StatType.SPEED);

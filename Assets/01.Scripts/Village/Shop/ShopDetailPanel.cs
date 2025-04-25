@@ -37,39 +37,56 @@ public class ShopDetailPanel : MonoBehaviour
 
     private void Buy()
     {
-        if (currentData == null)
-        {
-            Debug.LogError("[Buy] currentData가 null입니다!");
-            return;
-        }
-
-        if (currentData.item == null)
-        {
-            Debug.LogError("[Buy] currentData.item이 null입니다!");
-            return;
-        }
-
-        if (Inventory.Instance == null)
-        {
-            Debug.LogError("[Buy] Inventory.Instance가 null입니다!");
-            return;
-        }
-
-        if (GoldManager.Instance == null)
-        {
-            Debug.LogError("[Buy] GoldManager.Instance가 null입니다!");
-            return;
-        }
-
         if (GoldManager.Instance.SpendGold(currentData.price))
         {
             Inventory.Instance.AddItem(currentData.item);
             Debug.Log("구매 완료!");
+
+            // 인벤토리 열려 있으면 강제로 UI 갱신
+            if (UIManager.Instance.inventoryUI.inventoryPanel.activeSelf)
+            {
+                UIManager.Instance.inventoryUI.UpdateUI();
+            }
+
             Hide();
         }
         else
         {
             Debug.Log("골드 부족!");
         }
+        //if (currentData == null)
+        //{
+        //    Debug.LogError("[Buy] currentData가 null입니다!");
+        //    return;
+        //}
+
+        //if (currentData.item == null)
+        //{
+        //    Debug.LogError("[Buy] currentData.item이 null입니다!");
+        //    return;
+        //}
+
+        //if (Inventory.Instance == null)
+        //{
+        //    Debug.LogError("[Buy] Inventory.Instance가 null입니다!");
+        //    return;
+        //}
+
+        //if (GoldManager.Instance == null)
+        //{
+        //    Debug.LogError("[Buy] GoldManager.Instance가 null입니다!");
+        //    return;
+        //}
+
+        //if (GoldManager.Instance.SpendGold(currentData.price))
+        //{
+        //    Inventory.Instance.AddItem(currentData.item);
+        //    Debug.Log("구매 완료!");
+        //    Hide();
+        //}
+        //else
+        //{
+        //    Debug.Log("골드 부족!");
+        //}
     }
 }

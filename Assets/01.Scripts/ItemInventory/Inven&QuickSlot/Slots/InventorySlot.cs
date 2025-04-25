@@ -26,14 +26,15 @@ public class InventorySlot : SlotBase
     public override void SetItem(Item item)
     {
         currentItem = item;
+
         iconImage.sprite = item.itemIcon;
         iconImage.enabled = true;
 
         if (itemUI != null)
         {
+            itemUI.gameObject.SetActive(true);
             itemUI.SetItem(item);
-            itemUI.SetDraggable(mode == SlotMode.Editable); // 모드별 드래그 여부
-            itemUI.gameObject.SetActive(true); // 아이템 들어왔을 때만 활성화
+            itemUI.SetDraggable(mode == SlotMode.Editable);
         }
     }
 
@@ -46,7 +47,7 @@ public class InventorySlot : SlotBase
         if (itemUI != null)
         {
             itemUI.RemoveItem();
-            itemUI.gameObject.SetActive(false); // 비활성화
+            itemUI.gameObject.SetActive(false);
         }
     }
 }

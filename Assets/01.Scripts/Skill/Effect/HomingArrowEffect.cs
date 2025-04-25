@@ -165,16 +165,16 @@ public class HomingArrowEffect : MonoBehaviour
     {
         if (target != null)
         {
-            SkillExecutionSO skillExecutionSO = DataManager.Instance.GetSkillExecutionSO(skillData.Name + "_Execution");
+            SkillInstance skillInst = WeaponManager.Instance.GetWeaponSkillInstance(1);
 
-            if (skillExecutionSO == null)
+            if (skillInst == null)
             {
-                Debug.LogError($"SkillExecutionSO를 찾을 수 없습니다. 이름: {skillData.Name}");
+                Debug.LogError($"skillInst is null");
                 autoReleaseEffect.Release();
                 return;
             }
 
-            skillExecutionSO.ExecuteSkill(caster, target.gameObject, skillData);
+            skillInst.execution.ExecuteSkill(caster, target.gameObject, skillInst.data);
 
             // 카메라 쉐이크
             CameraShake.Instance.Shake(0.1f, 0.2f);

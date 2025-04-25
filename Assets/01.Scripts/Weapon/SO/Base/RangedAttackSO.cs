@@ -10,6 +10,33 @@ public class RangedAttackSO : ScriptableObject
     public Sprite icon;
 
     public List<RangedComboStep> comboSteps = new();
+
+    public RangedAttackSO Clone()
+    {
+        RangedAttackSO clone = CreateInstance<RangedAttackSO>();
+
+        clone.id = this.id;
+        clone.attackName = this.attackName;
+        clone.description = this.description;
+        clone.icon = this.icon;
+
+        clone.comboSteps = new List<RangedComboStep>();
+        foreach (var step in this.comboSteps)
+        {
+            clone.comboSteps.Add(new RangedComboStep
+            {
+                animationName = step.animationName,
+                projectilePrefab = step.projectilePrefab,
+                projectileCount = step.projectileCount,
+                fireDelay = step.fireDelay,
+                multiplier = step.multiplier,
+                isSpread = step.isSpread,
+                spreadAngle = step.spreadAngle
+            });
+        }
+
+        return clone;
+    }
 }
 
 [System.Serializable]

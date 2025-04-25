@@ -10,6 +10,32 @@ public class ComboAttackSO : ScriptableObject
     public string description;
     public Sprite icon;
     public List<ComboStep> comboSteps;
+
+    public ComboAttackSO Clone()
+    {
+        ComboAttackSO clone = CreateInstance<ComboAttackSO>();
+
+        clone.id = this.id;
+        clone.attackName = this.attackName;
+        clone.description = this.description;
+        clone.icon = this.icon;
+
+        clone.comboSteps = new List<ComboStep>();
+        foreach (var step in this.comboSteps)
+        {
+            clone.comboSteps.Add(new ComboStep
+            {
+                animationName = step.animationName,
+                damageMultiplier = step.damageMultiplier,
+                moveDistance = step.moveDistance,
+                inputBufferTime = step.inputBufferTime,
+                radius = step.radius,
+                offset = step.offset
+            });
+        }
+
+        return clone;
+    }
 }
 
 [System.Serializable]

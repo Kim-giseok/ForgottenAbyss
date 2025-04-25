@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class CombatInstance
@@ -29,6 +30,30 @@ public class CombatInstance
         this.rangedSO = rangedSO;
         id = rangedSO.id;
         icon = rangedSO.icon;
+    }
+
+    public CombatInstance Clone()
+    {
+        CombatInstance clone;
+
+        switch (weaponType)
+        {
+            case WeaponType.Sword:
+                var clonedCombo = comboSO != null ? comboSO.Clone() : null;
+                clone = new CombatInstance(comboAttack, clonedCombo);
+                break;
+
+            case WeaponType.Bow:
+                var clonedRanged = rangedSO != null ? rangedSO.Clone() : null;
+                clone = new CombatInstance(rangedAttack, clonedRanged);
+                break;
+
+            default:
+                clone = null;
+                break;
+        }
+
+        return clone;
     }
 
     public void Execute()
