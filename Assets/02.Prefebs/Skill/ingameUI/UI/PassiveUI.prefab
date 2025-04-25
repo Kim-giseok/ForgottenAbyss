@@ -196,7 +196,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 4989276372489466704}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8450011350015619781}
+        m_TargetAssemblyTypeName: PassiveUI, Assembly-CSharp
+        m_MethodName: OnClickCritical
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &546756351752500794
 GameObject:
   m_ObjectHideFlags: 0
@@ -469,7 +481,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1065935575415043844}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8450011350015619781}
+        m_TargetAssemblyTypeName: PassiveUI, Assembly-CSharp
+        m_MethodName: OnClickHp
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1613561378611900706
 GameObject:
   m_ObjectHideFlags: 0
@@ -834,8 +858,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eedf840b71416e14294fc46fcd2757a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerStatus: {fileID: 0}
   passiveUI: {fileID: 1965455522736502734}
+  atkText: {fileID: 4976482936234108125}
+  crtText: {fileID: 2807145136219834952}
+  hpText: {fileID: 1864412851608374448}
+  defText: {fileID: 2215440074842708372}
+  speedText: {fileID: 2122243413671187905}
 --- !u!1 &2339519375492628977
 GameObject:
   m_ObjectHideFlags: 0
@@ -956,7 +984,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1157721661111504205}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8450011350015619781}
+        m_TargetAssemblyTypeName: PassiveUI, Assembly-CSharp
+        m_MethodName: OnClickAttack
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &2404214027694566021
 GameObject:
   m_ObjectHideFlags: 0
@@ -1077,7 +1117,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 3218502097030221737}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8450011350015619781}
+        m_TargetAssemblyTypeName: PassiveUI, Assembly-CSharp
+        m_MethodName: OnClickSpeed
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &2408214233730093316
 GameObject:
   m_ObjectHideFlags: 0
@@ -3359,7 +3411,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 3682323598600949753}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8450011350015619781}
+        m_TargetAssemblyTypeName: PassiveUI, Assembly-CSharp
+        m_MethodName: OnClickDefence
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &8910014397822531760
 GameObject:
   m_ObjectHideFlags: 0

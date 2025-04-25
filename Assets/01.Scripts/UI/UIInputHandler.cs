@@ -16,7 +16,7 @@ public class UIInputHandler : MonoBehaviour
             { KeyCode.I, () => UIManager.Instance?.ToggleInventory() },
             { KeyCode.Escape, HandleEscapeKey },
             //{ KeyCode.Tab, () => UIManager.Instance?.SwapWeapons() }
-            { KeyCode.E, () => UIManager.Instance?.OnStatUI() },
+            { KeyCode.V, () => UIManager.Instance?.OnStatUI() },
             { KeyCode.K, () => UIManager.Instance?.OnPassiveUI() }
         };
     }
@@ -29,10 +29,6 @@ public class UIInputHandler : MonoBehaviour
             {
                 entry.Value?.Invoke();
             }
-        }
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            Debug.Log("E키 눌림 감지");
         }
     }
 

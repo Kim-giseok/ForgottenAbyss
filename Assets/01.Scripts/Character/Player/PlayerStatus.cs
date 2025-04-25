@@ -28,6 +28,8 @@ public class PlayerStatus : CharacterStatus
     public delegate void StatPointsChangedHandler(int points);
     public event StatPointsChangedHandler OnStatPointsChanged;
 
+    //public static PlayerStatus Instance { get; private set; }
+
     private StatType[] investableStats = new StatType[]
     {
         StatType.ATK,
@@ -37,14 +39,27 @@ public class PlayerStatus : CharacterStatus
         StatType.SPEED
     };
 
-    [SerializeField] private GameObject[] StatButtons; // 스탯을 찍는 버튼들
-    
+
     private void Awake()
     {
-        InitializeStats();
-        InitializeLevelStats();
-        InitializeExpRequired();
-        InitializeStatPointSystem();
+        //if (Instance != null && Instance != this)
+        //{
+        //    // 이미 인스턴스가 존재하면 새로 생성된 것은 파괴
+        //    Destroy(gameObject);
+        //    return;
+        //}
+
+        //Instance = this;
+
+        //DontDestroyOnLoad(gameObject); // 씬 전환 시에도 파괴되지 않도록 설정
+
+        //if (Instance == this)
+        {
+            InitializeStats();
+            InitializeLevelStats();
+            InitializeExpRequired();
+            InitializeStatPointSystem();
+        }
     }
 
     private void Start()
@@ -80,28 +95,7 @@ public class PlayerStatus : CharacterStatus
         }
 
         TestExp();
-
-        // 테스트용 스탯 포인트 투자
-        //if (Input.GetKeyDown(KeyCode.Q)) // ATK에 스탯 포인트 투자
-        //{
-        //    InvestStatPoint(StatType.ATK);
-        //}
-        //if (Input.GetKeyDown(KeyCode.W)) // CRITICAL에 스탯 포인트 투자
-        //{
-        //    InvestStatPoint(StatType.CRITICAL);
-        //}
-        //if (Input.GetKeyDown(KeyCode.E)) // MaxHP에 스탯 포인트 투자
-        //{
-        //    InvestStatPoint(StatType.MaxHP);
-        //}
-        //if (Input.GetKeyDown(KeyCode.R)) // DEF에 스탯 포인트 투자
-        //{
-        //    InvestStatPoint(StatType.DEF);
-        //}
-        //if (Input.GetKeyDown(KeyCode.T)) // SPEED에 스탯 포인트 투자
-        //{
-        //    InvestStatPoint(StatType.SPEED);
-        //}
+        Debug.Log($"현재공격력: {stats[StatType.ATK]}");
     }
     private void InitializeStats()
     {
