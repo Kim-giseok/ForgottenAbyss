@@ -8,7 +8,7 @@ public class LaberBase : MonoBehaviour
     [SerializeField] Animator laberAnim;
     protected bool isSwitched = false;
 
-    protected virtual void SwitchMachine()
+    public virtual void SwitchMachine()
     {
         if (isSwitched) return;
         laberAnim?.SetFloat("Active", 1);

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class LaberInteractive : LaberBase, IInteractable
 {
-    protected override void SwitchMachine()
+    public override void SwitchMachine()
     {
         base.SwitchMachine();
         UIManager.Instance.OffGuidUI();
