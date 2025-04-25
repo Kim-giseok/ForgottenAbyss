@@ -13,6 +13,7 @@ public class UIManager : MonoBehaviour
     public GameObject shopUI;
     public StatUI statUI;
     public PassiveUI passiveUI;
+    public ItemTooltip tooltip;
 
     [Header("WorldUI")]
     public RectTransform worldSpaceCanvas;
