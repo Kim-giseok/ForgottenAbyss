@@ -38,6 +38,9 @@ public class ItemUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
         item = newItem;
         iconImage.sprite = item.itemIcon;
         iconImage.enabled = true;
+
+        gameObject.SetActive(true);
+
     }
 
     // 아이템 제거
