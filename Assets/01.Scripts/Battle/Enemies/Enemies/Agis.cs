@@ -32,6 +32,7 @@ public class AgisSpreadShot : Node
                     .Create(controller.transform, Bolts.Type.Linear)
                     .SetDirection(dir)
                     .SetSpeed(16f)
+                    .SetDamage(50)
                     .Fire();
             }
             SetStatus(Status.Success); return;
