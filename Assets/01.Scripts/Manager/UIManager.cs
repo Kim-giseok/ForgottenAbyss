@@ -60,4 +60,14 @@ public class UIManager : MonoBehaviour
         if (talkBox.gameObject.activeSelf)
             talkBox.gameObject.SetActive(false);
     }
+
+    public void HideAllUI()
+    {
+        gameObject.SetActive(false);
+    }
+
+    public void ShowAllUI()
+    {
+        gameObject.SetActive(true);
+    }
 }
