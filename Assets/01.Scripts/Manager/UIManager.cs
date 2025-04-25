@@ -10,6 +10,8 @@ public class UIManager : MonoBehaviour
     public WeaponSwapper weaponSwapper;
     public ConfirmationUI confirmationUI;
     public GameObject shopUI;
+    public StatUI statUI;
+    public PassiveUI passiveUI;
 
     [Header("WorldUI")]
     public RectTransform worldSpaceCanvas;

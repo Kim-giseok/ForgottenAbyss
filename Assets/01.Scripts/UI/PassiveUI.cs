@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PassiveStatus : MonoBehaviour
+public class PassiveUI : MonoBehaviour
 {
-   
+    public PlayerStatus playerStatus;
 }
