@@ -12,12 +12,14 @@ public class MachineLoop : Machine
     {
         rootLaber = rootlaber;
         base.Active(rootlaber);
+        if (!isActivated) return;
         ActionAfterAnimation(UnActive, waitTime);
     }
 
     public override void UnActive()
     {
         base.UnActive();
+        if (isActivated) return;
         ActionAfterAnimation(rootLaber.DisSwitchMachine);
     }
 }
