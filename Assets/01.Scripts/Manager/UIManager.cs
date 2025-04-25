@@ -11,6 +11,7 @@ public class UIManager : MonoBehaviour
     public WeaponSwapper weaponSwapper;
     public ConfirmationUI confirmationUI;
     public GameObject shopUI;
+    public ItemTooltip tooltip;
 
     [Header("WorldUI")]
     public RectTransform worldSpaceCanvas;
@@ -33,6 +34,10 @@ public class UIManager : MonoBehaviour
     public void CloseInventory() => inventoryUI?.Close();
     public void ToggleSettings() => settingsMenu?.ToggleSettingsMenu();
     public void SwapWeapons() => weaponSwapper?.SwapWeapons();
+
+    // ¾ÆÀÌÅÛ ÅøÆÁ
+    public void ShowTooltip(Item item, Vector3 position) => tooltip?.Show(item, position);
+    public void HideTooltip() => tooltip?.Hide();
 
     public void OnGuidUI(MonoBehaviour gameobject)
     {

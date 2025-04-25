@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class ItemUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
+public class ItemUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     public Item item; // 아이템 데이터
     private Transform originalParent; // 원래 부모 저장
@@ -70,6 +70,20 @@ public class ItemUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
             transform.SetParent(originalParent, false);
             transform.localPosition = Vector3.zero;
         }
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        if (item != null)
+        {
+            Vector3 pos = Input.mousePosition + new Vector3(10, -10);
+            UIManager.Instance.ShowTooltip(item, pos);
+        }
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        UIManager.Instance.HideTooltip();
     }
  }
 
