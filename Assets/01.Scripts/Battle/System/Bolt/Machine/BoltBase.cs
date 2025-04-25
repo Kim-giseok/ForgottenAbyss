@@ -2,13 +2,13 @@ using UnityEngine;
 
 public class BoltNode
 {
-    public StepMachine machine;
-    public Bolt bolt;
-    
-    public float currTime => bolt.currTime - machine.snapshotTime;
+    private StepMachine machine;
+    protected Bolt bolt;
+
+    protected float currTime => bolt.currTime - machine.snapshotTime;
     public BoltContext context = new();
 
-    public void Next() => machine.Next();
+    protected void Next() => machine.Next();
 
     public void Connect(StepMachine machine)
     {

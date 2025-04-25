@@ -78,8 +78,6 @@ public class HitBox : MonoBehaviour // 1회 공격 당의 캐싱이 필요할 �
         isKnockBack = false;
         knockBackForce = 0f;
     }
-
-    
     
     private void OnTriggerEnter2D(Collider2D other)
     {

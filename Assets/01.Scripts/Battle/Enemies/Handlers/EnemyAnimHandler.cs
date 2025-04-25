@@ -31,7 +31,7 @@ public class EnemyAnimHandler: MonoBehaviour
         // 애니메이션이 변경되면 상태 처음부터 다시 시작
         if (currClipHash != stateInfo.shortNameHash)
         {
-            currClipHash = stateInfo.fullPathHash;
+            currClipHash = stateInfo.shortNameHash;
             currStatus = Status.None;
         }
         
@@ -43,16 +43,18 @@ public class EnemyAnimHandler: MonoBehaviour
             controller.machine.currNode.SetController(controller);
             controller.machine.currNode.OnAnimated(Node.AnimationStatus.Start, stateInfo);
         }
-
+        
+        
+        
         if (progress > 0.95f && currStatus != Status.End)
         {
             currStatus = Status.End;
 
             if (controller.machine.currNode == null) return;
             
-            // 에러 발생 확인 필요
-            controller.machine.currNode?.SetController(controller);
-            controller.machine.currNode?.OnAnimated(Node.AnimationStatus.End, stateInfo);
+            // 에러 발생 확인 필요 - confirm : 확인 결과 Node 내부에서 에러가 나면 여기서 에러를 반환
+            controller.machine.currNode.SetController(controller);
+            controller.machine.currNode.OnAnimated(Node.AnimationStatus.End, stateInfo);
         }   
     }
 }
