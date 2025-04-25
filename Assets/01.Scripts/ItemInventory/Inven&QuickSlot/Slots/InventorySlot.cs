@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 public enum SlotMode { Editable, ReadOnly }
-public class InventorySlot : SlotBase
+public class InventorySlot : SlotBase, IPointerClickHandler
 {
     public SlotMode mode = SlotMode.Editable; // 기본값은 일반모드
     private ItemUI itemUI;
@@ -48,6 +48,18 @@ public class InventorySlot : SlotBase
         {
             itemUI.RemoveItem();
             itemUI.gameObject.SetActive(false);
+        }
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if (currentItem == null)
+            return;
+
+        // 아이템이 장착 가능한 타입이면
+        if (currentItem.itemType == ItemType.Equip)
+        {
+            EquipmentManager.Instance.EquipArmor(currentItem as ArmorSO); // 캐스팅 주의
         }
     }
 }
