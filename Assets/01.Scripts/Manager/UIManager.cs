@@ -33,7 +33,9 @@ public class UIManager : MonoBehaviour
     public void ToggleInventory() => inventoryUI?.ToggleInventory();
     public void ToggleSettings() => settingsMenu?.ToggleSettingsMenu();
     public void SwapWeapons() => weaponSwapper?.SwapWeapons();
-
+    public void OnStatUI() => statUI?.OnStatusUI();
+    public void OnPassiveUI() => passiveUI?.OnPassiveUI();
+    
     public void OnGuidUI(MonoBehaviour gameobject)
     {
         Vector3 position = gameobject.transform.position + Vector3.up * 1.5f;

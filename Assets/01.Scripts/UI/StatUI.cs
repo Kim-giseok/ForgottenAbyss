@@ -14,8 +14,9 @@ public class StatUI : MonoBehaviour
     public TextMeshProUGUI defText;
     public TextMeshProUGUI speedText;
     public TextMeshProUGUI crtText;
-    
 
+    public GameObject statusUI;
+    
     PlayerStatus playerStatus;
     
 
@@ -38,5 +39,15 @@ public class StatUI : MonoBehaviour
         defText.text = $"DEF: " + playerStatus.stats[StatType.DEF].ToString();
         speedText.text = $"SPEED: " + playerStatus.stats[StatType.SPEED].ToString();
         crtText.text = $"CRITICAL: " + playerStatus.stats[StatType.CRITICAL].ToString();
+    }
+
+    public void OnStatusUI()
+    {
+        statusUI.SetActive(true);
+    }
+
+    public void OffStatUI()
+    {
+        statusUI.SetActive(false);
     }
 }

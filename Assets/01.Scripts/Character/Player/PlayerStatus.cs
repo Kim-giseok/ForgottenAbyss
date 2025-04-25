@@ -82,26 +82,26 @@ public class PlayerStatus : CharacterStatus
         TestExp();
 
         // 테스트용 스탯 포인트 투자
-        if (Input.GetKeyDown(KeyCode.Q)) // ATK에 스탯 포인트 투자
-        {
-            InvestStatPoint(StatType.ATK);
-        }
-        if (Input.GetKeyDown(KeyCode.W)) // CRITICAL에 스탯 포인트 투자
-        {
-            InvestStatPoint(StatType.CRITICAL);
-        }
-        if (Input.GetKeyDown(KeyCode.E)) // MaxHP에 스탯 포인트 투자
-        {
-            InvestStatPoint(StatType.MaxHP);
-        }
-        if (Input.GetKeyDown(KeyCode.R)) // DEF에 스탯 포인트 투자
-        {
-            InvestStatPoint(StatType.DEF);
-        }
-        if (Input.GetKeyDown(KeyCode.T)) // SPEED에 스탯 포인트 투자
-        {
-            InvestStatPoint(StatType.SPEED);
-        }
+        //if (Input.GetKeyDown(KeyCode.Q)) // ATK에 스탯 포인트 투자
+        //{
+        //    InvestStatPoint(StatType.ATK);
+        //}
+        //if (Input.GetKeyDown(KeyCode.W)) // CRITICAL에 스탯 포인트 투자
+        //{
+        //    InvestStatPoint(StatType.CRITICAL);
+        //}
+        //if (Input.GetKeyDown(KeyCode.E)) // MaxHP에 스탯 포인트 투자
+        //{
+        //    InvestStatPoint(StatType.MaxHP);
+        //}
+        //if (Input.GetKeyDown(KeyCode.R)) // DEF에 스탯 포인트 투자
+        //{
+        //    InvestStatPoint(StatType.DEF);
+        //}
+        //if (Input.GetKeyDown(KeyCode.T)) // SPEED에 스탯 포인트 투자
+        //{
+        //    InvestStatPoint(StatType.SPEED);
+        //}
     }
     private void InitializeStats()
     {
