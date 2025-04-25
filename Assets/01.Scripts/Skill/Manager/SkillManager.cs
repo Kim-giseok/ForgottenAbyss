@@ -62,7 +62,7 @@ public class SkillManager : Singleton<SkillManager>
         int memoryId = memorySO.currentMemoryPieceId;
 
         if (!skillInstances.ContainsKey(memoryId))
-            skillInstances[memoryId] = new SkillInstance(memorySO);
+            skillInstances[memoryId] = new SkillInstance(memorySO).Clone();
 
         currentMemoryPiece = memorySO;
         Debug.Log(currentMemoryPiece.name);

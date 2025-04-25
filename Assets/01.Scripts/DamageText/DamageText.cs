@@ -23,14 +23,35 @@ public class DamageText : MonoBehaviour
 
         // 크리티컬일 때 
         if (isCritical)
-            dmgText.fontSize = defaultSize * 1.5f; // 크리티컬일 때 텍스트 크기 증가
-        else
-            dmgText.fontSize = defaultSize;
+        {
+            dmgText.fontSize = defaultSize * 1.5f;
 
-        StartCoroutine(AnimateText(targetColor, dmgText.fontSize));
+            // 아웃라인 + 글로우 효과
+            dmgText.outlineWidth = 0.2f;
+            dmgText.outlineColor = GetOutlineColor(targetColor);
+
+            var mat = dmgText.fontMaterial;
+            mat.EnableKeyword("GLOW_ON");
+            mat.SetColor("_GlowColor", Color.white);
+            mat.SetFloat("_GlowPower", 0.5f);
+            mat.SetFloat("_GlowOuter", 0.5f);
+
+            dmgText.SetAllDirty();
+        }
+        else
+        {
+            // 일반 데미지일 경우 효과 제거
+            dmgText.outlineWidth = 0f;
+            var mat = dmgText.fontMaterial;
+            mat.DisableKeyword("GLOW_ON");
+
+            dmgText.SetAllDirty();
+        }
+
+        StartCoroutine(AnimateText(targetColor, dmgText.fontSize, isCritical));
 
         // 위치 랜덤 생성
-        Vector2 randomOffset = new Vector2(Random.Range(-0.5f, 0.5f), Random.Range(0f, 0.5f));
+        Vector2 randomOffset = new Vector2(Random.Range(-0.5f, 0.5f), Random.Range(0f, 1f));
         transform.position += (Vector3)randomOffset;
     }
 
@@ -51,8 +72,13 @@ public class DamageText : MonoBehaviour
         StartCoroutine(AnimateScreenCenterText());
     }
 
-    private IEnumerator AnimateText(Color targetColor, float targetFontSize)
+    private IEnumerator AnimateText(Color targetColor, float targetFontSize, bool isCritical)
     {
+        if (isCritical)
+        {
+            yield return StartCoroutine(PopingScale());
+        }
+
         Vector3 startPos = transform.position;
         Vector3 endPos = startPos + Vector3.up * 1.5f;
 
@@ -63,17 +89,15 @@ public class DamageText : MonoBehaviour
         Color startColor = dmgText.color;
         float startFontSize = dmgText.fontSize;
 
-        bool isCritical = targetFontSize > startFontSize;
-        float speedMultiplier = isCritical ? 2f : 1f;
-
-        Color criticalColor = targetColor * new Color(2f, 2f, 2f);
+        float speedMultiplier = isCritical ? 1.25f : 1f;
+        Vector3 randomYOffset = new Vector3(0, Random.Range(0f, 0.5f), 0);
 
         while (elapsed < duration)
         {
             float t = elapsed / duration * speedMultiplier;
 
             // 위치와 크기 애니메이션
-            transform.position = Vector3.Lerp(startPos, endPos, t);
+            transform.position = Vector3.Lerp(startPos + randomYOffset, endPos + randomYOffset, t);
             transform.localScale = Vector3.Lerp(Vector3.one * startSize, Vector3.one * endSize, t);
 
             // 색상과 폰트 크기 애니메이션
@@ -130,7 +154,54 @@ public class DamageText : MonoBehaviour
 
         yield return ScreenFader.Instance.FadeOut(fadeDuration);
 
+        UIManager.Instance.ShowAllUI();
+
         ReturnToPool();
+    }
+
+    private IEnumerator PopingScale()
+    {
+        float duration = 0.15f;
+        float maxScale = 1.8f;
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            float t = elapsed / duration;
+            float scale = Mathf.Lerp(maxScale, 1f, t);
+            transform.localScale = Vector3.one * scale;
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        transform.localScale = Vector3.one;
+    }
+
+    private Color GetOutlineColor(Color damageColor)
+    {
+        // 빨강
+        if (damageColor.r > 0.9f && damageColor.g < 0.3f)
+        {
+            // 좀더 어두운 빨강
+            return new Color(0.5f, 0f, 0f);
+        }
+        // 주황
+        else if (damageColor.r > 0.9f && damageColor.g > 0.4f)
+        {
+            // 좀더 어두운 주황
+            return new Color(0.5f, 0.25f, 0f);
+        }
+        // 노랑
+        else if (damageColor.g > 0.9f)
+        {
+            // 좀더 어두운 노랑
+            return new Color(0.5f, 0.5f, 0f);
+        }
+        // 기본 흰색에선 검정색
+        else
+        {
+            return Color.black;
+        }
     }
 
     private void ReturnToPool()

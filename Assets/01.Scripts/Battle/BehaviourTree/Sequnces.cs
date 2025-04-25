@@ -29,6 +29,7 @@ public class RootNode : Node
     }
 }
 
+// node에 index 
 public class SequenceNode : Node
 {
     public SequenceNode(params Node[] nodes)

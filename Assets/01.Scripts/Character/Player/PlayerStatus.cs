@@ -6,29 +6,27 @@ using UnityEngine;
 
 public class PlayerStatus : CharacterStatus
 {
-    // ·¹º§¾÷¿¡ ÇÊ¿äÇÑ °æÇèÄ¡ ¿ä±¸·®
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ä¡ ï¿½ä±¸ï¿½ï¿½
     private Dictionary<int, float> expRequiredForLevel = new Dictionary<int, float>();
-    // ·¹º§º° ½ºÅÈ Áõ°¡·®
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     private Dictionary<int, Dictionary<StatType, float>> levelStats = new Dictionary<int, Dictionary<StatType, float>>();
 
-    // ½ºÅÈ Æ÷ÀÎÆ® °ü·Ã º¯¼ö
-    [SerializeField] private int availableStatPoints; // »ç¿ë °¡´ÉÇÑ ½ºÅÈ Æ÷ÀÎÆ®
-    [SerializeField] private int statPointsPerLevel; // ·¹º§¾÷ ½Ã È¹µæÇÏ´Â ½ºÅÈ Æ÷ÀÎÆ®
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+    [SerializeField] private int availableStatPoints; // ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®
+    [SerializeField] private int statPointsPerLevel; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ È¹ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®
 
-    // ½ºÅÈº° ÅõÀÚ °¡´É ÃÖ´ëÄ¡
+    // ï¿½ï¿½ï¿½Èºï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½Ä¡
     private Dictionary<StatType, int> maxStatInvestment = new Dictionary<StatType, int>();
-    // ½ºÅÈº° ÅõÀÚµÈ Æ÷ÀÎÆ®
+    // ï¿½ï¿½ï¿½Èºï¿½ ï¿½ï¿½ï¿½Úµï¿½ ï¿½ï¿½ï¿½ï¿½Æ®
     private Dictionary<StatType, int> investedStatPoints = new Dictionary<StatType, int>();
-    // ½ºÅÈ Æ÷ÀÎÆ®´ç ½ºÅÈ Áõ°¡·®
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     private Dictionary<StatType, float> statPointIncrease = new Dictionary<StatType, float>();
 
     private int maxLevel = 999;
 
-    // ½ºÅÈ Æ÷ÀÎÆ® º¯°æ ÀÌº¥Æ®
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ ï¿½Ìºï¿½Æ®
     public delegate void StatPointsChangedHandler(int points);
     public event StatPointsChangedHandler OnStatPointsChanged;
-
-    //public static PlayerStatus Instance { get; private set; }
 
     private StatType[] investableStats = new StatType[]
     {
@@ -39,27 +37,14 @@ public class PlayerStatus : CharacterStatus
         StatType.SPEED
     };
 
-
+    [SerializeField] private GameObject[] StatButtons; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½Æ°ï¿½ï¿½
+    
     private void Awake()
     {
-        //if (Instance != null && Instance != this)
-        //{
-        //    // ÀÌ¹Ì ÀÎ½ºÅÏ½º°¡ Á¸ÀçÇÏ¸é »õ·Î »ý¼ºµÈ °ÍÀº ÆÄ±«
-        //    Destroy(gameObject);
-        //    return;
-        //}
-
-        //Instance = this;
-
-        //DontDestroyOnLoad(gameObject); // ¾À ÀüÈ¯ ½Ã¿¡µµ ÆÄ±«µÇÁö ¾Êµµ·Ï ¼³Á¤
-
-        //if (Instance == this)
-        {
-            InitializeStats();
-            InitializeLevelStats();
-            InitializeExpRequired();
-            InitializeStatPointSystem();
-        }
+        InitializeStats();
+        InitializeLevelStats();
+        InitializeExpRequired();
+        InitializeStatPointSystem();
     }
 
     private void Start()
@@ -70,64 +55,85 @@ public class PlayerStatus : CharacterStatus
             binder.BindStatus(this);
         }
     }
-    // ÀÌº¥Æ® ±¸µ¶
+    // ï¿½Ìºï¿½Æ® ï¿½ï¿½ï¿½ï¿½
     private void OnEnable()
     {
         OnStatChanged += (type, value) =>
         {
             if (type == StatType.CurrentHP)
-                Debug.Log($"HP º¯°æµÊ: {value}");
+                Debug.Log($"HP ï¿½ï¿½ï¿½ï¿½ï¿½: {value}");
         };
     }
 
     private void Update()
     {
-        // ! Å×½ºÆ®¿ë Ã¼·Â°¨¼Ò !
+        // ! ï¿½×½ï¿½Æ®ï¿½ï¿½ Ã¼ï¿½Â°ï¿½ï¿½ï¿½ !
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             float cur = stats[StatType.CurrentHP];
             SetStat(StatType.CurrentHP, cur - 10f);
         }
-        if (Input.GetKeyDown(KeyCode.Alpha2)) // ¸¶³ª ¼Ò¸ð
+        if (Input.GetKeyDown(KeyCode.Alpha2)) // ï¿½ï¿½ï¿½ï¿½ ï¿½Ò¸ï¿½
         {
             float cur = stats[StatType.CurrentMP];
             SetStat(StatType.CurrentMP, Mathf.Max(0, cur - 10f));
         }
 
         TestExp();
-        Debug.Log($"ÇöÀç°ø°Ý·Â: {stats[StatType.ATK]}");
+
+        // ï¿½×½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½
+        if (Input.GetKeyDown(KeyCode.Q)) // ATKï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½
+        {
+            InvestStatPoint(StatType.ATK);
+        }
+        if (Input.GetKeyDown(KeyCode.W)) // CRITICALï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½
+        {
+            InvestStatPoint(StatType.CRITICAL);
+        }
+        if (Input.GetKeyDown(KeyCode.E)) // MaxHPï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½
+        {
+            InvestStatPoint(StatType.MaxHP);
+        }
+        //if (Input.GetKeyDown(KeyCode.R)) // DEFï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½
+        //{
+        //    InvestStatPoint(StatType.DEF);
+        //}
+        if (Input.GetKeyDown(KeyCode.T)) // SPEEDï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½
+        {
+            InvestStatPoint(StatType.SPEED);
+        }
     }
     private void InitializeStats()
     {
-        stats[StatType.CurrentHP] = 100f; //ÇöÀç HP
-        stats[StatType.MaxHP] = 100f; //ÃÊ±â HP
-        stats[StatType.CurrentMP] = 100f; //ÇöÀç MP
-        stats[StatType.MaxMP] = 100f; //ÃÊ±â MP
-        stats[StatType.ATK] = 10f; //ÃÊ±â °ø°Ý·Â
-        stats[StatType.DEF] = 10f; //ÃÊ±â ¹æ¾î·Â
-        stats[StatType.LEVEL] = 1f; //ÃÊ±â ·¹º§
-        stats[StatType.EXP] = 0f; //ÃÊ±â °æÇèÄ¡
-        stats[StatType.MaxEXP] = 0f; //ÃÊ±â °æÇèÄ¡
-        stats[StatType.GOLD] = 0f; //ÃÊ±â °ñµå
-        stats[StatType.SPEED] = 3f; //ÃÊ±â °ñµå
-        stats[StatType.CRITICAL] = 50f; //ÃÊ±â Å©¸®Æ¼ÄÃ È®·ü
-        stats[StatType.CRITICAL_DAMAGE] = 150f; //ÃÊ±â Å©¸®Æ¼ÄÃ µ¥¹ÌÁö ºñÀ²
-        stats[StatType.COOLDOWN_REDUCTION] = 40f; //ÃÊ±â ÄðÅ¸ÀÓ °¨¼Ò ºñÀ²
+        stats[StatType.CurrentHP] = 100f; //ï¿½ï¿½ï¿½ï¿½ HP
+        stats[StatType.MaxHP] = 100f; //ï¿½Ê±ï¿½ HP
+        stats[StatType.CurrentMP] = 100f; //ï¿½ï¿½ï¿½ï¿½ MP
+        stats[StatType.MaxMP] = 100f; //ï¿½Ê±ï¿½ MP
+        stats[StatType.ATK] = 10f; //ï¿½Ê±ï¿½ ï¿½ï¿½ï¿½Ý·ï¿½
+        stats[StatType.DEF] = 10f; //ï¿½Ê±ï¿½ ï¿½ï¿½ï¿½ï¿½
+        stats[StatType.LEVEL] = 1f; //ï¿½Ê±ï¿½ ï¿½ï¿½ï¿½ï¿½
+        stats[StatType.EXP] = 0f; //ï¿½Ê±ï¿½ ï¿½ï¿½ï¿½ï¿½Ä¡
+        stats[StatType.MaxEXP] = 0f; //ï¿½Ê±ï¿½ ï¿½ï¿½ï¿½ï¿½Ä¡
+        stats[StatType.GOLD] = 0f; //ï¿½Ê±ï¿½ ï¿½ï¿½ï¿½
+        stats[StatType.SPEED] = 3f; //ï¿½Ê±ï¿½ ï¿½ï¿½ï¿½
+        stats[StatType.CRITICAL] = 50f; //ï¿½Ê±ï¿½ Å©ï¿½ï¿½Æ¼ï¿½ï¿½ È®ï¿½ï¿½
+        stats[StatType.CRITICAL_DAMAGE] = 150f; //ï¿½Ê±ï¿½ Å©ï¿½ï¿½Æ¼ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        stats[StatType.COOLDOWN_REDUCTION] = 40f; //ï¿½Ê±ï¿½ ï¿½ï¿½Å¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     }
 
-    // ·¹º§º° ½ºÅÈ Áõ°¡·® ÃÊ±âÈ­
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê±ï¿½È­
     private void InitializeLevelStats()
     {
-        // ·¹º§º° ½ºÅÈ Áõ°¡·® ¼³Á¤ (·¹º§ 2ºÎÅÍ ½ÃÀÛ)
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ (ï¿½ï¿½ï¿½ï¿½ 2ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½)
         for (int level = 2; level <= maxLevel; level++)
         {
             Dictionary<StatType, float> statIncreases = new Dictionary<StatType, float>();
 
-            // ·¹º§º° Áõ°¡·®
-            statIncreases[StatType.MaxHP] = 20f;         // HP Áõ°¡·®
-            statIncreases[StatType.MaxMP] = 15f;        // MP Áõ°¡·®
-            statIncreases[StatType.ATK] = 1f;     // °ø°Ý·Â Áõ°¡·®
-            statIncreases[StatType.DEF] = 1f;     // ¹æ¾î·Â Áõ°¡·®
+            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+            statIncreases[StatType.MaxHP] = 20f;         // HP ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+            statIncreases[StatType.MaxMP] = 15f;        // MP ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+            statIncreases[StatType.ATK] = 1f;     // ï¿½ï¿½ï¿½Ý·ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+            statIncreases[StatType.DEF] = 1f;     // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
             levelStats[level] = statIncreases;
         }
@@ -135,52 +141,52 @@ public class PlayerStatus : CharacterStatus
 
     private void InitializeExpRequired()
     {
-        // ·¹º§º° ÇÊ¿ä °æÇèÄ¡ ¼³Á¤
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¿ï¿½ ï¿½ï¿½ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ï¿½
         for (int level = 1; level <= maxLevel; level++)
         {
-            // °æÇèÄ¡ °ø½Ä (¿¹: level^2 * 100)
+            // ï¿½ï¿½ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ï¿½ (ï¿½ï¿½: level^2 * 100)
             expRequiredForLevel[level] = level * 100f;
         }
 
         int currentLevel = (int)stats[StatType.LEVEL];
         stats[StatType.MaxEXP] = expRequiredForLevel[currentLevel];
     }
-    // ½ºÅÈ Æ÷ÀÎÆ® ½Ã½ºÅÛ ÃÊ±âÈ­
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ® ï¿½Ã½ï¿½ï¿½ï¿½ ï¿½Ê±ï¿½È­
     private void InitializeStatPointSystem()
     {
-        // °¢ ½ºÅÈº° ÅõÀÚµÈ Æ÷ÀÎÆ® ÃÊ±âÈ­
+        // ï¿½ï¿½ ï¿½ï¿½ï¿½Èºï¿½ ï¿½ï¿½ï¿½Úµï¿½ ï¿½ï¿½ï¿½ï¿½Æ® ï¿½Ê±ï¿½È­
         foreach (StatType statType in investableStats)
         {
             investedStatPoints[statType] = 0;
         }
 
-        // ½ºÅÈ Æ÷ÀÎÆ®´ç Áõ°¡·® ¼³Á¤
-        statPointIncrease[StatType.ATK] = 1f;       // °ø°Ý·Â Áõ°¡·®
-        statPointIncrease[StatType.CRITICAL] = 1f;  // Ä¡¸íÅ¸ È®·ü Áõ°¡·®
-        statPointIncrease[StatType.MaxHP] = 10f;    // ÃÖ´ë Ã¼·Â Áõ°¡·®
-        statPointIncrease[StatType.DEF] = 1f;       // ¹æ¾î·Â Áõ°¡·®
-        statPointIncrease[StatType.SPEED] = 0.2f;   // ÀÌµ¿¼Óµµ Áõ°¡·®
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        statPointIncrease[StatType.ATK] = 1f;       // ï¿½ï¿½ï¿½Ý·ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        statPointIncrease[StatType.CRITICAL] = 1f;  // Ä¡ï¿½ï¿½Å¸ È®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        statPointIncrease[StatType.MaxHP] = 10f;    // ï¿½Ö´ï¿½ Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        statPointIncrease[StatType.DEF] = 1f;       // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        statPointIncrease[StatType.SPEED] = 0.2f;   // ï¿½Ìµï¿½ï¿½Óµï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
-        // ÃÖ´ë ÅõÀÚ °¡´É Æ÷ÀÎÆ® ¼³Á¤
-        maxStatInvestment[StatType.ATK] = 10;      // ÃÖ´ë ATK ÅõÀÚ Æ÷ÀÎÆ®
-        maxStatInvestment[StatType.CRITICAL] = 10;  // ÃÖ´ë CRITICAL ÅõÀÚ Æ÷ÀÎÆ® (ÃÖ´ë 50% Ãß°¡)
-        maxStatInvestment[StatType.MaxHP] = 10;    // ÃÖ´ë MaxHP ÅõÀÚ Æ÷ÀÎÆ®
-        maxStatInvestment[StatType.DEF] = 10;      // ÃÖ´ë DEF ÅõÀÚ Æ÷ÀÎÆ®
-        maxStatInvestment[StatType.SPEED] = 10;     // ÃÖ´ë SPEED ÅõÀÚ Æ÷ÀÎÆ®
+        // ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½
+        maxStatInvestment[StatType.ATK] = 10;      // ï¿½Ö´ï¿½ ATK ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®
+        maxStatInvestment[StatType.CRITICAL] = 10;  // ï¿½Ö´ï¿½ CRITICAL ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ® (ï¿½Ö´ï¿½ 50% ï¿½ß°ï¿½)
+        maxStatInvestment[StatType.MaxHP] = 10;    // ï¿½Ö´ï¿½ MaxHP ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®
+        maxStatInvestment[StatType.DEF] = 10;      // ï¿½Ö´ï¿½ DEF ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®
+        maxStatInvestment[StatType.SPEED] = 10;     // ï¿½Ö´ï¿½ SPEED ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®
     }
 
-    // ½ºÅÈ ÀÌ¸§ ¹ÝÈ¯ (UI Ç¥½Ã¿ë)
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½Ì¸ï¿½ ï¿½ï¿½È¯ (UI Ç¥ï¿½Ã¿ï¿½)
     //public string GetStatName(StatType statType)
     //{
     //    if (statNames.ContainsKey(statType))
     //    {
     //        return statNames[statType];
     //    }
-    //    // ±âº»°ªÀ¸·Î ½ºÅÈ Å¸ÀÔ ÀÌ¸§ »ç¿ë
+    //    // ï¿½âº»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Å¸ï¿½ï¿½ ï¿½Ì¸ï¿½ ï¿½ï¿½ï¿½
     //    return statType.ToString();
     //}
 
-    // ½ºÅÈ Æ÷ÀÎÆ® ÅõÀÚ ½Ã Áõ°¡·® ¹ÝÈ¯
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¯
     public float GetStatIncreasePerPoint(StatType statType)
     {
         if (statPointIncrease.ContainsKey(statType))
@@ -190,12 +196,12 @@ public class PlayerStatus : CharacterStatus
         return 0f;
     }
 
-    // °æÇèÄ¡ È¹µæ ¸Þ¼­µå
+    // ï¿½ï¿½ï¿½ï¿½Ä¡ È¹ï¿½ï¿½ ï¿½Þ¼ï¿½ï¿½ï¿½
     public void GainExperience(float amount)
     {
         SetStat(StatType.EXP, stats[StatType.EXP] + amount);
         //stats[StatType.EXP] += amount;
-        Debug.Log($"°æÇèÄ¡ È¹µæ: +{amount} (ÇöÀç: {stats[StatType.EXP]})");
+        Debug.Log($"ï¿½ï¿½ï¿½ï¿½Ä¡ È¹ï¿½ï¿½: +{amount} (ï¿½ï¿½ï¿½ï¿½: {stats[StatType.EXP]})");
 
         CheckLevelUp();
     }
@@ -204,19 +210,19 @@ public class PlayerStatus : CharacterStatus
     {
         int curLevel = (int)stats[StatType.LEVEL];
 
-        // ÃÖ´ë ·¹º§¿¡ µµ´ÞÇß´ÂÁö Ã¼Å©
+        // ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ß´ï¿½ï¿½ï¿½ Ã¼Å©
         if (curLevel >= maxLevel)
         {
-            stats[StatType.EXP] = expRequiredForLevel[maxLevel]; // °æÇèÄ¡ Á¦ÇÑ
+            stats[StatType.EXP] = expRequiredForLevel[maxLevel]; // ï¿½ï¿½ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ï¿½
             return;
         }
 
-        // ÇöÀç ·¹º§¿¡¼­ ÇÊ¿äÇÑ °æÇèÄ¡¸¦ ³Ñ¾ú´ÂÁö Ã¼Å©
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½Ñ¾ï¿½ï¿½ï¿½ï¿½ï¿½ Ã¼Å©
         if (stats[StatType.EXP] >= expRequiredForLevel[curLevel])
         {
             LevelUp();
 
-            // ³²Àº °æÇèÄ¡°¡ ¶Ç ·¹º§¾÷¿¡ ÃæºÐÇÑÁö È®ÀÎ (¿¬¼Ó ·¹º§¾÷ Ã³¸®)
+            // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½ (ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ã³ï¿½ï¿½)
             CheckLevelUp();
         }
     }
@@ -225,19 +231,19 @@ public class PlayerStatus : CharacterStatus
     {
         int newLevel = (int)stats[StatType.LEVEL] + 1;
 
-        // °æÇèÄ¡ °è»ê
+        // ï¿½ï¿½ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½
         stats[StatType.EXP] -= expRequiredForLevel[(int)stats[StatType.LEVEL]];
 
-        // ·¹º§ Áõ°¡
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         stats[StatType.LEVEL] = newLevel;
 
-        // ·¹º§¿¡ µû¸¥ ½ºÅÈ Áõ°¡
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         ApplyLevelStats(newLevel);
 
-        // ½ºÅÈ Æ÷ÀÎÆ® Ãß°¡
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ß°ï¿½
         AddStatPoints(statPointsPerLevel);
 
-        Debug.Log($"ÅõÀÚ °¡´É Æ÷ÀÎÆ®: {availableStatPoints}");
+        Debug.Log($"ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®: {availableStatPoints}");
 
         stats[StatType.CurrentHP] = stats[StatType.MaxHP];
         stats[StatType.CurrentMP] = stats[StatType.MaxMP];
@@ -245,7 +251,7 @@ public class PlayerStatus : CharacterStatus
         int currentLevel = (int)stats[StatType.LEVEL];
         stats[StatType.MaxEXP] = expRequiredForLevel[currentLevel];
 
-        Debug.Log($"ÇöÀç ·¹º§: {stats[StatType.LEVEL]}");
+        Debug.Log($"ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½: {stats[StatType.LEVEL]}");
         Debug.Log($"HP: {stats[StatType.MaxHP]}");
         Debug.Log($"MP: {stats[StatType.MaxMP]}");
         Debug.Log($"ATK: {stats[StatType.ATK]}");
@@ -253,7 +259,7 @@ public class PlayerStatus : CharacterStatus
 
     }
 
-    // ·¹º§¿¡ µû¸¥ ½ºÅÈ Àû¿ë
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     private void ApplyLevelStats(int level)
     {
         if (levelStats.ContainsKey(level))
@@ -263,24 +269,24 @@ public class PlayerStatus : CharacterStatus
             foreach (var statType in statIncreases.Keys)
             {
                 float newValue = stats[statType] + statIncreases[statType];
-                SetStat(statType, newValue); // ÀÌº¥Æ® ¹ß»ý Æ÷ÇÔ
+                SetStat(statType, newValue); // ï¿½Ìºï¿½Æ® ï¿½ß»ï¿½ ï¿½ï¿½ï¿½ï¿½
                 //stats[statType] += statIncreases[statType];
-                Debug.Log($"{statType} Áõ°¡: +{statIncreases[statType]}");
+                Debug.Log($"{statType} ï¿½ï¿½ï¿½ï¿½: +{statIncreases[statType]}");
             }
         }
     }
 
-    // ½ºÅÈ Æ÷ÀÎÆ® Ãß°¡    
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ß°ï¿½    
     public void AddStatPoints(int points)
     {
         availableStatPoints += points;
         OnStatPointsChanged?.Invoke(availableStatPoints);
     }
 
-    // ½ºÅÈ Æ÷ÀÎÆ® ÅõÀÚ
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½
     public bool InvestStatPoint(StatType statType)
     {
-        // ÅõÀÚ °¡´ÉÇÑ ½ºÅÈÀÎÁö È®ÀÎ
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½
         bool isInvestable = false;
         foreach (StatType type in investableStats)
         {
@@ -291,29 +297,29 @@ public class PlayerStatus : CharacterStatus
             }
         }
                
-        // »ç¿ë °¡´ÉÇÑ ½ºÅÈ Æ÷ÀÎÆ®°¡ ÀÖ´ÂÁö È®ÀÎ
+        // ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½Ö´ï¿½ï¿½ï¿½ È®ï¿½ï¿½
         if (availableStatPoints <= 0)
         {
-            Debug.LogWarning("»ç¿ë °¡´ÉÇÑ ½ºÅÈ Æ÷ÀÎÆ®°¡ ¾ø½À´Ï´Ù.");
+            Debug.LogWarning("ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.");
             return false;
         }
 
-        // ÃÖ´ë ÅõÀÚ °¡´É Æ÷ÀÎÆ®¸¦ ÃÊ°úÇÏ´ÂÁö È®ÀÎ
+        // ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½Ê°ï¿½ï¿½Ï´ï¿½ï¿½ï¿½ È®ï¿½ï¿½
         if (investedStatPoints[statType] >= maxStatInvestment[statType])
         {
-            Debug.LogWarning($"{statType}¿¡ ´õ ÀÌ»ó ½ºÅÈ Æ÷ÀÎÆ®¸¦ ÅõÀÚÇÒ ¼ö ¾ø½À´Ï´Ù. (ÃÖ´ë: {maxStatInvestment[statType]})");
+            Debug.LogWarning($"{statType}ï¿½ï¿½ ï¿½ï¿½ ï¿½Ì»ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½. (ï¿½Ö´ï¿½: {maxStatInvestment[statType]})");
             return false;
         }
 
-        // ½ºÅÈ Æ÷ÀÎÆ® »ç¿ë
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½
         availableStatPoints--;
         investedStatPoints[statType]++;
 
-        // ½ºÅÈ Áõ°¡ Àû¿ë
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         float newValue = stats[statType] + statPointIncrease[statType];
         SetStat(statType, newValue);
 
-        // ÇöÀç Ã¼·Âµµ ÇÔ²² Áõ°¡ (MaxHP Æ÷ÀÎÆ® ÅõÀÚ½Ã)
+        // ï¿½ï¿½ï¿½ï¿½ Ã¼ï¿½Âµï¿½ ï¿½Ô²ï¿½ ï¿½ï¿½ï¿½ï¿½ (MaxHP ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½Ú½ï¿½)
         if (statType == StatType.MaxHP)
         {
             float currentHP = stats[StatType.CurrentHP];
@@ -321,59 +327,59 @@ public class PlayerStatus : CharacterStatus
             SetStat(StatType.CurrentHP, currentHP + increase);
         }
 
-        // ½ºÅÈ Æ÷ÀÎÆ® º¯°æ ÀÌº¥Æ® ¹ß»ý
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ ï¿½Ìºï¿½Æ® ï¿½ß»ï¿½
         OnStatPointsChanged?.Invoke(availableStatPoints);
 
-        Debug.Log($"{statType}¿¡ ½ºÅÈ Æ÷ÀÎÆ®¸¦ ÅõÀÚÇß½À´Ï´Ù. ({statType}: +{statPointIncrease[statType]}, ÃÑ ÅõÀÚ: {investedStatPoints[statType]}/{maxStatInvestment[statType]})");
-        Debug.Log($"³²Àº ½ºÅÈ Æ÷ÀÎÆ®: {availableStatPoints}");
+        Debug.Log($"{statType}ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ß½ï¿½ï¿½Ï´ï¿½. ({statType}: +{statPointIncrease[statType]}, ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½: {investedStatPoints[statType]}/{maxStatInvestment[statType]})");
+        Debug.Log($"ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®: {availableStatPoints}");
 
         return true;
     }
 
-    // ½ºÅÈ Æ÷ÀÎÆ® ¸®¼Â (¸ðµç ÅõÀÚ Ãë¼Ò)
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ (ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½)
     public void ResetStatPoints()
     {
         int totalPoints = 0;
 
-        // °¢ ½ºÅÈ ¿ø·¡ °ªÀ¸·Î º¹¿ø ¹× ÅõÀÚ Æ÷ÀÎÆ® È¸¼ö
+        // ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ® È¸ï¿½ï¿½
         foreach (StatType statType in investableStats)
         {
             if (investedStatPoints.ContainsKey(statType))
             {
-                // ÅõÀÚµÈ Æ÷ÀÎÆ® È¸¼ö
+                // ï¿½ï¿½ï¿½Úµï¿½ ï¿½ï¿½ï¿½ï¿½Æ® È¸ï¿½ï¿½
                 int pointsInvested = investedStatPoints[statType];
                 totalPoints += pointsInvested;
 
-                // ¿ø·¡ ½ºÅÈ °ª °è»ê (ÇöÀç °ª - ÅõÀÚ·Î ÀÎÇÑ Áõ°¡·®)
+                // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ (ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ - ï¿½ï¿½ï¿½Ú·ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½)
                 float originalValue = stats[statType] - (pointsInvested * statPointIncrease[statType]);
                 SetStat(statType, originalValue);
 
-                // ÅõÀÚµÈ Æ÷ÀÎÆ® ÃÊ±âÈ­
+                // ï¿½ï¿½ï¿½Úµï¿½ ï¿½ï¿½ï¿½ï¿½Æ® ï¿½Ê±ï¿½È­
                 investedStatPoints[statType] = 0;
             }
         }
 
-        // MaxHP º¯°æ ½Ã CurrentHPµµ Á¶Á¤
+        // MaxHP ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ CurrentHPï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         if (investedStatPoints.ContainsKey(StatType.MaxHP))
         {
             float currentHPRatio = stats[StatType.CurrentHP] / stats[StatType.MaxHP];
             SetStat(StatType.CurrentHP, stats[StatType.MaxHP] * currentHPRatio);
         }
 
-        // »ç¿ë °¡´ÉÇÑ ½ºÅÈ Æ÷ÀÎÆ® º¹¿ø
+        // ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½
         availableStatPoints += totalPoints;
         OnStatPointsChanged?.Invoke(availableStatPoints);
 
-        Debug.Log($"¸ðµç ½ºÅÈ Æ÷ÀÎÆ®°¡ ÃÊ±âÈ­µÇ¾ú½À´Ï´Ù. (»ç¿ë °¡´ÉÇÑ Æ÷ÀÎÆ®: {availableStatPoints})");
+        Debug.Log($"ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½Ê±ï¿½È­ï¿½Ç¾ï¿½ï¿½ï¿½ï¿½Ï´ï¿½. (ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®: {availableStatPoints})");
     }
 
-    // ÇöÀç »ç¿ë °¡´ÉÇÑ ½ºÅÈ Æ÷ÀÎÆ®¸¦ ¹ÝÈ¯
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½È¯
     public int GetAvailableStatPoints()
     {
         return availableStatPoints;
     }
 
-    // Æ¯Á¤ ½ºÅÈ¿¡ ÅõÀÚµÈ Æ÷ÀÎÆ®¸¦ ¹ÝÈ¯
+    // Æ¯ï¿½ï¿½ ï¿½ï¿½ï¿½È¿ï¿½ ï¿½ï¿½ï¿½Úµï¿½ ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½È¯
     public int GetInvestedStatPoints(StatType statType)
     {
         if (investedStatPoints.ContainsKey(statType))
@@ -383,7 +389,7 @@ public class PlayerStatus : CharacterStatus
         return 0;
     }
 
-    // Æ¯Á¤ ½ºÅÈÀÇ ÃÖ´ë ÅõÀÚ °¡´É Æ÷ÀÎÆ®¸¦ ¹ÝÈ¯
+    // Æ¯ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½È¯
     public int GetMaxStatInvestment(StatType statType)
     {
         if (maxStatInvestment.ContainsKey(statType))
@@ -392,12 +398,12 @@ public class PlayerStatus : CharacterStatus
         }
         return 0;
     }
-    private void GetGold() //°ñµå È¹µæ 
+    private void GetGold() //ï¿½ï¿½ï¿½ È¹ï¿½ï¿½ 
     {
 
     }
 
-    private void TestExp() //Å×½ºÆ® °æÇèÄ¡ È¹µæ
+    private void TestExp() //ï¿½×½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½Ä¡ È¹ï¿½ï¿½
     {
         if (Input.GetKeyDown(KeyCode.Alpha0))
         {

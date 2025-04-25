@@ -40,7 +40,7 @@ public class SwordSkill01ExecutionSO : SkillExecutionSO
         DebugDrawUtil.DrawCircle(center, range, Color.red);
     }
 
-    public SwordSkill01ExecutionSO Clone()
+    public override SkillExecutionSO Clone()
     {
         SwordSkill01ExecutionSO clone = CreateInstance<SwordSkill01ExecutionSO>();
 

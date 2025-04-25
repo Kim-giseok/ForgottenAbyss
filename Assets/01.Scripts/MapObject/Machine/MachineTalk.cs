@@ -9,6 +9,7 @@ public class MachineTalk : MachineLoop
     public override void Active(LaberBase rootlaber)
     {
         base.Active(rootlaber);
+        if (!isActivated) return;
         DisplaySentence();
     }
 

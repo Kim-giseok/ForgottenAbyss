@@ -99,8 +99,9 @@ public class MoveNode : Node
                 float angle = i * angleStep * Mathf.Deg2Rad;
                 Vector2 direction = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * radius;
 
-                ((EnemyController)controller).statusHandler.castingDirection = direction;
-                BoltsPool.Instance.CreateSummon(controller.transform, SummonSkillManager.Skill.Agis);
+                // ((EnemyController)controller).statusHandler.castingDirection = direction;
+                BoltsPool.Instance.CreateSummon(controller.transform, SummonSkillManager.Skill.Agis)
+                    .SetCastingDirection(direction).Fire();
             }
             
         }

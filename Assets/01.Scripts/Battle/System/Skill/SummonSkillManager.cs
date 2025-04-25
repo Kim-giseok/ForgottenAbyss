@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class SummonSkillManager
 {
-    public enum Skill { DashAttack, ComboDashAttack, Agis, Heal, ArcherArrow, MudWave, MudEye}
+    public enum Skill { DashAttack, ComboDashAttack, Agis, Heal, ArcherArrow, MudWave, MudEye, MoonFlyingSummonAttack }
     public enum EnemySkill {}
     
     // 여기서 enemy도 연결해주면 되지 않을까?
@@ -17,7 +17,8 @@ public class SummonSkillManager
         { Skill.Heal, (Enemies.Enemy.Wizard, new SkillHealNode()) },
         { Skill.ArcherArrow, (Enemies.Enemy.Archer, new RangeMultiAttackNode()) },
         { Skill.MudWave, (Enemies.Enemy.MudHand, new SequenceNode(new MudCastingNode(), new MudAttackNode())) },
-        { Skill.MudEye, (Enemies.Enemy.MudEye, new RangeMultiAttackNode()) }
+        { Skill.MudEye, (Enemies.Enemy.MudEye, new RangeMultiAttackNode()) },
+        { Skill.MoonFlyingSummonAttack, (Enemies.Enemy.MoonStone, new MoonFlyingSummonAttack()) }
         
         // 사방으로 복제하기(적이 사용하려는 목적으로 이용)
         // 직접적으로 전달해줄 수 없으므로 내부 변수 등의 이용이 필요

@@ -13,6 +13,8 @@ public class RainBolt : BoltNode
 {
     public override void Start()
     {
+        bolt.trailRenderer.enabled = false;
+        
         bolt.rigidbody.drag = 20;
         bolt.rigidbody.gravityScale = 32f;
         bolt.rigidbody.AddForce(new Vector2(Random.Range(-8f, 8f), 4f) * 40f, ForceMode2D.Impulse);
@@ -22,6 +24,8 @@ public class RainBolt : BoltNode
 
     public override void End()
     {
+        bolt.trailRenderer.enabled = true;
+        
         bolt.rigidbody.drag = 0;
         bolt.rigidbody.gravityScale = 0f;
         bolt.rigidbody.AddForce(Vector2.down * 40f, ForceMode2D.Impulse);
@@ -140,5 +144,34 @@ public class HealBolt : BoltNode
     {
         bolt.SetSize(1f);
         bolt.animHandler.Play("Heal");
+    }
+}
+
+public class ForwardBolt : BoltNode
+{
+    public override void Start()
+    {
+        bolt.collider.enabled = false;
+    }
+
+    public override void Update()
+    {
+        
+        var currPos = bolt.transform.position;
+        if (Mathf.Abs(currPos.z - 0) < 1f)
+        {
+            bolt.collider.enabled = true;
+        }
+        else
+        {
+            bolt.collider.enabled = false;
+        }
+
+        // 왜인지 모르지만 잘 맞는다
+        currPos.x += bolt.direction.x / 100;
+        currPos.y += bolt.direction.y / 100;
+        currPos.z -= 0.1f;
+        
+        bolt.collider.transform.position = currPos;
     }
 }

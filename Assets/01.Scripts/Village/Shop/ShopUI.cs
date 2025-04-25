@@ -17,83 +17,85 @@ public class ShopUI : MonoBehaviour
     [SerializeField] private List<Button> tabButtons;
     [SerializeField] private Color selectedColor;
     [SerializeField] private Color normalColor;
+    [SerializeField] private Color selectedTextColor = Color.white;
+    [SerializeField] private Color normalTextColor = Color.black;
 
     private Button currentSelectedTab;
-
     private ItemType currentFilterType = ItemType.Equip; // 기본 시작 탭
 
-    private void OnEnable()
+    private void Start()
     {
+        // 탭 번튼에 이벤트 열결
+        foreach (var btn in tabButtons)
+        {
+            Button capturedBtn = btn;
+            string tabName = capturedBtn.name;
+
+            capturedBtn.onClick.AddListener(() =>
+            {
+                OnClickTab(tabName, capturedBtn);
+            });
+        }
+
+        // 초기화 먼저
         InitializeShop();
 
-        EventSystem.current.SetSelectedGameObject(tabButtons[0].gameObject);
-        UpdateTabButtonVisuals();
+        // 기본 첫 탭 선택
+        if (tabButtons.Count > 0)
+        {
+            var firstTab = tabButtons[0];
+            OnClickTab(firstTab.name, firstTab);
+        }
     }
 
-    // 상점 초기화
     private void InitializeShop()
     {
-        ShowFilteredItems(currentFilterType);
-        detailPanel.Hide();
+        detailPanel.Hide(); // 상세 패널 초기화
     }
 
-    public void OnClickTab(string typeStr)
+    // itemType과 탭 이름을 동일하게
+    private void OnClickTab(string typeStr, Button selectedButton)
     {
         if (Enum.TryParse(typeStr, out ItemType parsedType))
         {
             currentFilterType = parsedType;
-            ShowFilteredItems(parsedType);
-
-            UpdateTabButtonVisuals(); // 탭 시각 효과
+            ShowFilteredItems(currentFilterType);
+            UpdateTabVisual(selectedButton);
         }
     }
-    // 탭버튼 색상 조절
-    private void UpdateTabButtonVisuals()
+
+    private void UpdateTabVisual(Button selected)
     {
-        foreach (var tab in tabButtons)
+        foreach (var btn in tabButtons)
         {
-            var colors = tab.colors;
-            colors.normalColor = normalColor;
-            colors.highlightedColor = normalColor;
-            colors.pressedColor = normalColor;
-            colors.selectedColor = normalColor;
-            tab.colors = colors;
-
-            // 텍스트 색상 기본값으로 되돌리기
-            var text = tab.GetComponentInChildren<TextMeshProUGUI>();
-            if (text != null)
-            {
-                text.color = Color.black; // 기본 텍스트 색
-            }
+            SetButtonStyle(btn, normalColor, normalTextColor);
         }
 
-        if (EventSystem.current.currentSelectedGameObject != null)
+        SetButtonStyle(selected, selectedColor, selectedTextColor);
+        currentSelectedTab = selected;
+    }
+
+    // 탭의 배경색, 텍스트색 담당
+    private void SetButtonStyle(Button btn, Color backgroundColor, Color textColor)
+    {
+        var colors = btn.colors;
+        colors.normalColor = backgroundColor;
+        colors.highlightedColor = backgroundColor;
+        colors.pressedColor = backgroundColor;
+        colors.selectedColor = backgroundColor;
+        btn.colors = colors;
+
+        var text = btn.GetComponentInChildren<TextMeshProUGUI>();
+        if (text != null)
         {
-            Button selectedButton = EventSystem.current.currentSelectedGameObject.GetComponent<Button>();
-            if (selectedButton != null)
-            {
-                var colors = selectedButton.colors;
-                colors.normalColor = selectedColor;
-                colors.highlightedColor = selectedColor;
-                colors.pressedColor = selectedColor;
-                colors.selectedColor = selectedColor;
-                selectedButton.colors = colors;
-
-                // 텍스트 색상 강조
-                var text = selectedButton.GetComponentInChildren<TextMeshProUGUI>();
-                if (text != null)
-                {
-                    text.color = Color.white; // 강조된 텍스트 색
-                }
-
-                currentSelectedTab = selectedButton;
-            }
+            text.color = textColor;
         }
+
     }
 
     private void ShowFilteredItems(ItemType type)
     {
-        // 기존 슬롯 비활성화만
+        // 기존 슬롯 숨김
         foreach (Transform child in slotParent)
         {
             child.gameObject.SetActive(false);
@@ -101,9 +103,9 @@ public class ShopUI : MonoBehaviour
 
         // 타입에 맞는 아이템만 슬롯에 표시
         int activeIndex = 0;
-        for (int i = 0; i < shopItems.Count; i++)
+        foreach (var itemData in shopItems)
         {
-            if (shopItems[i].item.itemType != type)
+            if (itemData.item.itemType != type)
                 continue;
 
             GameObject slotGO;
@@ -118,10 +120,13 @@ public class ShopUI : MonoBehaviour
             }
 
             var slotUI = slotGO.GetComponent<ShopSlotUI>();
-            slotUI.Setup(shopItems[i], this);
+            slotUI.Setup(itemData, this);
 
             activeIndex++;
         }
+
+        // LayoutGroup 리빌드
+        LayoutRebuilder.ForceRebuildLayoutImmediate(slotParent.GetComponent<RectTransform>());
     }
 
     // 슬롯에서 호출됨

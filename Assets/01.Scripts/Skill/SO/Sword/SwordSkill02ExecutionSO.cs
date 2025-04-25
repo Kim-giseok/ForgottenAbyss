@@ -93,7 +93,7 @@ public class SwordSkill02ExecutionSO : SkillExecutionSO
         DebugDrawUtil.DrawBox(center, size, angle, Color.red, 0.5f);
     }
 
-    public SwordSkill02ExecutionSO Clone()
+    public override SkillExecutionSO Clone()
     {
         SwordSkill02ExecutionSO clone = CreateInstance<SwordSkill02ExecutionSO>();
 
