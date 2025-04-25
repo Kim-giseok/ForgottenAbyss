@@ -1822,6 +1822,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a426047b96f0a0247a130cbf4a69fe2e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  availableStatPoints: 0
+  statPointsPerLevel: 0
+  StatButtons: []
 --- !u!114 &3644280176506044834
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1836,10 +1839,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   comboAttack: {fileID: 4007422232391518593}
   rangedAttack: {fileID: 7540753495231137534}
-  combatId: 0
-  skill01Id: 0
-  skill02Id: 0
-  memorySkillItem: {fileID: 0}
   skillSpawnPoint: {fileID: 100909164121029981}
   skillSpawnPoint2: {fileID: 100909164121029981}
   isBowAttack: 0
@@ -9391,8 +9390,9 @@ MonoBehaviour:
   - Hi
   - I'm Npc
   - Get your memories back
-  TalkPoint: {fileID: 5774898333965841836}
-  talkBoxPrefab: {fileID: 3024580940593636155, guid: 8ace32e088952d74191c1d70ba30651c, type: 3}
+  displayEndEvents:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &6033359684272215732
 GameObject:
   m_ObjectHideFlags: 0
@@ -11425,6 +11425,14 @@ PrefabInstance:
     - target: {fileID: 603408409027007094, guid: 4c885393e88e75f479bd6751528d96e2, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 657007169806521156, guid: 4c885393e88e75f479bd6751528d96e2, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1376599297200109237}
+    - target: {fileID: 657007169806521156, guid: 4c885393e88e75f479bd6751528d96e2, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnClickExit
       objectReference: {fileID: 0}
     - target: {fileID: 665450755849800192, guid: 4c885393e88e75f479bd6751528d96e2, type: 3}
       propertyPath: m_AnchorMax.y
