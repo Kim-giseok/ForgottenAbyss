@@ -19,7 +19,9 @@ public class SwordSkill03ExecutionSO : SkillExecutionSO
         Collider2D[] hits = GetEnemiesInRange(center, range, LayerMask.GetMask("Enemy"));
 
         // 2. 범위 이펙트 생성 (시각적 효과)
-        var visualSO = DataManager.Instance.GetSkillVisualSO(data.VisualSOName);
+        SkillInstance skillInst = WeaponManager.Instance.GetWeaponSkillInstance(0);
+        var visualSO = skillInst.visual;
+
         if (visualSO != null && !string.IsNullOrEmpty(visualSO.effectKey))
         {
             GameObject effect = EffectPool.Instance.SpawnEffect(visualSO.effectKey, center, Quaternion.identity);

@@ -62,15 +62,19 @@ public class SkillInstance
 
     public void Execute(GameObject caster)
     {
+        Execute(caster, null);
+    }
+
+    public void Execute(GameObject caster, GameObject target)
+    {
         switch (sourceType)
         {
             case SkillSourceType.Weapon:
                 if (execution != null && data != null)
-                    execution.Execute(caster, null, data);
+                    execution.Execute(caster, target, data);
                 break;
             case SkillSourceType.Memory:
-                if (memorySO != null && memorySO.skillItem != null)
-                    memorySO.skillItem.Use();
+                memorySO?.skillItem?.Use();
                 break;
         }
     }

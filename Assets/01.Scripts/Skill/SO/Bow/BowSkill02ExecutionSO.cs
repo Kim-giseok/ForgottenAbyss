@@ -16,14 +16,22 @@ public class BowSkill02ExecutionSO : SkillExecutionSO
 
     public override void Execute(GameObject caster, GameObject target, SkillData data)
     {
-        SkillCastData castData = PrepareCastData(caster, target, data);
-
-        var visualSO = DataManager.Instance.GetSkillVisualSO(data.VisualSOName);
-        SkillController.Instance.isBowAttack = true;
-        if (visualSO != null)
+        SkillInstance skillInst = WeaponManager.Instance.GetWeaponSkillInstance(1); // 원하는 스킬 인스턴스 가져오기
+        if (skillInst != null)
         {
-            Transform spawnPoint = caster.transform; 
-            CoroutineRunner.instance.StartCoroutine(PlayEffectWithDelay(visualSO, spawnPoint, data, castData));
+            SkillCastData castData = PrepareCastData(caster, target, skillInst.data);  // 스킬 인스턴스의 data 사용
+            SkillController.Instance.isBowAttack = true;
+
+            var visualSO = skillInst.visual;  // SkillInstance에서 visualSO 가져오기
+            if (visualSO != null)
+            {
+                Transform spawnPoint = caster.transform;
+                CoroutineRunner.instance.StartCoroutine(PlayEffectWithDelay(visualSO, spawnPoint, data, castData));
+            }
+        }
+        else
+        {
+            Debug.LogError("SkillInstance is null!");
         }
     }
 
