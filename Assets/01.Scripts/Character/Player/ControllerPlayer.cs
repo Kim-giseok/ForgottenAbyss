@@ -250,6 +250,7 @@ public class ControllerPlayer : MonoBehaviour
         Debug.Log("Z: �ٸ������ ��ȯ");
     }
 
+    
     public void UpdateDirection() //���� ��ȯ
     {
         AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);

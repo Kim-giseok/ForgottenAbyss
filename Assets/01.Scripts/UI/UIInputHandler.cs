@@ -14,8 +14,10 @@ public class UIInputHandler : MonoBehaviour
         keyActions = new Dictionary<KeyCode, Action>
         {
             { KeyCode.I, () => UIManager.Instance?.ToggleInventory() },
-            { KeyCode.Escape, HandleEscapeKey }
+            { KeyCode.Escape, HandleEscapeKey },
             //{ KeyCode.Tab, () => UIManager.Instance?.SwapWeapons() }
+            { KeyCode.V, () => UIManager.Instance?.OnStatUI() },
+            { KeyCode.K, () => UIManager.Instance?.OnPassiveUI() }
         };
     }
 
@@ -42,7 +44,18 @@ public class UIInputHandler : MonoBehaviour
                 PlayerInput playerInput = player.GetComponent<PlayerInput>();
                 if (playerInput != null) playerInput.enabled = true;
             }
-
+        }
+        else if (UIManager.Instance.statUI != null && UIManager.Instance.statUI.statusUI != null
+             && UIManager.Instance.statUI.statusUI.activeSelf)
+        {
+            // statUI가 열려있으면 statUI만 닫음
+            UIManager.Instance.statUI.OffStatUI();
+        }
+        else if (UIManager.Instance.passiveUI != null && UIManager.Instance.passiveUI.passiveUI != null
+             && UIManager.Instance.passiveUI.passiveUI.activeSelf)
+        {
+            // statUI가 열려있으면 statUI만 닫음
+            UIManager.Instance.passiveUI.OffPassiveUI();
         }
         else
         {
