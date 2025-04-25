@@ -126,7 +126,7 @@ public class BoltsPool : MonoBehaviour // 단위 미사일
         // SummonController currSummon = currSummons.Find(summon => !summon.gameObject.activeSelf);
         // if (!currSummon)
         // {
-            GameObject instance = Instantiate(Summon, new Vector2(parent.transform.position.x, parent.transform.position.y + 0.8f), Quaternion.identity);
+            GameObject instance = Instantiate(Summon, parent.transform.position, Quaternion.identity);
             SummonController currSummon = instance.GetComponent<SummonController>();
             // currSummons.Add(currSummon);
         // }

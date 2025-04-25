@@ -96,7 +96,7 @@ public class Enemies
             new SelectorNode(
                 new SequenceNode(new HitNode(), new DieNode()),
                 // new SequenceNode(new MudWarpNode(), new MudWarpNode(), new MudWarpNode())
-                new SequenceNode(new IdleNode(1), new MudSpawnNode())
+                new SequenceNode(new IdleNode(1), new MudSpawnNode(), new MudWarpNode())
                 )
         },
         {
@@ -119,7 +119,11 @@ public class Enemies
             new SelectorNode(
                 new SequenceNode(new HitNode(), new DieNode()),
                 // new SequenceNode(new TracingNode(), new StopNode(), new BringerAttackNode(), new IdleNode(1f)),
-                new SequenceNode(new MoonWarp())
+                // new SequenceNode(new MoonCopy1(), new MoonAttack1(), new MoonWarp(), new MoonWarp())
+                new SequenceNode(
+                    new MoonAttack1(), new MoonStoneWalk(), new MoonCopyRain3(), new MoonFlyingMode(),  new MoonFlyingAttack(), new MoonFlyingEndNode(), 
+                    new MoonWarp(), new MoonWarp(), new MoonWarp(), new MoonWarp(), new MoonCopy1(), new MoonAttack1(), new MoonCopy2()
+                    )
                 )
         }
     };

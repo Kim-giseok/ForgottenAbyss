@@ -118,8 +118,8 @@ public class NavSurface : MonoBehaviour
     
     Color PlatformColor(int id)
     {
-        Random.InitState(id * 1000);
-        return new Color(Random.value, Random.value, Random.value);
+        float hue = (id * 0.137f) % 1f; 
+        return Color.HSVToRGB(hue, 0.7f, 0.9f);
     }
     
     // 계속 실행되는 점 확인 필요
