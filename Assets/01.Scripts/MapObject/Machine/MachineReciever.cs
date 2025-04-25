@@ -10,6 +10,7 @@ public class MachineReciever : Machine
     public override void Active(LaberBase rootlaber)
     {
         base.Active(rootlaber);
+        if (!isActivated) return;
         ActionAfterAnimation(RecieveObject);
     }
 

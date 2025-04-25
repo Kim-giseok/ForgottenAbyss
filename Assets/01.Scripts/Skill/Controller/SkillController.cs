@@ -54,12 +54,12 @@ public class SkillController : Singleton<SkillController>
         {
             case WeaponType.Sword:
                 var combo = GetComponent<ComboAttack>();
-                combatSkill = new CombatInstance(combo, weaponSO.comboAttackData);
+                combatSkill = new CombatInstance(combo, weaponSO.comboAttackData).Clone() ;
                 break;
 
             case WeaponType.Bow:
                 var ranged = GetComponent<RangedAttack>();
-                combatSkill = new CombatInstance(ranged, weaponSO.rangedAttackData);
+                combatSkill = new CombatInstance(ranged, weaponSO.rangedAttackData).Clone();
                 break;
         }
 

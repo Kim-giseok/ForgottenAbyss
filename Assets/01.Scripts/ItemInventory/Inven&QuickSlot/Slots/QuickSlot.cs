@@ -36,6 +36,22 @@ public class QuickSlot : SlotBase, IPointerClickHandler
         }
     }
 
+    public override void SetItem(Item item)
+    {
+        currentItem = item;
+
+        iconImage.sprite = item.itemIcon;
+        iconImage.enabled = true;
+
+        var itemUI = GetComponentInChildren<ItemUI>(true);
+        if (itemUI != null)
+        {
+            itemUI.gameObject.SetActive(true);
+            itemUI.SetItem(item);
+            itemUI.SetDraggable(true); // 드래그 가능하게 설정
+        }
+    }
+
     public void UseItem()
     {
         if (currentItem != null && remainingCooldown <= 0)

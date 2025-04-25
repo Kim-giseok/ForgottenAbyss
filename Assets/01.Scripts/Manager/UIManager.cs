@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class UIManager : MonoBehaviour
@@ -5,11 +6,12 @@ public class UIManager : MonoBehaviour
     public static UIManager Instance { get; private set; }
 
     [Header("ScreenUI")]
-    public InventoryUI inventoryUI;
+    public InventoryUIManager inventoryUI;
     public SettingsMenu settingsMenu;
     public WeaponSwapper weaponSwapper;
     public ConfirmationUI confirmationUI;
     public GameObject shopUI;
+    public ItemTooltip tooltip;
 
     [Header("WorldUI")]
     public RectTransform worldSpaceCanvas;
@@ -29,12 +31,20 @@ public class UIManager : MonoBehaviour
     }
 
     public void ToggleInventory() => inventoryUI?.ToggleInventory();
+    public void CloseInventory() => inventoryUI?.Close();
     public void ToggleSettings() => settingsMenu?.ToggleSettingsMenu();
     public void SwapWeapons() => weaponSwapper?.SwapWeapons();
 
-    public void OnGuidUI(MonoBehaviour gameobject)
+
+    // ¾ÆÀÌÅÛ ÅøÆÁ
+    public void ShowTooltip(Item item, Vector3 position) => tooltip?.Show(item, position);
+    public void HideTooltip() => tooltip?.Hide();
+
+    
+    public void OnGuidUI(GameObject gameobject)
+
     {
-        Vector3 position = gameobject.transform.position + Vector3.up * 1.5f;
+        Vector3 position = gameobject.transform.position + Vector3.up * 1.5f * gameObject.transform.localScale.y;
         npcText.transform.position = position;
 
         if (!npcText.activeSelf)
@@ -57,5 +67,15 @@ public class UIManager : MonoBehaviour
     {
         if (talkBox.gameObject.activeSelf)
             talkBox.gameObject.SetActive(false);
+    }
+
+    public void HideAllUI()
+    {
+        gameObject.SetActive(false);
+    }
+
+    public void ShowAllUI()
+    {
+        gameObject.SetActive(true);
     }
 }

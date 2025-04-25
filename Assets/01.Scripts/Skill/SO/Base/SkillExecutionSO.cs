@@ -40,4 +40,9 @@ public abstract class SkillExecutionSO : ScriptableObject
     {
         return Physics2D.OverlapCircleAll(center, range, layer);
     }
+
+    public virtual SkillExecutionSO Clone()
+    {
+        return Instantiate(this);
+    }
 }
