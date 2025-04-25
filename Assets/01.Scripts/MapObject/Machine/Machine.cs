@@ -8,12 +8,19 @@ public class Machine : MonoBehaviour
     [SerializeField] protected Animator machineAnim;
     protected bool isActivated = false;
 
+    [Header("Once active parameter")]
+    [SerializeField] bool activeOnce;
+    [SerializeField] string flagName;
+
+    bool isAleadyActivated => activeOnce && PlayerPrefs.GetInt(flagName, 0) != 0;
+
     public virtual void Active(LaberBase rootlaber)
     {
-        if (isActivated) return;
+        if (isActivated || isAleadyActivated) return;
         machineAnim.SetFloat("Active", 1);
         isActivated = true;
 
+        PlayerPrefs.SetInt(flagName, 1);
         Debug.Log(name + " activated");
     }
 

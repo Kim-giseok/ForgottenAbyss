@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class MachineLoop : Machine
 {
-    LaberBase rootLaber;
+    [Header("Loop parameter")]
     [SerializeField] float waitTime;
+    LaberBase rootLaber;
 
     public override void Active(LaberBase rootlaber)
     {
