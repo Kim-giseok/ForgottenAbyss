@@ -23,11 +23,28 @@ public class DamageText : MonoBehaviour
 
         // 크리티컬일 때 
         if (isCritical)
-            dmgText.fontSize = defaultSize * 1.5f; // 크리티컬일 때 텍스트 크기 증가
-        else
-            dmgText.fontSize = defaultSize;
+        {
+            dmgText.fontSize = defaultSize * 1.5f;
 
-        StartCoroutine(AnimateText(targetColor, dmgText.fontSize));
+            // 아웃라인 + 글로우 효과
+            dmgText.outlineWidth = 1f;
+            dmgText.outlineColor = new Color(1f, 0.5f, 0.5f);
+
+            var mat = dmgText.fontSharedMaterial;
+            mat.EnableKeyword("GLOW_ON");
+            mat.SetColor("_GlowColor", Color.red);
+            mat.SetFloat("_GlowPower", 1f);
+            mat.SetFloat("_GlowOuter", 0.5f);
+        }
+        else
+        {
+            // 일반 데미지일 경우 효과 제거
+            dmgText.outlineWidth = 0f;
+            var mat = dmgText.fontSharedMaterial;
+            mat.DisableKeyword("GLOW_ON");
+        }
+
+        StartCoroutine(AnimateText(targetColor, dmgText.fontSize, isCritical));
 
         // 위치 랜덤 생성
         Vector2 randomOffset = new Vector2(Random.Range(-0.5f, 0.5f), Random.Range(0f, 1f));
@@ -51,8 +68,13 @@ public class DamageText : MonoBehaviour
         StartCoroutine(AnimateScreenCenterText());
     }
 
-    private IEnumerator AnimateText(Color targetColor, float targetFontSize)
+    private IEnumerator AnimateText(Color targetColor, float targetFontSize, bool isCritical)
     {
+        if (isCritical)
+        {
+            yield return StartCoroutine(PopingScale());
+        }
+
         Vector3 startPos = transform.position;
         Vector3 endPos = startPos + Vector3.up * 1.5f;
 
@@ -63,11 +85,7 @@ public class DamageText : MonoBehaviour
         Color startColor = dmgText.color;
         float startFontSize = dmgText.fontSize;
 
-        bool isCritical = targetFontSize > startFontSize;
-        float speedMultiplier = isCritical ? 2f : 1f;
-
-        Color criticalColor = targetColor * new Color(2f, 2f, 2f);
-
+        float speedMultiplier = isCritical ? 1.25f : 1f;
         Vector3 randomYOffset = new Vector3(0, Random.Range(0f, 0.5f), 0);
 
         while (elapsed < duration)
@@ -133,6 +151,24 @@ public class DamageText : MonoBehaviour
         yield return ScreenFader.Instance.FadeOut(fadeDuration);
 
         ReturnToPool();
+    }
+
+    private IEnumerator PopingScale()
+    {
+        float duration = 0.15f;
+        float maxScale = 1.8f;
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            float t = elapsed / duration;
+            float scale = Mathf.Lerp(maxScale, 1f, t);
+            transform.localScale = Vector3.one * scale;
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        transform.localScale = Vector3.one;
     }
 
     private void ReturnToPool()
