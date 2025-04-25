@@ -10,8 +10,12 @@ public class UIManager : MonoBehaviour
     public WeaponSwapper weaponSwapper;
     public ConfirmationUI confirmationUI;
     public GameObject shopUI;
+
     public StatUI statUI;
     public PassiveUI passiveUI;
+
+    public ItemTooltip tooltip;
+
 
     [Header("WorldUI")]
     public RectTransform worldSpaceCanvas;
@@ -27,18 +31,30 @@ public class UIManager : MonoBehaviour
         }
 
         Instance = this;
-        DontDestroyOnLoad(gameObject); // ¾À ³Ñ¾î°¡µµ À¯Áö
+        DontDestroyOnLoad(gameObject); // ï¿½ï¿½ ï¿½Ñ¾î°¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     }
 
     public void ToggleInventory() => inventoryUI?.ToggleInventory();
     public void ToggleSettings() => settingsMenu?.ToggleSettingsMenu();
     public void SwapWeapons() => weaponSwapper?.SwapWeapons();
+
     public void OnStatUI() => statUI?.OnStatusUI();
     public void OnPassiveUI() => passiveUI?.OnPassiveUI();
     
-    public void OnGuidUI(MonoBehaviour gameobject)
+    
+
+
+
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+    public void ShowTooltip(Item item, Vector3 position) => tooltip?.Show(item, position);
+    public void HideTooltip() => tooltip?.Hide();
+
+    
+    public void OnGuidUI(GameObject gameobject)
+
+
     {
-        Vector3 position = gameobject.transform.position + Vector3.up * 1.5f;
+        Vector3 position = gameobject.transform.position + Vector3.up * 1.5f * gameObject.transform.localScale.y;
         npcText.transform.position = position;
 
         if (!npcText.activeSelf)
