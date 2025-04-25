@@ -81,7 +81,7 @@ public class BowSkill02ExecutionSO : SkillExecutionSO
         return result;
     }
 
-    public BowSkill02ExecutionSO Clone()
+    public override SkillExecutionSO Clone()
     {
         BowSkill02ExecutionSO clone = CreateInstance<BowSkill02ExecutionSO>();
 

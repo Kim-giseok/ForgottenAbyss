@@ -67,7 +67,7 @@ public class SwordSkill03ExecutionSO : SkillExecutionSO
         GameManager.Instance.player.controller.isInvincible = false;
     }
 
-    public SwordSkill03ExecutionSO Clone()
+    public override SkillExecutionSO Clone()
     {
         SwordSkill03ExecutionSO clone = CreateInstance<SwordSkill03ExecutionSO>();
 
