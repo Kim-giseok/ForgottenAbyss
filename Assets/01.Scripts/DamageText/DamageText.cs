@@ -30,7 +30,7 @@ public class DamageText : MonoBehaviour
         StartCoroutine(AnimateText(targetColor, dmgText.fontSize));
 
         // 위치 랜덤 생성
-        Vector2 randomOffset = new Vector2(Random.Range(-0.5f, 0.5f), Random.Range(0f, 0.5f));
+        Vector2 randomOffset = new Vector2(Random.Range(-0.5f, 0.5f), Random.Range(0f, 1f));
         transform.position += (Vector3)randomOffset;
     }
 
@@ -68,12 +68,14 @@ public class DamageText : MonoBehaviour
 
         Color criticalColor = targetColor * new Color(2f, 2f, 2f);
 
+        Vector3 randomYOffset = new Vector3(0, Random.Range(0f, 0.5f), 0);
+
         while (elapsed < duration)
         {
             float t = elapsed / duration * speedMultiplier;
 
             // 위치와 크기 애니메이션
-            transform.position = Vector3.Lerp(startPos, endPos, t);
+            transform.position = Vector3.Lerp(startPos + randomYOffset, endPos + randomYOffset, t);
             transform.localScale = Vector3.Lerp(Vector3.one * startSize, Vector3.one * endSize, t);
 
             // 색상과 폰트 크기 애니메이션
