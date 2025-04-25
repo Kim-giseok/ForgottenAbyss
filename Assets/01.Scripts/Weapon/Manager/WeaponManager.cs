@@ -144,13 +144,13 @@ public class WeaponManager : Singleton<WeaponManager>
         if (currentWeaponData.Type == WeaponType.Sword && selectedWeapon.comboAttackData != null)
         {
             skillController.comboAttack.SetComboData(selectedWeapon.comboAttackData);
-            skillController.combatSkill = new CombatInstance(skillController.comboAttack, selectedWeapon.comboAttackData);
+            skillController.combatSkill = new CombatInstance(skillController.comboAttack, selectedWeapon.comboAttackData).Clone();
             skillUI.SetSkillIcon(SkillSlotType.Basic, selectedWeapon.comboAttackData.icon);
         }
         else if (currentWeaponData.Type == WeaponType.Bow && selectedWeapon.rangedAttackData != null)
         {
             skillController.rangedAttack.SetRangedAttackData(selectedWeapon.rangedAttackData);
-            skillController.combatSkill = new CombatInstance(skillController.rangedAttack, selectedWeapon.rangedAttackData);
+            skillController.combatSkill = new CombatInstance(skillController.rangedAttack, selectedWeapon.rangedAttackData).Clone();
             skillUI.SetSkillIcon(SkillSlotType.Basic, selectedWeapon.rangedAttackData.icon);
         }
 
