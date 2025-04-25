@@ -27,21 +27,25 @@ public class DamageText : MonoBehaviour
             dmgText.fontSize = defaultSize * 1.5f;
 
             // 아웃라인 + 글로우 효과
-            dmgText.outlineWidth = 1f;
-            dmgText.outlineColor = new Color(1f, 0.5f, 0.5f);
+            dmgText.outlineWidth = 0.2f;
+            dmgText.outlineColor = GetOutlineColor(targetColor);
 
-            var mat = dmgText.fontSharedMaterial;
+            var mat = dmgText.fontMaterial;
             mat.EnableKeyword("GLOW_ON");
-            mat.SetColor("_GlowColor", Color.red);
-            mat.SetFloat("_GlowPower", 1f);
+            mat.SetColor("_GlowColor", Color.white);
+            mat.SetFloat("_GlowPower", 0.5f);
             mat.SetFloat("_GlowOuter", 0.5f);
+
+            dmgText.SetAllDirty();
         }
         else
         {
             // 일반 데미지일 경우 효과 제거
             dmgText.outlineWidth = 0f;
-            var mat = dmgText.fontSharedMaterial;
+            var mat = dmgText.fontMaterial;
             mat.DisableKeyword("GLOW_ON");
+
+            dmgText.SetAllDirty();
         }
 
         StartCoroutine(AnimateText(targetColor, dmgText.fontSize, isCritical));
@@ -150,6 +154,8 @@ public class DamageText : MonoBehaviour
 
         yield return ScreenFader.Instance.FadeOut(fadeDuration);
 
+        UIManager.Instance.ShowAllUI();
+
         ReturnToPool();
     }
 
@@ -169,6 +175,33 @@ public class DamageText : MonoBehaviour
         }
 
         transform.localScale = Vector3.one;
+    }
+
+    private Color GetOutlineColor(Color damageColor)
+    {
+        // 빨강
+        if (damageColor.r > 0.9f && damageColor.g < 0.3f)
+        {
+            // 좀더 어두운 빨강
+            return new Color(0.5f, 0f, 0f);
+        }
+        // 주황
+        else if (damageColor.r > 0.9f && damageColor.g > 0.4f)
+        {
+            // 좀더 어두운 주황
+            return new Color(0.5f, 0.25f, 0f);
+        }
+        // 노랑
+        else if (damageColor.g > 0.9f)
+        {
+            // 좀더 어두운 노랑
+            return new Color(0.5f, 0.5f, 0f);
+        }
+        // 기본 흰색에선 검정색
+        else
+        {
+            return Color.black;
+        }
     }
 
     private void ReturnToPool()
