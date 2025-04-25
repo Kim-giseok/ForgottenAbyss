@@ -10,7 +10,7 @@ public class SkillInstance
 
     public SkillData data;
     public SkillVisualSO visual;            // 공통 비주얼
-    public SkillExecutionSO execution;      // 스킬
+    public SkillExecutionSO execution;      // 실행
 
     public MemoryPieceSO memorySO;          // 기억 스킬용
 
@@ -38,8 +38,8 @@ public class SkillInstance
         if (sourceType == SkillSourceType.Weapon)
         {
             SkillData clonedData = data.Clone();
-            SkillVisualSO clonedVisual = visual != null ? visual : null;
-            SkillExecutionSO clonedExecution = execution != null ? execution : null;
+            SkillVisualSO clonedVisual = visual != null ? visual.Clone() : null;
+            SkillExecutionSO clonedExecution = execution != null ? execution.Clone() : null;
 
             clone = new SkillInstance(clonedData)
             {
@@ -62,15 +62,19 @@ public class SkillInstance
 
     public void Execute(GameObject caster)
     {
+        Execute(caster, null);
+    }
+
+    public void Execute(GameObject caster, GameObject target)
+    {
         switch (sourceType)
         {
             case SkillSourceType.Weapon:
                 if (execution != null && data != null)
-                    execution.Execute(caster, null, data);
+                    execution.Execute(caster, target, data);
                 break;
             case SkillSourceType.Memory:
-                if (memorySO != null && memorySO.skillItem != null)
-                    memorySO.skillItem.Use();
+                memorySO?.skillItem?.Use();
                 break;
         }
     }

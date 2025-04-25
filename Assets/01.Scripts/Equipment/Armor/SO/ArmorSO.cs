@@ -13,13 +13,10 @@ public class ArmorStatBonus
 }
 
 [CreateAssetMenu(fileName = "NewArmorData", menuName = "SO/Equipment/ArmorData")]
-public class ArmorSO : ScriptableObject
+public class ArmorSO : Item
 {
     public int armorId;
-    public string armorName;
-    public string description;
     public ArmorSlot slot;
-    public Sprite icon;
 
     public List<ArmorStatBonus> statBonuses = new();
 }

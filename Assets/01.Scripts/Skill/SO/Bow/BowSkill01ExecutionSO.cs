@@ -49,7 +49,7 @@ public class BowSkill01ExecutionSO : SkillExecutionSO
         DebugDrawUtil.DrawBox(center, size, angle, Color.red, 0.5f);
     }
 
-    public BowSkill01ExecutionSO Clone()
+    public override SkillExecutionSO Clone()
     {
         BowSkill01ExecutionSO clone = CreateInstance<BowSkill01ExecutionSO>();
 

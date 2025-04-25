@@ -35,13 +35,16 @@ public class UIManager : MonoBehaviour
     public void ToggleSettings() => settingsMenu?.ToggleSettingsMenu();
     public void SwapWeapons() => weaponSwapper?.SwapWeapons();
 
+
     // ¾ÆÀÌÅÛ ÅøÆÁ
     public void ShowTooltip(Item item, Vector3 position) => tooltip?.Show(item, position);
     public void HideTooltip() => tooltip?.Hide();
 
-    public void OnGuidUI(MonoBehaviour gameobject)
+    
+    public void OnGuidUI(GameObject gameobject)
+
     {
-        Vector3 position = gameobject.transform.position + Vector3.up * 1.5f;
+        Vector3 position = gameobject.transform.position + Vector3.up * 1.5f * gameObject.transform.localScale.y;
         npcText.transform.position = position;
 
         if (!npcText.activeSelf)
@@ -64,5 +67,15 @@ public class UIManager : MonoBehaviour
     {
         if (talkBox.gameObject.activeSelf)
             talkBox.gameObject.SetActive(false);
+    }
+
+    public void HideAllUI()
+    {
+        gameObject.SetActive(false);
+    }
+
+    public void ShowAllUI()
+    {
+        gameObject.SetActive(true);
     }
 }
