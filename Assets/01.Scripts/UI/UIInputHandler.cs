@@ -34,10 +34,10 @@ public class UIInputHandler : MonoBehaviour
 
     private void HandleEscapeKey()
     {
-        if (UIManager.Instance.shopUI.activeSelf)
+        if (UIManager.Instance.shopUI.gameObject.activeSelf)
         {
             // 상점이 열린 상태면 상점만 닫음
-            UIManager.Instance.shopUI.SetActive(false);
+            UIManager.Instance.shopUI.gameObject.SetActive(false);
             GameObject player = GameObject.FindWithTag("Player");
             if (player != null)
             {

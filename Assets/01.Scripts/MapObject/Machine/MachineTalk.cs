@@ -10,6 +10,7 @@ public class MachineTalk : MachineLoop
     {
         base.Active(rootlaber);
         if (!isActivated) return;
+
         DisplaySentence();
     }
 

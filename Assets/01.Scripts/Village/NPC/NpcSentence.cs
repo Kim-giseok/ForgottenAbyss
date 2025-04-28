@@ -15,6 +15,8 @@ public class NpcSentence : MonoBehaviour
 
     IEnumerator DisplayEachSentence()
     {
+        GameManager.Instance.PausePlayer();
+
         foreach (var sentnece in sentences)
         {
             Debug.Log(sentnece);
@@ -23,5 +25,7 @@ public class NpcSentence : MonoBehaviour
         }
         UIManager.Instance.OffTalk();
         displayEndEvents.Invoke();
+
+        GameManager.Instance.PausePlayer(false);
     }
 }

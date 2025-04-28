@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using Cinemachine;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 public class GameManager : Singleton<GameManager>
 {
     public Player player;
     public Camera mainCamera;
+    PlayerInput input;
+    public PlayerStatus pStatus;
 
     private void Awake()
     {
@@ -38,6 +41,13 @@ public class GameManager : Singleton<GameManager>
     private void InitReferences()
     {
         player = FindObjectOfType<Player>();
+        input = player.GetComponent<PlayerInput>();
+        pStatus = player.GetComponent<PlayerStatus>();
+
+        pStatus.OnStatPointsChanged -= UIManager.Instance.passiveUI.UpdateStatPointsUI;
+        pStatus.OnStatPointsChanged += UIManager.Instance.passiveUI.UpdateStatPointsUI;
+
+        UIManager.Instance.passiveUI.UpdateStatPointsUI(pStatus.GetAvailableStatPoints());
 
         mainCamera = Camera.main;
         if (mainCamera != null)
@@ -47,4 +57,6 @@ public class GameManager : Singleton<GameManager>
             brain.m_DefaultBlend.m_Time = 0f;
         }
     }
+
+    public void PausePlayer(bool pause = true) => input.enabled = !pause;
 }

@@ -10,7 +10,7 @@ public class UIManager : MonoBehaviour
     public SettingsMenu settingsMenu;
     public WeaponSwapper weaponSwapper;
     public ConfirmationUI confirmationUI;
-    public GameObject shopUI;
+    public ShopUI shopUI;
     public StatUI statUI;
     public PassiveUI passiveUI;
     public ItemTooltip tooltip;
