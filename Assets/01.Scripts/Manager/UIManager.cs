@@ -69,13 +69,7 @@ public class UIManager : MonoBehaviour
             talkBox.gameObject.SetActive(false);
     }
 
-    public void HideAllUI()
-    {
-        ingameUI.SetActive(false);
-    }
+    public void HideIngameUI() => ingameUI.SetActive(false);
 
-    public void ShowAllUI()
-    {
-        ingameUI.SetActive(true);
-    }
+    public void ShowIngameUI() => ingameUI.SetActive(true);
 }

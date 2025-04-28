@@ -31,7 +31,7 @@ public class DamageTextManager : Singleton <DamageTextManager>
         GameObject obj = DamageTextPool.Instance.Get();
 
         obj.transform.position = Vector3.zero;
-        UIManager.Instance.HideAllUI();
+        UIManager.Instance.HideIngameUI();
         obj.GetComponent<DamageText>().Setup("You Die", Color.red);
     }
 }
