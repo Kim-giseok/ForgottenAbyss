@@ -7,14 +7,6 @@ using UnityEngine.InputSystem;
 public class Shop : MonoBehaviour, IInteractable
 {
     public GameObject shopUI => UIManager.Instance.shopUI;
-    PlayerInput playerInput;
-
-    private void Awake()
-    {
-        //shopUI.SetActive(false);
-        //shopText.SetActive(false);
-        playerInput = GameObject.FindWithTag("Player").GetComponent<PlayerInput>();
-    }
 
     private void Update()
     {
@@ -24,25 +16,9 @@ public class Shop : MonoBehaviour, IInteractable
         }
     }
 
-    public void OnTriggerEnter2D(Collider2D collision)
-    {
-        if(collision != null && collision.CompareTag("Player"))
-        {
-            UIManager.Instance.OnGuidUI(this.gameObject);
-        }
-    }
-
-    public void OnTriggerExit2D(Collider2D collision)
-    {
-        if (collision != null && collision.CompareTag("Player"))
-        {
-            UIManager.Instance.OffGuidUI();
-        }
-    }
-
     public void ActiveInteraction()
     {
-        playerInput.enabled = false;
+        GameManager.Instance.PausePlayer();
         UIManager.Instance.OffGuidUI();
         shopUI.SetActive(true);
     }
@@ -55,7 +31,7 @@ public class Shop : MonoBehaviour, IInteractable
     public void OnClickExit()
     {
         shopUI.SetActive(false);
-        playerInput.enabled = true;
+        GameManager.Instance.ActionPlayer();
 
         UIManager.Instance?.CloseInventory();
     }
