@@ -1169,7 +1169,7 @@ Canvas:
   m_Enabled: 1
   serializedVersion: 3
   m_RenderMode: 0
-  m_Camera: {fileID: 0}
+  m_Camera: {fileID: 906508694}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
@@ -1180,7 +1180,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 50
   m_TargetDisplay: 0
 --- !u!224 &274689713
 RectTransform:
@@ -8104,9 +8104,13 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5360148795363926435, guid: 7a15afdda7304704ab9517ec2c7e9260, type: 3}
-      propertyPath: fadeDuration
-      value: 1.25
+    - target: {fileID: 7152016034979146326, guid: 7a15afdda7304704ab9517ec2c7e9260, type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 906508694}
+    - target: {fileID: 7152016034979146326, guid: 7a15afdda7304704ab9517ec2c7e9260, type: 3}
+      propertyPath: m_RenderMode
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

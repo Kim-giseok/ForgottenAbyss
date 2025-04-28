@@ -1,11 +1,28 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class FadeScene : Singleton<FadeScene>
 {
     public Image fadeImage;
     public float fadeDuration = 2f;
+
+
+    private void Awake()
+    {
+        BringFadeCanvasToFront();
+    }
+
+    private void OnDestroy()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        BringFadeCanvasToFront();
+    }
 
     public void StartFadeOut()
     {
@@ -62,5 +79,28 @@ public class FadeScene : Singleton<FadeScene>
         color.a = 0f;
         fadeImage.color = color;
         fadeImage.gameObject.SetActive(false);
+    }
+
+    private void BringFadeCanvasToFront()
+    {
+        Canvas canvas = GetComponentInChildren<Canvas>();
+        if (canvas != null)
+        {
+            Transform parent = canvas.transform.parent;
+            if (parent != null)
+            {
+                Transform sangsangman = parent.Find("GameManager");
+                if (sangsangman != null)
+                {
+                    int targetIndex = sangsangman.GetSiblingIndex();
+                    canvas.transform.SetSiblingIndex(targetIndex + 1);
+                }
+                else
+                {
+                    Debug.LogWarning("GameManager를 찾지 못했습니다.");
+                    canvas.transform.SetAsLastSibling(); // 못 찾으면 그냥 맨 위로
+                }
+            }
+        }
     }
 }

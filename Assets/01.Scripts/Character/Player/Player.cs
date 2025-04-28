@@ -20,6 +20,7 @@ public class Player : MonoBehaviour, IDamagable
     [SerializeField] private float defenseFactor = 100f;
     [SerializeField] private float hpRegenRate = 2f;
     [SerializeField] private float mpRegenRate = 5f;
+    [SerializeField] private float speed;
 
     public void Awake()
     {
@@ -68,6 +69,7 @@ public class Player : MonoBehaviour, IDamagable
 
         if (playerstatus.stats[StatType.CurrentHP] <= 0)
         {
+            playerstatus.stats[StatType.CurrentHP] = 0;
             Die();
         }
         else
@@ -90,7 +92,8 @@ public class Player : MonoBehaviour, IDamagable
         controller.isAlive = false;
         controller.rigid.velocity = Vector2.zero;
         controller.inputVec = Vector2.zero;
-        controller.status.stats[StatType.SPEED] = 0f;
+        speed = controller.status.stats[StatType.SPEED];
+        controller.status.stats[StatType.SPEED] = 0;
         skillController.SetDead(true);
 
         animator.ResetTrigger("HitTrigger");
@@ -112,15 +115,26 @@ public class Player : MonoBehaviour, IDamagable
         StartCoroutine(ClearGettingHitAfterDelay(0.4f));
     }
 
+    void revive()
+    {
+        isDead = false;
+        controller.isAlive = true;
+        controller.rigid.velocity = Vector2.zero;
+        controller.inputVec = Vector2.zero;
+        controller.status.stats[StatType.SPEED] = speed;
+        playerstatus.stats[StatType.CurrentHP] = playerstatus.stats[StatType.MaxHP];
+    }
+
     IEnumerator DiePanel()
     {
         yield return new WaitForSeconds(1.5f);
 
         DamageTextManager.Instance.ShowDeath();
 
-        yield return new WaitForSeconds(3.2f);
+        yield return new WaitForSeconds(2.8f);
 
-        SceneManager.LoadScene("Village");
+        SceneLoader.Instance.LoadScene("Village");
+        revive();
     }
 
     private IEnumerator ClearGettingHitAfterDelay(float delay)

@@ -11,7 +11,7 @@ public class SceneLoader : Singleton<SceneLoader>
         if (_instance == null)
         {
             _instance = this;
-            DontDestroyOnLoad(transform.root.gameObject);
+            DontDestroyOnLoad(gameObject);
         }
         else if (_instance != this)
         {

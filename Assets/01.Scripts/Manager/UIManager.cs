@@ -14,6 +14,7 @@ public class UIManager : MonoBehaviour
     public StatUI statUI;
     public PassiveUI passiveUI;
     public ItemTooltip tooltip;
+    public GameObject ingameUI; 
 
     [Header("WorldUI")]
     public RectTransform worldSpaceCanvas;
@@ -70,11 +71,11 @@ public class UIManager : MonoBehaviour
 
     public void HideAllUI()
     {
-        gameObject.SetActive(false);
+        ingameUI.SetActive(false);
     }
 
     public void ShowAllUI()
     {
-        gameObject.SetActive(true);
+        ingameUI.SetActive(true);
     }
 }
