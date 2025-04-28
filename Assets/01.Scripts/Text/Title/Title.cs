@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class TitleUIManager : MonoBehaviour
+public class Title : MonoBehaviour
 {
     public GameObject optionWindow;
     public GameObject exitWindow;
