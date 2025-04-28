@@ -6,6 +6,8 @@ using UnityEngine.UI;
 
 public class InventoryUIManager : MonoBehaviour
 {
+    public static InventoryUIManager Instance { get; private set; }
+
     public GameObject inventoryPanel;
     [SerializeField] private Button closeButton;
 
@@ -13,6 +15,9 @@ public class InventoryUIManager : MonoBehaviour
 
     private void Awake()
     {
+        if (Instance == null) Instance = this;
+        else Destroy(gameObject);
+
         // 슬롯 자동 할당
         slots = GetComponentsInChildren<InventorySlot>(true).ToList();
     }
@@ -42,13 +47,12 @@ public class InventoryUIManager : MonoBehaviour
         bool isOpen = inventoryPanel.activeSelf;
         inventoryPanel.SetActive(!isOpen);
 
-        Debug.Log($"[InventoryUIManager] ToggleInventory 호출됨 → 상태: {!isOpen}");
-
         if (!isOpen)
         {
-            UpdateUI(); // 열 때 갱신
+            UpdateUI();
         }
     }
+
 
     public void Close()
     {
