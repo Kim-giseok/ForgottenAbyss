@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
@@ -28,6 +29,10 @@ public class PlayerStatus : CharacterStatus
     public delegate void StatPointsChangedHandler(int points);
     public event StatPointsChangedHandler OnStatPointsChanged;
 
+    public PassiveUI passiveUI;
+
+    private const string PLAYER_DATA_FILE = "player_status.json";
+
     private StatType[] investableStats = new StatType[]
     {
         StatType.ATK,
@@ -37,10 +42,106 @@ public class PlayerStatus : CharacterStatus
         StatType.SPEED
     };
 
-    [SerializeField] private GameObject[] StatButtons; // ������ ��� ��ư��
-    
+    public void SavePlayerData()
+    {
+        PlayerData data = new PlayerData();
+
+        // 스탯 정보 저장
+        foreach (var pair in stats)
+        {
+            data.stats.Add(new PlayerData.StatData
+            {
+                statType = (int)pair.Key,
+                value = pair.Value
+            });
+        }
+
+        // 스탯 포인트 저장
+        data.availableStatPoints = availableStatPoints;
+
+        // 투자된 스탯 포인트 저장
+        foreach (var pair in investedStatPoints)
+        {
+            data.investedStats.Add(new PlayerData.InvestedStatData
+            {
+                statType = (int)pair.Key,
+                points = pair.Value
+            });
+        }
+
+        // DataSave 클래스를 사용하여 저장
+        DataSave<PlayerData>.SaveData(data, PLAYER_DATA_FILE);
+    }
+
+    // 데이터 로드 메서드
+    public void LoadPlayerData()
+    {
+        PlayerData data = DataSave<PlayerData>.LoadData(PLAYER_DATA_FILE);
+
+        if (data != null)
+        {
+            // 스탯 설정
+            foreach (var statData in data.stats)
+            {
+                StatType type = (StatType)statData.statType;
+                SetStat(type, statData.value);
+            }
+
+            // 스탯 포인트 설정
+            availableStatPoints = data.availableStatPoints;
+
+            // 투자된 스탯 포인트 설정
+            foreach (var investedData in data.investedStats)
+            {
+                StatType type = (StatType)investedData.statType;
+                if (investedStatPoints.ContainsKey(type))
+                {
+                    investedStatPoints[type] = investedData.points;
+                }
+            }
+
+            // UI 업데이트
+            OnStatPointsChanged?.Invoke(availableStatPoints);
+
+            Debug.Log("플레이어 데이터 로드 완료");
+        }
+    }
+
+    // 씬 전환 전 호출 (OnDisable 또는 OnDestroy)
+    private void OnDisable()
+    {
+        SavePlayerData();
+    }
+
+    // 데이터 초기화 메서드
+    public void ResetPlayerData()
+    {
+        string filePath = Path.Combine(Application.persistentDataPath, PLAYER_DATA_FILE);
+
+        // 저장 파일이 존재하면 삭제
+        if (File.Exists(filePath))
+        {
+            File.Delete(filePath);
+            Debug.Log("플레이어 데이터 파일 삭제됨: " + filePath);
+        }
+
+        // 현재 실행 중인 게임의 데이터도 초기화
+        InitializeStats();
+        InitializeStatPointSystem();
+
+        // UI 업데이트
+        OnStatPointsChanged?.Invoke(availableStatPoints);
+    }
+
+    public void OnApplicationQuit()
+    {
+        ResetPlayerData();
+    }
+
     private void Awake()
     {
+        //passiveUI = FindObjectOfType<PassiveUI>();
+       
         InitializeStats();
         InitializeLevelStats();
         InitializeExpRequired();
@@ -54,6 +155,7 @@ public class PlayerStatus : CharacterStatus
         {
             binder.BindStatus(this);
         }
+        LoadPlayerData();
     }
     // �̺�Ʈ ����
     private void OnEnable()
@@ -65,6 +167,7 @@ public class PlayerStatus : CharacterStatus
         };
     }
 
+   
     private void Update()
     {
         // ! �׽�Ʈ�� ü�°��� !
@@ -81,27 +184,7 @@ public class PlayerStatus : CharacterStatus
 
         TestExp();
 
-        // �׽�Ʈ�� ���� ����Ʈ ����
-        if (Input.GetKeyDown(KeyCode.Q)) // ATK�� ���� ����Ʈ ����
-        {
-            InvestStatPoint(StatType.ATK);
-        }
-        if (Input.GetKeyDown(KeyCode.W)) // CRITICAL�� ���� ����Ʈ ����
-        {
-            InvestStatPoint(StatType.CRITICAL);
-        }
-        if (Input.GetKeyDown(KeyCode.E)) // MaxHP�� ���� ����Ʈ ����
-        {
-            InvestStatPoint(StatType.MaxHP);
-        }
-        //if (Input.GetKeyDown(KeyCode.R)) // DEF�� ���� ����Ʈ ����
-        //{
-        //    InvestStatPoint(StatType.DEF);
-        //}
-        if (Input.GetKeyDown(KeyCode.T)) // SPEED�� ���� ����Ʈ ����
-        {
-            InvestStatPoint(StatType.SPEED);
-        }
+        Debug.Log($"현재속도:{stats[StatType.SPEED]}");
     }
     private void InitializeStats()
     {
@@ -175,16 +258,7 @@ public class PlayerStatus : CharacterStatus
         maxStatInvestment[StatType.SPEED] = 10;     // �ִ� SPEED ���� ����Ʈ
     }
 
-    // ���� �̸� ��ȯ (UI ǥ�ÿ�)
-    //public string GetStatName(StatType statType)
-    //{
-    //    if (statNames.ContainsKey(statType))
-    //    {
-    //        return statNames[statType];
-    //    }
-    //    // �⺻������ ���� Ÿ�� �̸� ���
-    //    return statType.ToString();
-    //}
+    
 
     // ���� ����Ʈ ���� �� ������ ��ȯ
     public float GetStatIncreasePerPoint(StatType statType)
@@ -243,7 +317,12 @@ public class PlayerStatus : CharacterStatus
         // ���� ����Ʈ �߰�
         AddStatPoints(statPointsPerLevel);
 
-        Debug.Log($"���� ���� ����Ʈ: {availableStatPoints}");
+        Debug.Log($"스탯 포인트: {availableStatPoints}");
+       
+        if (passiveUI != null)
+        {
+            passiveUI.UpdateStatPointsUI(availableStatPoints);
+        }
 
         stats[StatType.CurrentHP] = stats[StatType.MaxHP];
         stats[StatType.CurrentMP] = stats[StatType.MaxMP];
