@@ -4528,7 +4528,7 @@ GameObject:
   - component: {fileID: 2063506277}
   - component: {fileID: 2063506276}
   - component: {fileID: 2063506275}
-  - component: {fileID: 2063506274}
+  - component: {fileID: 2063506278}
   m_Layer: 5
   m_Name: AduioSettingUI
   m_TagString: Untagged
@@ -4557,19 +4557,6 @@ RectTransform:
   m_AnchoredPosition: {x: 960, y: 540}
   m_SizeDelta: {x: 1920, y: 1080}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &2063506274
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2063506272}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c85157f4d4a2d9645956de32d1c78770, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  settingsMenuUI: {fileID: 2063506272}
 --- !u!114 &2063506275
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4633,6 +4620,22 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!114 &2063506278
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2063506272}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e63fb0dd5356d6e48b8cc2583b09fdc8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioMixer: {fileID: 24100000, guid: 4673e93cfeb64ad4c91e5c66aaa172ff, type: 2}
+  masterSlider: {fileID: 1639091378}
+  bgmSlider: {fileID: 691193471}
+  sfxSlider: {fileID: 882639714}
 --- !u!1 &2147188495
 GameObject:
   m_ObjectHideFlags: 0
