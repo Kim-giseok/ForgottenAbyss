@@ -1072,6 +1072,14 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2263945369492488875, guid: ed47ba49385e21645ac5b5c62afb620e, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 2646534644031942607}
+    - target: {fileID: 2263945369492488875, guid: ed47ba49385e21645ac5b5c62afb620e, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: ShopUI, Assembly-CSharp
+      objectReference: {fileID: 0}
     - target: {fileID: 2370579059473910734, guid: ed47ba49385e21645ac5b5c62afb620e, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -1152,6 +1160,10 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3918364640570978608, guid: ed47ba49385e21645ac5b5c62afb620e, type: 3}
+      propertyPath: shopUI
+      value: 
+      objectReference: {fileID: 2646534644031942607}
     - target: {fileID: 3918364640570978608, guid: ed47ba49385e21645ac5b5c62afb620e, type: 3}
       propertyPath: statUI
       value: 
@@ -1579,6 +1591,17 @@ PrefabInstance:
       addedObject: {fileID: 722624059}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ed47ba49385e21645ac5b5c62afb620e, type: 3}
+--- !u!114 &2646534644031942607 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3367622758821390110, guid: ed47ba49385e21645ac5b5c62afb620e, type: 3}
+  m_PrefabInstance: {fileID: 2646534644031942606}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5b163ce60d71ab44959b71e68085160, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

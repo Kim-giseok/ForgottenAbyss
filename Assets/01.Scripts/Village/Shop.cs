@@ -6,13 +6,13 @@ using UnityEngine.InputSystem;
 
 public class Shop : MonoBehaviour, IInteractable
 {
-    public GameObject shopUI => UIManager.Instance.shopUI;
+    public ShopUI shopUI => UIManager.Instance.shopUI;
 
     private void Update()
     {
-        if (shopUI.activeSelf && Input.GetKeyDown(KeyCode.Escape))
+        if (shopUI.gameObject.activeSelf && Input.GetKeyDown(KeyCode.Escape))
         {
-            OnClickExit();
+            shopUI.OnClickExit();
         }
     }
 
@@ -20,19 +20,11 @@ public class Shop : MonoBehaviour, IInteractable
     {
         GameManager.Instance.PausePlayer();
         UIManager.Instance.OffGuidUI();
-        shopUI.SetActive(true);
+        shopUI.gameObject.SetActive(true);
     }
 
     public void ReadyInteraction()
     {
 
-    }
-
-    public void OnClickExit()
-    {
-        shopUI.SetActive(false);
-        GameManager.Instance.ActionPlayer();
-
-        UIManager.Instance?.CloseInventory();
     }
 }

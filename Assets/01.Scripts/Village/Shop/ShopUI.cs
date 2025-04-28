@@ -134,4 +134,13 @@ public class ShopUI : MonoBehaviour
     {
         detailPanel.Show(selectedData);
     }
+
+    public void OnClickExit()
+    {
+        gameObject.SetActive(false);
+        GameManager.Instance.ActionPlayer();
+
+        UIManager.Instance?.CloseInventory();
+    }
+
 }
