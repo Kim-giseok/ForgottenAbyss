@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using Cinemachine;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 public class GameManager : Singleton<GameManager>
 {
     public Player player;
     public Camera mainCamera;
+    PlayerInput input;
 
     private void Awake()
     {
@@ -38,6 +40,7 @@ public class GameManager : Singleton<GameManager>
     private void InitReferences()
     {
         player = FindObjectOfType<Player>();
+        input = player.GetComponent<PlayerInput>();
 
         mainCamera = Camera.main;
         if (mainCamera != null)
@@ -47,4 +50,7 @@ public class GameManager : Singleton<GameManager>
             brain.m_DefaultBlend.m_Time = 0f;
         }
     }
+
+    public void PausePlayer() => input.enabled = false;
+    public void ActionPlayer() => input.enabled = true;
 }
