@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -5,11 +6,13 @@ using UnityEngine.UI;
 
 public class NarrationUI: MonoBehaviour
 {
+    private VerticalLayoutGroup verticalLayoutGroup;
+    private AudioSource audioSource;
+
     public Text narrationText;
     private Coroutine coroutine; 
     
     private bool skipLine = false;
-    
     private int currLine = 0;
 
     private string[] narrations =
@@ -21,18 +24,26 @@ public class NarrationUI: MonoBehaviour
         "우리는 이 곳을 잊혀진 나락이라고 부른다."
     };
     
+
+    private void Awake()
+    {
+        audioSource = GetComponent<AudioSource>();
+        verticalLayoutGroup = GetComponent<VerticalLayoutGroup>();
+    }
+
     private void Start()
     {
         coroutine = StartCoroutine(Narration(currLine));
     }
     
-
     private void Update()
     {
         if (Input.anyKeyDown || Input.GetMouseButtonDown(0))
         {
             if (!skipLine) { skipLine = true; return; }
             if (currLine >= narrations.Length - 1) { SceneLoader.Instance.LoadScene("Village"); return; }
+
+            if (currLine == 0) { StartCoroutine(ChangeSpacingOverTime(-1200f, 760f, 0.4f)); }
             
             StopCoroutine(coroutine);
             currLine += 1;
@@ -50,10 +61,29 @@ public class NarrationUI: MonoBehaviour
         foreach (char c in line)
         {
             if (skipLine) { narrationText.text = line; break; }
+            
+            audioSource.PlayOneShot(audioSource.clip);
             narrationText.text += c;
             yield return new WaitForSeconds(0.1f);
         }
         
         skipLine = true;
+    }
+    
+    private IEnumerator ChangeSpacingOverTime(float startValue, float endValue, float duration)
+    {
+        float elapsedTime = 0f;
+
+        verticalLayoutGroup.spacing = startValue;
+
+        while (elapsedTime < duration)
+        {
+            float t = elapsedTime / duration;
+            verticalLayoutGroup.spacing = Mathf.Lerp(startValue, endValue, t);
+
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+        verticalLayoutGroup.spacing = endValue;
     }
 }
