@@ -8,7 +8,7 @@ public class TitleUI : BaseUI
 {
     public void StartGame()
     {
-        SceneManager.LoadScene(1);
+        SceneLoader.Instance.LoadScene("Village");
     }
 
     public void ExitGame()
