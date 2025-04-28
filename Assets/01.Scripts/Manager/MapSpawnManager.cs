@@ -38,7 +38,7 @@ public class MapSpawnManager : Singleton<MapSpawnManager>
     {
         if (mapIdx >= maps.Length)
         {
-            SceneManager.LoadScene(1); //이후 마을 신으로 수정
+            SceneLoader.Instance.LoadScene("Village"); //이후 마을 신으로 수정
             return;
         }
 
