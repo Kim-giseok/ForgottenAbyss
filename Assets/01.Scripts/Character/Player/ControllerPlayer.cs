@@ -9,7 +9,7 @@ using UnityEngine.SocialPlatforms;
 public class ControllerPlayer : MonoBehaviour
 {
     public Vector2 inputVec;
-    public float speed; //�̵��ӵ�
+    private float speed; //�̵��ӵ�
     public float jumpPower; //������
     public float dashDistance; //�뽬�Ÿ�
     public float dashTime; //�뽬���ӽð�
