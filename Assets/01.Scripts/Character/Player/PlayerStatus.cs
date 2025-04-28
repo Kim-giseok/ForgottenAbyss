@@ -29,7 +29,7 @@ public class PlayerStatus : CharacterStatus
     public delegate void StatPointsChangedHandler(int points);
     public event StatPointsChangedHandler OnStatPointsChanged;
 
-    PassiveUI passiveUI;
+    public PassiveUI passiveUI;
 
     private const string PLAYER_DATA_FILE = "player_status.json";
 
@@ -140,7 +140,7 @@ public class PlayerStatus : CharacterStatus
 
     private void Awake()
     {
-        passiveUI = FindObjectOfType<PassiveUI>();
+        //passiveUI = FindObjectOfType<PassiveUI>();
        
         InitializeStats();
         InitializeLevelStats();
@@ -318,6 +318,7 @@ public class PlayerStatus : CharacterStatus
         AddStatPoints(statPointsPerLevel);
 
         Debug.Log($"스탯 포인트: {availableStatPoints}");
+       
         if (passiveUI != null)
         {
             passiveUI.UpdateStatPointsUI(availableStatPoints);
