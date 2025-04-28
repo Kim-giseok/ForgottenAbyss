@@ -28,6 +28,8 @@ public class PlayerStatus : CharacterStatus
     public delegate void StatPointsChangedHandler(int points);
     public event StatPointsChangedHandler OnStatPointsChanged;
 
+    PassiveUI passiveUI;
+
     private StatType[] investableStats = new StatType[]
     {
         StatType.ATK,
@@ -41,6 +43,8 @@ public class PlayerStatus : CharacterStatus
     
     private void Awake()
     {
+        passiveUI = FindObjectOfType<PassiveUI>();
+
         InitializeStats();
         InitializeLevelStats();
         InitializeExpRequired();
@@ -243,7 +247,11 @@ public class PlayerStatus : CharacterStatus
         // ���� ����Ʈ �߰�
         AddStatPoints(statPointsPerLevel);
 
-        Debug.Log($"���� ���� ����Ʈ: {availableStatPoints}");
+        Debug.Log($"스탯 포인트: {availableStatPoints}");
+        if (passiveUI != null)
+        {
+            passiveUI.UpdateStatPointsUI(availableStatPoints);
+        }
 
         stats[StatType.CurrentHP] = stats[StatType.MaxHP];
         stats[StatType.CurrentMP] = stats[StatType.MaxMP];
