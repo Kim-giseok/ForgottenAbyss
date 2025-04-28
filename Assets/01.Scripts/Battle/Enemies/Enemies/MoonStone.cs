@@ -228,7 +228,6 @@ public class MoonFlyingAttack : Node
                 .Create(controller.transform, Bolts.Type.Forward)
                 .SetEffect(Bolts.EffectType.Penetration)
                 .SetSize(1)
-                .SetSprite("skeleton")
                 .SetDamage(10)
                 .SetDirection(dir)
                 .SetDuration(5)
@@ -259,8 +258,7 @@ public class MoonFlyingSummonAttack : Node
         if (!Mathf.Approximately(Mathf.Floor(currTime / fireInterval), Mathf.Floor((currTime - Time.deltaTime) / fireInterval)))
         {
             Vector2 dir = Random.insideUnitCircle.normalized;
-            BoltsPool.Instance.Create(controller.transform, Bolts.Type.Forward).SetEffect(Bolts.EffectType.Penetration)
-                .SetSprite("skeleton").SetDamage(10).SetDirection(dir).SetDuration(5).Fire();
+            BoltsPool.Instance.Create(controller.transform, Bolts.Type.Forward).SetEffect(Bolts.EffectType.Penetration).SetDamage(10).SetDirection(dir).SetDuration(5).Fire();
         }
     }
 }
