@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class NarrationUI: MonoBehaviour
@@ -7,7 +8,6 @@ public class NarrationUI: MonoBehaviour
     public Text narrationText;
     private Coroutine coroutine; 
     
-    private bool isTyping = false;
     private bool skipLine = false;
     
     private int currLine = 0;
@@ -29,27 +29,31 @@ public class NarrationUI: MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Return))
+        if (Input.anyKeyDown || Input.GetMouseButtonDown(0))
         {
+            if (!skipLine) { skipLine = true; return; }
+            if (currLine >= narrations.Length - 1) { SceneLoader.Instance.LoadScene("Village"); return; }
+            
             StopCoroutine(coroutine);
-            coroutine = StartCoroutine(Narration(++currLine));
+            currLine += 1;
+            coroutine = StartCoroutine(Narration(currLine));
         }
     }
     
     private IEnumerator Narration(int lineIndex)
     {
+        skipLine = false;
         narrationText.text = "";
+        
         string line = narrations[lineIndex];
     
         foreach (char c in line)
         {
+            if (skipLine) { narrationText.text = line; break; }
             narrationText.text += c;
-            // if (skipLine) 
-            // {
-            //     narrationText.text = line;
-            //     break;
-            // }
             yield return new WaitForSeconds(0.1f);
         }
+        
+        skipLine = true;
     }
 }
