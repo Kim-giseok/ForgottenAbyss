@@ -2,12 +2,13 @@ using UnityEngine;
 
 public class Title : MonoBehaviour
 {
+    public GameObject audioWindow;
     public GameObject optionWindow;
     public GameObject exitWindow;
 
-    public void OpenOptionWindow()
+    public void OpenAudioWindow()
     {
-        optionWindow.SetActive(true);
+        audioWindow.SetActive(true);
     }
 
     public void OpenExitWindow()
@@ -15,14 +16,24 @@ public class Title : MonoBehaviour
         exitWindow.SetActive(true);
     }
 
-    public void CloseOptionWindow()
+    public void OpenOptionWindow()
     {
-        optionWindow.SetActive(false);
+        optionWindow.SetActive(true);
+    }
+
+    public void CloseAudioWindow()
+    {
+        audioWindow.SetActive(false);
     }
 
     public void CloseExitWindow()
     {
         exitWindow.SetActive(false);
+    }
+
+    public void CloseOptionWindow()
+    {
+        optionWindow.SetActive(false);
     }
 
     public void ExitGame()
