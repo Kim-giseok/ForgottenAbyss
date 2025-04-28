@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class PostProcessingToggle : MonoBehaviour
 {
     public UnityEngine.Rendering.Volume volume;
+
     public Toggle bloomToggle;
     public Toggle vignetteToggle;
     public Toggle motionBlurToggle;
