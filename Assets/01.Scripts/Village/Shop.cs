@@ -8,14 +8,6 @@ public class Shop : MonoBehaviour, IInteractable
 {
     public ShopUI shopUI => UIManager.Instance.shopUI;
 
-    private void Update()
-    {
-        if (shopUI.gameObject.activeSelf && Input.GetKeyDown(KeyCode.Escape))
-        {
-            shopUI.OnClickExit();
-        }
-    }
-
     public void ActiveInteraction()
     {
         GameManager.Instance.PausePlayer();
