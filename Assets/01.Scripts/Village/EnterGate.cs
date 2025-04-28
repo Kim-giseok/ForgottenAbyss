@@ -25,7 +25,12 @@ public class EnterGate : MonoBehaviour, IInteractable
 
     public void ActiveInteraction()
     {
-            UIManager.Instance.confirmationUI.PopUpUI(OnClickEnter);
-            Debug.Log(gateNumber);
+        if(sceneToLoad >= SceneManager.sceneCountInBuildSettings)
+        {
+            Debug.Log("There is no map");
+            return;
+        }
+
+        UIManager.Instance.confirmationUI.PopUpUI(OnClickEnter);
     }
 }
