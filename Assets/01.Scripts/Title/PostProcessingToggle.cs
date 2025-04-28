@@ -9,7 +9,6 @@ public class PostProcessingToggle : MonoBehaviour
 
     public Toggle bloomToggle;
     public Toggle vignetteToggle;
-    public Toggle motionBlurToggle;
     public Toggle toneMappingToggle;
     public Toggle gammaGainToggle;
     public Toggle shadowsToggle;
@@ -18,7 +17,6 @@ public class PostProcessingToggle : MonoBehaviour
 
     private Bloom bloom;
     private Vignette vignette;
-    private MotionBlur motionBlur;
     private Tonemapping toneMapping;
     private LiftGammaGain gammaGain;
     private ShadowsMidtonesHighlights shadows;
@@ -29,7 +27,6 @@ public class PostProcessingToggle : MonoBehaviour
     {
         volume.profile.TryGet(out bloom);
         volume.profile.TryGet(out vignette);
-        volume.profile.TryGet(out motionBlur);
         volume.profile.TryGet(out toneMapping);
         volume.profile.TryGet(out gammaGain);
         volume.profile.TryGet(out shadows);
@@ -38,7 +35,6 @@ public class PostProcessingToggle : MonoBehaviour
 
         bloomToggle.isOn = bloom.active;
         vignetteToggle.isOn = vignette.active;
-        motionBlurToggle.isOn = motionBlur.active;
         toneMappingToggle.isOn = toneMapping.active;
         gammaGainToggle.isOn = gammaGain.active;
         shadowsToggle.isOn = shadows.active;
@@ -47,7 +43,6 @@ public class PostProcessingToggle : MonoBehaviour
 
         bloomToggle.onValueChanged.AddListener(isOn => bloom.active = isOn);
         vignetteToggle.onValueChanged.AddListener(isOn => vignette.active = isOn);
-        motionBlurToggle.onValueChanged.AddListener(isOn => motionBlur.active = isOn);
         toneMappingToggle.onValueChanged.AddListener(isOn => toneMapping.active = isOn);
         gammaGainToggle.onValueChanged.AddListener(isOn => gammaGain.active = isOn);
         shadowsToggle.onValueChanged.AddListener(isOn => shadows.active = isOn);

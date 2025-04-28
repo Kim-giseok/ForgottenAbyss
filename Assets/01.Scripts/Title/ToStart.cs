@@ -5,13 +5,10 @@ using UnityEngine.EventSystems;
 
 public class ToStart : MonoBehaviour
 {
-    public Image fadeImage;
-    public float fadeSpeed = 1.5f;
     public string nextSceneName;
     public GameObject[] blockInputPanels;
 
     private bool isFading = false;
-    private float alpha = 0f;
 
     private bool IsBlockPanelActive()
     {
@@ -36,15 +33,12 @@ public class ToStart : MonoBehaviour
         if (!isFading && (anyKeyPressed || Input.GetMouseButtonDown(0)) && !clickedUI && !IsBlockPanelActive())
         {
             isFading = true;
+            FadeScene.Instance.StartFadeOut();
         }
 
-        if (isFading)
+        if (isFading && FadeScene.Instance.fadeImage.color.a >= 1f)
         {
-            alpha += Time.deltaTime * fadeSpeed;
-            fadeImage.color = new Color(0, 0, 0, alpha);
-
-            if (alpha >= 1f)
-                SceneManager.LoadScene(nextSceneName);
+            SceneLoader.Instance.LoadScene(nextSceneName);
         }
     }
 }
