@@ -51,6 +51,5 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
-    public void PausePlayer() => input.enabled = false;
-    public void ActionPlayer() => input.enabled = true;
+    public void PausePlayer(bool pause = true) => input.enabled = !pause;
 }

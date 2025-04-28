@@ -26,6 +26,6 @@ public class NpcSentence : MonoBehaviour
         UIManager.Instance.OffTalk();
         displayEndEvents.Invoke();
 
-        GameManager.Instance.ActionPlayer();
+        GameManager.Instance.PausePlayer(false);
     }
 }

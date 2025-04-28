@@ -138,7 +138,7 @@ public class ShopUI : MonoBehaviour
     public void OnClickExit()
     {
         gameObject.SetActive(false);
-        GameManager.Instance.ActionPlayer();
+        GameManager.Instance.PausePlayer(false);
 
         UIManager.Instance?.CloseInventory();
     }
