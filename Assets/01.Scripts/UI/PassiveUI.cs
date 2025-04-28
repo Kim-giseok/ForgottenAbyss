@@ -186,7 +186,7 @@ public class PassiveUI : MonoBehaviour
         }
 
         float currentSpd = _playerStatus.GetStat(StatType.SPEED);
-        _playerStatus.SetStat(StatType.SPEED, currentSpd + 0.1f);
+        _playerStatus.SetStat(StatType.SPEED, currentSpd + 0.2f);
         _playerStatus.AddStatPoints(-1);
 
         if (speedLevel >= maxSpeedLevel)

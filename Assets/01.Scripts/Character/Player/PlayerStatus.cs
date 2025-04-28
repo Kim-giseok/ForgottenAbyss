@@ -30,6 +30,7 @@ public class PlayerStatus : CharacterStatus
 
     PassiveUI passiveUI;
 
+    
     private StatType[] investableStats = new StatType[]
     {
         StatType.ATK,
@@ -44,7 +45,7 @@ public class PlayerStatus : CharacterStatus
     private void Awake()
     {
         passiveUI = FindObjectOfType<PassiveUI>();
-
+       
         InitializeStats();
         InitializeLevelStats();
         InitializeExpRequired();
@@ -69,6 +70,7 @@ public class PlayerStatus : CharacterStatus
         };
     }
 
+   
     private void Update()
     {
         // ! �׽�Ʈ�� ü�°��� !
@@ -85,27 +87,7 @@ public class PlayerStatus : CharacterStatus
 
         TestExp();
 
-        // �׽�Ʈ�� ���� ����Ʈ ����
-        if (Input.GetKeyDown(KeyCode.Q)) // ATK�� ���� ����Ʈ ����
-        {
-            InvestStatPoint(StatType.ATK);
-        }
-        if (Input.GetKeyDown(KeyCode.W)) // CRITICAL�� ���� ����Ʈ ����
-        {
-            InvestStatPoint(StatType.CRITICAL);
-        }
-        if (Input.GetKeyDown(KeyCode.E)) // MaxHP�� ���� ����Ʈ ����
-        {
-            InvestStatPoint(StatType.MaxHP);
-        }
-        //if (Input.GetKeyDown(KeyCode.R)) // DEF�� ���� ����Ʈ ����
-        //{
-        //    InvestStatPoint(StatType.DEF);
-        //}
-        if (Input.GetKeyDown(KeyCode.T)) // SPEED�� ���� ����Ʈ ����
-        {
-            InvestStatPoint(StatType.SPEED);
-        }
+        Debug.Log($"현재속도:{stats[StatType.SPEED]}");
     }
     private void InitializeStats()
     {
