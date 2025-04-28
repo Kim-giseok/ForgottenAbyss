@@ -21,11 +21,6 @@ public class ItemUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
         dragCanvas = GameObject.Find("DragCanvas")?.GetComponent<Canvas>(); // 드래그용
     }
 
-    public void SetDraggable(bool canDrag)
-    {
-        // isDraggable = canDrag; // 모드 나눌 때 사용
-    }
-
     // 아이템 설정
     public void SetItem(Item newItem)
     {
@@ -33,6 +28,11 @@ public class ItemUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
         GetComponent<Image>().sprite = item.itemIcon;
         gameObject.SetActive(true);
 
+    }
+
+    public void SetDraggable(bool canDrag)
+    {
+        // isDraggable = canDrag; // 모드 나눌 때 사용
     }
 
     // 아이템 제거
@@ -64,8 +64,41 @@ public class ItemUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
         canvasGroup.alpha = 1f;
         canvasGroup.blocksRaycasts = true;
 
-        // 실패 시 원래 자리로 복귀 (슬롯이 감지 못한 경우만)
-        if (!eventData.used) // 드롭 슬롯이 처리 안 했으면
+        var dropSlot = eventData.pointerEnter?.GetComponentInParent<SlotBase>();
+        var fromSlot = originalParent?.GetComponent<SlotBase>();
+
+        if (dropSlot != null && fromSlot != null && item != null)
+        {
+            dropSlot.SetItem(item);
+            fromSlot.ClearSlot();
+            transform.SetParent(dropSlot.transform, false);
+            transform.localPosition = Vector3.zero;
+
+            // 인벤토리 내부 데이터 이동 처리
+            if (fromSlot is InventorySlot && dropSlot is InventorySlot)
+            {
+                int fromIndex = InventoryUIManager.Instance.slots.IndexOf(fromSlot as InventorySlot);
+                int toIndex = InventoryUIManager.Instance.slots.IndexOf(dropSlot as InventorySlot);
+
+                if (fromIndex >= 0 && toIndex >= 0)
+                {
+                    var tmp = Inventory.Instance.items[fromIndex];
+                    Inventory.Instance.items[fromIndex] = Inventory.Instance.items[toIndex];
+                    Inventory.Instance.items[toIndex] = tmp;
+                }
+            }
+            else if (fromSlot is InventorySlot && dropSlot is QuickSlot)
+            {
+                Inventory.Instance.RemoveItem(item);
+            }
+            else if (fromSlot is QuickSlot && dropSlot is InventorySlot)
+            {
+                Inventory.Instance.AddItem(item);
+            }
+
+            InventoryUIManager.Instance.UpdateUI();
+        }
+        else
         {
             transform.SetParent(originalParent, false);
             transform.localPosition = Vector3.zero;
@@ -75,16 +108,13 @@ public class ItemUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
     public void OnPointerEnter(PointerEventData eventData)
     {
         if (item != null)
-        {
-            Vector3 pos = Input.mousePosition + new Vector3(10, -10);
-            UIManager.Instance.ShowTooltip(item, pos);
-        }
+            UIManager.Instance.ShowTooltip(item, Input.mousePosition);
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
         UIManager.Instance.HideTooltip();
     }
- }
+}
 
 

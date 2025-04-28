@@ -11,7 +11,7 @@ public class InventorySlot : SlotBase, IPointerClickHandler
 
     private void Awake()
     {
-        itemUI = GetComponentInChildren<ItemUI>();
+        itemUI = GetComponentInChildren<ItemUI>(true);
     }
 
     public override void OnDrop(PointerEventData eventData)
@@ -26,7 +26,6 @@ public class InventorySlot : SlotBase, IPointerClickHandler
     public override void SetItem(Item item)
     {
         currentItem = item;
-
         iconImage.sprite = item.itemIcon;
         iconImage.enabled = true;
 
@@ -34,20 +33,6 @@ public class InventorySlot : SlotBase, IPointerClickHandler
         {
             itemUI.gameObject.SetActive(true);
             itemUI.SetItem(item);
-            itemUI.SetDraggable(mode == SlotMode.Editable);
-        }
-    }
-
-    public override void ClearSlot()
-    {
-        currentItem = null;
-        iconImage.sprite = null;
-        iconImage.enabled = false;
-
-        if (itemUI != null)
-        {
-            itemUI.RemoveItem();
-            itemUI.gameObject.SetActive(false);
         }
     }
 
