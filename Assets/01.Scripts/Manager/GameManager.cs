@@ -11,6 +11,7 @@ public class GameManager : Singleton<GameManager>
     public Player player;
     public Camera mainCamera;
     PlayerInput input;
+    public PlayerStatus pStatus;
 
     private void Awake()
     {
@@ -41,6 +42,12 @@ public class GameManager : Singleton<GameManager>
     {
         player = FindObjectOfType<Player>();
         input = player.GetComponent<PlayerInput>();
+        pStatus = player.GetComponent<PlayerStatus>();
+
+        pStatus.OnStatPointsChanged -= UIManager.Instance.passiveUI.UpdateStatPointsUI;
+        pStatus.OnStatPointsChanged += UIManager.Instance.passiveUI.UpdateStatPointsUI;
+
+        UIManager.Instance.passiveUI.UpdateStatPointsUI(pStatus.GetAvailableStatPoints());
 
         mainCamera = Camera.main;
         if (mainCamera != null)

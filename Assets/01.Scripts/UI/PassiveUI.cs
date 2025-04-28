@@ -38,26 +38,26 @@ public class PassiveUI : MonoBehaviour
     private int maxcoolDownLevel = 10;
 
     //PlayerStatus _playerStatus = PlayerStatus.Instance;
-    PlayerStatus _playerStatus;
+    PlayerStatus _playerStatus => GameManager.Instance.pStatus;
 
-    private void Awake()
-    {
-        _playerStatus = FindObjectOfType<PlayerStatus>();
-        //_playerStatus = PlayerStatus.Instance;
+    //private void Awake()
+    //{
+    //    _playerStatus = FindObjectOfType<PlayerStatus>();
+    //    //_playerStatus = PlayerStatus.Instance;
 
-    }
+    //}
 
-    private void Start()
-    {
-        // PlayerStatus에서 스탯 포인트 변경 이벤트 구독
-        if (_playerStatus != null)
-        {
-            _playerStatus.OnStatPointsChanged += UpdateStatPointsUI;
-        }
+    //private void Start()
+    //{
+    //    // PlayerStatus에서 스탯 포인트 변경 이벤트 구독
+    //    if (_playerStatus != null)
+    //    {
+    //        _playerStatus.OnStatPointsChanged += UpdateStatPointsUI;
+    //    }
 
-        // 초기 UI 상태 업데이트
-        UpdateStatPointsUI(_playerStatus.GetAvailableStatPoints());
-    }
+    //    // 초기 UI 상태 업데이트
+    //    UpdateStatPointsUI(_playerStatus.GetAvailableStatPoints());
+    //}
 
     private void OnDestroy()
     {

@@ -184,7 +184,7 @@ public class PlayerStatus : CharacterStatus
 
         TestExp();
 
-        Debug.Log($"현재속도:{stats[StatType.SPEED]}");
+        //Debug.Log($"현재속도:{stats[StatType.SPEED]}");
     }
     private void InitializeStats()
     {
