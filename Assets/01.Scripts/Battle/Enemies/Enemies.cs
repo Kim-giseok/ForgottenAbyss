@@ -77,9 +77,9 @@ public class Enemies
                 new SequenceNode(new HitNode(), new DieNode()), 
                 new SequenceNode(
                     new TracingNode(),
-                    new SSDashAttack("Combo1"),  new RandomCoolTimeNode(),
-                    new SSDashAttack("Combo2"), new RandomCoolTimeNode(),
-                    new SSDashAttack("Combo3"), new RandomCoolTimeNode() 
+                    new SSCastingNode(), new SSDashAttack("Combo1"), new RandomCoolTimeNode(),
+                    new SSCastingNode(), new SSDashAttack("Combo2"), new RandomCoolTimeNode(),
+                    new SSCastingNode(), new SSDashAttack("Combo3"), new RandomCoolTimeNode() 
                 ),
                 new SequenceNode(new IdleNode(1), new PatrolMove(1)))
         },

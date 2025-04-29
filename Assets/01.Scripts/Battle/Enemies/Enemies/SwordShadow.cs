@@ -1,4 +1,21 @@
 using UnityEngine;
+
+public class SSCastingNode : Node
+{
+    public override void Start()
+    {
+        controller.animnHandler.Play("Casting");
+        controller.LookTarget();
+        controller.rigidbody.velocity = Vector2.zero;
+    }
+
+    public override void OnAnimated(AnimationStatus status, AnimatorStateInfo animInfo)
+    {
+        if (!animInfo.IsName("Casting")) return;
+        if (status == AnimationStatus.End) { SetStatus(Status.Success); }
+    }
+}
+
 public class SSDashAttack : Node
 {
     private string animationName;
