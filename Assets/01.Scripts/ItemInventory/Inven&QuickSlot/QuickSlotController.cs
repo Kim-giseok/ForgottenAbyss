@@ -71,4 +71,15 @@ public class QuickSlotController : MonoBehaviour
         quickSlotItems[index] = item;
         quickSlots[index].SetItem(item);
     }
+
+    public void NotifyItemRemoved(Item removedItem)
+    {
+        foreach (var slot in quickSlots)
+        {
+            if (slot.HasItem(removedItem))
+            {
+                slot.MarkToClearAfterCooldown();
+            }
+        }
+    }
 }

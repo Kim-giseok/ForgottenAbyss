@@ -30,6 +30,7 @@ public class Inventory : MonoBehaviour
     public void RemoveItem(Item item)
     {
         items.Remove(item);
+        QuickSlotController.Instance.NotifyItemRemoved(item);
         onItemChanged?.Invoke();
     }
 
