@@ -15,6 +15,10 @@ public class LetterBox : MonoBehaviour
     private bool skipLine;
     private int currLine;
 
+    public float startWidth;
+    public float endWidth;
+    public float duration;
+
     [TextArea(2, 2)] public string[] narrations;
     
     private void Awake()
@@ -28,20 +32,11 @@ public class LetterBox : MonoBehaviour
     private void Start()
     {
         coroutine = StartCoroutine(Narration(currLine));
-        if (currLine == 0) { StartCoroutine(ChangeSpacingOverTime(1200f, 860f, 1f)); }
+        if (currLine == 0) { StartCoroutine(HandleWidth(false)); }
     }
     
     private void Update()
     {
-        if (Input.anyKeyDown || Input.GetMouseButtonDown(0))
-        {
-            // if (!skipLine) { skipLine = true; return; }
-            //
-            // if(coroutine != null) StopCoroutine(coroutine);
-            //
-            // currLine += 1;
-            // coroutine = StartCoroutine(Narration(currLine));
-        }
     }
     
     private IEnumerator Narration(int lineIndex)
@@ -63,21 +58,28 @@ public class LetterBox : MonoBehaviour
         skipLine = true;
     }
     
-    private IEnumerator ChangeSpacingOverTime(float startValue, float endValue, float duration)
+    
+    private IEnumerator HandleWidth(bool isShow)
     {
         float currTime = 0f;
+        
+        float currStartWith = isShow ? startWidth : endWidth;
+        float currEndWith = isShow ? endWidth : startWidth;
+        
+        float currStartAlpha = isShow ? 0f : 1f;
+        float currEndAlpha = isShow ? 1f : 0f;
 
-        verticalLayoutGroup.spacing = startValue;
+        verticalLayoutGroup.spacing = currStartWith;
 
         while (currTime < duration)
         {
             float t = currTime / duration;
-            verticalLayoutGroup.spacing = Mathf.Lerp(startValue, endValue, t);
-            canvasGroup.alpha = Mathf.Lerp(0, 1, t);
+            verticalLayoutGroup.spacing = Mathf.Lerp(currStartWith, currEndWith, t);
+            canvasGroup.alpha = Mathf.Lerp(currStartAlpha, currEndAlpha, t);
             
             currTime += Time.deltaTime;
             yield return null;
         }
-        verticalLayoutGroup.spacing = endValue;
+        verticalLayoutGroup.spacing = currEndWith;
     }
 }
