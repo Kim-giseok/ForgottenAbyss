@@ -128,18 +128,12 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 3094358607974540795, guid: 8d7d7615f0a381d429ab973fa025a2ff, type: 3}
   m_PrefabInstance: {fileID: 1152592782}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &56907016 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1721422422871890334, guid: 11bdf7cfa8ddf4368bcd238f3cc765ce, type: 3}
+--- !u!114 &56907019 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2262676484571677033, guid: 11bdf7cfa8ddf4368bcd238f3cc765ce, type: 3}
   m_PrefabInstance: {fileID: 4591501912797484753}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &56907019
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 56907016}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5ba680be8e08471c89369cf94328d929, type: 3}
@@ -2568,14 +2562,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: CutScene(AgisAperance)
       objectReference: {fileID: 0}
-    - target: {fileID: 1721422422871890334, guid: 11bdf7cfa8ddf4368bcd238f3cc765ce, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2077216333693347599, guid: 11bdf7cfa8ddf4368bcd238f3cc765ce, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 2825614410839236011, guid: 11bdf7cfa8ddf4368bcd238f3cc765ce, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -2636,14 +2622,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7155506543390874972, guid: 11bdf7cfa8ddf4368bcd238f3cc765ce, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8089474579456706684, guid: 11bdf7cfa8ddf4368bcd238f3cc765ce, type: 3}
-      propertyPath: isStartNarration
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 8089474579456706684, guid: 11bdf7cfa8ddf4368bcd238f3cc765ce, type: 3}
       propertyPath: OnNarrationEnd.m_PersistentCalls.m_Calls.Array.size
       value: 1
@@ -2684,23 +2662,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 1405164822446247976, guid: 11bdf7cfa8ddf4368bcd238f3cc765ce, type: 3}
-    - {fileID: 9140965924904486621, guid: 11bdf7cfa8ddf4368bcd238f3cc765ce, type: 3}
-    - {fileID: 980547516318883020, guid: 11bdf7cfa8ddf4368bcd238f3cc765ce, type: 3}
-    - {fileID: 8993211658762370255, guid: 11bdf7cfa8ddf4368bcd238f3cc765ce, type: 3}
-    - {fileID: 3373705367823278710, guid: 11bdf7cfa8ddf4368bcd238f3cc765ce, type: 3}
-    - {fileID: 8883384670915711884, guid: 11bdf7cfa8ddf4368bcd238f3cc765ce, type: 3}
-    - {fileID: 1590622442688972153, guid: 11bdf7cfa8ddf4368bcd238f3cc765ce, type: 3}
-    - {fileID: 7301355864970518376, guid: 11bdf7cfa8ddf4368bcd238f3cc765ce, type: 3}
-    - {fileID: 1442969269522595691, guid: 11bdf7cfa8ddf4368bcd238f3cc765ce, type: 3}
-    - {fileID: 5051338475294630354, guid: 11bdf7cfa8ddf4368bcd238f3cc765ce, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 1721422422871890334, guid: 11bdf7cfa8ddf4368bcd238f3cc765ce, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 56907019}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 11bdf7cfa8ddf4368bcd238f3cc765ce, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
