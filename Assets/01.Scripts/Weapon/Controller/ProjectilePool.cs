@@ -10,6 +10,8 @@ public class ProjectilePool : Singleton<ProjectilePool>
 
     protected override void Awake()
     {
+        projectilePrefab = Resources.Load<GameObject>("Skill/Effect/PlayerProjectile");
+
         for (int i = 0; i < poolSize; i++)
         {
             var obj = Instantiate(projectilePrefab, transform);
