@@ -69,40 +69,32 @@ public class ItemUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
 
         if (dropSlot != null && fromSlot != null && item != null)
         {
-            dropSlot.SetItem(item);
-            fromSlot.ClearSlot();
+            // 두 슬롯이 다르면 교체
+            if (dropSlot != fromSlot)
+            {
+                // 이동할 아이템 저장
+                Item movingItem = item;
+
+                // 원래 슬롯은 비우고
+                fromSlot.ClearSlot();
+
+                // 목표 슬롯으로 아이템 이동
+                dropSlot.SetItem(movingItem);
+            }
+
+            // 드래그 오브젝트를 슬롯 밑으로 재배치
             transform.SetParent(dropSlot.transform, false);
             transform.localPosition = Vector3.zero;
-
-            // 인벤토리 내부 데이터 이동 처리
-            if (fromSlot is InventorySlot && dropSlot is InventorySlot)
-            {
-                int fromIndex = InventoryUIManager.Instance.slots.IndexOf(fromSlot as InventorySlot);
-                int toIndex = InventoryUIManager.Instance.slots.IndexOf(dropSlot as InventorySlot);
-
-                if (fromIndex >= 0 && toIndex >= 0)
-                {
-                    var tmp = Inventory.Instance.items[fromIndex];
-                    Inventory.Instance.items[fromIndex] = Inventory.Instance.items[toIndex];
-                    Inventory.Instance.items[toIndex] = tmp;
-                }
-            }
-            else if (fromSlot is InventorySlot && dropSlot is QuickSlot)
-            {
-                Inventory.Instance.RemoveItem(item);
-            }
-            else if (fromSlot is QuickSlot && dropSlot is InventorySlot)
-            {
-                Inventory.Instance.AddItem(item);
-            }
-
-            InventoryUIManager.Instance.UpdateUI();
         }
         else
         {
+            // 실패하면 원래 슬롯으로 복귀
             transform.SetParent(originalParent, false);
             transform.localPosition = Vector3.zero;
         }
+
+        // 드래그 종료 후 항상 인벤토리 UI 갱신
+        //Inventory.Instance.RefreshInventoryUI();
     }
 
     public void OnPointerEnter(PointerEventData eventData)
