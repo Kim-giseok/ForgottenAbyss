@@ -31,7 +31,6 @@ public class InventorySlot : SlotBase
 
         if (itemUI != null)
         {
-            itemUI.gameObject.SetActive(true);
             itemUI.SetItem(item);
         }
     }

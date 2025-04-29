@@ -8,13 +8,14 @@ public class QuickSlotController : MonoBehaviour
     public static QuickSlotController Instance {  get; private set; }
 
     [SerializeField] private QuickSlot[] quickSlots; // 퀵슬롯 슬롯들
+    private Item[] quickSlotItems;
     public int SelectedIndex => selectedIndex;
-
     private int selectedIndex = -1; // 선택된 슬롯 없음
 
     private void Awake()
     {
         Instance = this;
+        quickSlotItems = new Item[quickSlots.Length];
 
         for (int i = 0; i < quickSlots.Length; i++)
         {
@@ -37,7 +38,7 @@ public class QuickSlotController : MonoBehaviour
         if (selectedIndex == index)
         {
             // 같은 슬롯을 다시 누르면 아이템 사용
-            quickSlots[selectedIndex].UseItem();
+            quickSlots[index].UseItem();
         }
         else
         {
@@ -61,5 +62,13 @@ public class QuickSlotController : MonoBehaviour
         {
             quickSlots[i].SetSelected(i == selectedIndex);
         }
+    }
+
+    public void SetItemToQuickSlot(int index, Item item)
+    {
+        if (index < 0 || index >= quickSlotItems.Length) return;
+
+        quickSlotItems[index] = item;
+        quickSlots[index].SetItem(item);
     }
 }

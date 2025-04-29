@@ -9,8 +9,9 @@ public class QuickSlot : SlotBase, IPointerClickHandler
     [SerializeField] private Image cooldownOverlay; // UI 위에 덮이는 반투명 이미지
     [SerializeField] private float cooldownTime = 3f;
 
+    public int SlotIndex { get; private set; }
+
     private float remainingCooldown = 0f;
-    private int slotIndex = -1;
 
     private void Update()
     {
@@ -23,7 +24,7 @@ public class QuickSlot : SlotBase, IPointerClickHandler
 
     public void SetIndex(int index)
     {
-        slotIndex = index;
+        SlotIndex = index;
     }
 
     public override void OnDrop(PointerEventData eventData)
@@ -45,7 +46,6 @@ public class QuickSlot : SlotBase, IPointerClickHandler
         var itemUI = GetComponentInChildren<ItemUI>(true);
         if (itemUI != null)
         {
-            itemUI.gameObject.SetActive(true);
             itemUI.SetItem(item);
             itemUI.SetDraggable(true); // 드래그 가능하게 설정
         }
@@ -63,14 +63,6 @@ public class QuickSlot : SlotBase, IPointerClickHandler
 
     }
 
-    public void SetSelected(bool selected)
-    {
-        if (outlineObject != null)
-        {
-            outlineObject.SetActive(selected);
-        }
-    }
-
     // 슬롯 깜빡임
     private IEnumerator BlinkIcon()
     {
@@ -84,17 +76,25 @@ public class QuickSlot : SlotBase, IPointerClickHandler
         }
     }
 
+    public void SetSelected(bool selected)
+    {
+        if (outlineObject != null)
+        {
+            outlineObject.SetActive(selected);
+        }
+    }
+
+    
+
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (slotIndex == -1) return;
-
-        if (QuickSlotController.Instance.SelectedIndex == slotIndex)
+       if (QuickSlotController.Instance.SelectedIndex == SlotIndex)
         {
-            UseItem(); // 이미 선택된 슬롯이면 사용
+            UseItem();
         }
         else
         {
-            QuickSlotController.Instance.SelectSlotFromOutside(slotIndex);
+            QuickSlotController.Instance.SelectSlotFromOutside(SlotIndex);
         }
     }
 }
