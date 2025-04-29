@@ -156,8 +156,6 @@ public class DamageText : MonoBehaviour
 
         yield return ScreenFader.Instance.FadeOut(fadeDuration);
 
-        UIManager.Instance.ShowIngameUI();
-
         ReturnToPool();
     }
 

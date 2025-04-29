@@ -9,14 +9,11 @@ public class LoadingScene : MonoBehaviour
     public Slider progressBar;
     public float minimumLoadingTime = 2f;
 
-    private void Awake()
-    {
-        if(UIManager.Instance != null)
-            UIManager.Instance.HideIngameUI();
-    }
-
     private void Start()
     {
+        if (UIManager.Instance != null)
+            UIManager.Instance.HideIngameUI();
+
         FadeScene.Instance.StartFadeIn();
         CleanUpDuplicateComponents();
         StartCoroutine(LoadAsync());
