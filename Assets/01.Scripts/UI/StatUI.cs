@@ -18,13 +18,13 @@ public class StatUI : MonoBehaviour
 
     public GameObject statusUI;
 
-    PlayerStatus playerStatus;
+    PlayerStatus playerStatus => GameManager.Instance.pStatus;
     //PlayerStatus playerStatus = PlayerStatus.Instance;
 
     private void Awake()
     {
         //playerStatus = PlayerStatus.Instance;
-        playerStatus = FindObjectOfType<PlayerStatus>();
+        //playerStatus = FindObjectOfType<PlayerStatus>();
     }
 
     private void OnEnable()
