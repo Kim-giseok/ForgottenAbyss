@@ -576,8 +576,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   machineAnim: {fileID: 131728690695189360}
   isActivated: 0
-  activeOnce: 0
-  flagName: 0
 --- !u!95 &131728690695189360
 Animator:
   serializedVersion: 5
@@ -3146,8 +3144,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   machineAnim: {fileID: 6483830738013946869}
   isActivated: 0
-  activeOnce: 0
-  flagName: 0
 --- !u!95 &6483830738013946869
 Animator:
   serializedVersion: 5
@@ -3350,8 +3346,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   machineAnim: {fileID: 1052287444433545412}
   isActivated: 0
-  activeOnce: 0
-  flagName: 0
 --- !u!95 &1052287444433545412
 Animator:
   serializedVersion: 5
@@ -7062,6 +7056,14 @@ PrefabInstance:
     - target: {fileID: 1658259542207015787, guid: aebba97b0c71715479612608c480d66d, type: 3}
       propertyPath: m_Name
       value: InitLaber
+      objectReference: {fileID: 0}
+    - target: {fileID: 2458435931544872376, guid: aebba97b0c71715479612608c480d66d, type: 3}
+      propertyPath: flagName
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2458435931544872376, guid: aebba97b0c71715479612608c480d66d, type: 3}
+      propertyPath: activeOnce
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2458435931544872376, guid: aebba97b0c71715479612608c480d66d, type: 3}
       propertyPath: targetMachines.Array.data[0]
