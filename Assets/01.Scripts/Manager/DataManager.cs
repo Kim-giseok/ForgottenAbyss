@@ -32,8 +32,9 @@ public class DataManager : Singleton<DataManager>
 
     public bool IsInitialized { get; private set; } = false;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         LoadAllData();
     }
 

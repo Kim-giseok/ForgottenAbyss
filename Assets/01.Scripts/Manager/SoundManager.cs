@@ -23,7 +23,7 @@ public class Volumes
     public Volume[] list;
 }
 
-public class SoundManager : Singleton<SoundManager>
+public class SoundManager : SingletonLoadRemain<SoundManager>
 {
     [SerializeField] Volumes baseVolumes;
     public Dictionary<VOLTYPE, float> volumes = new();
@@ -35,13 +35,9 @@ public class SoundManager : Singleton<SoundManager>
 
     [SerializeField] AudioClip[] sfxList;
 
-    private void Awake()
+    protected override void Awake()
     {
-        if (_instance != null && _instance != this)
-            Destroy(gameObject);
-        else
-            _instance = this;
-        DontDestroyOnLoad(gameObject);
+        base.Awake();
 
         baseVolumes = DataSave<Volumes>.LoadOrBase(baseVolumes, volumeSavePath);
 
@@ -56,8 +52,9 @@ public class SoundManager : Singleton<SoundManager>
         PlayBgm();
     }
 
-    private void OnDestroy()
+    protected override void OnDestroy()
     {
+        base.OnDestroy();
         foreach (var baseVol in baseVolumes.list)
             baseVol.arrange = volumes[baseVol.type];
 

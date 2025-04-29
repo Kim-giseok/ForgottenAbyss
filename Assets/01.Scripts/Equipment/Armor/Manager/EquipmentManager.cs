@@ -5,28 +5,13 @@ using System;
 using System.Linq;
 using UnityEngine.SceneManagement;
 
-public class EquipmentManager : Singleton<EquipmentManager>
+public class EquipmentManager : SingletonLoadRemain<EquipmentManager>
 {
     private Dictionary<ArmorSlot, ArmorSO> equippedArmors = new();
     private CharacterStatus playerStatus;
 
     public event Action<ArmorSO> OnEquipArmor;
     public event Action<ArmorSO> OnUnequipArmor;
-
-    private void Awake()
-    {
-        if (_instance == null)
-        {
-            _instance = this;
-        }
-        else if (_instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-
-        DontDestroyOnLoad(gameObject);
-    }
 
     private IEnumerator Start()
     {
@@ -55,8 +40,9 @@ public class EquipmentManager : Singleton<EquipmentManager>
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
-    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    protected override void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        base.OnSceneLoaded(scene, mode);
         StartCoroutine(DelayedPlayerFindAndApply());
     }
 

@@ -3,17 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // 동적으로 몬스터를 소환해야하는 경우가 발생
-public class EnemyRespawner: Singleton<EnemyRespawner>
+public class EnemyRespawner: SingletonLoadRemain<EnemyRespawner>
 {
     [Serializable] public class Enemy { public Enemies.Enemy enemyName; public GameObject enemyPrefab; }
     [SerializeField] private List<Enemy> enemyList = new();
     private readonly Dictionary<int, GameObject> _enemyList = new();
 
-    private void Awake()
+    protected override void Awake()
     {
-        if (!_instance) { DontDestroyOnLoad(gameObject); }
-        else { Destroy(gameObject); }
-        
+        base.Awake();
+
         foreach (var mapping in enemyList)
         {
             _enemyList[(int)mapping.enemyName] = mapping.enemyPrefab;

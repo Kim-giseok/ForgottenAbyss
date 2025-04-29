@@ -11,8 +11,9 @@ public class ScreenFader : Singleton<ScreenFader>
     public float distanceFromCamera = 1.5f;
     public Vector2 screenSizeInWorldUnits = new Vector2(10f, 6f);
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         canvasGroup = GetComponent<CanvasGroup>();
         rectTransform = GetComponent<RectTransform>();
         mainCamera = Camera.main;
