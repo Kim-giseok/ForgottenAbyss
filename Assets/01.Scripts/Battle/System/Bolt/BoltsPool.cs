@@ -27,7 +27,7 @@ public class BoltsPool : MonoBehaviour // 단위 미사일
     
     private void Awake()
     {
-        if (Instance) return;
+        if (Instance) { Destroy(gameObject); return; }
         
         Instance = this;
         DontDestroyOnLoad(this);
