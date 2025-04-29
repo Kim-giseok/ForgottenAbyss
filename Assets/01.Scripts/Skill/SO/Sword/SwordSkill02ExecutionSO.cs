@@ -89,7 +89,7 @@ public class SwordSkill02ExecutionSO : SkillExecutionSO
             Debug.Log($"Hit {hit.name}");
             
         }
-        CameraShake.Instance.Shake(0.2f, 0.3f);
+        //CameraShake.Instance.Shake(0.2f, 0.3f);
         DebugDrawUtil.DrawBox(center, size, angle, Color.red, 0.5f);
     }
 
