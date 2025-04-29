@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SettingsMenu : MonoBehaviour
 {
@@ -25,5 +26,17 @@ public class SettingsMenu : MonoBehaviour
         isSettingsOpen = false;
         settingsMenuUI.SetActive(false);
         Time.timeScale = 1f;
+    }
+
+    public void RestartStage()
+    {
+        CloseSettingsMenuUI();
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    public void ReturnStartScene()
+    {
+        CloseSettingsMenuUI();
+        SceneManager.LoadScene(0);
     }
 }
