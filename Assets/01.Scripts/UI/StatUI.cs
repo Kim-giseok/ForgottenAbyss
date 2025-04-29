@@ -18,13 +18,13 @@ public class StatUI : MonoBehaviour
 
     public GameObject statusUI;
 
-    PlayerStatus playerStatus;
+    PlayerStatus playerStatus => GameManager.Instance.pStatus;
     //PlayerStatus playerStatus = PlayerStatus.Instance;
 
     private void Awake()
     {
         //playerStatus = PlayerStatus.Instance;
-        playerStatus = FindObjectOfType<PlayerStatus>();
+        //playerStatus = FindObjectOfType<PlayerStatus>();
     }
 
     private void OnEnable()
@@ -66,7 +66,7 @@ public class StatUI : MonoBehaviour
         atkText.text = $"ATK: " + playerStatus.stats[StatType.ATK].ToString();
         defText.text = $"DEF: " + playerStatus.stats[StatType.DEF].ToString();
         speedText.text = $"SPEED: " + playerStatus.stats[StatType.SPEED].ToString();
-        crtText.text = $"CRITICAL: " + playerStatus.stats[StatType.CRITICAL].ToString();
+        crtText.text = $"CRITICAL: " + playerStatus.stats[StatType.CRITICAL].ToString() + "%";
         cdwText.text = $"COOLDOWN: " + playerStatus.stats[StatType.COOLDOWN_REDUCTION].ToString() + "%";
     }
 
