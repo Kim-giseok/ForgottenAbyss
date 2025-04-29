@@ -1,7 +1,6 @@
-using System;
 using System.Collections;
+using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class NarrationUI: MonoBehaviour
@@ -9,7 +8,7 @@ public class NarrationUI: MonoBehaviour
     private VerticalLayoutGroup verticalLayoutGroup;
     private AudioSource audioSource;
 
-    public Text narrationText;
+    public TextMeshProUGUI narrationText;
     private Coroutine coroutine; 
     
     private bool skipLine = false;
@@ -23,7 +22,10 @@ public class NarrationUI: MonoBehaviour
         "혼란 속에서 점령되어\n 그림자의 에너지 공급자로 이용당했다.",
         "우리는 이 곳을 잊혀진 나락이라고 부른다."
     };
+
+    public GameObject lightEffect;
     
+    void LoadNextScene() { SceneLoader.Instance.LoadScene("Village"); }
 
     private void Awake()
     {
@@ -41,7 +43,13 @@ public class NarrationUI: MonoBehaviour
         if (Input.anyKeyDown || Input.GetMouseButtonDown(0))
         {
             if (!skipLine) { skipLine = true; return; }
-            if (currLine >= narrations.Length - 1) { SceneLoader.Instance.LoadScene("Village"); return; }
+
+            if (currLine >= narrations.Length - 1)
+            {
+                narrationText.color = Color.red;
+                lightEffect.SetActive(true); 
+                Invoke(nameof(LoadNextScene), 3f); return;
+            }
 
             if (currLine == 0) { StartCoroutine(ChangeSpacingOverTime(-1200f, 760f, 0.4f)); }
             

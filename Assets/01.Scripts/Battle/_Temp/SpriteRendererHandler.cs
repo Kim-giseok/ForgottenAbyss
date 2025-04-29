@@ -20,7 +20,7 @@ public class SpriteGradientHandler : MonoBehaviour
     void Update()
     {
         lerpTime += Time.deltaTime * lerpSpeed;
-
+        
         if (isLooped)
         {
             spriteRenderer.color = Color.Lerp(color1, color2, Mathf.PingPong(lerpTime, 1));
