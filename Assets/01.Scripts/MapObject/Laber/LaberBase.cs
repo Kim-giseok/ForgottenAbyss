@@ -5,7 +5,8 @@ using UnityEngine;
 public enum FLAGKEY
 {
     DEFAULTFLAG,
-    INTRO_DIALOGUE
+    INTRO_DIALOGUE,
+    FIRST_BATTLE_TURORIAL
 }
 
 public static class ActivateFlag
