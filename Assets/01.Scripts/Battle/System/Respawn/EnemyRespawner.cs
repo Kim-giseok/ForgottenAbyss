@@ -11,6 +11,9 @@ public class EnemyRespawner: Singleton<EnemyRespawner>
 
     private void Awake()
     {
+        if (!_instance) { DontDestroyOnLoad(gameObject); }
+        else { Destroy(gameObject); }
+        
         foreach (var mapping in enemyList)
         {
             _enemyList[(int)mapping.enemyName] = mapping.enemyPrefab;
