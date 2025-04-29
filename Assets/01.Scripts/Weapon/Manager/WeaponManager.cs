@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.Serialization.Formatters;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -35,11 +36,14 @@ public class WeaponManager : Singleton<WeaponManager>
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        skillUI = FindObjectOfType<SkillUI>();
         skillController = FindObjectOfType<SkillController>();
         comboAttack = FindObjectOfType<ComboAttack>();
+
         if(swapper == null)
             swapper = FindObjectOfType<WeaponSwapper>();
+
+        if(skillUI == null)
+            skillUI = FindObjectOfType<SkillUI>();
 
         RefreshSkillController();
     }

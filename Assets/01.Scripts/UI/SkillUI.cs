@@ -115,8 +115,10 @@ public class SkillUI : MonoBehaviour
         int idx = (int)slot;
         if (skillIcons[idx] != null)
         {
+            if (!skillIcons[idx].enabled)
+                skillIcons[idx].enabled = true;
+
             skillIcons[idx].sprite = icon;
-            skillIcons[idx].enabled = true;
         }
     }
 

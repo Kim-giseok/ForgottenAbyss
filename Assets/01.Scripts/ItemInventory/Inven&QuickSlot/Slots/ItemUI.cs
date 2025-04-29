@@ -46,6 +46,13 @@ public class ItemUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
     // 드래그 시작
     public void OnBeginDrag(PointerEventData eventData)
     {
+        if (item == null || item.itemType != ItemType.Consumable)
+        {
+            Debug.Log($"[ItemUI] 드래그 차단: {item?.itemName ?? "아이템 없음"}은 드래그 불가");
+            eventData.pointerDrag = null;
+            return;
+        }
+
         originalParent = transform.parent;
         transform.SetParent(dragCanvas.transform, true); // 최상위 캔버스로 이동
         canvasGroup.alpha = 0.6f;   // 드래그 시 투명도
