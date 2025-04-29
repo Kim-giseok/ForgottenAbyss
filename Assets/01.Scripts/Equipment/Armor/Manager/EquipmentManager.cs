@@ -5,28 +5,13 @@ using System;
 using System.Linq;
 using UnityEngine.SceneManagement;
 
-public class EquipmentManager : Singleton<EquipmentManager>
+public class EquipmentManager : SingletonLoadRemain<EquipmentManager>
 {
     private Dictionary<ArmorSlot, ArmorSO> equippedArmors = new();
     private CharacterStatus playerStatus;
 
     public event Action<ArmorSO> OnEquipArmor;
     public event Action<ArmorSO> OnUnequipArmor;
-
-    private void Awake()
-    {
-        if (_instance == null)
-        {
-            _instance = this;
-        }
-        else if (_instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-
-        DontDestroyOnLoad(gameObject);
-    }
 
     private IEnumerator Start()
     {
@@ -55,9 +40,10 @@ public class EquipmentManager : Singleton<EquipmentManager>
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
-    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    protected override void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        StartCoroutine(DelayedPlayerFindAndApply()); // <- 이부분 때문에 씬 전환 시 스탯 무한 적용 되서 수정해야됨
+        base.OnSceneLoaded(scene, mode);
+        StartCoroutine(DelayedPlayerFindAndApply());
     }
 
     private IEnumerator DelayedPlayerFindAndApply()
@@ -208,6 +194,7 @@ public class EquipmentManager : Singleton<EquipmentManager>
         {
             if (DataManager.Instance.armorSODic.TryGetValue(entry.armorId, out var armor))
             {
+                // 슬롯 정보는 armorSO에도 있지만, 복구 신뢰도를 높이기 위해 슬롯을 재검
                 if (armor.slot == entry.slot)
                 {
                     EquipArmor(armor);
@@ -215,7 +202,7 @@ public class EquipmentManager : Singleton<EquipmentManager>
                 else
                 {
                     Debug.LogWarning($"슬롯 불일치: ID {entry.armorId}가 {entry.slot}에 저장되어 있으나, 실제 SO의 슬롯은 {armor.slot}");
-                    EquipArmor(armor);
+                    EquipArmor(armor); // 강제 장착
                 }
             }
             else

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SkillManager : Singleton<SkillManager>
+public class SkillManager : SingletonLoadRemain<SkillManager>
 {
     private Dictionary<int, float> nextAvailableTimes = new();
     public Dictionary<int, SkillInstance> skillInstances = new();
@@ -11,20 +11,6 @@ public class SkillManager : Singleton<SkillManager>
     public MemoryPieceSO currentMemoryPiece;
 
     public SkillUI skillUI;
-
-    private void Awake()
-    {
-        if (_instance == null)
-        {
-            _instance = this;
-            DontDestroyOnLoad(transform.root.gameObject);
-        }
-        else if (_instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-    }
 
     private void Start()
     {

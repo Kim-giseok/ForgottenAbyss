@@ -8,7 +8,7 @@ public class ProjectilePool : Singleton<ProjectilePool>
 
     private Queue<GameObject> pool = new Queue<GameObject>();
 
-    private void Awake()
+    protected override void Awake()
     {
         for (int i = 0; i < poolSize; i++)
         {

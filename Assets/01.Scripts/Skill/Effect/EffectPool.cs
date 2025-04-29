@@ -15,8 +15,9 @@ public class EffectPool : Singleton<EffectPool>
     public List<EffectEntry> effectList;
     private Dictionary<string, GameObjectPool> effectPools = new();
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         foreach (var entry in effectList)
         {
             effectPools[entry.key] = new GameObjectPool(entry.prefab, entry.initialSize, transform);

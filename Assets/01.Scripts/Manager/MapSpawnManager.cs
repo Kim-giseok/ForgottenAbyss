@@ -14,9 +14,9 @@ public class MapSpawnManager : Singleton<MapSpawnManager>
     public BackGround backgroundprefeb;
     public BackGround[] backgrounds;
 
-    private void Awake()
+    protected override void Awake()
     {
-        _instance = this;
+        base.Awake();
         mapIdx = 0;
     }
 

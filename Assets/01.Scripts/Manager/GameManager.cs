@@ -6,40 +6,16 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
-public class GameManager : Singleton<GameManager>
+public class GameManager : SingletonLoadRemain<GameManager>
 {
     public Player player;
     public Camera mainCamera;
     PlayerInput input;
     public PlayerStatus pStatus;
 
-    private void Awake()
+    protected override void Init()
     {
-        if (_instance != null && _instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-
-        _instance = this;
-        DontDestroyOnLoad(gameObject);
-
-        InitReferences();
-        SceneManager.sceneLoaded += OnSceneLoaded;
-    }
-
-    private void OnDestroy()
-    {
-        SceneManager.sceneLoaded -= OnSceneLoaded;
-    }
-
-    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-    {
-        InitReferences();
-    }
-
-    private void InitReferences()
-    {
+        base.Init();
         player = FindObjectOfType<Player>();
         if (player == null) return;
         input = player.GetComponent<PlayerInput>();

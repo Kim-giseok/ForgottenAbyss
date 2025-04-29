@@ -4,12 +4,21 @@ using UnityEngine;
 using Cinemachine;
 using UnityEngine.SceneManagement;
 
-public class CameraShake : MonoBehaviour
+public class CameraShake : SingletonLoadRemain<CameraShake>
 {
     [SerializeField] private CinemachineVirtualCamera virtualCamera;
 
     private CinemachineBasicMultiChannelPerlin noise;
     private Coroutine shakeCoroutine;
+
+    protected override void Awake()
+    {
+        DontDestroyOnLoad(transform.root.gameObject);
+        if (virtualCamera != null)
+            SetupNoiseComponent();
+
+        base.Awake();
+    }
 
     private void OnEnable()
     {
@@ -21,8 +30,10 @@ public class CameraShake : MonoBehaviour
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
-    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    protected override void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        base.OnSceneLoaded(scene, mode);
+        // 씬에 새로 생성된 VirtualCamera 찾기
         virtualCamera = FindObjectOfType<CinemachineVirtualCamera>();
         if (virtualCamera == null)
         {
@@ -31,6 +42,7 @@ public class CameraShake : MonoBehaviour
         }
 
         SetupNoiseComponent();
+
         RemoveExtraAudioListeners();
     }
 
