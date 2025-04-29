@@ -6,7 +6,8 @@ public enum FLAGKEY
 {
     DEFAULTFLAG,
     INTRO_DIALOGUE,
-    FIRST_BATTLE_TURORIAL
+    FIRST_BATTLE_TUTORIAL,
+    WEAPON_SWAP_TUTORIAL
 }
 
 public static class ActivateFlag
