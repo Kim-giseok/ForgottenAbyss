@@ -196,12 +196,12 @@ public class PlayerStatus : CharacterStatus
         stats[StatType.DEF] = 10f; //�ʱ� ����
         stats[StatType.LEVEL] = 1f; //�ʱ� ����
         stats[StatType.EXP] = 0f; //�ʱ� ����ġ
-        stats[StatType.MaxEXP] = 0f; //�ʱ� ����ġ
+        stats[StatType.MaxEXP] = 100f; //�ʱ� ����ġ
         stats[StatType.GOLD] = 0f; //�ʱ� ���
         stats[StatType.SPEED] = 3f; //�ʱ� ���
-        stats[StatType.CRITICAL] = 50f; //�ʱ� ũ��Ƽ�� Ȯ��
+        stats[StatType.CRITICAL] = 20f; //�ʱ� ũ��Ƽ�� Ȯ��
         stats[StatType.CRITICAL_DAMAGE] = 150f; //�ʱ� ũ��Ƽ�� ������ ����
-        stats[StatType.COOLDOWN_REDUCTION] = 40f; //�ʱ� ��Ÿ�� ���� ����
+        stats[StatType.COOLDOWN_REDUCTION] = 0f; //�ʱ� ��Ÿ�� ���� ����
     }
 
     // ������ ���� ������ �ʱ�ȭ
