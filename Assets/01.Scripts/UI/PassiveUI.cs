@@ -35,7 +35,7 @@ public class PassiveUI : MonoBehaviour
     private int speedLevel = 0;
     private int maxSpeedLevel = 10;
     private int coolDownLevel = 0;
-    private int maxcoolDownLevel = 10;
+    private int maxCoolDownLevel = 10;
 
     //PlayerStatus _playerStatus = PlayerStatus.Instance;
     PlayerStatus _playerStatus => GameManager.Instance.pStatus;
@@ -85,7 +85,7 @@ public class PassiveUI : MonoBehaviour
         if (hpButton != null) hpButton.interactable = hasPoints && hpLevel < maxHpLevel;
         if (defButton != null) defButton.interactable = hasPoints && defLevel < maxDefLevel;
         if (speedButton != null) speedButton.interactable = hasPoints && speedLevel < maxSpeedLevel;
-        if (coolDownButton != null) coolDownButton.interactable = hasPoints && coolDownLevel < maxcoolDownLevel;
+        if (coolDownButton != null) coolDownButton.interactable = hasPoints && coolDownLevel < maxCoolDownLevel;
     }
     public void OnPassiveUI()
     {
@@ -206,8 +206,16 @@ public class PassiveUI : MonoBehaviour
         }
 
         float currentCdw = _playerStatus.GetStat(StatType.COOLDOWN_REDUCTION);
-        _playerStatus.SetStat(StatType.COOLDOWN_REDUCTION, currentCdw + 1f);
+        _playerStatus.SetStat(StatType.COOLDOWN_REDUCTION, currentCdw + 5f);
         _playerStatus.AddStatPoints(-1);
+
+        if (speedLevel >= maxSpeedLevel)
+        {
+            return;
+        }
+
+        coolDownLevel++;
+        coolDownText.text = $"COOLDOWN\n Lv {coolDownLevel}/{maxCoolDownLevel}";
     }
 
 }
