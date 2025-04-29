@@ -10,14 +10,18 @@ public class LetterBox : MonoBehaviour
     private AudioSource audioSource;
 
     public TextMeshProUGUI narrationText;
-    private Coroutine coroutine; 
+    
+    private Coroutine narrationCoroutine; 
+    private Coroutine letterBoxCoroutine; 
     
     private bool skipLine;
     private int currLine;
 
-    public float startWidth;
-    public float endWidth;
+    public float maxWidth;
+    public float minWidth;
     public float duration;
+    
+    public bool isStartNarration;
 
     [TextArea(2, 2)] public string[] narrations;
     
@@ -31,12 +35,29 @@ public class LetterBox : MonoBehaviour
 
     private void Start()
     {
-        coroutine = StartCoroutine(Narration(currLine));
-        if (currLine == 0) { StartCoroutine(HandleWidth(false)); }
+        letterBoxCoroutine = StartCoroutine(HandleWidth(true));
     }
     
     private void Update()
     {
+        if (narrations.Length == 0 || !isStartNarration) return;
+        
+        if (Input.anyKeyDown || Input.GetMouseButtonDown(0))
+        {
+            if (!skipLine) { skipLine = true; return; }
+
+            if (currLine >= narrations.Length - 1)
+            {
+                narrationText.text = "";
+                StopCoroutine(letterBoxCoroutine);
+                letterBoxCoroutine = StartCoroutine(HandleWidth(false));
+                return;
+            }
+            
+            StopCoroutine(narrationCoroutine);
+            currLine += 1;
+            narrationCoroutine = StartCoroutine(Narration(currLine));
+        }
     }
     
     private IEnumerator Narration(int lineIndex)
@@ -63,8 +84,8 @@ public class LetterBox : MonoBehaviour
     {
         float currTime = 0f;
         
-        float currStartWith = isShow ? startWidth : endWidth;
-        float currEndWith = isShow ? endWidth : startWidth;
+        float currStartWith = isShow ? maxWidth : minWidth;
+        float currEndWith = isShow ? minWidth : maxWidth;
         
         float currStartAlpha = isShow ? 0f : 1f;
         float currEndAlpha = isShow ? 1f : 0f;
@@ -80,6 +101,14 @@ public class LetterBox : MonoBehaviour
             currTime += Time.deltaTime;
             yield return null;
         }
+        
+        yield return new WaitForSeconds(1f);
+
         verticalLayoutGroup.spacing = currEndWith;
+        if (isShow && narrations.Length != 0)
+        { 
+            narrationCoroutine = StartCoroutine(Narration(currLine));
+            isStartNarration = true;
+        }
     }
 }
