@@ -26,14 +26,15 @@ public class LetterBox : MonoBehaviour
     private bool isStartNarration;
     private bool isNarrationEnd;
 
+    public UnityEvent OnNarrationStarted;
     public UnityEvent OnNarrationEnd;
+    
     [TextArea(2, 2)] public string[] narrations;
     
     private void Awake()
     {
         verticalLayoutGroup = GetComponent<VerticalLayoutGroup>();
         canvasGroup = GetComponent<CanvasGroup>();
-        
         audioSource = GetComponent<AudioSource>();
     }
 
@@ -64,7 +65,7 @@ public class LetterBox : MonoBehaviour
                 StopCoroutine(letterBoxCoroutine);
                 letterBoxCoroutine = StartCoroutine(HandleWidth(false, () =>
                 {
-                    OnNarrationEnd.Invoke();
+                    OnNarrationEnd?.Invoke();
                 }));
                 return;
             }
