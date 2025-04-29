@@ -56,12 +56,15 @@ MonoBehaviour:
     Weapons: []
   memoryPieceDataList:
     MemoryPieces: []
+  armorDataList:
+    Armors: []
   skillVisualSOList: []
   skillExecutionSOList: []
   weaponSOList: []
   comboAttackSOList: []
   rangedAttackSOList: []
   memoryVisualSOList: []
+  armorSOList: []
 --- !u!114 &1524514876729645651
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -74,6 +77,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c200e6942817124a924cfc608b67435, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentMemoryPiece: {fileID: 0}
   skillUI: {fileID: 0}
 --- !u!114 &497392018163810730
 MonoBehaviour:
@@ -130,7 +134,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c88b2ba54af06864cade814817019fec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  projectilePrefab: {fileID: 2562934970777424423, guid: d25d49ec691fd1948ad3e2cb45cfeeb2, type: 3}
+  projectilePrefab: {fileID: 3261675479934069697, guid: b3f6472d357291a42bee6be6c2348f47, type: 3}
   poolSize: 6
 --- !u!114 &6956797629615996865
 MonoBehaviour:
