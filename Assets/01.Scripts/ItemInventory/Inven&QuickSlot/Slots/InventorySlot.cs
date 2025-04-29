@@ -1,3 +1,5 @@
+using System;
+using System.Buffers;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -41,10 +43,18 @@ public class InventorySlot : SlotBase, IPointerClickHandler
         if (currentItem == null)
             return;
 
-        // 아이템이 장착 가능한 타입이면
-        if (currentItem.itemType == ItemType.Equip)
+        switch (currentItem.itemType)
         {
-            EquipmentManager.Instance.EquipArmor(currentItem as ArmorSO); // 캐스팅 주의
+            case ItemType.Equip:
+                EquipmentManager.Instance.EquipArmor(currentItem as ArmorSO);
+                break;
+            case ItemType.Memory:
+                var memory = currentItem as MemorySkillItem;
+                var memoryData = DataManager.Instance.GetMemoryPieceData(memory.memoryPieceId);
+                var memorySO = DataManager.Instance.GetMemoryVisualSO(memoryData.Name);
+
+                WeaponManager.Instance.EquipMemoryPiece(memorySO);
+                break;
         }
     }
 }

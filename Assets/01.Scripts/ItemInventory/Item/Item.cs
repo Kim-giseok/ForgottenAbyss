@@ -6,7 +6,8 @@ public enum ItemType
 {
     Equip,
     Consumable,
-    Etc
+    Etc,
+    Memory
 }
 
 [CreateAssetMenu (menuName = "Item/ItemData")]

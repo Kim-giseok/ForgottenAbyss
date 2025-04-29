@@ -114,7 +114,10 @@ public class SkillUI : MonoBehaviour
     {
         int idx = (int)slot;
         if (skillIcons[idx] != null)
+        {
             skillIcons[idx].sprite = icon;
+            skillIcons[idx].enabled = true;
+        }
     }
 
     public void SetSkillCooldownTime(SkillSlotType slot, float cooldown)

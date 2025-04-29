@@ -57,7 +57,18 @@ public class SkillManager : Singleton<SkillManager>
 
     public void SetMemorySkill(MemoryPieceSO memorySO)
     {
-        if (memorySO == null || memorySO.skillItem == null) return;
+        var controller = SkillController.Instance;
+
+        if (memorySO == null || memorySO.skillItem == null)
+        {
+            currentMemoryPiece = null;
+            if (controller != null)
+            {
+                controller.memorySkill = null;
+                Debug.Log("[MemorySkill] «ÿ¡¶µ ");
+            }
+            return;
+        }
 
         int memoryId = memorySO.currentMemoryPieceId;
 
@@ -68,7 +79,7 @@ public class SkillManager : Singleton<SkillManager>
         Debug.Log(currentMemoryPiece.name);
 
         TryAddSkillInstance(currentMemoryPiece.currentMemoryPieceId);
-        var controller = SkillController.Instance;
+
         if (controller != null)
         {
             controller.memorySkill = GetSkillInstance(memoryId);
@@ -76,7 +87,7 @@ public class SkillManager : Singleton<SkillManager>
         }
     }
 
-    private void ClearSkill()
+    public void ClearSkill()
     {
         SkillInstance memorySkill = null;
         if (currentMemoryPiece != null)
