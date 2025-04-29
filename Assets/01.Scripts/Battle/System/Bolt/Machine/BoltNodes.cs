@@ -13,7 +13,6 @@ public class RainBolt : BoltNode
 {
     public override void Start()
     {
-        bolt.trailRenderer.enabled = false;
         
         bolt.rigidbody.drag = 20;
         bolt.rigidbody.gravityScale = 32f;
@@ -24,7 +23,7 @@ public class RainBolt : BoltNode
 
     public override void End()
     {
-        bolt.trailRenderer.enabled = true;
+        // bolt.trailRenderer.enabled = true;
         
         bolt.rigidbody.drag = 0;
         bolt.rigidbody.gravityScale = 0f;
@@ -88,28 +87,31 @@ public class BlackHoleBolt : BoltNode
     // 앞으로 발사를 조금 넣어두는 게 좋을 듯
     public override void Start()
     {
+        bolt.SetSize(4);
         bolt.animHandler.Play("BlackHole");
         bolt.renderer.color = Color.black;
         
-        bolt.rigidbody.drag = 10;
-        bolt.rigidbody.AddForce(new Vector2(Random.Range(-4f, 4f), 4f) * 10f, ForceMode2D.Impulse);
+        bolt.rigidbody.drag = 2;
+        
+        Debug.Log(bolt.direction);
+        bolt.rigidbody.AddForce(Vector2.down * 12f, ForceMode2D.Impulse);
     }
 
     public override void Update()
     {
-        RaycastHit2D[] hits = Physics2D.CircleCastAll(bolt.transform.position, 4f, Vector2.down,  LayerMask.GetMask("Player", "Enemy"));
+        // RaycastHit2D[] hits = Physics2D.CircleCastAll(bolt.transform.position, 4f, Vector2.down,  LayerMask.GetMask("Player", "Enemy"));
+        RaycastHit2D[] hits = Physics2D.CircleCastAll(bolt.transform.position, 4f, Vector2.down, 12f, LayerMask.GetMask("Player"));
         foreach (var hit in hits)
         {
             if (!hit.rigidbody) continue;
             var direction = (bolt.transform.position - hit.transform.position).normalized;
-            hit.rigidbody.AddForce(direction * 10f, ForceMode2D.Force);
+            hit.rigidbody.AddForce(direction * 4f, ForceMode2D.Force);
         }
     }
 
     public override void End()
     {
         bolt.animHandler.Play("None");
-        bolt.renderer.color = Color.white;
         bolt.rigidbody.drag = 0;
     }
 }
