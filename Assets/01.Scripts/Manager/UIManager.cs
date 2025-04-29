@@ -1,5 +1,6 @@
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
@@ -14,7 +15,7 @@ public class UIManager : MonoBehaviour
     public StatUI statUI;
     public PassiveUI passiveUI;
     public ItemTooltip tooltip;
-    public GameObject ingameUI; 
+    public GameObject ingameUI;
 
     [Header("WorldUI")]
     public RectTransform worldSpaceCanvas;
