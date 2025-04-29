@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class LetterBox : MonoBehaviour
@@ -21,8 +23,10 @@ public class LetterBox : MonoBehaviour
     public float minWidth;
     public float duration;
     
-    public bool isStartNarration;
+    private bool isStartNarration;
+    private bool isNarrationEnd;
 
+    public UnityEvent OnNarrationEnd;
     [TextArea(2, 2)] public string[] narrations;
     
     private void Awake()
@@ -35,12 +39,19 @@ public class LetterBox : MonoBehaviour
 
     private void Start()
     {
-        letterBoxCoroutine = StartCoroutine(HandleWidth(true));
+        letterBoxCoroutine = StartCoroutine(HandleWidth(true, () =>
+        {
+            if (narrations.Length != 0)
+            { 
+                narrationCoroutine = StartCoroutine(Narration(currLine));
+                isStartNarration = true;
+            }
+        }));
     }
     
     private void Update()
     {
-        if (narrations.Length == 0 || !isStartNarration) return;
+        if (narrations.Length == 0 || isNarrationEnd || !isStartNarration) return;
         
         if (Input.anyKeyDown || Input.GetMouseButtonDown(0))
         {
@@ -48,9 +59,13 @@ public class LetterBox : MonoBehaviour
 
             if (currLine >= narrations.Length - 1)
             {
+                isNarrationEnd = true;
                 narrationText.text = "";
                 StopCoroutine(letterBoxCoroutine);
-                letterBoxCoroutine = StartCoroutine(HandleWidth(false));
+                letterBoxCoroutine = StartCoroutine(HandleWidth(false, () =>
+                {
+                    OnNarrationEnd.Invoke();
+                }));
                 return;
             }
             
@@ -80,7 +95,7 @@ public class LetterBox : MonoBehaviour
     }
     
     
-    private IEnumerator HandleWidth(bool isShow)
+    private IEnumerator HandleWidth(bool isShow, Action callback)
     {
         float currTime = 0f;
         
@@ -105,10 +120,7 @@ public class LetterBox : MonoBehaviour
         yield return new WaitForSeconds(1f);
 
         verticalLayoutGroup.spacing = currEndWith;
-        if (isShow && narrations.Length != 0)
-        { 
-            narrationCoroutine = StartCoroutine(Narration(currLine));
-            isStartNarration = true;
-        }
+       callback?.Invoke();
+        
     }
 }
