@@ -152,6 +152,7 @@ public class Bolt: MonoBehaviour
 
     private void OnEnable()
     {
+        trailRenderer.Clear();
         currTime = 0;
         hitBox.gameObject.SetActive(true);
     }
@@ -161,7 +162,7 @@ public class Bolt: MonoBehaviour
     {
         // fix: 시간이 완료된 경우 마지막 노드로 클리어 필요
         renderer.sprite = BoltsPool.Instance.GetSprite("circle");
-        renderer.color = Color.white;
+        renderer.color = Color.magenta;
         transform.localScale = new Vector3(0.2f, 0.2f, 1);
         
         

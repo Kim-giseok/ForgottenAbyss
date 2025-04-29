@@ -27,7 +27,7 @@ public class BoltsPool : MonoBehaviour // 단위 미사일
     
     private void Awake()
     {
-        if (Instance) return;
+        if (Instance) { Destroy(gameObject); return; }
         
         Instance = this;
         DontDestroyOnLoad(this);
@@ -128,6 +128,8 @@ public class BoltsPool : MonoBehaviour // 단위 미사일
         // if (!currSummon)
         // {
             GameObject instance = Instantiate(Summon, parent.transform.position, Quaternion.identity);
+            // 플레이어인 피봇 관련 문제 임시 해결 - 모든 몬스터 피봇 하단으로 변경 필요
+            if (parent.gameObject.layer == LayerMask.NameToLayer("Player")) { instance.transform.position = parent.position + (Vector3.up * 0.3f); }
             SummonController currSummon = instance.GetComponent<SummonController>();
             // currSummons.Add(currSummon);
         // }

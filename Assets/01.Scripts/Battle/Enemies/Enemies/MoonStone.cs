@@ -123,13 +123,12 @@ public class MoonCopyRain3 : Node
     {
         for (int i = 0; i < count; i++)
         {
-            BoltsPool.Instance.Create(controller.transform, Bolts.Type.Rain).SetSprite("circle").SetEffect(Bolts.EffectType.Penetration).Fire();
+            BoltsPool.Instance.Create(controller.transform, Bolts.Type.Rain).SetEffect(Bolts.EffectType.Penetration).Fire();
             yield return new WaitForSeconds(delay);
         }
     }
     public override void Start()
     {
-        controller.animnHandler.Play("Combo");
         controller.StartCoroutine(FireBoltsSequentially(30, 0.1f));
     }
 

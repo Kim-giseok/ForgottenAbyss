@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class AgisSpreadShot : Node
@@ -45,6 +46,42 @@ public class AgisSpreadShot : Node
     }
 }
 
+public class AgisRainNode : Node
+{
+    private readonly float duration = 2f;
+    private readonly Vector2 direction;
+    
+
+    public override void Start() // 한번 더 실행하는 현상 발생
+    {
+        controller.rigidbody.drag = 10f;
+
+        // 따라오지 않는 현상 수정 필요 - transform으로 처리
+        if (controller is SummonController sContorller)
+        {
+            controller.rigidbody.AddForce(sContorller.castingDirection, ForceMode2D.Impulse);
+        }
+     
+    }
+
+    public override void Update()
+    {
+        if (currTime >= duration) { SetStatus(Status.Success); return; }
+
+        if (!Mathf.Approximately(Mathf.Floor(currTime / 0.2f), Mathf.Floor((currTime - Time.deltaTime) / 0.2f)))
+        {
+            BoltsPool.Instance.Create(controller.transform, Bolts.Type.Rain).SetEffect(Bolts.EffectType.Penetration).Fire();
+        }
+
+    }
+
+
+    public override void End()
+    {
+        controller.rigidbody.drag = 0f;
+    }
+}
+
 public class SummoningNode : Node
 {
     public override void Start()
@@ -67,9 +104,18 @@ public class SetZeroPosNode : Node
     }
 }
 
-public class TeleportNode : Node
+public class BlackHoleNode : Node
 {
+    public override void Start()
+    {
+        BoltsPool.Instance.Create(controller.transform, Bolts.Type.BlackHole).SetEffect(Bolts.EffectType.Penetration)
+            .SetDirection(Vector2.down * 6f).SetDuration(4).Fire();
+    }
     
+    public override void Update()
+    {
+        if(currTime >= 2f) { SetStatus(Status.Success); return; }
+    }
 }
 
 public class MoveNode : Node
@@ -113,5 +159,25 @@ public class MoveNode : Node
     public override void End()
     {
         controller.rigidbody.velocity = Vector2.zero;
+    }
+}
+
+public class AgisTriangleNode : Node
+{
+    public override void Start()
+    {
+        Vector2[] offsets = {
+            new(16f, 0f),
+            new(48f, 0f),
+            new(-16f, 0f),
+            new(-48f, 0f),
+        };
+
+        foreach (var offset in offsets)
+        {
+            BoltsPool.Instance.CreateSummon(controller.transform, SummonSkillManager.Skill.AgisRain).SetCastingDirection(offset).Fire();
+        }
+        
+        SetStatus(Status.Success);
     }
 }
