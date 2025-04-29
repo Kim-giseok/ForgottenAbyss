@@ -38,7 +38,7 @@ public class MapSpawnManager : Singleton<MapSpawnManager>
     {
         if (mapIdx >= maps.Length)
         {
-            SceneLoader.Instance.LoadScene("Village"); //ÀÌÈÄ ¸¶À» ½ÅÀ¸·Î ¼öÁ¤
+            SceneLoader.Instance.LoadScene("Village"); //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             return;
         }
 
@@ -46,6 +46,7 @@ public class MapSpawnManager : Singleton<MapSpawnManager>
             Destroy(SpawnedMap.gameObject);
 
         SpawnedMap = Instantiate(maps[mapIdx++]);
+        foreach (var item in FindObjectsOfType<FieldItem>()) { Destroy(item.gameObject); }
         SpawnedMap.MapStart();
         confiner2D.m_BoundingShape2D = SpawnedMap.CameraCollider;
     }
