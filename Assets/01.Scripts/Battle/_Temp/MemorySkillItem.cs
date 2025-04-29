@@ -49,7 +49,7 @@ public class MemorySkillItem: Item
             Vector2 direction = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * 32;
 
             BoltsPool.Instance
-                .CreateSummon(GameManager.Instance.player.transform, SummonSkillManager.Skill.Agis, true)
+                .CreateSummon(GameManager.Instance.player.transform, SummonSkillManager.Skill.Agis)
                 .SetCastingDirection(direction)
                 .Fire();
         }
