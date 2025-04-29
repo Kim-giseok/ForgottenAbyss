@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class NarrationUI: MonoBehaviour
+public class NarrationIntroUI: MonoBehaviour
 {
     private VerticalLayoutGroup verticalLayoutGroup;
     private AudioSource audioSource;
