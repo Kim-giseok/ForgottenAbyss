@@ -1,8 +1,3 @@
-using System;
-using System.Buffers;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using UnityEngine.EventSystems;
 
 public enum SlotMode { Editable, ReadOnly }
@@ -33,7 +28,6 @@ public class InventorySlot : SlotBase, IPointerClickHandler
 
         if (itemUI != null)
         {
-            itemUI.gameObject.SetActive(true);
             itemUI.SetItem(item);
         }
     }
@@ -55,6 +49,15 @@ public class InventorySlot : SlotBase, IPointerClickHandler
 
                 WeaponManager.Instance.EquipMemoryPiece(memorySO);
                 break;
+        }
+
+        bool isUsed = currentItem.Use();
+
+        if (isUsed)
+        {
+            Inventory.Instance.RemoveItem(currentItem);
+            ClearSlot();
+            Inventory.Instance.RefreshInventoryUI();
         }
     }
 }

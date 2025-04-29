@@ -25,10 +25,18 @@ public class Inventory : MonoBehaviour
         onItemChanged?.Invoke();
         return true;
     }
+
     // 아이템 제거
     public void RemoveItem(Item item)
     {
         items.Remove(item);
+        QuickSlotController.Instance.NotifyItemRemoved(item);
+        onItemChanged?.Invoke();
+    }
+
+    // 외부에서 UI갱신하도록
+    public void RefreshInventoryUI()
+    {
         onItemChanged?.Invoke();
     }
 }

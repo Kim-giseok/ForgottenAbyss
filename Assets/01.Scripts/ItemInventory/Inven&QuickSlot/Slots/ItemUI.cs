@@ -13,6 +13,8 @@ public class ItemUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
     private RectTransform rectTransform; // 드래그 UI 위치 설정
     private Canvas dragCanvas; // 가장 위에 있는 Canvas
 
+    private GameObject dragCopy; // 드래그 복제본
+
 
     private void Awake()
     {
@@ -46,70 +48,63 @@ public class ItemUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
     // 드래그 시작
     public void OnBeginDrag(PointerEventData eventData)
     {
-        if (item == null || item.itemType != ItemType.Consumable)
-        {
-            Debug.Log($"[ItemUI] 드래그 차단: {item?.itemName ?? "아이템 없음"}은 드래그 불가");
-            eventData.pointerDrag = null;
-            return;
-        }
+        // 풀에서 가져오기
+        dragCopy = DragItemPool.Instance.Get();
+        dragCopy.transform.SetParent(dragCanvas.transform, false);
 
-        originalParent = transform.parent;
-        transform.SetParent(dragCanvas.transform, true); // 최상위 캔버스로 이동
-        canvasGroup.alpha = 0.6f;   // 드래그 시 투명도
-        canvasGroup.blocksRaycasts = false;  // 다른 UI와 충돌하지 않게 설정
+        var copyItemUI = dragCopy.GetComponent<ItemUI>();
+        copyItemUI.SetItem(item);
+
+        dragCopy.transform.position = transform.position;
+        var copyCanvasGroup = dragCopy.GetComponent<CanvasGroup>();
+        copyCanvasGroup.alpha = 0.6f;
+        copyCanvasGroup.blocksRaycasts = false;
     }
 
     // 드래그 중
     public void OnDrag(PointerEventData eventData)
     {
-        rectTransform.position = eventData.position; // 드래그 위치 업데이트
+        if (dragCopy != null)
+            dragCopy.transform.position = eventData.position;
     }
 
     // 드래그 끝
     public void OnEndDrag(PointerEventData eventData)
     {
-        canvasGroup.alpha = 1f;
-        canvasGroup.blocksRaycasts = true;
+        if (dragCopy != null)
+        {
+            DragItemPool.Instance.Return(dragCopy);
+        }
 
         var dropSlot = eventData.pointerEnter?.GetComponentInParent<SlotBase>();
         var fromSlot = originalParent?.GetComponent<SlotBase>();
 
         if (dropSlot != null && fromSlot != null && item != null)
         {
-            dropSlot.SetItem(item);
-            fromSlot.ClearSlot();
-            transform.SetParent(dropSlot.transform, false);
-            transform.localPosition = Vector3.zero;
-
-            // 인벤토리 내부 데이터 이동 처리
-            if (fromSlot is InventorySlot && dropSlot is InventorySlot)
+            if (dropSlot != fromSlot)
             {
-                int fromIndex = InventoryUIManager.Instance.slots.IndexOf(fromSlot as InventorySlot);
-                int toIndex = InventoryUIManager.Instance.slots.IndexOf(dropSlot as InventorySlot);
+                // 원래 슬롯 비우기
+                if (fromSlot is InventorySlot)
+                    Inventory.Instance.RemoveItem(fromSlot.currentItem);
 
-                if (fromIndex >= 0 && toIndex >= 0)
+                fromSlot.ClearSlot();
+
+                // 새 슬롯에 아이템 넣기
+                dropSlot.SetItem(item);
+
+                if (dropSlot is InventorySlot)
+                    Inventory.Instance.AddItem(item);
+
+                // 퀵슬롯에 넣을 때는 별도로 추적
+                if (dropSlot is QuickSlot quickSlot)
                 {
-                    var tmp = Inventory.Instance.items[fromIndex];
-                    Inventory.Instance.items[fromIndex] = Inventory.Instance.items[toIndex];
-                    Inventory.Instance.items[toIndex] = tmp;
+                    QuickSlotController.Instance.SetItemToQuickSlot(quickSlot.SlotIndex, item);
                 }
             }
-            else if (fromSlot is InventorySlot && dropSlot is QuickSlot)
-            {
-                Inventory.Instance.RemoveItem(item);
-            }
-            else if (fromSlot is QuickSlot && dropSlot is InventorySlot)
-            {
-                Inventory.Instance.AddItem(item);
-            }
+        }
 
-            InventoryUIManager.Instance.UpdateUI();
-        }
-        else
-        {
-            transform.SetParent(originalParent, false);
-            transform.localPosition = Vector3.zero;
-        }
+        // 드래그 종료 후 항상 인벤토리 UI 갱신
+        Inventory.Instance.RefreshInventoryUI();
     }
 
     public void OnPointerEnter(PointerEventData eventData)
