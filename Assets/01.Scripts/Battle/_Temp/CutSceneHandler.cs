@@ -8,13 +8,13 @@ public class CutSceneHandler: MonoBehaviour
     {
         if (isCutsceneMode)
         {
-            uiManager.SetActive(false);
-            GameManager.Instance.PausePlayer(true);
+            uiManager?.SetActive(false);
+            if(GameManager.Instance) GameManager.Instance.PausePlayer();
         }
         else
         {
-            uiManager.SetActive(true);
-            GameManager.Instance.PausePlayer(false);
+            uiManager?.SetActive(true);
+            if(GameManager.Instance) GameManager.Instance.PausePlayer(false);
         }
     }
     
@@ -26,7 +26,7 @@ public class CutSceneHandler: MonoBehaviour
 
     private void Awake()
     {
-        uiManager = FindObjectOfType<UIManager>().gameObject;
+        uiManager = FindObjectOfType<UIManager>()?.gameObject;
     }
 
     private void Start()
