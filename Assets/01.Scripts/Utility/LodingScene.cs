@@ -11,6 +11,9 @@ public class LoadingScene : MonoBehaviour
 
     private void Start()
     {
+        if (UIManager.Instance != null)
+            UIManager.Instance.HideIngameUI();
+
         FadeScene.Instance.StartFadeIn();
         CleanUpDuplicateComponents();
         StartCoroutine(LoadAsync());
@@ -54,6 +57,9 @@ public class LoadingScene : MonoBehaviour
         operation.allowSceneActivation = true;
 
         FadeScene.Instance.StartFadeIn();
+
+        if (UIManager.Instance != null)
+            UIManager.Instance.ShowIngameUI();
     }
 
     private void CleanUpDuplicateComponents()

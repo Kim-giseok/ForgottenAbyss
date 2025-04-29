@@ -64,10 +64,12 @@ public class DamageText : MonoBehaviour
         dmgText.fontStyle = FontStyles.Bold;
 
         Camera cam = Camera.main;
-        Vector3 centerPos = cam.transform.position + cam.transform.forward * 5f + cam.transform.up * -1f;
-        transform.position = centerPos;
 
-        transform.rotation = Quaternion.LookRotation(transform.position - cam.transform.position);
+        Vector3 viewportCenter = new Vector3(0.5f, 0.5f, 10f);
+        Vector3 worldCenter = cam.ViewportToWorldPoint(viewportCenter);
+
+        transform.position = worldCenter;
+        transform.rotation = Quaternion.LookRotation(cam.transform.forward);
 
         StartCoroutine(AnimateScreenCenterText());
     }
@@ -153,8 +155,6 @@ public class DamageText : MonoBehaviour
         canvasGroup.alpha = 0f;
 
         yield return ScreenFader.Instance.FadeOut(fadeDuration);
-
-        UIManager.Instance.ShowAllUI();
 
         ReturnToPool();
     }

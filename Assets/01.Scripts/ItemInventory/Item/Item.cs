@@ -6,7 +6,8 @@ public enum ItemType
 {
     Equip,
     Consumable,
-    Etc
+    Etc,
+    Memory
 }
 
 [CreateAssetMenu (menuName = "Item/ItemData")]
@@ -18,7 +19,7 @@ public class Item : ScriptableObject
     public ItemType itemType;
 
     public virtual bool Use()
-    {
+    {       
         return false;
     }
 

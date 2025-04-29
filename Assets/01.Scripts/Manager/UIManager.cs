@@ -1,5 +1,6 @@
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
@@ -14,7 +15,7 @@ public class UIManager : MonoBehaviour
     public StatUI statUI;
     public PassiveUI passiveUI;
     public ItemTooltip tooltip;
-    public GameObject ingameUI; 
+    public GameObject ingameUI;
 
     [Header("WorldUI")]
     public RectTransform worldSpaceCanvas;
@@ -69,13 +70,7 @@ public class UIManager : MonoBehaviour
             talkBox.gameObject.SetActive(false);
     }
 
-    public void HideAllUI()
-    {
-        ingameUI.SetActive(false);
-    }
+    public void HideIngameUI() => ingameUI.SetActive(false);
 
-    public void ShowAllUI()
-    {
-        ingameUI.SetActive(true);
-    }
+    public void ShowIngameUI() => ingameUI.SetActive(true);
 }

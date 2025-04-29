@@ -131,7 +131,7 @@ public class Player : MonoBehaviour, IDamagable
 
         DamageTextManager.Instance.ShowDeath();
 
-        yield return new WaitForSeconds(2.8f);
+        yield return new WaitForSeconds(3f);
 
         SceneLoader.Instance.LoadScene("Village");
         revive();

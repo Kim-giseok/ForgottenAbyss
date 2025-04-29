@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.Serialization.Formatters;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -35,11 +36,14 @@ public class WeaponManager : Singleton<WeaponManager>
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        skillUI = FindObjectOfType<SkillUI>();
         skillController = FindObjectOfType<SkillController>();
         comboAttack = FindObjectOfType<ComboAttack>();
+
         if(swapper == null)
             swapper = FindObjectOfType<WeaponSwapper>();
+
+        if(skillUI == null)
+            skillUI = FindObjectOfType<SkillUI>();
 
         RefreshSkillController();
     }
@@ -165,6 +169,12 @@ public class WeaponManager : Singleton<WeaponManager>
             return;
         }
 
+        if (currentMemorySO != null && currentMemorySO.currentMemoryPieceId == memorySO.currentMemoryPieceId)
+        {
+            UnequipMemoryPiece();
+            return;
+        }
+
         currentMemorySO = memorySO;
         currentMemoryData = DataManager.Instance.GetMemoryPieceData(memorySO.currentMemoryPieceId);
 
@@ -175,6 +185,28 @@ public class WeaponManager : Singleton<WeaponManager>
 
         skillUI.SetSkillIcon(SkillSlotType.Memory, memorySkillInstance.GetIcon());
         skillUI.SetSkillCooldownTime(SkillSlotType.Memory, memorySkillInstance.GetCooldown());
+    }
+
+    public void UnequipMemoryPiece()
+    {
+        if (currentMemorySO == null)
+        {
+            Debug.LogWarning("해제할 기억 조각이 없습니다.");
+            return;
+        }
+
+        // 메모리 관련 정보 초기화
+        currentMemorySO = null;
+        currentMemoryData = null;
+        memorySkillInstance = null;
+
+        // SkillManager에서 기억 스킬 제거
+        SkillManager.Instance.SetMemorySkill(null);
+
+        // UI 초기화
+        skillUI.ClearSkillIcon(SkillSlotType.Memory);
+
+        Debug.Log("기억 조각 해제 확인용");
     }
 
     public float GetCurrentWeaponAttack()
@@ -341,15 +373,15 @@ public class WeaponManager : Singleton<WeaponManager>
         Debug.Log("[Clear] 무기 장착 해제 완료");
     }
 
-    public void UnequipMemoryPiece()
-    {
-        currentMemorySO = null;
-        currentMemoryData = null;
+    //public void UnequipMemoryPiece()
+    //{
+    //    currentMemorySO = null;
+    //    currentMemoryData = null;
 
-        skillUI.ClearSkillIcon(SkillSlotType.Memory);
+    //    skillUI.ClearSkillIcon(SkillSlotType.Memory);
 
-        Debug.Log("[Clear] 기억 조각 장착 해제 완료");
-    }
+    //    Debug.Log("[Clear] 기억 조각 장착 해제 완료");
+    //}
 
 
     public void ClearWeaponSaveData()

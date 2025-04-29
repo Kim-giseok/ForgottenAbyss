@@ -1,45 +1,17 @@
 using System;
-using System.Collections;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
 public class GlobalLightHandler: MonoBehaviour
 {
-    public static GlobalLightHandler Instance { get; private set; }
-    
-    private Light2D light;
-    
-    public Color startColor;
-    public Color endColor;
-    public float duration;
+    public static GlobalLightHandler instance { get; private set; }
+    public Light2D light { get; private set; }
 
     private void Awake()
     {
+        if (!instance) { instance = this; DontDestroyOnLoad(gameObject); }
+        else { Destroy(gameObject); }
+        
         light = GetComponent<Light2D>();
-    }
-
-    private void Start()
-    {
-        StartCoroutine(ColorLerpLoop());
-    }
-    
-    private IEnumerator ColorLerpLoop()
-    {
-        while (true)
-        {
-            yield return StartCoroutine(LerpColor(startColor, endColor));
-            yield return StartCoroutine(LerpColor(endColor, startColor));
-        }
-    }
-    
-    private IEnumerator LerpColor(Color from, Color to)
-    {
-        float currTime = 0f;
-        while (currTime < 1f)
-        {
-            currTime += Time.deltaTime / duration;
-            light.color = Color.Lerp(from, to, currTime);
-            yield return null;
-        }
     }
 }

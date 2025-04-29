@@ -43,7 +43,7 @@ public class MudSpawnNode : Node
     public override void Start()
     {
         var currPos = NavSurface.Instance.GetPlatform(controller.agent.target).centerCell.WorldPos + new Vector2(0, 1.7f);
-        EnemyRespawnManager.Instance.Generate(Enemies.Enemy.MudHand, currPos);
+        EnemyRespawner.Instance.Create(Enemies.Enemy.MudHand, currPos);
         SetStatus(Status.Success);
     }
 }
