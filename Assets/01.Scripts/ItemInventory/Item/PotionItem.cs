@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "NewPotionItem", menuName = "SO/Item/PotionItem")]
-public class PotionItem : Item
+public class PotionItem : ConsumableItem
 {
     [Header("포션 효과 설정")]
     public StatType targetStat; // 회복할 스탯

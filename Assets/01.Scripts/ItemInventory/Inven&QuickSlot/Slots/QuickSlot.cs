@@ -55,7 +55,11 @@ public class QuickSlot : SlotBase, IPointerClickHandler
     {
         if (currentItem != null && remainingCooldown <= 0)
         {
-            currentItem.Use(); // 아이템 효과 실행
+            bool isUsed = currentItem.Use();
+            if (isUsed)
+            {
+                ClearSlot(); // 소모아이템이면 슬롯 비움
+            }
             remainingCooldown = cooldownTime;
 
             StartCoroutine(BlinkIcon());

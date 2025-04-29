@@ -1,10 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using UnityEngine.EventSystems;
 
 public enum SlotMode { Editable, ReadOnly }
-public class InventorySlot : SlotBase
+public class InventorySlot : SlotBase, IPointerClickHandler
 {
     public SlotMode mode = SlotMode.Editable; // 기본값은 일반모드
     private ItemUI itemUI;
@@ -32,6 +29,20 @@ public class InventorySlot : SlotBase
         if (itemUI != null)
         {
             itemUI.SetItem(item);
+        }
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if (currentItem == null) return;
+
+        bool isUsed = currentItem.Use();
+
+        if (isUsed)
+        {
+            Inventory.Instance.RemoveItem(currentItem);
+            ClearSlot();
+            Inventory.Instance.RefreshInventoryUI();
         }
     }
 }
