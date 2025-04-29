@@ -274,8 +274,11 @@ MonoBehaviour:
   settingsMenu: {fileID: 3284617970377027857}
   weaponSwapper: {fileID: 1999460310867667560}
   confirmationUI: {fileID: 6968817081733371553}
-  shopUI: {fileID: 7716064142032176616}
+  shopUI: {fileID: 3367622758821390110}
+  statUI: {fileID: 0}
+  passiveUI: {fileID: 0}
   tooltip: {fileID: 6500773690353347068}
+  ingameUI: {fileID: 1718996362090060320}
   worldSpaceCanvas: {fileID: 5114644040752067485}
   npcText: {fileID: 9094123894243894956}
   talkBox: {fileID: 6002677162134430937}
@@ -9965,14 +9968,20 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4c885393e88e75f479bd6751528d96e2, type: 3}
+--- !u!114 &3367622758821390110 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4091869722241382129, guid: 4c885393e88e75f479bd6751528d96e2, type: 3}
+  m_PrefabInstance: {fileID: 1618215977693893103}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5b163ce60d71ab44959b71e68085160, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &7372250067183265384 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8086900033544304519, guid: 4c885393e88e75f479bd6751528d96e2, type: 3}
-  m_PrefabInstance: {fileID: 1618215977693893103}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &7716064142032176616 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 9034776857525572615, guid: 4c885393e88e75f479bd6751528d96e2, type: 3}
   m_PrefabInstance: {fileID: 1618215977693893103}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &3542040299700099318

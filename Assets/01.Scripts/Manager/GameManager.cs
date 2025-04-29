@@ -41,6 +41,7 @@ public class GameManager : Singleton<GameManager>
     private void InitReferences()
     {
         player = FindObjectOfType<Player>();
+        if (player == null) return;
         input = player.GetComponent<PlayerInput>();
         pStatus = player.GetComponent<PlayerStatus>();
 

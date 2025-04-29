@@ -61,6 +61,7 @@ public class ScreenFader : Singleton<ScreenFader>
             elapsed += Time.deltaTime;
             yield return null;
         }
+
         canvasGroup.alpha = 0f;
     }
 }

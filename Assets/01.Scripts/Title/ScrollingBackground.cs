@@ -1,0 +1,84 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class ScrollingBackground : MonoBehaviour
+{
+    [System.Serializable]
+    public class ScrollingLayer
+    {
+        public Transform[] layerInstances;
+        public float moveSpeed;
+        private float spriteWidth;
+
+        public void Initialize()
+        {
+            if (layerInstances.Length > 0 && layerInstances[0] != null)
+            {
+                SpriteRenderer sr = layerInstances[0].GetComponent<SpriteRenderer>();
+                if (sr != null)
+                {
+                    spriteWidth = sr.bounds.size.x;
+                }
+            }
+        }
+
+        public void UpdateLayer(float deltaTime)
+        {
+            foreach (var t in layerInstances)
+            {
+                if (t != null)
+                    t.position += Vector3.left * moveSpeed * deltaTime;
+            }
+
+            for (int i = 0; i < layerInstances.Length; i++)
+            {
+                Transform t = layerInstances[i];
+                if (t == null) continue;
+
+                if (t.position.x < Camera.main.transform.position.x - spriteWidth)
+                {
+                    Transform rightMost = GetRightMost();
+                    if (rightMost != null)
+                    {
+                        t.position = new Vector3(
+                            rightMost.position.x + spriteWidth,
+                            t.position.y,
+                            t.position.z
+                        );
+                    }
+                }
+            }
+        }
+
+        private Transform GetRightMost()
+        {
+            Transform rightMost = layerInstances[0];
+            foreach (var t in layerInstances)
+            {
+                if (t != null && t.position.x > rightMost.position.x)
+                    rightMost = t;
+            }
+            return rightMost;
+        }
+    }
+
+    public ScrollingLayer[] layers;
+
+    void Start()
+    {
+        foreach (var layer in layers)
+        {
+            layer.Initialize();
+        }
+    }
+
+    void Update()
+    {
+        float dt = Time.deltaTime;
+        foreach (var layer in layers)
+        {
+            layer.UpdateLayer(dt);
+        }
+    }
+}

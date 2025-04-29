@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class QuickSlot : SlotBase, IPointerClickHandler
+public class QuickSlot : SlotBase
 {
     [SerializeField] private GameObject outlineObject; // 선택된 슬롯 테두리
     [SerializeField] private Image cooldownOverlay; // UI 위에 덮이는 반투명 이미지
@@ -81,20 +81,6 @@ public class QuickSlot : SlotBase, IPointerClickHandler
             yield return new WaitForSeconds(0.1f);
             icon.enabled = true;
             yield return new WaitForSeconds(0.1f);
-        }
-    }
-
-    public void OnPointerClick(PointerEventData eventData)
-    {
-        if (slotIndex == -1) return;
-
-        if (QuickSlotController.Instance.SelectedIndex == slotIndex)
-        {
-            UseItem(); // 이미 선택된 슬롯이면 사용
-        }
-        else
-        {
-            QuickSlotController.Instance.SelectSlotFromOutside(slotIndex);
         }
     }
 }
