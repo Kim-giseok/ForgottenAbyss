@@ -1,5 +1,3 @@
-using static UnityEditor.Progress;
-
 [System.Serializable]
 public class DropEntry
 {
