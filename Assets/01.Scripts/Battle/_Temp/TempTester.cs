@@ -3,11 +3,6 @@ using UnityEngine;
 
 public class TempTester: MonoBehaviour
 {
-   private void Start()
-   {
-      Debug.Log(EnemiesAnimator.animators.Count);
-   }
-   
    private void Update()
    {
       
@@ -42,7 +37,7 @@ public class TempTester: MonoBehaviour
          {
             float angle = i * 40 * Mathf.Deg2Rad;
             Vector2 direction = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * 32;
-            BoltsPool.Instance.CreateSummon(transform, SummonSkillManager.Skill.Agis, true).SetCastingDirection(direction).Fire();
+            BoltsPool.Instance.CreateSummon(transform, SummonSkillManager.Skill.Agis).SetCastingDirection(direction).SetTrigger(true).Fire();
          }
       }
       
