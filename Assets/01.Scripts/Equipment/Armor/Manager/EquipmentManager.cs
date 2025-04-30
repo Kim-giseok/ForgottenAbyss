@@ -59,7 +59,7 @@ public class EquipmentManager : MonoBehaviour
 
         yield return new WaitUntil(() => playerStatus.stats != null && playerStatus.stats.Count > 0);
 
-        ReapplyArmorStats();
+        ReApplyArmorStats();
 
         Debug.Log($"[SceneLoaded] {SceneManager.GetActiveScene().name} → 플레이어 찾기 및 장비 스탯 재적용 완료");
     }
@@ -164,11 +164,23 @@ public class EquipmentManager : MonoBehaviour
         }
     }
 
-    private void ReapplyArmorStats()
+    private void ReApplyArmorStats()
     {
+        var currentStats = GetTotalArmorStats();
+
         foreach (var armor in equippedArmors.Values)
         {
-            ApplyStatBonus(armor);
+            // 이미 적용된 스탯이면 추가하지 않음
+            foreach (var bonus in armor.statBonuses)
+            {
+                if (currentStats.TryGetValue(bonus.statType, out float existingValue) && existingValue >= bonus.value)
+                {
+                    Debug.Log($"[ReApplyArmorStats] {armor.name}: {bonus.statType} 중복 적용 X");
+                    continue;
+                }
+
+                ApplyStatBonus(armor);
+            }
         }
     }
 
@@ -199,9 +211,15 @@ public class EquipmentManager : MonoBehaviour
         {
             if (SystemManager.Instance.dataManager.armorSODic.TryGetValue(entry.armorId, out var armor))
             {
-                // 슬롯 정보는 armorSO에도 있지만, 복구 신뢰도를 높이기 위해 슬롯을 재검
                 if (armor.slot == entry.slot)
                 {
+                    // 이미 장착된 아이템인지 확인 후 중복 장착 방지
+                    if (equippedArmors.TryGetValue(entry.slot, out var equippedArmor) && equippedArmor == armor)
+                    {
+                        Debug.Log($"[Load] 이미 장착된 아이템: {armor.name}, 장착 스킵");
+                        continue; // 중복 장착 방지
+                    }
+
                     EquipArmor(armor);
                 }
                 else
