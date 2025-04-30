@@ -40,6 +40,7 @@ public class ControllerPlayer : MonoBehaviour
 
     public PlayerInteraction interaction;
     public CharacterStatus status;
+    PlayerSound playerSound;
 
     // FSM ���� ����
     private Dictionary<PlayerState, PlayerStateMachine> states = new Dictionary<PlayerState, PlayerStateMachine>();
@@ -60,6 +61,7 @@ public class ControllerPlayer : MonoBehaviour
         playerCollider = GetComponent<Collider2D>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         status = GetComponent<CharacterStatus>();
+        playerSound = GetComponent<PlayerSound>();
 
         // ���� �ӽ� �ʱ�ȭ
         InitStateMachine();
@@ -246,7 +248,7 @@ public class ControllerPlayer : MonoBehaviour
 
     void OnOtherWeapon() //���⺯ȯ Ű �Է�
     {
-        WeaponManager.Instance.SwapWeapon();
+        SystemManager.Instance.weaponManager.SwapWeapon();
         Debug.Log("Z: �ٸ������ ��ȯ");
     }
 
@@ -290,6 +292,7 @@ public class ControllerPlayer : MonoBehaviour
 
         if (collision.gameObject.CompareTag("Ground"))
         {
+            playerSound.LandSound();
             isGround = true;
             animator.SetBool("IsJump", false);
             currentJumpCount = 0;

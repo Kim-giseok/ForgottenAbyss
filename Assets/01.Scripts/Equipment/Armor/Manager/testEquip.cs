@@ -17,9 +17,9 @@ public class ArmorTestEquip : MonoBehaviour
     {
         foreach (int id in testArmorIDs)
         {
-            if (DataManager.Instance.armorSODic.TryGetValue(id, out var armorSO))
+            if (SystemManager.Instance.dataManager.armorSODic.TryGetValue(id, out var armorSO))
             {
-                EquipmentManager.Instance.EquipArmor(armorSO);
+                SystemManager.Instance.equipmentManager.EquipArmor(armorSO);
                 Debug.Log($"[Test] ÀåÂø ½Ãµµ ¡æ {armorSO.name} ({armorSO.slot})");
             }
             else

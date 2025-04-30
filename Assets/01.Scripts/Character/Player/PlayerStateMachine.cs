@@ -17,10 +17,12 @@ public enum PlayerState
 public abstract class PlayerStateMachine 
 {
     protected ControllerPlayer player;
+    protected PlayerSound playerSound;
 
     public PlayerStateMachine(ControllerPlayer player)
     {
         this.player = player;
+        this.playerSound = player.GetComponent<PlayerSound>();
     }
 
     public virtual void Enter() { }

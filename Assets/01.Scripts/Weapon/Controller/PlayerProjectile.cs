@@ -57,7 +57,7 @@ public class PlayerProjectile : MonoBehaviour
 
                     Vector3 textPosition = other.transform.position + Vector3.up * 1f;
                     DamageTextManager.Instance.ShowDamage(textPosition, (int)result.damage, result.isCrit);
-                    CameraShake.Instance.Shake(0.1f, 0.2f);
+                    GameManager.Instance.cameraShake.Shake(0.1f, 0.2f);
                 }
 
                 if(other.GetComponent<LaberDamagerble>() != null)
@@ -80,6 +80,6 @@ public class PlayerProjectile : MonoBehaviour
     private void ReturnToPool()
     {
         // Ç® ¹ÝÈ¯
-        ProjectilePool.Instance.Release(gameObject);
+        SystemManager.Instance.projectile.Release(gameObject);
     }
 }

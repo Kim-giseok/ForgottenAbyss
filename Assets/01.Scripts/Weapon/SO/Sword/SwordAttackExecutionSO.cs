@@ -24,7 +24,7 @@ public class SwordAttackExecutionSO : SkillExecutionSO
             if (angle <= angleLimit)
             {
                 Debug.Log($"Hit (in cone): {hit.name}");
-                CameraShake.Instance.Shake(0.05f, 0.1f);
+                //CameraShake.Instance.Shake(0.05f, 0.1f);
                 DealDamageToTarget(hit.gameObject, castData);
                 KnockbackUtil.ApplyKnockback(hit.gameObject, caster.transform.position, 1f);
             }

@@ -5,13 +5,19 @@ using System;
 using System.Linq;
 using UnityEngine.SceneManagement;
 
-public class EquipmentManager : SingletonLoadRemain<EquipmentManager>
+public class EquipmentManager : MonoBehaviour
 {
     private Dictionary<ArmorSlot, ArmorSO> equippedArmors = new();
     private CharacterStatus playerStatus;
 
     public event Action<ArmorSO> OnEquipArmor;
     public event Action<ArmorSO> OnUnequipArmor;
+
+    public event Action<MemoryPieceSO> OnEquipMemory;
+    public event Action<MemoryPieceSO> OnUnequipMemory;
+
+    private MemoryPieceSO equippedMemorySO;
+
 
     private IEnumerator Start()
     {
@@ -40,9 +46,8 @@ public class EquipmentManager : SingletonLoadRemain<EquipmentManager>
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
-    protected override void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        base.OnSceneLoaded(scene, mode);
         StartCoroutine(DelayedPlayerFindAndApply());
     }
 
@@ -54,7 +59,7 @@ public class EquipmentManager : SingletonLoadRemain<EquipmentManager>
 
         yield return new WaitUntil(() => playerStatus.stats != null && playerStatus.stats.Count > 0);
 
-        ReapplyArmorStats();
+        ReApplyArmorStats();
 
         Debug.Log($"[SceneLoaded] {SceneManager.GetActiveScene().name} → 플레이어 찾기 및 장비 스탯 재적용 완료");
     }
@@ -75,6 +80,7 @@ public class EquipmentManager : SingletonLoadRemain<EquipmentManager>
             if (equippedArmor == armor)
             {
                 UnequipArmor(armor.slot);
+                EquipArmor(armor);
                 Debug.Log($"[Test] 동일한 장비 재장착 → 해제됨: {armor.name}");
                 return;
             }
@@ -159,11 +165,23 @@ public class EquipmentManager : SingletonLoadRemain<EquipmentManager>
         }
     }
 
-    private void ReapplyArmorStats()
+    private void ReApplyArmorStats()
     {
+        var currentStats = GetTotalArmorStats();
+
         foreach (var armor in equippedArmors.Values)
         {
-            ApplyStatBonus(armor);
+            // 이미 적용된 스탯이면 추가하지 않음
+            foreach (var bonus in armor.statBonuses)
+            {
+                if (currentStats.TryGetValue(bonus.statType, out float existingValue) && existingValue >= bonus.value)
+                {
+                    Debug.Log($"[ReApplyArmorStats] {armor.name}: {bonus.statType} 중복 적용 X");
+                    continue;
+                }
+
+                ApplyStatBonus(armor);
+            }
         }
     }
 
@@ -192,11 +210,17 @@ public class EquipmentManager : SingletonLoadRemain<EquipmentManager>
 
         foreach (var entry in data.equippedArmors)
         {
-            if (DataManager.Instance.armorSODic.TryGetValue(entry.armorId, out var armor))
+            if (SystemManager.Instance.dataManager.armorSODic.TryGetValue(entry.armorId, out var armor))
             {
-                // 슬롯 정보는 armorSO에도 있지만, 복구 신뢰도를 높이기 위해 슬롯을 재검
                 if (armor.slot == entry.slot)
                 {
+                    // 이미 장착된 아이템인지 확인 후 중복 장착 방지
+                    if (equippedArmors.TryGetValue(entry.slot, out var equippedArmor) && equippedArmor == armor)
+                    {
+                        Debug.Log($"[Load] 이미 장착된 아이템: {armor.name}, 장착 스킵");
+                        continue; // 중복 장착 방지
+                    }
+
                     EquipArmor(armor);
                 }
                 else
@@ -222,7 +246,46 @@ public class EquipmentManager : SingletonLoadRemain<EquipmentManager>
     private void OnApplicationQuit()
     {
         Debug.Log("[Auto] 애플리케이션 종료 → 장비 저장");
-        SaveEquippedArmors();
+        //SaveEquippedArmors();
+    }
+
+    public void EquipMemoryPiece(MemoryPieceSO memorySO)
+    {
+        if (equippedMemorySO == memorySO)
+        {
+            UnequipMemoryPiece();
+            return;
+        }
+
+        if (equippedMemorySO != null)
+            UnequipMemoryPiece();
+
+        equippedMemorySO = memorySO;
+        SystemManager.Instance.weaponManager.EquipMemoryPiece(memorySO);
+        OnEquipMemory?.Invoke(memorySO);
+    }
+
+    public void UnequipMemoryPiece()
+    {
+        if (equippedMemorySO == null) return;
+
+        var old = equippedMemorySO;
+        equippedMemorySO = null;
+        SystemManager.Instance.weaponManager.UnequipMemoryPiece();
+        OnUnequipMemory?.Invoke(old);
+    }
+
+    public bool IsArmorEquipped(ArmorSlot slot)
+    {
+        return equippedArmors.ContainsKey(slot);
+    }
+
+    public bool IsMemoryPieceEquipped(int memoryPieceId)
+    {
+        var curMemory = SystemManager.Instance.weaponManager.GetCurrentMemoryPieceSO();
+        if(curMemory == null) return false;
+        if (curMemory.currentMemoryPieceId == memoryPieceId) return true;
+        else return false;
     }
 
     [Serializable]

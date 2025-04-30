@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CoroutinRunner : Singleton<CoroutinRunner>
+public class CoroutinRunner : MonoBehaviour
 {
     public void RunCoroutine(IEnumerator routine)
     {

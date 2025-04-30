@@ -34,7 +34,7 @@ public class SkillCastData
         }
             
 
-        result.weaponAttack = WeaponManager.Instance.GetCurrentWeaponAttack();
+        result.weaponAttack = SystemManager.Instance.weaponManager.GetCurrentWeaponAttack();
         result.skillMultiplier = data.DamageMultiplier;
 
         return result;

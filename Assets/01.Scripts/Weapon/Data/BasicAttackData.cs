@@ -36,7 +36,7 @@ public class BasicAttackData
             result.critDamageMultiplier = status.GetStat(StatType.CRITICAL_DAMAGE) / 100f;  // < 추후 크리티컬 적용시
         }
 
-        result.weaponAttack = WeaponManager.Instance.GetCurrentWeaponAttack();
+        result.weaponAttack = SystemManager.Instance.weaponManager.GetCurrentWeaponAttack();
         result.comboMultiplier = comboMultiplier;
 
         return result;

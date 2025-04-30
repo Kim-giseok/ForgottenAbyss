@@ -22,6 +22,7 @@ public class DashState : PlayerStateMachine
 
         status.SetStat(StatType.CurrentMP, curMp - cost);
 
+        playerSound.DashSound();
         player.animator.SetBool("IsDash", true);
         player.animator.SetTrigger("DashTrigger");
         player.SetInvincibility(true);

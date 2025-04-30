@@ -17,6 +17,7 @@ public class JumpState : PlayerStateMachine
             player.animator.SetBool("IsJump", true);
             player.isGround = false;
             player.currentJumpCount = 1;
+            playerSound.JumpSound();
 
             // 플랫폼 콜라이더 무시 설정
             //player.StartCoroutine(player.IgnorePlatformCollision(true));
@@ -27,7 +28,8 @@ public class JumpState : PlayerStateMachine
         {
             // 더블 점프 (또는 추가 점프)
             player.currentJumpCount++;
-            
+            playerSound.JumpSound();
+
         }
 
         // 공통 점프 로직

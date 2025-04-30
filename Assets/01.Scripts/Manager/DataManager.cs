@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DataManager : Singleton<DataManager>
+public class DataManager : MonoBehaviour
 {
     public SkillDataList skillDataList;
     public WeaponDataList weaponDataList;
@@ -32,9 +32,8 @@ public class DataManager : Singleton<DataManager>
 
     public bool IsInitialized { get; private set; } = false;
 
-    protected override void Awake()
+    private void Awake()
     {
-        base.Awake();
         LoadAllData();
     }
 

@@ -12,6 +12,8 @@ public class GameManager : SingletonLoadRemain<GameManager>
     public Camera mainCamera;
     PlayerInput input;
     public PlayerStatus pStatus;
+    public CameraShake cameraShake;
+    public CameraZoom cameraZoom;
 
     protected override void Init()
     {
@@ -32,6 +34,9 @@ public class GameManager : SingletonLoadRemain<GameManager>
             if (!mainCamera.TryGetComponent<CinemachineBrain>(out var brain))
                 brain = mainCamera.AddComponent<CinemachineBrain>();
             brain.m_DefaultBlend.m_Time = 0f;
+
+            cameraShake = mainCamera.GetComponent<CameraShake>();
+            cameraZoom = mainCamera.GetComponent<CameraZoom>();
         }
     }
 
