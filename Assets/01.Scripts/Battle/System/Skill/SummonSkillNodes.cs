@@ -104,6 +104,7 @@ public class ComboDashAttack : Node
         controller.rigidbody.velocity = Vector2.zero;
         controller.rigidbody.gravityScale = 0f;
         controller.rigidbody.drag = 4f;
+        
         controller.rigidbody.AddForce(sController.direction * 40f, ForceMode2D.Impulse);
         
         // 공격 방향으로 Z축 회전

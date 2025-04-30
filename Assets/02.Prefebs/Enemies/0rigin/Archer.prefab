@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 4783053661208568393}
   - component: {fileID: -4824796143244514407}
   - component: {fileID: 1518222370531287724}
+  - component: {fileID: 6140642472919134699}
   m_Layer: 9
   m_Name: Archer
   m_TagString: Untagged
@@ -171,8 +172,8 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0.06}
-  m_Size: {x: 0.95, y: 1.23}
+  m_Offset: {x: 0, y: 0.68}
+  m_Size: {x: 1, y: 1.21}
   m_Direction: 0
 --- !u!114 &6692061571221724315
 MonoBehaviour:
@@ -186,7 +187,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68e4352b8584b49edb0f5da93bdaf397, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animationValue: 1
   health: 70
   attack: 10
   name: 2
@@ -233,3 +233,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c4bb51360b54991a6817ec21e18b9d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &6140642472919134699
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6572394734144107118}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14bb306e8dbc45de92a87b707e79ae62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gold: 0
+  items:
+  - {fileID: 2849593479698701841, guid: 524d265fe88a74689ab381cfbeb92ae5, type: 3}

@@ -41,6 +41,12 @@ public class SummonController: EnemyBaseController
         return this;
     }
 
+    public SummonController SetTrigger(bool isTrigger)
+    {
+        collider.isTrigger = isTrigger;
+        return this;
+    }
+
     public SummonController Fire()
     {
         machine.Start();
@@ -123,7 +129,7 @@ public class SummonController: EnemyBaseController
     
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.V)) { machine.currNode.OnPressed(); } // 임시 등록
+        if (Input.GetKeyDown(KeyCode.A)) { machine.currNode.OnPressed(); } // 임시 등록
         if (isCasterAttached) { caster.transform.position = transform.position; }
     }
 
@@ -132,6 +138,7 @@ public class SummonController: EnemyBaseController
         if (!isCasterAttached) return;
         cRigidbody.velocity = Vector2.zero;
         cRenderer.enabled = true;
+        collider.isTrigger = false;
         if(isPlayerCaster) { pController.isInvincible = false; }
     }
 
