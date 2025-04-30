@@ -123,7 +123,7 @@ public class SummonController: EnemyBaseController
     
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.V)) { machine.currNode.OnPressed(); } // 임시 등록
+        if (Input.GetKeyDown(KeyCode.A)) { machine.currNode.OnPressed(); } // 임시 등록
         if (isCasterAttached) { caster.transform.position = transform.position; }
     }
 
