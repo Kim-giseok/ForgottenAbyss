@@ -37,7 +37,7 @@ public class RangeMultiAttackNode : Node
                         .SetSize(1f)
                         .SetDamage(4)
                         .SetKnockBack(4)
-                        // .SetEffect(Bolts.EffectType.Penetration)
+                        .SetEffect(Bolts.EffectType.Penetration)
                         .SetSpeed(60)
                         .SetDegree(currDegree)
                         .SetDuration(0.4f)

@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 6343810600225957374}
   - component: {fileID: 7961252460757587955}
   m_Layer: 0
-  m_Name: NighBoneSkillItem
+  m_Name: ArcherSkillItem
   m_TagString: FieldItem
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -76,7 +76,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: -1429278322, guid: 8155ac68c6bee491fb006d3702453910, type: 3}
+  m_Sprite: {fileID: -1933657924, guid: d53fcd4a326ab4053832d5d1f6ab261d, type: 3}
   m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -122,8 +122,8 @@ BoxCollider2D:
   m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.4}
-    oldSize: {x: 2.5, y: 2.5}
+    pivot: {x: 0.5, y: 0.25}
+    oldSize: {x: 2, y: 2}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -144,7 +144,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee13b3f4dcdd42e4f8664dd7cb448e57, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  item: {fileID: 11400000, guid: 3c1bf52f2f85aa647ac42d629836f142, type: 2}
+  item: {fileID: 11400000, guid: 03538603f2b6d419b8d84ef10265b3eb, type: 2}
   itemImg: {fileID: 1700187939318023768}
 --- !u!50 &7961252460757587955
 Rigidbody2D:
