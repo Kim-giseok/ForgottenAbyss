@@ -24,8 +24,8 @@ public class DashAttack : Node
         context.Set("direction", sController.cRigidbody.velocity.normalized);
         sController.Flip(Mathf.Approximately(sController.caster.eulerAngles.y, 0));
         
-        controller.rigidbody.velocity = sController.cRigidbody.velocity.normalized * 80f;
-        controller.rigidbody.drag = 20f;
+        controller.Rigidbody.velocity = sController.cRigidbody.velocity.normalized * 80f;
+        controller.Rigidbody.drag = 20f;
 
     }
 
@@ -45,7 +45,7 @@ public class DashAttack : Node
         
         if (status == AnimationStatus.End)
         {
-            controller.rigidbody.drag = 0;
+            controller.Rigidbody.drag = 0;
             SetStatus(Status.Success);
         }
     }
@@ -101,10 +101,11 @@ public class ComboDashAttack : Node
 
         controller.animnHandler.Play(combo[currComboCount]);
 
-        controller.rigidbody.velocity = Vector2.zero;
-        controller.rigidbody.gravityScale = 0f;
-        controller.rigidbody.drag = 4f;
-        controller.rigidbody.AddForce(sController.direction * 40f, ForceMode2D.Impulse);
+        controller.Rigidbody.velocity = Vector2.zero;
+        controller.Rigidbody.gravityScale = 0f;
+        controller.Rigidbody.drag = 4f;
+        
+        controller.Rigidbody.AddForce(sController.direction * 40f, ForceMode2D.Impulse);
         
         // 공격 방향으로 Z축 회전
         float angle = Mathf.Atan2(sController.direction.y, Mathf.Abs(sController.direction.x)) * Mathf.Rad2Deg;

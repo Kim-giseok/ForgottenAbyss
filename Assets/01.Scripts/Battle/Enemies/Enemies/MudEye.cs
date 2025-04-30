@@ -7,7 +7,7 @@ public class MudMoveNode : Node
     public MudMoveNode(Vector2 direction) => this.direction = direction;
     public override void Start()
     {
-        controller.rigidbody.AddForce(direction, ForceMode2D.Impulse);
+        controller.Rigidbody.AddForce(direction, ForceMode2D.Impulse);
     }
 
     public override void Update()
@@ -17,7 +17,7 @@ public class MudMoveNode : Node
 
     public override void End()
     {
-        controller.rigidbody.velocity = Vector2.zero;
+        controller.Rigidbody.velocity = Vector2.zero;
     }
 }
 

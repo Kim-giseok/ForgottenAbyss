@@ -41,6 +41,12 @@ public class SummonController: EnemyBaseController
         return this;
     }
 
+    public SummonController SetTrigger(bool isTrigger)
+    {
+        Collider.isTrigger = isTrigger;
+        return this;
+    }
+
     public SummonController Fire()
     {
         machine.Start();
@@ -102,7 +108,7 @@ public class SummonController: EnemyBaseController
 
     private void Start()
     {
-        renderer.material.SetFloat("_YValue", 0);
+        Renderer.material.SetFloat("_YValue", 0);
         StartCoroutine(PlaySpawnAnimation(3f));
     }
 
@@ -111,9 +117,9 @@ public class SummonController: EnemyBaseController
         float currentYValue = 0f;
         while (currentYValue < 1f)
         {
-            currentYValue = renderer.material.GetFloat("_YValue");
+            currentYValue = Renderer.material.GetFloat("_YValue");
             float newYValue = Mathf.MoveTowards(currentYValue, 1f, Time.deltaTime * speed);
-            renderer.material.SetFloat("_YValue", newYValue);
+            Renderer.material.SetFloat("_YValue", newYValue);
             yield return null;
         }
         
@@ -123,7 +129,7 @@ public class SummonController: EnemyBaseController
     
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.V)) { machine.currNode.OnPressed(); } // 임시 등록
+        if (Input.GetKeyDown(KeyCode.A)) { machine.currNode.OnPressed(); } // 임시 등록
         if (isCasterAttached) { caster.transform.position = transform.position; }
     }
 
@@ -132,6 +138,7 @@ public class SummonController: EnemyBaseController
         if (!isCasterAttached) return;
         cRigidbody.velocity = Vector2.zero;
         cRenderer.enabled = true;
+        Collider.isTrigger = false;
         if(isPlayerCaster) { pController.isInvincible = false; }
     }
 

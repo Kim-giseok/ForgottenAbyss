@@ -57,7 +57,7 @@ public class StopNode : Node
     {
         if(controller.agent.status != EnemyAgent.Status.Tracked) { SetStatus(Status.Fail); return; }
 
-        controller.rigidbody.velocity = Vector2.zero;
+        controller.Rigidbody.velocity = Vector2.zero;
         SetStatus(Status.Success);
         return;
     }

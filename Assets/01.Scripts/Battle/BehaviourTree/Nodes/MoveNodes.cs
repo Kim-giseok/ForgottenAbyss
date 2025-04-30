@@ -12,9 +12,7 @@ public class IdleNode : Node
 
     public override void Start()
     {
-        Debug.Log("hello");
-        
-        controller.rigidbody.velocity = new Vector2(0, controller.rigidbody.velocity.y);
+        controller.Rigidbody.velocity = new Vector2(0, controller.Rigidbody.velocity.y);
         controller.animnHandler.Play("Idle");
     }
 
@@ -60,7 +58,7 @@ public class PatrolMove : Node
             SetStatus(Status.Success); return;
         }
         
-        controller.rigidbody.velocity = new Vector2(context.Get<Vector2>("direction").x, controller.rigidbody.velocity.y);
+        controller.Rigidbody.velocity = new Vector2(context.Get<Vector2>("direction").x, controller.Rigidbody.velocity.y);
     }
     
     public override void OnPhysicsDetected(EnemyDetectHandler.DetectType detectType, bool able)
@@ -103,7 +101,7 @@ public class TracingNode : Node
         //     SetStatus(Status.Success);            
         // }
         
-        controller.rigidbody.velocity = new Vector2(controller.agent.GetDirection().x * controller.agent.tracingSpeed, controller.rigidbody.velocity.y);
+        controller.Rigidbody.velocity = new Vector2(controller.agent.GetDirection().x * controller.agent.tracingSpeed, controller.Rigidbody.velocity.y);
     }
     
     public override void OnAgentDetected(EnemyAgent.Status status)
@@ -116,7 +114,7 @@ public class TracingNode : Node
     {
         if (detectType == EnemyDetectHandler.DetectType.Blocked && able)
         {
-            controller.rigidbody.AddForce(Vector2.up * 6, ForceMode2D.Impulse); // 높이가 달라지면?
+            controller.Rigidbody.AddForce(Vector2.up * 6, ForceMode2D.Impulse); // 높이가 달라지면?
         }
     }
 }
@@ -137,8 +135,8 @@ public class MovePlatformNode : Node
         Vector2 destination = targetPlatform.centerCell.WorldPos;
         context.Set("destination", new Vector3(destination.x, destination.y, 0));
         
-        controller.collider.isTrigger = true;
-        controller.rigidbody.gravityScale = 0;
+        controller.Collider.isTrigger = true;
+        controller.Rigidbody.gravityScale = 0;
         // controller.rigidbody.isKinematic = true;
     }
 
@@ -160,9 +158,9 @@ public class MovePlatformNode : Node
 
     public override void End()
     {
-        controller.collider.isTrigger = false;
+        controller.Collider.isTrigger = false;
         // controller.rigidbody.isKinematic = false;
-        controller.rigidbody.gravityScale = 2;
+        controller.Rigidbody.gravityScale = 2;
     }
 }
 
@@ -176,7 +174,7 @@ public class DashNode : Node // 현재 방향이거나 타겟 방향
     public override void Update()
     {
         if(currTime > 1) { SetStatus(Status.Success); return; }
-        controller.rigidbody.velocity = new Vector2(controller.transform.localEulerAngles.y == 180 ? -2 : 2, controller.rigidbody.velocity.y);
+        controller.Rigidbody.velocity = new Vector2(controller.transform.localEulerAngles.y == 180 ? -2 : 2, controller.Rigidbody.velocity.y);
     }
 }
 
@@ -190,6 +188,6 @@ public class JumpNode : Node
         // var direction = currDirection.x < 0 ? -1 : 1; // 타깃이 몬스터라면 문제가 생김
         
         // controller.rigidbody.AddForce(new Vector2(direction * 1f, 4f), ForceMode2D.Impulse);
-        controller.rigidbody.AddForce(new Vector2(1f, 4f), ForceMode2D.Impulse);
+        controller.Rigidbody.AddForce(new Vector2(1f, 4f), ForceMode2D.Impulse);
     }
 }

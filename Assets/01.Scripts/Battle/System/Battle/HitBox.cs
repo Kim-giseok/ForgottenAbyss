@@ -7,7 +7,7 @@ public class HitBox : MonoBehaviour // 1회 공격 당의 캐싱이 필요할 �
     // hitBox 자체는 default Layer 어야 트리거 인식 자체는 하게 된다.
     public LayerMask? ownerLayer { get; private set; } = null;
     
-    private Collider2D collider;
+    private Collider2D _collider;
     
     public bool isKnockBack = false;
     public float knockBackForce = 0f;
@@ -57,7 +57,7 @@ public class HitBox : MonoBehaviour // 1회 공격 당의 캐싱이 필요할 �
 
     private void Awake()
     {
-        collider = GetComponent<Collider2D>();
+        _collider = GetComponent<Collider2D>();
     }
 
     // notice: 오브젝트가 enable 될 때 트리거 인식 안되는 현상 발생
@@ -68,12 +68,12 @@ public class HitBox : MonoBehaviour // 1회 공격 당의 캐싱이 필요할 �
         {
             ownerLayer = transform.parent.gameObject.layer;
         }
-        collider.enabled = true;
+        _collider.enabled = true;
     }
 
     private void OnDisable()
     {
-        collider.enabled = false;
+        _collider.enabled = false;
         
         isKnockBack = false;
         knockBackForce = 0f;

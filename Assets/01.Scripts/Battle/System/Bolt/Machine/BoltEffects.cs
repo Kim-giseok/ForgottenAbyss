@@ -9,7 +9,7 @@ public class ReflectionEffect : BoltEffect
         Vector3 contactPoint = collision.ClosestPoint(bolt.transform.position);
         Vector3 normal = (bolt.transform.position - contactPoint).normalized;
     
-         bolt.SetDirection(Vector3.Reflect(bolt.rigidbody.velocity.normalized, normal));
+         bolt.SetDirection(Vector3.Reflect(bolt.Rigidbody.velocity.normalized, normal));
     }
 }
 

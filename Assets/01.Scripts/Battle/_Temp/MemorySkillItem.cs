@@ -50,6 +50,7 @@ public class MemorySkillItem: Item
 
             BoltsPool.Instance
                 .CreateSummon(GameManager.Instance.player.transform, SummonSkillManager.Skill.Agis)
+                .SetTrigger(true)
                 .SetCastingDirection(direction)
                 .Fire();
         }
