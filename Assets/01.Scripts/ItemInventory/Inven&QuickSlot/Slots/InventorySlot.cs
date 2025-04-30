@@ -1,3 +1,5 @@
+using TMPro;
+using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using UnityEngine;
@@ -7,6 +9,7 @@ public class InventorySlot : SlotBase, IPointerClickHandler
 {
     public SlotMode mode = SlotMode.Editable; // 기본값은 일반모드
     private ItemUI itemUI;
+    public GameObject equippedOutline; // 장착된 아이템용 외곽선
 
     private Outline outline;
 
@@ -14,6 +17,31 @@ public class InventorySlot : SlotBase, IPointerClickHandler
     {
         itemUI = GetComponentInChildren<ItemUI>(true);
         outline = GetComponent<Outline>();
+    }
+
+    private void OnEnable()
+    {
+        SystemManager.Instance.equipmentManager.OnEquipArmor += OnEquip;
+        SystemManager.Instance.equipmentManager.OnUnequipArmor += OnUnequip;
+    }
+
+    private void OnDisable()
+    {
+        SystemManager.Instance.equipmentManager.OnEquipArmor -= OnEquip;
+        SystemManager.Instance.equipmentManager.OnUnequipArmor -= OnUnequip;
+    }
+    // 장비 장착
+    private void OnEquip(ArmorSO armor)
+    {
+        if (currentItem == armor || currentItem is ArmorSO a && a.armorId == armor.armorId)
+            equippedOutline?.SetActive(true);
+    }
+
+    // 장비 해제
+    private void OnUnequip(ArmorSO armor)
+    {
+        if (currentItem == armor || currentItem is ArmorSO a && a.armorId == armor.armorId)
+            equippedOutline?.SetActive(false);
     }
 
     public override void OnDrop(PointerEventData eventData)
@@ -34,6 +62,17 @@ public class InventorySlot : SlotBase, IPointerClickHandler
         if (itemUI != null)
         {
             itemUI.SetItem(item);
+        }
+
+        // 장비 장착여부 확인 후 외곽선 표시
+        if (item.itemType == ItemType.Equip && item is ArmorSO armor)
+        {
+            bool isEquipped = SystemManager.Instance.equipmentManager.GetEquippedArmor(armor.slot)?.armorId == armor.armorId;
+            equippedOutline?.SetActive(isEquipped);
+        }
+        else
+        {
+            equippedOutline?.SetActive(false);
         }
     }
 
@@ -102,9 +141,12 @@ public class InventorySlot : SlotBase, IPointerClickHandler
 
                 if (isUsed)
                 {
-                    Inventory.Instance.RemoveItem(currentItem);
+                    QuickSlotController.Instance.NotifyItemRemoved(currentItem); // 퀵슬롯에 아이템 삭제 알림           
+                    Inventory.Instance.RemoveItemByReference(currentItem);
                     ClearSlot();
                     Inventory.Instance.RefreshInventoryUI();
+
+
                 }
 
                 break;
