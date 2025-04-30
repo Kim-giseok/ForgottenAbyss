@@ -58,6 +58,12 @@ public class QuickSlot : SlotBase
 
     public void SetLinkedItem(Item item)
     {
+        if (item.itemType != ItemType.Consumable)
+        {
+            Debug.LogWarning($"[QuickSlot] '{item.itemName}'은 소모성 아이템이 아니므로 등록할 수 없습니다.");
+            return;
+        }
+
         linkedItem = item;
         currentItem = item;
         iconImage.sprite = item.itemIcon;
