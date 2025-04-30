@@ -49,15 +49,16 @@ public class InventorySlot : SlotBase, IPointerClickHandler
 
                 SystemManager.Instance.weaponManager.EquipMemoryPiece(memorySO);
                 break;
-        }
+            case ItemType.Consumable:
+                bool isUsed = currentItem.Use();
 
-        bool isUsed = currentItem.Use();
-
-        if (isUsed)
-        {
-            Inventory.Instance.RemoveItem(currentItem);
-            ClearSlot();
-            Inventory.Instance.RefreshInventoryUI();
+                if (isUsed)
+                {
+                    Inventory.Instance.RemoveItem(currentItem);
+                    ClearSlot();
+                    Inventory.Instance.RefreshInventoryUI();
+                }
+                break;
         }
     }
 }
