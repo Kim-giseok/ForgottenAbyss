@@ -84,7 +84,20 @@ public class InventoryUIManager : MonoBehaviour
     {
         foreach (var slot in slots)
         {
-            if (slot.currentItem != null && slot.currentItem.itemType == newItem.itemType)
+            if (slot.currentItem == null) continue;
+            if (slot.currentItem.itemType != newItem.itemType) continue;
+
+            if (newItem.itemType == ItemType.Equip)
+            {
+                var armor = slot.currentItem as ArmorSO;
+                var newArmor = newItem as ArmorSO;
+
+                if (armor != null && newArmor != null && armor.slot == newArmor.slot)
+                {
+                    slot.SetOutline(false);
+                }
+            }
+            else
             {
                 slot.SetOutline(false);
             }

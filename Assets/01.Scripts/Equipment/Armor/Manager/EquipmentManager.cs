@@ -80,6 +80,7 @@ public class EquipmentManager : MonoBehaviour
             if (equippedArmor == armor)
             {
                 UnequipArmor(armor.slot);
+                EquipArmor(armor);
                 Debug.Log($"[Test] 동일한 장비 재장착 → 해제됨: {armor.name}");
                 return;
             }
