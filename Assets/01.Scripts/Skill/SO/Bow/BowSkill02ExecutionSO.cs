@@ -37,12 +37,12 @@ public class BowSkill02ExecutionSO : SkillExecutionSO
 
     private IEnumerator PlayEffectWithDelay(SkillVisualSO visualSO, Transform spawnPoint, SkillData data, SkillCastData castData)
     {
-        //CameraZoom.Instance.ZoomIn(0.3f);
+        GameManager.Instance.cameraZoom.ZoomIn(0.3f);
         
         if (visualSO.effectDelay > 0f)
             yield return new WaitForSeconds(visualSO.effectDelay);
 
-        //CameraZoom.Instance.ZoomOut();
+        GameManager.Instance.cameraZoom.ZoomOut();
 
         List<Transform> enemies = FindEnemiesAround(spawnPoint.position, 10f);
 

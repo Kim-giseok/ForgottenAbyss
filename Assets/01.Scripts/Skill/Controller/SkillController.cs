@@ -69,8 +69,8 @@ public class SkillController : Singleton<SkillController>
 
     private void Update()
     {
-        if (ActionBufferUtil.Instance != null)
-            ActionBufferUtil.Instance.Update();
+        if (SystemManager.Instance.actionBufferUtil != null)
+            SystemManager.Instance.actionBufferUtil.Update();
     }
 
     void OnAttack(InputValue value)
@@ -79,7 +79,7 @@ public class SkillController : Singleton<SkillController>
 
         if (IsTurning())
         {
-            ActionBufferUtil.Instance.BufferAction(
+            SystemManager.Instance.actionBufferUtil.BufferAction(
                 "NormalAttack",
                 () => !IsTurning() && !isSkillPlaying,
                 () => combatSkill.Execute());
@@ -178,7 +178,7 @@ public class SkillController : Singleton<SkillController>
 
         if (IsTurning())
         {
-            ActionBufferUtil.Instance.BufferAction(
+            SystemManager.Instance.actionBufferUtil.BufferAction(
                 bufferName,
                 () => !IsTurning() && !IsAttacking(),
                 () => StartCoroutine(UseSkillRoutine(instance)));

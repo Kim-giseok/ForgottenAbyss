@@ -130,7 +130,7 @@ public class DamageText : MonoBehaviour
         float fadeDuration = 0.5f;
         float elapsed = 0f;
 
-        yield return ScreenFader.Instance.FadeIn(fadeDuration);
+        yield return DamageTextManager.Instance.screenFader.FadeIn(fadeDuration);
         // 1. 페이드 인
         while (elapsed < fadeDuration)
         {
@@ -154,7 +154,7 @@ public class DamageText : MonoBehaviour
         }
         canvasGroup.alpha = 0f;
 
-        yield return ScreenFader.Instance.FadeOut(fadeDuration);
+        yield return DamageTextManager.Instance.screenFader.FadeOut(fadeDuration);
 
         ReturnToPool();
     }
@@ -206,6 +206,6 @@ public class DamageText : MonoBehaviour
 
     private void ReturnToPool()
     {
-        DamageTextPool.Instance.ReturnToPool(gameObject);
+        DamageTextManager.Instance.pool.ReturnToPool(gameObject);
     }
 }

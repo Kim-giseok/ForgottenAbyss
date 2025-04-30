@@ -40,9 +40,9 @@ public class SwordSkill02ExecutionSO : SkillExecutionSO
         if (casterCollider != null)
             casterCollider.enabled = false;
 
-        CoroutinRunner.Instance.StartCoroutine(DashCoroutine(caster, startPos, targetPos, casterCollider, () =>
+        SystemManager.Instance.actionBufferUtil.StartCoroutine(DashCoroutine(caster, startPos, targetPos, casterCollider, () =>
         {
-            CoroutinRunner.Instance.StartCoroutine(DelayedHitCoroutine(startPos, targetPos, castData));
+            SystemManager.Instance.actionBufferUtil.StartCoroutine(DelayedHitCoroutine(startPos, targetPos, castData));
         }));
     }
 
@@ -89,7 +89,7 @@ public class SwordSkill02ExecutionSO : SkillExecutionSO
             Debug.Log($"Hit {hit.name}");
             
         }
-        //CameraShake.Instance.Shake(0.2f, 0.3f);
+        GameManager.Instance.cameraShake.Shake(0.2f, 0.3f);
         DebugDrawUtil.DrawBox(center, size, angle, Color.red, 0.5f);
     }
 

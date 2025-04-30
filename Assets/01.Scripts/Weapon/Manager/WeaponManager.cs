@@ -24,6 +24,8 @@ public class WeaponManager : MonoBehaviour
     private List<SkillInstance> weaponSkillInstances = new();
     private SkillInstance memorySkillInstance;
 
+    private DataManager dataManager;
+
     private void OnEnable()
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
@@ -45,12 +47,14 @@ public class WeaponManager : MonoBehaviour
         if(skillUI == null)
             skillUI = FindObjectOfType<SkillUI>();
 
+        dataManager = SystemManager.Instance.dataManager;
+
         RefreshSkillController();
     }
 
     IEnumerator Start()
     {
-        yield return new WaitUntil(() => SystemManager.Instance.dataManager.IsInitialized);
+        yield return new WaitUntil(() => dataManager.IsInitialized);
         yield return new WaitUntil(() => skillUI.IsInitialized);
 
         LoadWeaponState();
@@ -116,7 +120,7 @@ public class WeaponManager : MonoBehaviour
         }
 
         currentWeaponSO = selectedWeapon;
-        currentWeaponData = SystemManager.Instance.dataManager.GetWeaponData(selectedWeapon.currentWeaponId);
+        currentWeaponData = dataManager.GetWeaponData(selectedWeapon.currentWeaponId);
 
         if (currentWeaponData == null)
         {
@@ -125,8 +129,8 @@ public class WeaponManager : MonoBehaviour
 
         // 스킬 등록
         weaponSkillInstances.Clear();
-        var skill01Data = SystemManager.Instance.dataManager.GetSkillData(selectedWeapon.skill01SO.skillId);
-        var skill02Data = SystemManager.Instance.dataManager.GetSkillData(selectedWeapon.skill02SO.skillId);
+        var skill01Data = dataManager.GetSkillData(selectedWeapon.skill01SO.skillId);
+        var skill02Data = dataManager.GetSkillData(selectedWeapon.skill02SO.skillId);
 
         var skillInstance01 = new SkillInstance(skill01Data).Clone();
         var skillInstance02 = new SkillInstance(skill02Data).Clone();
@@ -176,7 +180,7 @@ public class WeaponManager : MonoBehaviour
         }
 
         currentMemorySO = memorySO;
-        currentMemoryData = SystemManager.Instance.dataManager.GetMemoryPieceData(memorySO.currentMemoryPieceId);
+        currentMemoryData = dataManager.GetMemoryPieceData(memorySO.currentMemoryPieceId);
 
         var memory = new SkillInstance(memorySO).Clone();
         memorySkillInstance = memory;
@@ -270,7 +274,7 @@ public class WeaponManager : MonoBehaviour
         if (currentWeaponSO != null)
         {
             if (currentWeaponData == null)
-                currentWeaponData = SystemManager.Instance.dataManager.GetWeaponData(currentWeaponSO.currentWeaponId);
+                currentWeaponData = dataManager.GetWeaponData(currentWeaponSO.currentWeaponId);
 
             if (currentWeaponData.Type == WeaponType.Sword && currentWeaponSO.comboAttackData != null)
             {
@@ -307,7 +311,7 @@ public class WeaponManager : MonoBehaviour
 
         if (saveData.weaponId != -1)
         {
-            WeaponDataSO weaponSO = SystemManager.Instance.dataManager.weaponSOList.Find(w => w.currentWeaponId == saveData.weaponId);
+            WeaponDataSO weaponSO = dataManager.weaponSOList.Find(w => w.currentWeaponId == saveData.weaponId);
             if (weaponSO != null)
             {
                 EquipWeapon(weaponSO);
@@ -316,11 +320,11 @@ public class WeaponManager : MonoBehaviour
                 if (swapper == null)
                     swapper = FindObjectOfType<WeaponSwapper>();
 
-                var swordSO = SystemManager.Instance.dataManager.weaponSOList.Find(w =>
-                                      SystemManager.Instance.dataManager.GetWeaponData(w.currentWeaponId).Type == WeaponType.Sword);
+                var swordSO = dataManager.weaponSOList.Find(w =>
+                                      dataManager.GetWeaponData(w.currentWeaponId).Type == WeaponType.Sword);
 
-                var bowSO = SystemManager.Instance.dataManager.weaponSOList.Find(w =>
-                                   SystemManager.Instance.dataManager.GetWeaponData(w.currentWeaponId).Type == WeaponType.Bow);
+                var bowSO = dataManager.weaponSOList.Find(w =>
+                                   dataManager.GetWeaponData(w.currentWeaponId).Type == WeaponType.Bow);
 
 
                 if (swordSO != null && bowSO != null)
@@ -341,7 +345,7 @@ public class WeaponManager : MonoBehaviour
 
         if (saveData.memoryPieceId != -1)
         {
-            MemoryPieceSO memorySO = SystemManager.Instance.dataManager.memoryVisualSOList.Find(m => m.currentMemoryPieceId == saveData.memoryPieceId);
+            MemoryPieceSO memorySO = dataManager.memoryVisualSOList.Find(m => m.currentMemoryPieceId == saveData.memoryPieceId);
             if (memorySO != null)
             {
                 EquipMemoryPiece(memorySO);

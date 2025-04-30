@@ -34,11 +34,11 @@ public class SwordSkill03ExecutionSO : SkillExecutionSO
             GameManager.Instance.player.controller.isInvincible = true;
 
             float duration = Mathf.Max(0.01f, visualSO.animPlayTime);
-            CoroutinRunner.Instance.StartCoroutine(ResetInvincibilityAfter(duration));
+            SystemManager.Instance.actionBufferUtil.StartCoroutine(ResetInvincibilityAfter(duration));
         }
         
         // 3. 데미지 계산
-        CoroutinRunner.Instance.StartCoroutine(RepeatDamage(hits, castData));
+        SystemManager.Instance.actionBufferUtil.StartCoroutine(RepeatDamage(hits, castData));
 
         DebugDrawUtil.DrawCircle(center, range, Color.red);
     }
@@ -55,7 +55,7 @@ public class SwordSkill03ExecutionSO : SkillExecutionSO
                 if (hit != null)
                 {
                     DealDamageToTarget(hit.gameObject, castData);
-                    //CameraShake.Instance.Shake(0.2f, 0.3f);
+                    GameManager.Instance.cameraShake.Shake(0.2f, 0.3f);
                     KnockbackUtil.ApplyKnockback(hit.gameObject, castData.caster.transform.position, 1f);
                 }
             }

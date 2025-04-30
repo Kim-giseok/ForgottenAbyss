@@ -12,6 +12,9 @@ public class SystemManager : SingletonLoadRemain<SystemManager>
     public EffectPool effect;
     public ProjectilePool projectile;
 
+    public ActionBufferUtil actionBufferUtil;
+    public CoroutinRunner coroutinRunner;
+
     protected override void Init()
     {
         base.Init();
@@ -23,5 +26,8 @@ public class SystemManager : SingletonLoadRemain<SystemManager>
 
         effect = GetComponent<EffectPool>();
         projectile = GetComponent<ProjectilePool>();
+
+        actionBufferUtil = GetComponent<ActionBufferUtil>();
+        coroutinRunner = GetComponent<CoroutinRunner>();
     }
 }

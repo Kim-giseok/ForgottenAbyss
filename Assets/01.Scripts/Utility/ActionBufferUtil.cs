@@ -1,7 +1,8 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
-public class ActionBufferUtil : Singleton<ActionBufferUtil>
+public class ActionBufferUtil : MonoBehaviour
 {
     private List<BufferedAction> bufferedActions = new List<BufferedAction>();
 

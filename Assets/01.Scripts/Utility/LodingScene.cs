@@ -14,7 +14,7 @@ public class LoadingScene : MonoBehaviour
         if (UIManager.Instance != null)
             UIManager.Instance.HideIngameUI();
 
-        FadeScene.Instance.StartFadeIn();
+        SceneLoader.Instance.fade.StartFadeIn();
         CleanUpDuplicateComponents();
         StartCoroutine(LoadAsync());
     }
@@ -45,9 +45,9 @@ public class LoadingScene : MonoBehaviour
         if (progressBar != null)
             progressBar.value = 1f;
 
-        FadeScene.Instance.StartFadeOut();
+        SceneLoader.Instance.fade.StartFadeOut();
 
-        while (FadeScene.Instance.fadeImage.color.a < 1f)
+        while (SceneLoader.Instance.fade.fadeImage.color.a < 1f)
         {
             yield return null;
         }
@@ -56,7 +56,7 @@ public class LoadingScene : MonoBehaviour
 
         operation.allowSceneActivation = true;
 
-        FadeScene.Instance.StartFadeIn();
+        SceneLoader.Instance.fade.StartFadeIn();
 
         if (UIManager.Instance != null)
             UIManager.Instance.ShowIngameUI();

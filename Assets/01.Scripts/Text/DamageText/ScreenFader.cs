@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 
-public class ScreenFader : Singleton<ScreenFader>
+public class ScreenFader : MonoBehaviour
 {
     private CanvasGroup canvasGroup;
     private RectTransform rectTransform;
@@ -11,9 +11,8 @@ public class ScreenFader : Singleton<ScreenFader>
     public float distanceFromCamera = 1.5f;
     public Vector2 screenSizeInWorldUnits = new Vector2(10f, 6f);
 
-    protected override void Awake()
+    private void Awake()
     {
-        base.Awake();
         canvasGroup = GetComponent<CanvasGroup>();
         rectTransform = GetComponent<RectTransform>();
         mainCamera = Camera.main;
