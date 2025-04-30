@@ -165,7 +165,7 @@ public class HomingArrowEffect : MonoBehaviour
     {
         if (target != null)
         {
-            SkillInstance skillInst = WeaponManager.Instance.GetWeaponSkillInstance(1);
+            SkillInstance skillInst = SystemManager.Instance.weaponManager.GetWeaponSkillInstance(1);
 
             if (skillInst == null)
             {

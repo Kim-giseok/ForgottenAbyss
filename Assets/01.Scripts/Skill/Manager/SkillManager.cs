@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SkillManager : SingletonLoadRemain<SkillManager>
+public class SkillManager : MonoBehaviour
 {
     private Dictionary<int, float> nextAvailableTimes = new();
     public Dictionary<int, SkillInstance> skillInstances = new();
@@ -22,7 +22,7 @@ public class SkillManager : SingletonLoadRemain<SkillManager>
     {
         ClearSkill();
 
-        var weaponData = DataManager.Instance.GetWeaponData(weaponId);
+        var weaponData = SystemManager.Instance.dataManager.GetWeaponData(weaponId);
         if (weaponData == null) return;
 
         TryAddSkillInstance(weaponData.Skill1Id);
@@ -92,9 +92,9 @@ public class SkillManager : SingletonLoadRemain<SkillManager>
 
     private void TryAddSkillInstance(int skillId)
     {
-        if (DataManager.Instance.HasSkillData(skillId))
+        if (SystemManager.Instance.dataManager.HasSkillData(skillId))
         {
-            var data = DataManager.Instance.GetSkillData(skillId);
+            var data = SystemManager.Instance.dataManager.GetSkillData(skillId);
             skillInstances[skillId] = new SkillInstance(data).Clone();
         }
     }
@@ -182,7 +182,7 @@ public class SkillManager : SingletonLoadRemain<SkillManager>
 
     private int GetSlotIndexBySkillId(int skillId)
     {
-        var sc = WeaponManager.Instance.skillController;
+        var sc = SystemManager.Instance.weaponManager.skillController;
 
         if (currentMemoryPiece != null && currentMemoryPiece.skillItem != null && currentMemoryPiece.skillItem.memoryPieceId == skillId)
             return 0;

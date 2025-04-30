@@ -9,9 +9,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8218525754157547995}
+  - component: {fileID: 7432285309098313677}
   - component: {fileID: 5660962680461697657}
   - component: {fileID: 1524514876729645651}
   - component: {fileID: 497392018163810730}
+  - component: {fileID: 1212843371420538180}
   - component: {fileID: 3622915880698505367}
   - component: {fileID: 2628890420770852956}
   - component: {fileID: 6956797629615996865}
@@ -38,6 +40,24 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7432285309098313677
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2714057563554896699}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c44f7036caac0b4283d7672738ba848, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dataManager: {fileID: 5660962680461697657}
+  skillManager: {fileID: 1524514876729645651}
+  weaponManager: {fileID: 497392018163810730}
+  equipmentManager: {fileID: 1212843371420538180}
+  effect: {fileID: 3622915880698505367}
+  projectile: {fileID: 2628890420770852956}
 --- !u!114 &5660962680461697657
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -94,6 +114,18 @@ MonoBehaviour:
   skillController: {fileID: 0}
   comboAttack: {fileID: 0}
   swapper: {fileID: 0}
+--- !u!114 &1212843371420538180
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2714057563554896699}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 503b1390fb7253748b6a630251d00e24, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &3622915880698505367
 MonoBehaviour:
   m_ObjectHideFlags: 0

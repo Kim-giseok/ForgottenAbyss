@@ -29,8 +29,8 @@ public class SkillController : Singleton<SkillController>
 
     private void Initialized()
     {
-        var weaponManager = WeaponManager.Instance;
-        var skillManager = SkillManager.Instance;
+        var weaponManager = SystemManager.Instance.weaponManager;
+        var skillManager = SystemManager.Instance.skillManager;
 
         var weaponSO = weaponManager.GetCurrentWeaponSO();
         var weaponData = weaponManager.GetCurrentWeaponData();
@@ -138,10 +138,10 @@ public class SkillController : Singleton<SkillController>
     {
         isSkillPlaying = true;
 
-        var spawnPoint = WeaponManager.Instance.GetCurrentWeaponData().Type == WeaponType.Sword ? skillSpawnPoint : skillSpawnPoint2;
-        SkillManager.Instance.TryUseSkill(instance, spawnPoint);
+        var spawnPoint = SystemManager.Instance.weaponManager.GetCurrentWeaponData().Type == WeaponType.Sword ? skillSpawnPoint : skillSpawnPoint2;
+        SystemManager.Instance.skillManager.TryUseSkill(instance, spawnPoint);
 
-        if (SkillManager.Instance.IsMemorySkill(instance))
+        if (SystemManager.Instance.skillManager.IsMemorySkill(instance))
         {
             GameManager.Instance.player.controller.isInvincible = true;
             yield return new WaitForSeconds(3.0f);
@@ -157,7 +157,7 @@ public class SkillController : Singleton<SkillController>
 
     public float GetAnimPlayTime(SkillInstance instance)
     {
-        if (SkillManager.Instance.IsMemorySkill(instance))
+        if (SystemManager.Instance.skillManager.IsMemorySkill(instance))
             return 1.0f;
 
         if (instance == null || instance.visual == null || instance.visual.animationSpeed <= 0f)
@@ -168,7 +168,7 @@ public class SkillController : Singleton<SkillController>
 
     private void TryBufferOrExecuteSkill(SkillInstance instance, string bufferName)
     {
-        if (!SkillManager.Instance.IsSkillEquipped(instance))
+        if (!SystemManager.Instance.skillManager.IsSkillEquipped(instance))
         {
             Debug.LogWarning($"Skill ID {instance} is not equipped.");
             return;

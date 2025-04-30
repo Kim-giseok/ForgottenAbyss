@@ -145,7 +145,7 @@ public class RangedAttack : MonoBehaviour
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         Quaternion rot = Quaternion.Euler(0, 0, angle);
 
-        GameObject projectile = ProjectilePool.Instance.Get(firePoint.position, rot);
+        GameObject projectile = SystemManager.Instance.projectile.Get(firePoint.position, rot);
 
         PlayerProjectile pp = projectile.GetComponent<PlayerProjectile>();
         if (pp != null)

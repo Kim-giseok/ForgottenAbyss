@@ -16,7 +16,7 @@ public class BowSkill02ExecutionSO : SkillExecutionSO
 
     public override void Execute(GameObject caster, GameObject target, SkillData data)
     {
-        SkillInstance skillInst = WeaponManager.Instance.GetWeaponSkillInstance(1); // 원하는 스킬 인스턴스 가져오기
+        SkillInstance skillInst = SystemManager.Instance.weaponManager.GetWeaponSkillInstance(1); // 원하는 스킬 인스턴스 가져오기
         if (skillInst != null)
         {
             SkillCastData castData = PrepareCastData(caster, target, skillInst.data);  // 스킬 인스턴스의 data 사용
@@ -59,7 +59,7 @@ public class BowSkill02ExecutionSO : SkillExecutionSO
                 effectPos += Vector3.up * visualSO.effectYOffset;
             }
 
-            GameObject effect = EffectPool.Instance.SpawnEffect(visualSO.effectKey, effectPos, Quaternion.LookRotation(dir));
+            GameObject effect = SystemManager.Instance.effect.SpawnEffect(visualSO.effectKey, effectPos, Quaternion.LookRotation(dir));
 
             HomingArrowEffect homingArrowEffect = effect.GetComponent<HomingArrowEffect>();
             if (homingArrowEffect != null)

@@ -80,6 +80,6 @@ public class PlayerProjectile : MonoBehaviour
     private void ReturnToPool()
     {
         // Ç® ¹ÝÈ¯
-        ProjectilePool.Instance.Release(gameObject);
+        SystemManager.Instance.projectile.Release(gameObject);
     }
 }

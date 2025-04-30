@@ -6,7 +6,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class WeaponManager : Singleton<WeaponManager>
+public class WeaponManager : MonoBehaviour
 {
     public SkillController skillController;
     public ComboAttack comboAttack; 
@@ -50,7 +50,7 @@ public class WeaponManager : Singleton<WeaponManager>
 
     IEnumerator Start()
     {
-        yield return new WaitUntil(() => DataManager.Instance.IsInitialized);
+        yield return new WaitUntil(() => SystemManager.Instance.dataManager.IsInitialized);
         yield return new WaitUntil(() => skillUI.IsInitialized);
 
         LoadWeaponState();
@@ -116,7 +116,7 @@ public class WeaponManager : Singleton<WeaponManager>
         }
 
         currentWeaponSO = selectedWeapon;
-        currentWeaponData = DataManager.Instance.GetWeaponData(selectedWeapon.currentWeaponId);
+        currentWeaponData = SystemManager.Instance.dataManager.GetWeaponData(selectedWeapon.currentWeaponId);
 
         if (currentWeaponData == null)
         {
@@ -125,8 +125,8 @@ public class WeaponManager : Singleton<WeaponManager>
 
         // 스킬 등록
         weaponSkillInstances.Clear();
-        var skill01Data = DataManager.Instance.GetSkillData(selectedWeapon.skill01SO.skillId);
-        var skill02Data = DataManager.Instance.GetSkillData(selectedWeapon.skill02SO.skillId);
+        var skill01Data = SystemManager.Instance.dataManager.GetSkillData(selectedWeapon.skill01SO.skillId);
+        var skill02Data = SystemManager.Instance.dataManager.GetSkillData(selectedWeapon.skill02SO.skillId);
 
         var skillInstance01 = new SkillInstance(skill01Data).Clone();
         var skillInstance02 = new SkillInstance(skill02Data).Clone();
@@ -158,7 +158,7 @@ public class WeaponManager : Singleton<WeaponManager>
             skillUI.SetSkillIcon(SkillSlotType.Basic, selectedWeapon.rangedAttackData.icon);
         }
 
-        SkillManager.Instance.SetCurrentWeaponSkills(selectedWeapon.currentWeaponId);
+        SystemManager.Instance.skillManager.SetCurrentWeaponSkills(selectedWeapon.currentWeaponId);
     }
 
     public void EquipMemoryPiece(MemoryPieceSO memorySO)
@@ -176,12 +176,12 @@ public class WeaponManager : Singleton<WeaponManager>
         }
 
         currentMemorySO = memorySO;
-        currentMemoryData = DataManager.Instance.GetMemoryPieceData(memorySO.currentMemoryPieceId);
+        currentMemoryData = SystemManager.Instance.dataManager.GetMemoryPieceData(memorySO.currentMemoryPieceId);
 
         var memory = new SkillInstance(memorySO).Clone();
         memorySkillInstance = memory;
 
-        SkillManager.Instance.SetMemorySkill(memorySkillInstance.memorySO);
+        SystemManager.Instance.skillManager.SetMemorySkill(memorySkillInstance.memorySO);
 
         skillUI.SetSkillIcon(SkillSlotType.Memory, memorySkillInstance.GetIcon());
         skillUI.SetSkillCooldownTime(SkillSlotType.Memory, memorySkillInstance.GetCooldown());
@@ -201,7 +201,7 @@ public class WeaponManager : Singleton<WeaponManager>
         memorySkillInstance = null;
 
         // SkillManager에서 기억 스킬 제거
-        SkillManager.Instance.SetMemorySkill(null);
+        SystemManager.Instance.skillManager.SetMemorySkill(null);
 
         // UI 초기화
         skillUI.ClearSkillIcon(SkillSlotType.Memory);
@@ -270,7 +270,7 @@ public class WeaponManager : Singleton<WeaponManager>
         if (currentWeaponSO != null)
         {
             if (currentWeaponData == null)
-                currentWeaponData = DataManager.Instance.GetWeaponData(currentWeaponSO.currentWeaponId);
+                currentWeaponData = SystemManager.Instance.dataManager.GetWeaponData(currentWeaponSO.currentWeaponId);
 
             if (currentWeaponData.Type == WeaponType.Sword && currentWeaponSO.comboAttackData != null)
             {
@@ -307,7 +307,7 @@ public class WeaponManager : Singleton<WeaponManager>
 
         if (saveData.weaponId != -1)
         {
-            WeaponDataSO weaponSO = DataManager.Instance.weaponSOList.Find(w => w.currentWeaponId == saveData.weaponId);
+            WeaponDataSO weaponSO = SystemManager.Instance.dataManager.weaponSOList.Find(w => w.currentWeaponId == saveData.weaponId);
             if (weaponSO != null)
             {
                 EquipWeapon(weaponSO);
@@ -316,11 +316,11 @@ public class WeaponManager : Singleton<WeaponManager>
                 if (swapper == null)
                     swapper = FindObjectOfType<WeaponSwapper>();
 
-                var swordSO = DataManager.Instance.weaponSOList.Find(w =>
-                                      DataManager.Instance.GetWeaponData(w.currentWeaponId).Type == WeaponType.Sword);
+                var swordSO = SystemManager.Instance.dataManager.weaponSOList.Find(w =>
+                                      SystemManager.Instance.dataManager.GetWeaponData(w.currentWeaponId).Type == WeaponType.Sword);
 
-                var bowSO = DataManager.Instance.weaponSOList.Find(w =>
-                                   DataManager.Instance.GetWeaponData(w.currentWeaponId).Type == WeaponType.Bow);
+                var bowSO = SystemManager.Instance.dataManager.weaponSOList.Find(w =>
+                                   SystemManager.Instance.dataManager.GetWeaponData(w.currentWeaponId).Type == WeaponType.Bow);
 
 
                 if (swordSO != null && bowSO != null)
@@ -341,7 +341,7 @@ public class WeaponManager : Singleton<WeaponManager>
 
         if (saveData.memoryPieceId != -1)
         {
-            MemoryPieceSO memorySO = DataManager.Instance.memoryVisualSOList.Find(m => m.currentMemoryPieceId == saveData.memoryPieceId);
+            MemoryPieceSO memorySO = SystemManager.Instance.dataManager.memoryVisualSOList.Find(m => m.currentMemoryPieceId == saveData.memoryPieceId);
             if (memorySO != null)
             {
                 EquipMemoryPiece(memorySO);
