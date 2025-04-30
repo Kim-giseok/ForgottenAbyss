@@ -2,9 +2,20 @@ using UnityEngine;
 
 public class DamageTextManager : SingletonLoadRemain<DamageTextManager>
 {
+    public ScreenFader screenFader;
+    public DamageTextPool pool;
+
+    protected override void Init()
+    {
+        base.Init();
+
+        screenFader = GetComponentInChildren<ScreenFader>();
+        pool = GetComponentInChildren<DamageTextPool>();
+    }
+
     public void ShowDamage(Vector3 position, int damage, bool isCritical)
     {
-        GameObject obj = DamageTextPool.Instance.Get();
+        GameObject obj = pool.Get();
         obj.transform.position = position;
 
         obj.GetComponent<DamageText>().Setup(damage, isCritical);
@@ -12,7 +23,7 @@ public class DamageTextManager : SingletonLoadRemain<DamageTextManager>
 
     public void ShowDeath()
     {
-        GameObject obj = DamageTextPool.Instance.Get();
+        GameObject obj = pool.Get();
 
         obj.transform.position = Vector3.zero;
         UIManager.Instance.HideIngameUI();

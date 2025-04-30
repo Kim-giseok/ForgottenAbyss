@@ -4,7 +4,7 @@ using Cinemachine;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class CameraZoom : Singleton<CameraZoom>
+public class CameraZoom : MonoBehaviour
 {
     [SerializeField] private CinemachineVirtualCamera virtualCam;
 

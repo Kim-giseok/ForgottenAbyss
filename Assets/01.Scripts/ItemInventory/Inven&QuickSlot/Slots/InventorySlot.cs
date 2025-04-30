@@ -40,26 +40,30 @@ public class InventorySlot : SlotBase, IPointerClickHandler
         switch (currentItem.itemType)
         {
             case ItemType.Equip:
-                EquipmentManager.Instance.EquipArmor(currentItem as ArmorSO);
+                SystemManager.Instance.equipmentManager.EquipArmor(currentItem as ArmorSO);
                 break;
             case ItemType.Memory:
                 var memory = currentItem as MemorySkillItem;
-                var memoryData = DataManager.Instance.GetMemoryPieceData(memory.memoryPieceId);
-                var memorySO = DataManager.Instance.GetMemoryVisualSO(memoryData.Name);
+                var memoryData = SystemManager.Instance.dataManager.GetMemoryPieceData(memory.memoryPieceId);
+                var memorySO = SystemManager.Instance.dataManager.GetMemoryVisualSO(memoryData.Name);
 
-                WeaponManager.Instance.EquipMemoryPiece(memorySO);
+                SystemManager.Instance.weaponManager.EquipMemoryPiece(memorySO);
+                break;
+            case ItemType.Consumable:
+                bool isUsed = currentItem.Use();
+
+
+                if (isUsed)
+                {
+                    QuickSlotController.Instance.NotifyItemRemoved(currentItem); // 퀵슬롯에 아이템 삭제 알림           
+                    Inventory.Instance.RemoveItemByReference(currentItem);
+                    ClearSlot();
+                    Inventory.Instance.RefreshInventoryUI();
+
+
+                }
                 break;
         }
-
-        bool isUsed = currentItem.Use();
-
-        if (isUsed)
-        {
-            QuickSlotController.Instance.NotifyItemRemoved(currentItem); // 퀵슬롯에 아이템 삭제 알림           
-            Inventory.Instance.RemoveItemByReference(currentItem);
-            ClearSlot();
-            Inventory.Instance.RefreshInventoryUI();
         }
-    }
 }
 

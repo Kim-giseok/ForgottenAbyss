@@ -6,10 +6,20 @@ using UnityEngine.SceneManagement;
 public class SceneLoader : SingletonLoadRemain<SceneLoader>
 {
     [HideInInspector] public string nextSceneName;
+    public string loadingSceneName;
+
+    public FadeScene fade;
+
+    protected override void Init()
+    {
+        base.Init();
+
+        fade = GetComponent<FadeScene>();
+    }
 
     public void LoadScene(string sceneName)
     {
         nextSceneName = sceneName;
-        SceneManager.LoadScene("Test_Loading");
+        SceneManager.LoadScene(loadingSceneName);
     }
 }
