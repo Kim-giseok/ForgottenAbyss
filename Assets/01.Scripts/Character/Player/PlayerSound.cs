@@ -10,16 +10,13 @@ public class PlayerSound : MonoBehaviour
     // 다양한 동작 사운드들
     public AudioClip jumpSound;
     public AudioClip landSound;
+    public AudioClip dashSound;
+    public AudioClip swordSound;
 
     private void Start()
     {
         audioSource = GetComponent<AudioSource>();
 
-        // 시작 시 AudioClip 확인 (디버깅용)
-        if (jumpSound == null)
-            Debug.LogWarning("Jump sound is not assigned in PlayerSound component!");
-        if (landSound == null)
-            Debug.LogWarning("Land sound is not assigned in PlayerSound component!");
     }
 
     public void JumpSound()
@@ -27,7 +24,7 @@ public class PlayerSound : MonoBehaviour
         if (audioSource != null && jumpSound != null)
         {
             audioSource.PlayOneShot(jumpSound);
-            Debug.Log("점프사운드");
+            
         }
     }
 
@@ -36,6 +33,25 @@ public class PlayerSound : MonoBehaviour
         if (audioSource != null && landSound != null)
         {
             audioSource.PlayOneShot(landSound);
+            
+        }
+    }
+
+    public void DashSound()
+    {
+        if (audioSource != null && dashSound != null)
+        {
+            audioSource.PlayOneShot(dashSound);
+
+        }
+    }
+
+    public void BaseSwordSound()
+    {
+        if (audioSource != null && swordSound != null)
+        {
+            audioSource.PlayOneShot(swordSound);
+
         }
     }
 }
