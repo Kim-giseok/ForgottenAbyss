@@ -39,4 +39,25 @@ public class Inventory : MonoBehaviour
     {
         onItemChanged?.Invoke();
     }
+
+    public bool RemoveItemByReference(Item item)
+    {
+        for (int i = 0; i < items.Count; i++)
+        {
+            if (items[i] == item)
+            {
+                items.RemoveAt(i);
+
+                // 퀵슬롯에도 동기화
+                QuickSlotController.Instance.NotifyItemRemoved(item);
+
+                onItemChanged?.Invoke();
+                return true;
+            }
+        }
+
+        Debug.LogWarning($"[Inventory] 제거 실패: 참조가 일치하는 아이템을 찾을 수 없음 ({item.name})");
+        return false;
+    }
+
 }
