@@ -1,25 +1,23 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class FieldItem : MonoBehaviour
 {
-    public Item item; // гй╣Е©║ ╤Ё╬На╝ юж╢б ╬фюлеш
+    public Item item; // О©╫й╣Е©║ О©╫О©╫О©╫О©╫О©╫О©╫ О©╫ж╢О©╫ О©╫О©╫О©╫О©╫О©╫О©╫
     public SpriteRenderer itemImg;
 
-    // ╬фюлеш ╪Ёа╓
+    // О©╫О©╫О©╫О©╫О©╫О©╫ О©╫О©╫О©╫О©╫
     public void SetItem(Item newItem)
     {
         item = newItem;
         itemImg.sprite = item.itemIcon;
     }
-    // ╬фюлеш ╧щх╞
+    // О©╫О©╫О©╫О©╫О©╫О©╫ О©╫О©╫х╞
     public Item GetItem()
     {
         return item;
     }
 
-    // ╬фюлеш ╩Ха╕
+    // О©╫О©╫О©╫О©╫О©╫О©╫ О©╫О©╫О©╫О©╫
     public void DestroyItem()
     {
         Destroy(gameObject);

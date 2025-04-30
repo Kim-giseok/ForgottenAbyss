@@ -70,7 +70,7 @@ public class AgisRainNode : Node
 
         if (!Mathf.Approximately(Mathf.Floor(currTime / 0.2f), Mathf.Floor((currTime - Time.deltaTime) / 0.2f)))
         {
-            BoltsPool.Instance.Create(controller.transform, Bolts.Type.Rain).SetEffect(Bolts.EffectType.Penetration).Fire();
+            BoltsPool.Instance.Create(controller.transform, Bolts.Type.Rain).SetEffect(Bolts.EffectType.Penetration).SetDamage(8).Fire();
         }
 
     }

@@ -247,7 +247,7 @@ GameObject:
   m_Component:
   - component: {fileID: 348780977}
   - component: {fileID: 348780976}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Map
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -357,7 +357,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3592222812765152639, guid: 6dc31ed564c18ca4b9568794c27595d7, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.14
+      value: 2.55
       objectReference: {fileID: 0}
     - target: {fileID: 3592222812765152639, guid: 6dc31ed564c18ca4b9568794c27595d7, type: 3}
       propertyPath: m_LocalPosition.z
@@ -398,6 +398,10 @@ PrefabInstance:
     - target: {fileID: 3741893359042678545, guid: 6dc31ed564c18ca4b9568794c27595d7, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6642390488503649345, guid: 6dc31ed564c18ca4b9568794c27595d7, type: 3}
+      propertyPath: m_ExcludeLayers.m_Bits
+      value: 1024
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -611,7 +615,7 @@ GameObject:
   - component: {fileID: 1235626403}
   - component: {fileID: 1235626402}
   - component: {fileID: 1235626401}
-  m_Layer: 7
+  m_Layer: 10
   m_Name: Floor (1)
   m_TagString: Ground
   m_Icon: {fileID: 0}
@@ -1356,7 +1360,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1424542539}
   - component: {fileID: 1424542538}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2127,7 +2131,7 @@ GameObject:
   - component: {fileID: 2037359005}
   - component: {fileID: 2037359004}
   - component: {fileID: 2037359007}
-  m_Layer: 7
+  m_Layer: 10
   m_Name: Floor
   m_TagString: Ground
   m_Icon: {fileID: 0}
