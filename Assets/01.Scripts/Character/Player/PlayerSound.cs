@@ -11,7 +11,7 @@ public class PlayerSound : MonoBehaviour
     public AudioClip jumpSound;
     public AudioClip landSound;
     public AudioClip dashSound;
-    public AudioClip swordSound;
+    
 
     private void Start()
     {
@@ -46,12 +46,5 @@ public class PlayerSound : MonoBehaviour
         }
     }
 
-    public void BaseSwordSound()
-    {
-        if (audioSource != null && swordSound != null)
-        {
-            audioSource.PlayOneShot(swordSound);
-
-        }
-    }
+    
 }
