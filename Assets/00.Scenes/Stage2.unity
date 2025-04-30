@@ -516,6 +516,8 @@ MonoBehaviour:
   player: {fileID: 0}
   mainCamera: {fileID: 0}
   pStatus: {fileID: 0}
+  cameraShake: {fileID: 0}
+  cameraZoom: {fileID: 0}
 --- !u!4 &1049774203
 Transform:
   m_ObjectHideFlags: 0
@@ -1170,20 +1172,20 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5771899917361786963, guid: 73ebf0a50cec85d46a7a6c23506d898d, type: 3}
       propertyPath: backgroundSprites.Array.size
-      value: 7
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5771899917361786963, guid: 73ebf0a50cec85d46a7a6c23506d898d, type: 3}
       propertyPath: backgroundSprites.Array.data[0]
       value: 
-      objectReference: {fileID: 21300000, guid: f44fd67bd73d546469d7c317fcd1d5ae, type: 3}
+      objectReference: {fileID: 21300000, guid: a80ee6627a15cf94581d849db4d60059, type: 3}
     - target: {fileID: 5771899917361786963, guid: 73ebf0a50cec85d46a7a6c23506d898d, type: 3}
       propertyPath: backgroundSprites.Array.data[1]
       value: 
-      objectReference: {fileID: 21300000, guid: 4a0bf6774f40eeb419adfda6b54d5c1f, type: 3}
+      objectReference: {fileID: 21300000, guid: f4ba6a4fa848fce49a882dc394bf3e50, type: 3}
     - target: {fileID: 5771899917361786963, guid: 73ebf0a50cec85d46a7a6c23506d898d, type: 3}
       propertyPath: backgroundSprites.Array.data[2]
       value: 
-      objectReference: {fileID: 21300000, guid: 066d770ac5ce1af4ca576794cfe6704e, type: 3}
+      objectReference: {fileID: 21300000, guid: 4ef6f651a70289e45ad31e7a41c5d187, type: 3}
     - target: {fileID: 5771899917361786963, guid: 73ebf0a50cec85d46a7a6c23506d898d, type: 3}
       propertyPath: backgroundSprites.Array.data[3]
       value: 
