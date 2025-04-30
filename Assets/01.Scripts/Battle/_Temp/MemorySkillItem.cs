@@ -22,7 +22,7 @@ public class MemorySkillItem: Item
             BoltsPool.Instance.CreateSummon(GameManager.Instance.player.transform, skillName, isRide).Fire();
         }
 
-        return true;
+        return false;
     }
 
     private void UseRepeat()

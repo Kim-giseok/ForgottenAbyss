@@ -12,7 +12,7 @@ public class AutoReleaseEffect : MonoBehaviour
 
     public void Release()
     {
-        EffectPool.Instance.ReleaseEffect(poolKey, gameObject);
+        SystemManager.Instance.effect.ReleaseEffect(poolKey, gameObject);
     }
 
     private void OnDisable()

@@ -14,7 +14,7 @@ public class SwordSkill01ExecutionSO : SkillExecutionSO
     {
         var castData = PrepareCastData(caster, target, data);
 
-        CoroutinRunner.Instance.StartCoroutine(HitTwiceCoroutine(caster, castData));
+        SystemManager.Instance.actionBufferUtil.StartCoroutine(HitTwiceCoroutine(caster, castData));
     }
 
     private IEnumerator HitTwiceCoroutine(GameObject caster, SkillCastData castData)
@@ -32,7 +32,7 @@ public class SwordSkill01ExecutionSO : SkillExecutionSO
         foreach (var hit in hits)
         {
             Debug.Log($"Hit {hit.name}");
-           CameraShake.Instance.Shake(0.2f, 0.3f);
+            GameManager.Instance.cameraShake.Shake(0.2f, 0.3f);
             DealDamageToTarget(hit.gameObject, castData);
             //KnockbackUtil.ApplyKnockback(hit.gameObject, caster.transform.position, 1f);
         }

@@ -246,7 +246,7 @@ public class ControllerPlayer : MonoBehaviour
 
     void OnOtherWeapon() //���⺯ȯ Ű �Է�
     {
-        WeaponManager.Instance.SwapWeapon();
+        SystemManager.Instance.weaponManager.SwapWeapon();
         Debug.Log("Z: �ٸ������ ��ȯ");
     }
 

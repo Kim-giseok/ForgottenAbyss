@@ -1,15 +1,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ProjectilePool : Singleton<ProjectilePool>
+public class ProjectilePool : MonoBehaviour
 {
     [SerializeField] private GameObject projectilePrefab;
     [SerializeField] private int poolSize = 10;
 
     private Queue<GameObject> pool = new Queue<GameObject>();
 
-    protected override void Awake()
+    private void Awake()
     {
+        projectilePrefab = Resources.Load<GameObject>("Skill/Effect/PlayerProjectile");
+
         for (int i = 0; i < poolSize; i++)
         {
             var obj = Instantiate(projectilePrefab, transform);

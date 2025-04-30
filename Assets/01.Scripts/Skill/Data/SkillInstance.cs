@@ -20,8 +20,8 @@ public class SkillInstance
         this.data = data;
         skillId = data.Id;
 
-        visual = DataManager.Instance.GetSkillVisualSO(data.VisualSOName);
-        execution = DataManager.Instance.GetSkillExecutionSO(data.ExecutionSOName);
+        visual = SystemManager.Instance.dataManager.GetSkillVisualSO(data.VisualSOName);
+        execution = SystemManager.Instance.dataManager.GetSkillExecutionSO(data.ExecutionSOName);
     }
 
     public SkillInstance(MemoryPieceSO memorySO)
@@ -109,9 +109,9 @@ public class SkillInstance
         Vector3 dir = spawnPoint.right;
         Vector3 pos = spawnPoint.position + dir * visual.effectXOffset + Vector3.up * visual.effectYOffset;
 
-        GameObject effect = EffectPool.Instance.SpawnEffect(visual.effectKey, pos, spawnPoint.rotation);
+        GameObject effect = SystemManager.Instance.effect.SpawnEffect(visual.effectKey, pos, spawnPoint.rotation);
 
-        var weaponData = WeaponManager.Instance.GetCurrentWeaponData();
+        var weaponData = SystemManager.Instance.weaponManager.GetCurrentWeaponData();
         if (weaponData == null) yield break;
 
         switch (weaponData.Type)

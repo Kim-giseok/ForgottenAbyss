@@ -5,7 +5,7 @@ using System;
 using System.Linq;
 using UnityEngine.SceneManagement;
 
-public class EquipmentManager : SingletonLoadRemain<EquipmentManager>
+public class EquipmentManager : MonoBehaviour
 {
     private Dictionary<ArmorSlot, ArmorSO> equippedArmors = new();
     private CharacterStatus playerStatus;
@@ -40,9 +40,8 @@ public class EquipmentManager : SingletonLoadRemain<EquipmentManager>
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
-    protected override void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        base.OnSceneLoaded(scene, mode);
         StartCoroutine(DelayedPlayerFindAndApply());
     }
 
@@ -192,7 +191,7 @@ public class EquipmentManager : SingletonLoadRemain<EquipmentManager>
 
         foreach (var entry in data.equippedArmors)
         {
-            if (DataManager.Instance.armorSODic.TryGetValue(entry.armorId, out var armor))
+            if (SystemManager.Instance.dataManager.armorSODic.TryGetValue(entry.armorId, out var armor))
             {
                 // 슬롯 정보는 armorSO에도 있지만, 복구 신뢰도를 높이기 위해 슬롯을 재검
                 if (armor.slot == entry.slot)

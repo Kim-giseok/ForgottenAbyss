@@ -3,8 +3,6 @@ using UnityEngine;
 
 public class DamageTextPool : MonoBehaviour
 {
-    public static DamageTextPool Instance;
-
     [SerializeField] private GameObject damageTextPrefab;
     [SerializeField] private int poolSize = 30;
 
@@ -12,8 +10,6 @@ public class DamageTextPool : MonoBehaviour
 
     private void Awake()
     {
-        Instance = this;
-
         for (int i = 0; i < poolSize; i++)
         {
             GameObject obj = Instantiate(damageTextPrefab, transform);
@@ -31,7 +27,7 @@ public class DamageTextPool : MonoBehaviour
             return obj;
         }
 
-        // 부족하면 하나 더 만들어줌 (선택사항)
+        // 부족하면 하나 더 만들어줌
         GameObject newObj = Instantiate(damageTextPrefab, transform);
         return newObj;
     }

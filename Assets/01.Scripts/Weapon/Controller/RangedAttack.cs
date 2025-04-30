@@ -142,7 +142,10 @@ public class RangedAttack : MonoBehaviour
 
     void SpawnProjectile(Vector3 direction)
     {
-        GameObject projectile = ProjectilePool.Instance.Get(firePoint.position, Quaternion.LookRotation(Vector3.forward, direction));
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        Quaternion rot = Quaternion.Euler(0, 0, angle);
+
+        GameObject projectile = SystemManager.Instance.projectile.Get(firePoint.position, rot);
 
         PlayerProjectile pp = projectile.GetComponent<PlayerProjectile>();
         if (pp != null)

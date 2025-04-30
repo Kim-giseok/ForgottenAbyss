@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EffectPool : Singleton<EffectPool>
+public class EffectPool : MonoBehaviour
 {
     [System.Serializable]
     public class EffectEntry
@@ -15,9 +15,8 @@ public class EffectPool : Singleton<EffectPool>
     public List<EffectEntry> effectList;
     private Dictionary<string, GameObjectPool> effectPools = new();
 
-    protected override void Awake()
+    private void Awake()
     {
-        base.Awake();
         foreach (var entry in effectList)
         {
             effectPools[entry.key] = new GameObjectPool(entry.prefab, entry.initialSize, transform);
