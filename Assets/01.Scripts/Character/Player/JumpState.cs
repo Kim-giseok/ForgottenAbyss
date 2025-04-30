@@ -17,6 +17,7 @@ public class JumpState : PlayerStateMachine
             player.animator.SetBool("IsJump", true);
             player.isGround = false;
             player.currentJumpCount = 1;
+            playerSound.JumpSound();
 
             // 플랫폼 콜라이더 무시 설정
             //player.StartCoroutine(player.IgnorePlatformCollision(true));
