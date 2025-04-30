@@ -62,6 +62,8 @@ public class InventorySlot : SlotBase, IPointerClickHandler
             case ItemType.Equip:
                 var armor = currentItem as ArmorSO;
 
+                InventoryUIManager.Instance.CheckAndUnequipItem(armor);
+
                 if (sys.equipmentManager.IsArmorEquipped(armor.slot))
                 {
                     sys.equipmentManager.UnequipArmor(armor.slot);
@@ -80,14 +82,16 @@ public class InventorySlot : SlotBase, IPointerClickHandler
                 var memoryData = sys.dataManager.GetMemoryPieceData(memory.memoryPieceId);
                 var memorySO = sys.dataManager.GetMemoryVisualSO(memoryData.Name);
 
+                InventoryUIManager.Instance.CheckAndUnequipItem(memory);
+
                 if (sys.equipmentManager.IsMemoryPieceEquipped(memorySO.currentMemoryPieceId))
                 {
-                    sys.weaponManager.UnequipMemoryPiece();
+                    sys.equipmentManager.UnequipMemoryPiece();
                     SetOutline(false);
                 }
                 else
                 {
-                    sys.weaponManager.EquipMemoryPiece(memorySO);
+                    sys.equipmentManager.EquipMemoryPiece(memorySO);
                     SetOutline(true, Color.blue);
                 }
 

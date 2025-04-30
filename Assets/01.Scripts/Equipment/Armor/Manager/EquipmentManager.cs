@@ -13,6 +13,12 @@ public class EquipmentManager : MonoBehaviour
     public event Action<ArmorSO> OnEquipArmor;
     public event Action<ArmorSO> OnUnequipArmor;
 
+    public event Action<MemoryPieceSO> OnEquipMemory;
+    public event Action<MemoryPieceSO> OnUnequipMemory;
+
+    private MemoryPieceSO equippedMemorySO;
+
+
     private IEnumerator Start()
     {
         yield return new WaitUntil(() => FindObjectOfType<Player>() != null);
@@ -222,6 +228,32 @@ public class EquipmentManager : MonoBehaviour
     {
         Debug.Log("[Auto] 애플리케이션 종료 → 장비 저장");
         SaveEquippedArmors();
+    }
+
+    public void EquipMemoryPiece(MemoryPieceSO memorySO)
+    {
+        if (equippedMemorySO == memorySO)
+        {
+            UnequipMemoryPiece();
+            return;
+        }
+
+        if (equippedMemorySO != null)
+            UnequipMemoryPiece();
+
+        equippedMemorySO = memorySO;
+        SystemManager.Instance.weaponManager.EquipMemoryPiece(memorySO);
+        OnEquipMemory?.Invoke(memorySO);
+    }
+
+    public void UnequipMemoryPiece()
+    {
+        if (equippedMemorySO == null) return;
+
+        var old = equippedMemorySO;
+        equippedMemorySO = null;
+        SystemManager.Instance.weaponManager.UnequipMemoryPiece();
+        OnUnequipMemory?.Invoke(old);
     }
 
     public bool IsArmorEquipped(ArmorSlot slot)

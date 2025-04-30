@@ -79,4 +79,15 @@ public class InventoryUIManager : MonoBehaviour
 
         Debug.Log($"[InventoryUIManager] UpdateUI 완료: {items.Count}개 아이템 표시됨");
     }
+
+    public void CheckAndUnequipItem(Item newItem)
+    {
+        foreach (var slot in slots)
+        {
+            if (slot.currentItem != null && slot.currentItem.itemType == newItem.itemType)
+            {
+                slot.SetOutline(false);
+            }
+        }
+    }
 }
