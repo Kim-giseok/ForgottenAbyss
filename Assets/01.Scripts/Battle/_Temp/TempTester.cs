@@ -3,6 +3,11 @@ using UnityEngine;
 
 public class TempTester: MonoBehaviour
 {
+   private void Start()
+   {
+      Debug.Log(EnemiesAnimator.animators.Count);
+   }
+   
    private void Update()
    {
       

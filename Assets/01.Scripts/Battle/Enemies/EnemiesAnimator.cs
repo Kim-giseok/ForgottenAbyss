@@ -9,14 +9,12 @@ public class EnemiesAnimator
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     private static void Init()
     {
-        string[] guids = AssetDatabase.FindAssets("t:AnimatorController", new[] { "Assets/03.Animations/Enemies/Animators" });
+        RuntimeAnimatorController[] loadedAnimators = 
+            Resources.LoadAll<RuntimeAnimatorController>("EnemyAnimators");
 
-        foreach (string guid in guids)
+        foreach (var animator in loadedAnimators)
         {
-            string path = AssetDatabase.GUIDToAssetPath(guid);
-            RuntimeAnimatorController animator = AssetDatabase.LoadAssetAtPath<RuntimeAnimatorController>(path);
-            
-            animators.Add(animator.name, animator);
+            animators[animator.name] = animator;
         }
     }
 }
