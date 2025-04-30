@@ -15,7 +15,7 @@ public class UIManager : MonoBehaviour
     public StatUI statUI;
     public PassiveUI passiveUI;
     public ItemTooltip tooltip;
-    public GameObject ingameUI;
+    public CanvasGroup ingameUI;
 
     [Header("WorldUI")]
     public RectTransform worldSpaceCanvas;
@@ -70,7 +70,17 @@ public class UIManager : MonoBehaviour
             talkBox.gameObject.SetActive(false);
     }
 
-    public void HideIngameUI() => ingameUI.SetActive(false);
+    public void HideIngameUI()
+    {
+        ingameUI.alpha = 0f;
+        ingameUI.interactable = false;
+        ingameUI.blocksRaycasts = false;
+    }
 
-    public void ShowIngameUI() => ingameUI.SetActive(true);
+    public void ShowIngameUI()
+    {
+        ingameUI.alpha = 1f;
+        ingameUI.interactable = true;
+        ingameUI.blocksRaycasts = true;
+    }
 }

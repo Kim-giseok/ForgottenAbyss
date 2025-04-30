@@ -1,6 +1,8 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
+using UnityEngine;
 
 public enum SlotMode { Editable, ReadOnly }
 public class InventorySlot : SlotBase, IPointerClickHandler
@@ -9,9 +11,12 @@ public class InventorySlot : SlotBase, IPointerClickHandler
     private ItemUI itemUI;
     public GameObject equippedOutline; // ÀåÂøµÈ ¾ÆÀÌÅÛ¿ë ¿Ü°û¼±
 
+    private Outline outline;
+
     private void Awake()
     {
         itemUI = GetComponentInChildren<ItemUI>(true);
+        outline = GetComponent<Outline>();
     }
 
     private void OnEnable()
@@ -71,23 +76,66 @@ public class InventorySlot : SlotBase, IPointerClickHandler
         }
     }
 
+    public void SetOutline(bool active, Color color = default)
+    {
+        if (outline == null)
+            return;
+
+        outline.enabled = active;
+
+        if (active)
+        {
+            outline.effectColor = color == default(Color) ? Color.red : color;
+        }
+    }
+
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (currentItem == null)
-            return;
+        if (currentItem == null) return;
+        if (SystemManager.Instance == null) return;
+
+        var sys = SystemManager.Instance;
 
         switch (currentItem.itemType)
         {
             case ItemType.Equip:
-                SystemManager.Instance.equipmentManager.EquipArmor(currentItem as ArmorSO);
+                var armor = currentItem as ArmorSO;
+
+                InventoryUIManager.Instance.CheckAndUnequipItem(armor);
+
+                if (sys.equipmentManager.IsArmorEquipped(armor.slot))
+                {
+                    sys.equipmentManager.UnequipArmor(armor.slot);
+                    SetOutline(false);
+                }
+                else
+                {
+                    sys.equipmentManager.EquipArmor(armor);
+                    SetOutline(true, Color.green);
+                }
+
                 break;
+
             case ItemType.Memory:
                 var memory = currentItem as MemorySkillItem;
-                var memoryData = SystemManager.Instance.dataManager.GetMemoryPieceData(memory.memoryPieceId);
-                var memorySO = SystemManager.Instance.dataManager.GetMemoryVisualSO(memoryData.Name);
+                var memoryData = sys.dataManager.GetMemoryPieceData(memory.memoryPieceId);
+                var memorySO = sys.dataManager.GetMemoryVisualSO(memoryData.Name);
 
-                SystemManager.Instance.weaponManager.EquipMemoryPiece(memorySO);
+                InventoryUIManager.Instance.CheckAndUnequipItem(memory);
+
+                if (sys.equipmentManager.IsMemoryPieceEquipped(memorySO.currentMemoryPieceId))
+                {
+                    sys.equipmentManager.UnequipMemoryPiece();
+                    SetOutline(false);
+                }
+                else
+                {
+                    sys.equipmentManager.EquipMemoryPiece(memorySO);
+                    SetOutline(true, Color.blue);
+                }
+
                 break;
+
             case ItemType.Consumable:
                 bool isUsed = currentItem.Use();
 
@@ -100,6 +148,7 @@ public class InventorySlot : SlotBase, IPointerClickHandler
 
 
                 }
+
                 break;
         }
     }

@@ -79,4 +79,28 @@ public class InventoryUIManager : MonoBehaviour
 
         Debug.Log($"[InventoryUIManager] UpdateUI 완료: {items.Count}개 아이템 표시됨");
     }
+
+    public void CheckAndUnequipItem(Item newItem)
+    {
+        foreach (var slot in slots)
+        {
+            if (slot.currentItem == null) continue;
+            if (slot.currentItem.itemType != newItem.itemType) continue;
+
+            if (newItem.itemType == ItemType.Equip)
+            {
+                var armor = slot.currentItem as ArmorSO;
+                var newArmor = newItem as ArmorSO;
+
+                if (armor != null && newArmor != null && armor.slot == newArmor.slot)
+                {
+                    slot.SetOutline(false);
+                }
+            }
+            else
+            {
+                slot.SetOutline(false);
+            }
+        }
+    }
 }
