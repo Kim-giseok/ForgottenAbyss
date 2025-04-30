@@ -224,6 +224,19 @@ public class EquipmentManager : MonoBehaviour
         SaveEquippedArmors();
     }
 
+    public bool IsArmorEquipped(ArmorSlot slot)
+    {
+        return equippedArmors.ContainsKey(slot);
+    }
+
+    public bool IsMemoryPieceEquipped(int memoryPieceId)
+    {
+        var curMemory = SystemManager.Instance.weaponManager.GetCurrentMemoryPieceSO();
+        if(curMemory == null) return false;
+        if (curMemory.currentMemoryPieceId == memoryPieceId) return true;
+        else return false;
+    }
+
     [Serializable]
     private class SaveEquipData
     {
