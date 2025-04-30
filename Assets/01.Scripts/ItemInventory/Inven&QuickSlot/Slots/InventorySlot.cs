@@ -55,7 +55,8 @@ public class InventorySlot : SlotBase, IPointerClickHandler
 
         if (isUsed)
         {
-            Inventory.Instance.RemoveItem(currentItem);
+            QuickSlotController.Instance.NotifyItemRemoved(currentItem); // 퀵슬롯에 아이템 삭제 알림           
+            Inventory.Instance.RemoveItemByReference(currentItem);
             ClearSlot();
             Inventory.Instance.RefreshInventoryUI();
         }

@@ -24,11 +24,14 @@ public class QuickSlot : SlotBase
 
             if (remainingCooldown <= 0f)
             {
+                Debug.Log($"[QuickSlot {SlotIndex}] 쿨타임 종료");
                 cooldownOverlay.fillAmount = 0f;
 
                 if (waitingToClear)
                 {
-                    ClearSlot();
+                    Debug.Log($"[QuickSlot {SlotIndex}] 대기 중이던 슬롯 비우기 실행");
+                    
+                    ClearSlot(); // 쿨타임 끝났을 때만 제거
                     waitingToClear = false;
                 }
             }
@@ -50,17 +53,12 @@ public class QuickSlot : SlotBase
             {
                 SetLinkedItem(dragged.item);
             }
-            else
-            {
-                Debug.LogWarning("퀵슬롯에는 인벤토리에 있는 아이템만 등록할 수 있습니다.");
-            }
         }
     }
 
     public void SetLinkedItem(Item item)
     {
         linkedItem = item;
-
         currentItem = item;
         iconImage.sprite = item.itemIcon;
         iconImage.enabled = true;
@@ -80,23 +78,80 @@ public class QuickSlot : SlotBase
 
     public void UseItem()
     {
-        if (currentItem != null && remainingCooldown <= 0)
+        if (linkedItem != null && remainingCooldown <= 0)
         {
-            bool isUsed = currentItem.Use();
+            bool isUsed = linkedItem.Use();
             if (isUsed)
             {
-                // 인벤토리에서 먼저 제거
-                Inventory.Instance.RemoveItem(linkedItem);
-                Inventory.Instance.RefreshInventoryUI();
+                if (Inventory.Instance != null)
+                {
+                    bool removed = Inventory.Instance.RemoveItemByReference(linkedItem);
 
-                // 퀵슬롯 자체도 클리어
-                waitingToClear = true;
+                    //if (removed)
+                    //{
+                    //    Debug.Log($"[QuickSlot] 인벤토리에서 '{linkedItem?.name ?? "Unknown"}' 제거됨");
+                    //}
+                    //else
+                    //{
+                    //    Debug.LogWarning($"[QuickSlot] 인벤토리에 '{linkedItem.name}' 없음");
+                    //}
+
+                    Inventory.Instance.RefreshInventoryUI();
+                    QuickSlotController.Instance.NotifyItemRemoved(linkedItem);
+                }
+                else
+                {
+                    Debug.LogError("[QuickSlot] Inventory.Instance가 null입니다. 인벤토리 매니저가 없음");
+                }
+
+                waitingToClear = true;// 퀵슬롯 자체도 클리어
             }
             remainingCooldown = cooldownTime;
 
             StartCoroutine(BlinkIcon());
         }
 
+    }
+
+    // 이 슬롯에 해당 아이템이 있는지 확인
+    public bool HasItem(Item item)
+    {
+        return linkedItem == item;
+    }
+
+    // 인벤토리에서 아이템 삭제 알림 받으면
+    public void MarkToClearAfterCooldown()
+    {
+        if (linkedItem == null) return;
+
+        // 삭제 요청이 왔을 때
+        if (remainingCooldown > 0f)
+        {
+            waitingToClear = true;
+        }
+        else
+        {
+            ClearSlot();
+        }
+    }
+
+    public override void ClearSlot()
+    {
+        base.ClearSlot();
+        linkedItem = null;
+        waitingToClear = false;
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if (QuickSlotController.Instance.SelectedIndex == SlotIndex)
+        {
+            UseItem();
+        }
+        else
+        {
+            QuickSlotController.Instance.SelectSlotFromOutside(SlotIndex);
+        }
     }
 
     // 슬롯 깜빡임
@@ -119,42 +174,5 @@ public class QuickSlot : SlotBase
             outlineObject.SetActive(selected);
         }
     }
-
-    public void OnPointerClick(PointerEventData eventData)
-    {
-       if (QuickSlotController.Instance.SelectedIndex == SlotIndex)
-        {
-            UseItem();
-        }
-        else
-        {
-            QuickSlotController.Instance.SelectSlotFromOutside(SlotIndex);
-        }
-    }
-
-    // 이 슬롯에 해당 아이템이 있는지 확인
-    public bool HasItem(Item item)
-    {
-        return linkedItem == item;
-    }
-
-    // 인벤토리에서 아이템 삭제 알림 받으면
-    public void MarkToClearAfterCooldown()
-    {
-        if (remainingCooldown > 0f)
-        {
-            // 쿨타임 끝나고 삭제
-            waitingToClear = true;
-        }
-        else
-        {
-            ClearSlot();
-        }
-    }
-
-    public override void ClearSlot()
-    {
-        base.ClearSlot();
-        linkedItem = null;
-    }
+   
 }
