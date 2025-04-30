@@ -1,9 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEditor;
-using UnityEditor.U2D.Aseprite;
 using UnityEngine;
 
+#if UNITY_EDITOR
 [CustomEditor(typeof(LaberDamagerble))]
 public class LaberTestUI : Editor
 {
@@ -16,3 +14,4 @@ public class LaberTestUI : Editor
         }
     }
 }
+#endif

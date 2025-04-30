@@ -1,9 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem.XR;
-using UnityEngine.SceneManagement;
-using static UnityEngine.Rendering.DebugUI;
 
 public class Player : MonoBehaviour, IDamagable
 {

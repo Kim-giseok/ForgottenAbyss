@@ -1,8 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using Unity.VisualScripting.Antlr3.Runtime.Misc;
-using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 
 public class PlayerStatus : CharacterStatus
