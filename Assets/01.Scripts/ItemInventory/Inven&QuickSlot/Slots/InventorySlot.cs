@@ -1,8 +1,6 @@
-using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using UnityEngine;
 
 public enum SlotMode { Editable, ReadOnly }
 public class InventorySlot : SlotBase, IPointerClickHandler
