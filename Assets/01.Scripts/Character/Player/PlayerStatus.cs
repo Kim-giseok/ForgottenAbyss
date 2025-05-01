@@ -4,25 +4,25 @@ using UnityEngine;
 
 public class PlayerStatus : CharacterStatus
 {
-    // �������� �ʿ��� ����ġ �䱸��
+    // 레벨 업 필요 경험치
     private Dictionary<int, float> expRequiredForLevel = new Dictionary<int, float>();
-    // ������ ���� ������
+    // 레벨별 스탯
     private Dictionary<int, Dictionary<StatType, float>> levelStats = new Dictionary<int, Dictionary<StatType, float>>();
 
-    // ���� ����Ʈ ���� ����
-    [SerializeField] private int availableStatPoints; // ��� ������ ���� ����Ʈ
-    [SerializeField] private int statPointsPerLevel; // ������ �� ȹ���ϴ� ���� ����Ʈ
+    
+    [SerializeField] private int availableStatPoints; // 사용 가능한 스탯 포인트
+    [SerializeField] private int statPointsPerLevel; // 레벨 업 시 획득하는 스탯 포인트
 
-    // ���Ⱥ� ���� ���� �ִ�ġ
+    // 최대 투자 가능 스탯 포인트
     private Dictionary<StatType, int> maxStatInvestment = new Dictionary<StatType, int>();
-    // ���Ⱥ� ���ڵ� ����Ʈ
+    // 투자한 스탯 포인트
     private Dictionary<StatType, int> investedStatPoints = new Dictionary<StatType, int>();
-    // ���� ����Ʈ�� ���� ������
+    // 패시브 스탯 증가량
     private Dictionary<StatType, float> statPointIncrease = new Dictionary<StatType, float>();
 
     private int maxLevel = 999;
 
-    // ���� ����Ʈ ���� �̺�Ʈ
+    // 스탯 변경 이벤트
     public delegate void StatPointsChangedHandler(int points);
     public event StatPointsChangedHandler OnStatPointsChanged;
 
@@ -137,8 +137,6 @@ public class PlayerStatus : CharacterStatus
 
     private void Awake()
     {
-        //passiveUI = FindObjectOfType<PassiveUI>();
-       
         InitializeStats();
         InitializeLevelStats();
         InitializeExpRequired();
@@ -154,7 +152,7 @@ public class PlayerStatus : CharacterStatus
         }
         LoadPlayerData();
     }
-    // �̺�Ʈ ����
+    
     private void OnEnable()
     {
         OnStatChanged += (type, value) =>
@@ -167,53 +165,52 @@ public class PlayerStatus : CharacterStatus
    
     private void Update()
     {
-        // ! �׽�Ʈ�� ü�°��� !
+        // 테스트용
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             float cur = stats[StatType.CurrentHP];
             SetStat(StatType.CurrentHP, cur - 10f);
         }
-        if (Input.GetKeyDown(KeyCode.Alpha2)) // ���� �Ҹ�
+        if (Input.GetKeyDown(KeyCode.Alpha2)) // 테스트용
         {
             float cur = stats[StatType.CurrentMP];
             SetStat(StatType.CurrentMP, Mathf.Max(0, cur - 10f));
         }
 
         TestExp();
-
-        //Debug.Log($"현재속도:{stats[StatType.SPEED]}");
+        
     }
     private void InitializeStats()
     {
-        stats[StatType.CurrentHP] = 100f; //���� HP
-        stats[StatType.MaxHP] = 100f; //�ʱ� HP
-        stats[StatType.CurrentMP] = 100f; //���� MP
-        stats[StatType.MaxMP] = 100f; //�ʱ� MP
-        stats[StatType.ATK] = 10f; //�ʱ� ���ݷ�
-        stats[StatType.DEF] = 10f; //�ʱ� ����
-        stats[StatType.LEVEL] = 1f; //�ʱ� ����
-        stats[StatType.EXP] = 0f; //�ʱ� ����ġ
-        stats[StatType.MaxEXP] = 100f; //�ʱ� ����ġ
-        stats[StatType.GOLD] = 0f; //�ʱ� ���
-        stats[StatType.SPEED] = 3f; //�ʱ� ���
-        stats[StatType.CRITICAL] = 20f; //�ʱ� ũ��Ƽ�� Ȯ��
-        stats[StatType.CRITICAL_DAMAGE] = 150f; //�ʱ� ũ��Ƽ�� ������ ����
-        stats[StatType.COOLDOWN_REDUCTION] = 0f; //�ʱ� ��Ÿ�� ���� ����
+        stats[StatType.CurrentHP] = 100f; //현재 HP
+        stats[StatType.MaxHP] = 100f; //최대 HP
+        stats[StatType.CurrentMP] = 100f; //현재 MP
+        stats[StatType.MaxMP] = 100f; //최대 MP
+        stats[StatType.ATK] = 10f; //초기 공격력
+        stats[StatType.DEF] = 10f; //초기 방어력
+        stats[StatType.LEVEL] = 1f; //초기 레벨
+        stats[StatType.EXP] = 0f; //초기 경험치
+        stats[StatType.MaxEXP] = 100f; //레벨 업 경험치
+        stats[StatType.GOLD] = 0f; //초기 골드
+        stats[StatType.SPEED] = 3f; //이동속도
+        stats[StatType.CRITICAL] = 20f; //치명타 확률
+        stats[StatType.CRITICAL_DAMAGE] = 150f; //치명타 데미지
+        stats[StatType.COOLDOWN_REDUCTION] = 0f; //스킬 쿨타임 감소
     }
 
-    // ������ ���� ������ �ʱ�ȭ
+    
     private void InitializeLevelStats()
     {
-        // ������ ���� ������ ���� (���� 2���� ����)
+        
         for (int level = 2; level <= maxLevel; level++)
         {
             Dictionary<StatType, float> statIncreases = new Dictionary<StatType, float>();
 
-            // ������ ������
-            statIncreases[StatType.MaxHP] = 20f;         // HP ������
-            statIncreases[StatType.MaxMP] = 15f;        // MP ������
-            statIncreases[StatType.ATK] = 1f;     // ���ݷ� ������
-            statIncreases[StatType.DEF] = 1f;     // ���� ������
+            // 레벨 업 스탯 증가량
+            statIncreases[StatType.MaxHP] = 20f;         // HP 증가량
+            statIncreases[StatType.MaxMP] = 15f;        // MP 증가량
+            statIncreases[StatType.ATK] = 1f;     // 공격력 증가량
+            statIncreases[StatType.DEF] = 1f;     // 방어력 증가량
 
             levelStats[level] = statIncreases;
         }
@@ -221,43 +218,42 @@ public class PlayerStatus : CharacterStatus
 
     private void InitializeExpRequired()
     {
-        // ������ �ʿ� ����ġ ����
+        
         for (int level = 1; level <= maxLevel; level++)
         {
-            // ����ġ ���� (��: level^2 * 100)
+            // 레벨 업 필요 경험치
             expRequiredForLevel[level] = level * 100f;
         }
 
         int currentLevel = (int)stats[StatType.LEVEL];
         stats[StatType.MaxEXP] = expRequiredForLevel[currentLevel];
     }
-    // ���� ����Ʈ �ý��� �ʱ�ȭ
+    
     private void InitializeStatPointSystem()
     {
-        // �� ���Ⱥ� ���ڵ� ����Ʈ �ʱ�ȭ
+        
         foreach (StatType statType in investableStats)
         {
             investedStatPoints[statType] = 0;
         }
 
-        // ���� ����Ʈ�� ������ ����
-        statPointIncrease[StatType.ATK] = 1f;       // ���ݷ� ������
-        statPointIncrease[StatType.CRITICAL] = 1f;  // ġ��Ÿ Ȯ�� ������
-        statPointIncrease[StatType.MaxHP] = 10f;    // �ִ� ü�� ������
-        statPointIncrease[StatType.DEF] = 1f;       // ���� ������
-        statPointIncrease[StatType.SPEED] = 0.2f;   // �̵��ӵ� ������
+        // 패시브 스탯 증가량
+        statPointIncrease[StatType.ATK] = 1f;       // 공격력 증가량
+        statPointIncrease[StatType.CRITICAL] = 1f;  // 치명타 확률 증가량
+        statPointIncrease[StatType.MaxHP] = 10f;    // 최대HP 증가량
+        statPointIncrease[StatType.DEF] = 1f;       // 방어력 증가량
+        statPointIncrease[StatType.SPEED] = 0.2f;   // 이동속도 증가량
 
-        // �ִ� ���� ���� ����Ʈ ����
-        maxStatInvestment[StatType.ATK] = 10;      // �ִ� ATK ���� ����Ʈ
-        maxStatInvestment[StatType.CRITICAL] = 10;  // �ִ� CRITICAL ���� ����Ʈ (�ִ� 50% �߰�)
-        maxStatInvestment[StatType.MaxHP] = 10;    // �ִ� MaxHP ���� ����Ʈ
-        maxStatInvestment[StatType.DEF] = 10;      // �ִ� DEF ���� ����Ʈ
-        maxStatInvestment[StatType.SPEED] = 10;     // �ִ� SPEED ���� ����Ʈ
+        // 패시브 스탯 최대 레벨
+        maxStatInvestment[StatType.ATK] = 10;      
+        maxStatInvestment[StatType.CRITICAL] = 10; 
+        maxStatInvestment[StatType.MaxHP] = 10;    
+        maxStatInvestment[StatType.DEF] = 10;      
+        maxStatInvestment[StatType.SPEED] = 10;     
     }
 
     
 
-    // ���� ����Ʈ ���� �� ������ ��ȯ
     public float GetStatIncreasePerPoint(StatType statType)
     {
         if (statPointIncrease.ContainsKey(statType))
@@ -267,13 +263,11 @@ public class PlayerStatus : CharacterStatus
         return 0f;
     }
 
-    // ����ġ ȹ�� �޼���
+    
     public void GainExperience(float amount)
     {
         SetStat(StatType.EXP, stats[StatType.EXP] + amount);
-        //stats[StatType.EXP] += amount;
-        Debug.Log($"����ġ ȹ��: +{amount} (����: {stats[StatType.EXP]})");
-
+              
         CheckLevelUp();
     }
 
@@ -281,19 +275,18 @@ public class PlayerStatus : CharacterStatus
     {
         int curLevel = (int)stats[StatType.LEVEL];
 
-        // �ִ� ������ �����ߴ��� üũ
+        
         if (curLevel >= maxLevel)
         {
-            stats[StatType.EXP] = expRequiredForLevel[maxLevel]; // ����ġ ����
+            stats[StatType.EXP] = expRequiredForLevel[maxLevel]; 
             return;
         }
 
-        // ���� �������� �ʿ��� ����ġ�� �Ѿ����� üũ
+        // 현재 경험치가 필요 경험치 이상인 경우 레벨 업
         if (stats[StatType.EXP] >= expRequiredForLevel[curLevel])
         {
             LevelUp();
 
-            // ���� ����ġ�� �� �������� ������� Ȯ�� (���� ������ ó��)
             CheckLevelUp();
         }
     }
@@ -302,16 +295,16 @@ public class PlayerStatus : CharacterStatus
     {
         int newLevel = (int)stats[StatType.LEVEL] + 1;
 
-        // ����ġ ���
+        
         stats[StatType.EXP] -= expRequiredForLevel[(int)stats[StatType.LEVEL]];
 
-        // ���� ����
+        
         stats[StatType.LEVEL] = newLevel;
 
-        // ������ ���� ���� ����
+        
         ApplyLevelStats(newLevel);
 
-        // ���� ����Ʈ �߰�
+        
         AddStatPoints(statPointsPerLevel);
 
         Debug.Log($"스탯 포인트: {availableStatPoints}");
@@ -335,7 +328,7 @@ public class PlayerStatus : CharacterStatus
 
     }
 
-    // ������ ���� ���� ����
+   
     private void ApplyLevelStats(int level)
     {
         if (levelStats.ContainsKey(level))
@@ -345,24 +338,23 @@ public class PlayerStatus : CharacterStatus
             foreach (var statType in statIncreases.Keys)
             {
                 float newValue = stats[statType] + statIncreases[statType];
-                SetStat(statType, newValue); // �̺�Ʈ �߻� ����
-                //stats[statType] += statIncreases[statType];
+                SetStat(statType, newValue); //변화한 스탯 반영
                 Debug.Log($"{statType} ����: +{statIncreases[statType]}");
             }
         }
     }
 
-    // ���� ����Ʈ �߰�    
+      
     public void AddStatPoints(int points)
     {
         availableStatPoints += points;
         OnStatPointsChanged?.Invoke(availableStatPoints);
     }
 
-    // ���� ����Ʈ ����
+    
     public bool InvestStatPoint(StatType statType)
     {
-        // ���� ������ �������� Ȯ��
+        
         bool isInvestable = false;
         foreach (StatType type in investableStats)
         {
@@ -373,29 +365,27 @@ public class PlayerStatus : CharacterStatus
             }
         }
                
-        // ��� ������ ���� ����Ʈ�� �ִ��� Ȯ��
+        
         if (availableStatPoints <= 0)
         {
-            Debug.LogWarning("��� ������ ���� ����Ʈ�� �����ϴ�.");
             return false;
         }
 
-        // �ִ� ���� ���� ����Ʈ�� �ʰ��ϴ��� Ȯ��
+        
         if (investedStatPoints[statType] >= maxStatInvestment[statType])
         {
-            Debug.LogWarning($"{statType}�� �� �̻� ���� ����Ʈ�� ������ �� �����ϴ�. (�ִ�: {maxStatInvestment[statType]})");
             return false;
         }
 
-        // ���� ����Ʈ ���
+        // 패시브 스탯 투자 시
         availableStatPoints--;
         investedStatPoints[statType]++;
 
-        // ���� ���� ����
+        // 패시브 스탯 증가량 반영
         float newValue = stats[statType] + statPointIncrease[statType];
         SetStat(statType, newValue);
 
-        // ���� ü�µ� �Բ� ���� (MaxHP ����Ʈ ���ڽ�)
+       
         if (statType == StatType.MaxHP)
         {
             float currentHP = stats[StatType.CurrentHP];
@@ -403,7 +393,7 @@ public class PlayerStatus : CharacterStatus
             SetStat(StatType.CurrentHP, currentHP + increase);
         }
 
-        // ���� ����Ʈ ���� �̺�Ʈ �߻�
+        // 이벤트 구독
         OnStatPointsChanged?.Invoke(availableStatPoints);
 
         Debug.Log($"{statType}�� ���� ����Ʈ�� �����߽��ϴ�. ({statType}: +{statPointIncrease[statType]}, �� ����: {investedStatPoints[statType]}/{maxStatInvestment[statType]})");
@@ -412,50 +402,49 @@ public class PlayerStatus : CharacterStatus
         return true;
     }
 
-    // ���� ����Ʈ ���� (��� ���� ���)
+    // 패시브 스탯 초기화
     public void ResetStatPoints()
     {
         int totalPoints = 0;
 
-        // �� ���� ���� ������ ���� �� ���� ����Ʈ ȸ��
+        
         foreach (StatType statType in investableStats)
         {
             if (investedStatPoints.ContainsKey(statType))
             {
-                // ���ڵ� ����Ʈ ȸ��
+                
                 int pointsInvested = investedStatPoints[statType];
                 totalPoints += pointsInvested;
 
-                // ���� ���� �� ��� (���� �� - ���ڷ� ���� ������)
+                
                 float originalValue = stats[statType] - (pointsInvested * statPointIncrease[statType]);
                 SetStat(statType, originalValue);
 
-                // ���ڵ� ����Ʈ �ʱ�ȭ
+                
                 investedStatPoints[statType] = 0;
             }
         }
 
-        // MaxHP ���� �� CurrentHP�� ����
+        
         if (investedStatPoints.ContainsKey(StatType.MaxHP))
         {
             float currentHPRatio = stats[StatType.CurrentHP] / stats[StatType.MaxHP];
             SetStat(StatType.CurrentHP, stats[StatType.MaxHP] * currentHPRatio);
         }
 
-        // ��� ������ ���� ����Ʈ ����
+        
         availableStatPoints += totalPoints;
         OnStatPointsChanged?.Invoke(availableStatPoints);
-
-        Debug.Log($"��� ���� ����Ʈ�� �ʱ�ȭ�Ǿ����ϴ�. (��� ������ ����Ʈ: {availableStatPoints})");
+        
     }
 
-    // ���� ��� ������ ���� ����Ʈ�� ��ȯ
+    // 패시브 스탯 포인트 획득
     public int GetAvailableStatPoints()
     {
         return availableStatPoints;
     }
 
-    // Ư�� ���ȿ� ���ڵ� ����Ʈ�� ��ȯ
+    
     public int GetInvestedStatPoints(StatType statType)
     {
         if (investedStatPoints.ContainsKey(statType))
@@ -465,7 +454,7 @@ public class PlayerStatus : CharacterStatus
         return 0;
     }
 
-    // Ư�� ������ �ִ� ���� ���� ����Ʈ�� ��ȯ
+    
     public int GetMaxStatInvestment(StatType statType)
     {
         if (maxStatInvestment.ContainsKey(statType))
@@ -474,12 +463,12 @@ public class PlayerStatus : CharacterStatus
         }
         return 0;
     }
-    private void GetGold() //��� ȹ�� 
+    private void GetGold() 
     {
 
     }
 
-    private void TestExp() //�׽�Ʈ ����ġ ȹ��
+    private void TestExp() //테스트용
     {
         if (Input.GetKeyDown(KeyCode.Alpha0))
         {
@@ -492,4 +481,5 @@ public class PlayerStatus : CharacterStatus
         stats.TryGetValue(statType, out float value);
         return value;
     }
+
 }
