@@ -1,30 +1,35 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class ConfirmationUI : BaseUI
 {
+    [SerializeField] TextMeshProUGUI confirmTxt;
     [SerializeField] Button okBtn;
     [SerializeField] Button exitBtn;
     Action onClick;
 
     private void Awake()
     {
+        confirmTxt = GetComponentInChildren<TextMeshProUGUI>();
         okBtn.onClick.AddListener(ClickEnter);
         exitBtn.onClick.AddListener(() => gameObject.SetActive(false));
     }
 
-    public void PopUpUI(Action onClickOk)
+    public void PopUpUI(string text = "Enter?", Action onClickOk = null)
     {
         gameObject.SetActive(true);
+        confirmTxt.text = text;
         onClick = onClickOk;
     }
 
     void ClickEnter()
     {
         onClick?.Invoke();
+        onClick = null;
         gameObject.SetActive(false);
     }
 }

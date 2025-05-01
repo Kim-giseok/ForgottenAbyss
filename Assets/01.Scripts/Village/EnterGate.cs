@@ -6,8 +6,8 @@ using UnityEngine.SceneManagement;
 public class EnterGate : MonoBehaviour, IInteractable
 {
     public int gateNumber; //문 고유 번호
-    public int sceneToLoad; //각 문마다 로드 할 씬 번호
     public string sceneName;
+    [SerializeField] FLAGKEY gateOpenFlag;
 
     private void Awake()
     {
@@ -26,12 +26,12 @@ public class EnterGate : MonoBehaviour, IInteractable
 
     public void ActiveInteraction()
     {
-        if(sceneToLoad >= SceneManager.sceneCountInBuildSettings)
+        if(!ActivateFlag.CheckFlag(gateOpenFlag))
         {
-            Debug.Log("There is no map");
+            UIManager.Instance.confirmationUI.PopUpUI("You Can't go now");
             return;
         }
 
-        UIManager.Instance.confirmationUI.PopUpUI(OnClickEnter);
+        UIManager.Instance.confirmationUI.PopUpUI(onClickOk:OnClickEnter);
     }
 }
