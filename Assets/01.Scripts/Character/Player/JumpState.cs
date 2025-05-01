@@ -19,10 +19,6 @@ public class JumpState : PlayerStateMachine
             player.currentJumpCount = 1;
             playerSound.JumpSound();
 
-            // 플랫폼 콜라이더 무시 설정
-            //player.StartCoroutine(player.IgnorePlatformCollision(true));
-            //player.StartCoroutine(player.ResetIgnoreCollision(0.5f));
-        
         }
         else
         {
