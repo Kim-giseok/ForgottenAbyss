@@ -43,7 +43,7 @@ public class SummonController: EnemyBaseController
 
     public SummonController SetTrigger(bool isTrigger)
     {
-        collider.isTrigger = isTrigger;
+        Collider.isTrigger = isTrigger;
         return this;
     }
 
@@ -108,7 +108,7 @@ public class SummonController: EnemyBaseController
 
     private void Start()
     {
-        renderer.material.SetFloat("_YValue", 0);
+        Renderer.material.SetFloat("_YValue", 0);
         StartCoroutine(PlaySpawnAnimation(3f));
     }
 
@@ -117,9 +117,9 @@ public class SummonController: EnemyBaseController
         float currentYValue = 0f;
         while (currentYValue < 1f)
         {
-            currentYValue = renderer.material.GetFloat("_YValue");
+            currentYValue = Renderer.material.GetFloat("_YValue");
             float newYValue = Mathf.MoveTowards(currentYValue, 1f, Time.deltaTime * speed);
-            renderer.material.SetFloat("_YValue", newYValue);
+            Renderer.material.SetFloat("_YValue", newYValue);
             yield return null;
         }
         
@@ -138,7 +138,7 @@ public class SummonController: EnemyBaseController
         if (!isCasterAttached) return;
         cRigidbody.velocity = Vector2.zero;
         cRenderer.enabled = true;
-        collider.isTrigger = false;
+        Collider.isTrigger = false;
         if(isPlayerCaster) { pController.isInvincible = false; }
     }
 
