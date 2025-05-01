@@ -18,9 +18,9 @@ public class Bolt: MonoBehaviour
     public float speed { get; private set; } = 10;
 
     // transform 에서 사이즈도 처리
-    public Rigidbody2D rigidbody { get; private set; }
-    public Collider2D collider { get; private set; }
-    public SpriteRenderer renderer { get; private set; }
+    public Rigidbody2D Rigidbody { get; private set; }
+    public Collider2D Collider { get; private set; }
+    public SpriteRenderer Renderer { get; private set; }
     // 애니메이터는 한개지만 내부 애니메이션 실행을 목적으로 이용
     public BoltAnimHandler animHandler { get; private set; }
     public TrailRenderer trailRenderer { get; private set; }
@@ -29,7 +29,7 @@ public class Bolt: MonoBehaviour
     public StepMachine machine { get; private set; } // 등록 자체를 순차 등록
     protected List<BoltEffect> effects = new();
 
-    public void SetSprite(Sprite sprite) => renderer.sprite = sprite;
+    public void SetSprite(Sprite sprite) => Renderer.sprite = sprite;
     public Bolt SetSize(float size)
     {
         transform.localScale = new Vector3(size, size, 1);
@@ -56,7 +56,7 @@ public class Bolt: MonoBehaviour
 
     public Bolt SetSprite(string name)
     { 
-        renderer.sprite = BoltsPool.Instance.GetSprite(name);
+        Renderer.sprite = BoltsPool.Instance.GetSprite(name);
         return this;
     }
     
@@ -102,7 +102,7 @@ public class Bolt: MonoBehaviour
 
     public Bolt SetRenderer(Action<SpriteRenderer> callback)
     {
-        callback?.Invoke(renderer);
+        callback?.Invoke(Renderer);
         return this;
     }
     
@@ -133,9 +133,9 @@ public class Bolt: MonoBehaviour
 
     private void Awake()
     {
-        rigidbody = GetComponent<Rigidbody2D>();
-        collider = GetComponent<Collider2D>();
-        renderer = GetComponent<SpriteRenderer>();
+        Rigidbody = GetComponent<Rigidbody2D>();
+        Collider = GetComponent<Collider2D>();
+        Renderer = GetComponent<SpriteRenderer>();
         trailRenderer = GetComponent<TrailRenderer>();
         lineRenderer = GetComponent<LineRenderer>();
         
@@ -161,15 +161,15 @@ public class Bolt: MonoBehaviour
     private void OnDisable()
     {
         // fix: 시간이 완료된 경우 마지막 노드로 클리어 필요
-        renderer.sprite = BoltsPool.Instance.GetSprite("circle");
-        renderer.color = Color.magenta;
+        Renderer.sprite = BoltsPool.Instance.GetSprite("circle");
+        Renderer.color = Color.magenta;
         transform.localScale = new Vector3(0.2f, 0.2f, 1);
         
         
         machine.Clear();
         effects.Clear();
         animHandler.Play("None");
-        rigidbody.velocity = Vector2.zero;
+        Rigidbody.velocity = Vector2.zero;
 
         trailRenderer.time = 0.2f;
         

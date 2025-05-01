@@ -7,7 +7,7 @@ public class LightHandler: MonoBehaviour
 {
     public static LightHandler Instance { get; private set; }
     
-    private Light2D light;
+    private Light2D _light;
     
     public Color startColor;
     public Color endColor;
@@ -15,7 +15,7 @@ public class LightHandler: MonoBehaviour
 
     private void Awake()
     {
-        light = GetComponent<Light2D>();
+        _light = GetComponent<Light2D>();
     }
 
     private void Start()
@@ -38,7 +38,7 @@ public class LightHandler: MonoBehaviour
         while (currTime < 1f)
         {
             currTime += Time.deltaTime / duration;
-            light.color = Color.Lerp(from, to, currTime);
+            _light.color = Color.Lerp(from, to, currTime);
             yield return null;
         }
     }

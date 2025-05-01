@@ -37,28 +37,10 @@ public class PassiveUI : MonoBehaviour
     private int coolDownLevel = 0;
     private int maxCoolDownLevel = 10;
 
-    //PlayerStatus _playerStatus = PlayerStatus.Instance;
+    
     PlayerStatus _playerStatus => GameManager.Instance.pStatus;
 
-    //private void Awake()
-    //{
-    //    _playerStatus = FindObjectOfType<PlayerStatus>();
-    //    //_playerStatus = PlayerStatus.Instance;
-
-    //}
-
-    //private void Start()
-    //{
-    //    // PlayerStatus에서 스탯 포인트 변경 이벤트 구독
-    //    if (_playerStatus != null)
-    //    {
-    //        _playerStatus.OnStatPointsChanged += UpdateStatPointsUI;
-    //    }
-
-    //    // 초기 UI 상태 업데이트
-    //    UpdateStatPointsUI(_playerStatus.GetAvailableStatPoints());
-    //}
-
+    
     private void OnDestroy()
     {
         // 이벤트 구독 해제
@@ -86,6 +68,8 @@ public class PassiveUI : MonoBehaviour
         if (defButton != null) defButton.interactable = hasPoints && defLevel < maxDefLevel;
         if (speedButton != null) speedButton.interactable = hasPoints && speedLevel < maxSpeedLevel;
         if (coolDownButton != null) coolDownButton.interactable = hasPoints && coolDownLevel < maxCoolDownLevel;
+
+        
     }
     public void OnPassiveUI()
     {
@@ -217,5 +201,5 @@ public class PassiveUI : MonoBehaviour
         coolDownLevel++;
         coolDownText.text = $"COOLDOWN\n Lv {coolDownLevel}/{maxCoolDownLevel}";
     }
-
+       
 }
