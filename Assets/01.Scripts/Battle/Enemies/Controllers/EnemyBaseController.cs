@@ -4,9 +4,9 @@ public class EnemyBaseController: MonoBehaviour
 {
     public EnemyAgent agent { get; private set; }
     public BTMachine machine { get; protected set; }
-    public Collider2D collider { get; protected set; }
-    public Rigidbody2D rigidbody { get; protected set; }
-    public SpriteRenderer renderer { get; protected set; }
+    public Collider2D Collider { get; protected set; }
+    public Rigidbody2D Rigidbody { get; protected set; }
+    public SpriteRenderer Renderer { get; protected set; }
     public Material material { get; protected set; }
     public EnemyAnimHandler animnHandler { get; protected set; }
     public EnemyCombatHandler combatHandler { get; protected set; }
@@ -17,10 +17,10 @@ public class EnemyBaseController: MonoBehaviour
     {
         machine = new(this);
 
-        collider = GetComponent<Collider2D>();
-        rigidbody = GetComponent<Rigidbody2D>();
-        renderer = GetComponent<SpriteRenderer>(); 
-        material = renderer.material;
+        Collider = GetComponent<Collider2D>();
+        Rigidbody = GetComponent<Rigidbody2D>();
+        Renderer = GetComponent<SpriteRenderer>(); 
+        material = Renderer.material;
         animnHandler = GetComponent<EnemyAnimHandler>();
 
         combatHandler = new EnemyCombatHandler();

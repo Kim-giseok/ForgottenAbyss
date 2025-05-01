@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class EnemyController : EnemyBaseController, IDamagable
 {
@@ -10,7 +11,7 @@ public class EnemyController : EnemyBaseController, IDamagable
     public float attack;
 
 
-    public Enemies.Enemy name;
+    [FormerlySerializedAs("name")] public Enemies.Enemy Name;
     
     public EnemyResourceHandler resourceHandler { get; private set; }
     public EnemyStatusHandler statusHandler { get; private set; }
@@ -34,7 +35,7 @@ public class EnemyController : EnemyBaseController, IDamagable
         // 애니메이터 자동 등록
         // animationHandler.SetController(EnemiesAnimator.animators["NightBone"]);
         // 에러처리 필요
-        machine.Define(Enemies.Get(name)); // 각 개체별 생성되는 방식
+        machine.Define(Enemies.Get(Name)); // 각 개체별 생성되는 방식
         machine.Start();
         
         try { MapSpawnManager.Instance.SpawnedMap.monsterManager.AddList(this); }

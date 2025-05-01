@@ -6,7 +6,7 @@ public class SSCastingNode : Node
     {
         controller.animnHandler.Play("Casting");
         controller.LookTarget();
-        controller.rigidbody.velocity = Vector2.zero;
+        controller.Rigidbody.velocity = Vector2.zero;
     }
 
     public override void OnAnimated(AnimationStatus status, AnimatorStateInfo animInfo)
@@ -30,10 +30,10 @@ public class SSDashAttack : Node
         controller.animnHandler.Play(animationName);
         controller.LookTarget();
 
-        controller.rigidbody.velocity = Vector2.zero;
+        controller.Rigidbody.velocity = Vector2.zero;
         // controller.rigidbody.gravityScale = 0f;
-        controller.rigidbody.drag = 4f;
-        controller.rigidbody.AddForce(new Vector2(controller.agent.GetDirection().x * 24f, 0), ForceMode2D.Impulse);
+        controller.Rigidbody.drag = 4f;
+        controller.Rigidbody.AddForce(new Vector2(controller.agent.GetDirection().x * 24f, 0), ForceMode2D.Impulse);
     }
     
     public override void OnAnimated(AnimationStatus status, AnimatorStateInfo animInfo)
@@ -54,7 +54,7 @@ public class SSDashAttack : Node
 
     public override void End()
     {
-        controller.rigidbody.drag = 0;
+        controller.Rigidbody.drag = 0;
     }
     
 }
@@ -65,7 +65,7 @@ public class RandomCoolTimeNode : Node
     {
         context.Set("idleRandomDuration", Random.Range(0.4f, 2f));
         
-        controller.rigidbody.velocity = new Vector2(0, controller.rigidbody.velocity.y);
+        controller.Rigidbody.velocity = new Vector2(0, controller.Rigidbody.velocity.y);
         
         controller.animnHandler.Play("Idle");
     }

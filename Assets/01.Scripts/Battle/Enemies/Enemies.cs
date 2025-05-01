@@ -28,7 +28,7 @@ public class Enemies
             Enemy.Archer,
             new SelectorNode(
                 new SequenceNode(new HitNode(), new DieNode()),
-                new SequenceNode(new TracingNode(), new StopNode(), new ChargingNode(1f), new RangeMultiAttackNode()),
+                new SequenceNode(new TracingNode(), new StopNode(), new ChargingNode(2f), new RangeMultiAttackNode()),
                 new SequenceNode(new IdleNode(1), new PatrolMove(1))
                 )
         },

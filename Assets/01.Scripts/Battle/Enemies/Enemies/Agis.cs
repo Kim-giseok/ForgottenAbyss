@@ -8,17 +8,17 @@ public class AgisSpreadShot : Node
 
     public override void Start() // 한번 더 실행하는 현상 발생
     {
-        controller.rigidbody.drag = 10f;
+        controller.Rigidbody.drag = 10f;
 
         // 따라오지 않는 현상 수정 필요
         if (controller is SummonController sContorller)
         {
-            controller.rigidbody.AddForce(sContorller.castingDirection, ForceMode2D.Impulse);
+            controller.Rigidbody.AddForce(sContorller.castingDirection, ForceMode2D.Impulse);
             // controller.transform.SetParent(sContorller.eController.transform);
         }
      
         // 애니메이션 도중 스프라이트 컬러 변경되지 않는 현상 발생
-        controller.renderer.color = Color.black;
+        controller.Renderer.color = Color.black;
     }
 
     public override void Update()
@@ -42,7 +42,7 @@ public class AgisSpreadShot : Node
 
     public override void End()
     {
-        controller.rigidbody.drag = 0f;
+        controller.Rigidbody.drag = 0f;
     }
 }
 
@@ -54,12 +54,12 @@ public class AgisRainNode : Node
 
     public override void Start() // 한번 더 실행하는 현상 발생
     {
-        controller.rigidbody.drag = 10f;
+        controller.Rigidbody.drag = 10f;
 
         // 따라오지 않는 현상 수정 필요 - transform으로 처리
         if (controller is SummonController sContorller)
         {
-            controller.rigidbody.AddForce(sContorller.castingDirection, ForceMode2D.Impulse);
+            controller.Rigidbody.AddForce(sContorller.castingDirection, ForceMode2D.Impulse);
         }
      
     }
@@ -78,7 +78,7 @@ public class AgisRainNode : Node
 
     public override void End()
     {
-        controller.rigidbody.drag = 0f;
+        controller.Rigidbody.drag = 0f;
     }
 }
 
@@ -153,12 +153,12 @@ public class MoveNode : Node
             
         }
         
-        controller.rigidbody.velocity = new Vector2(velocityX, controller.rigidbody.velocity.y);
+        controller.Rigidbody.velocity = new Vector2(velocityX, controller.Rigidbody.velocity.y);
     }
 
     public override void End()
     {
-        controller.rigidbody.velocity = Vector2.zero;
+        controller.Rigidbody.velocity = Vector2.zero;
     }
 }
 

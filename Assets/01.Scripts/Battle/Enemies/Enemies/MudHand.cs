@@ -67,23 +67,23 @@ public class MudAttackNode : Node
             context.Set("currPos", controller.transform.position);
 
             Collider2D[] nearColiders = Physics2D.OverlapCircleAll(controller.transform.position, 1f, LayerMask.GetMask("Ground"));
-            foreach (var nearCollider in nearColiders) { Physics2D.IgnoreCollision(controller.collider, nearCollider, true); }
+            foreach (var nearCollider in nearColiders) { Physics2D.IgnoreCollision(controller.Collider, nearCollider, true); }
 
             BoltsPool.Instance.CreateMelee(controller.transform, 40f).Fire();
 
-            if(controller is EnemyController) { controller.rigidbody.AddForce(controller.agent.GetDirection() * 4f, ForceMode2D.Impulse); }
-            if(controller is SummonController sController) { controller.rigidbody.AddForce(Vector2.right * 4f, ForceMode2D.Impulse); }
+            if(controller is EnemyController) { controller.Rigidbody.AddForce(controller.agent.GetDirection() * 4f, ForceMode2D.Impulse); }
+            if(controller is SummonController sController) { controller.Rigidbody.AddForce(Vector2.right * 4f, ForceMode2D.Impulse); }
             
             return;
         }
 
         if (status == AnimationStatus.End)
         {
-            controller.rigidbody.velocity = Vector2.zero;
+            controller.Rigidbody.velocity = Vector2.zero;
             controller.transform.position = context.Get<Vector3>("currPos");
             
             Collider2D[] nearColiders = Physics2D.OverlapCircleAll(controller.transform.position, 1f, LayerMask.GetMask("Ground"));
-            foreach (var nearCollider in nearColiders) { Physics2D.IgnoreCollision(controller.collider, nearCollider, false); }
+            foreach (var nearCollider in nearColiders) { Physics2D.IgnoreCollision(controller.Collider, nearCollider, false); }
             
             SetStatus(Status.Success);
         }
@@ -92,6 +92,6 @@ public class MudAttackNode : Node
     public override void End()
     {
         BoltsPool.Instance.DisableMelee(controller.transform);
-        controller.rigidbody.drag = 0f;
+        controller.Rigidbody.drag = 0f;
     }
 }

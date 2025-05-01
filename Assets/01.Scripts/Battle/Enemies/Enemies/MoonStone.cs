@@ -12,14 +12,14 @@ public class MoonStoneWalk : Node
     {
         if (currTime > 2f) { SetStatus(Status.Success); return; }
 
-        Vector2 direction = controller.rigidbody.velocity;
+        Vector2 direction = controller.Rigidbody.velocity;
         direction.x = 0.4f;
         // controller.rigidbody.velocity = direction;
     }
 
     public override void End()
     {
-        controller.rigidbody.velocity = Vector2.zero;
+        controller.Rigidbody.velocity = Vector2.zero;
     }
 }
 
@@ -33,7 +33,7 @@ public class MoonWarp : Node
         var selected = NavSurface.Instance.platforms[platform].centerCell.WorldPos;
         
         // 타일 사이즈 절반 차감
-        selected.y += controller.collider.bounds.size.y;
+        selected.y += controller.Collider.bounds.size.y;
        
         controller.transform.position = selected;
         
@@ -65,8 +65,8 @@ public class MoonAttack1 : Node
 {
     public override void Start()
     {
-        controller.rigidbody.drag = 4f;
-        controller.rigidbody.AddForce(new Vector2(16f, 0), ForceMode2D.Impulse);
+        controller.Rigidbody.drag = 4f;
+        controller.Rigidbody.AddForce(new Vector2(16f, 0), ForceMode2D.Impulse);
         controller.animnHandler.Play("Attack");
     }
 
@@ -78,8 +78,8 @@ public class MoonAttack1 : Node
 
     public override void End()
     {
-        controller.rigidbody.velocity = Vector2.zero;
-        controller.rigidbody.drag = 0f;
+        controller.Rigidbody.velocity = Vector2.zero;
+        controller.Rigidbody.drag = 0f;
     }
 }
 
@@ -143,8 +143,8 @@ public class MoonFlyingMode : Node
     public override void Start()
     {
         controller.animnHandler.Play("Fly");
-        controller.rigidbody.gravityScale = 0;
-        controller.collider.enabled = false;
+        controller.Rigidbody.gravityScale = 0;
+        controller.Collider.enabled = false;
 
     }
     
@@ -198,8 +198,8 @@ public class MoonFlyingEndNode : Node
     public override void End()
     {
         controller.animnHandler.Play("Land");
-        controller.collider.enabled = true;
-        controller.rigidbody.gravityScale = 2;
+        controller.Collider.enabled = true;
+        controller.Rigidbody.gravityScale = 2;
     }
 }
 

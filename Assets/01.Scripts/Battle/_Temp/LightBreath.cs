@@ -3,7 +3,7 @@ using UnityEngine.Rendering.Universal;
 
 public class LightBreath: MonoBehaviour
 {
-    private Light2D light;
+    private Light2D _light;
     
     public float min;
     public float max;
@@ -11,14 +11,14 @@ public class LightBreath: MonoBehaviour
 
     private void Awake()
     {
-        light = GetComponent<Light2D>();
+        _light = GetComponent<Light2D>();
     }
 
     private void Update()
     {
-        if (!light) return;
+        if (!_light) return;
 
         float sin = Mathf.Sin(Time.time * speed) * 0.5f + 0.5f;
-        light.pointLightOuterRadius = Mathf.Lerp(min, max, sin);
+        _light.pointLightOuterRadius = Mathf.Lerp(min, max, sin);
     }
 }
