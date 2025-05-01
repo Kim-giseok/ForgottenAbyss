@@ -178,7 +178,7 @@ public class PlayerStatus : CharacterStatus
         }
 
         TestExp();
-
+        
     }
     private void InitializeStats()
     {
@@ -435,7 +435,6 @@ public class PlayerStatus : CharacterStatus
         
         availableStatPoints += totalPoints;
         OnStatPointsChanged?.Invoke(availableStatPoints);
-
         
     }
 
@@ -482,4 +481,5 @@ public class PlayerStatus : CharacterStatus
         stats.TryGetValue(statType, out float value);
         return value;
     }
+
 }

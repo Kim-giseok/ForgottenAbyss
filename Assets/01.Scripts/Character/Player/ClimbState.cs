@@ -66,10 +66,7 @@ public class ClimbState : PlayerStateMachine
 
         if (player.inputVec.y > 0 && player.transform.position.y >= Collider.bounds.max.y - 1.1f)
         {
-            // 사다리 꼭대기에 도달했을 때 자동으로 위로 올라가기
-            //Vector3 topPosition = new Vector3(Collider.bounds.center.x,
-            //    Collider.transform.position.y + Collider.bounds.extents.y + player.playerCollider.bounds.extents.y, 0 );
-            
+                       
             Vector3 topPosition = new Vector3(Collider.bounds.center.x,
                 Collider.bounds.max.y + player.playerCollider.bounds.extents.y - 0.4f, 0 );
 
