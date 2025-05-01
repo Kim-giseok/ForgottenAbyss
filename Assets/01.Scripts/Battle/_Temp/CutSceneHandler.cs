@@ -31,13 +31,13 @@ public class CutSceneHandler: MonoBehaviour
 
     private void Start()
     {
-        GlobalLightHandler.instance.light.color = Color.gray;
+        GlobalLightHandler.instance.Light.color = Color.gray;
         SetCutSceneMode(true);
     }
 
     private void OnDestroy()
     {
-        GlobalLightHandler.instance.light.color = Color.white;
+        GlobalLightHandler.instance.Light.color = Color.white;
         SetCutSceneMode(false);
     }
 }

@@ -103,9 +103,8 @@ public class BoltsPool : MonoBehaviour // 단위 미사일
         HitBox hitBox = bolt.hitBox;
         hitBox.SetOwner(parent);
         
-        // 플레이어 피봇 문제로 위치 조정 필요
-        // bolt.transform.position = parent.position + (Vector3.up * 0.5f);
-        bolt.transform.position = parent.position;
+        // 피봇 문제로 위치 조정 필요
+        bolt.transform.position = parent.position + Vector3.up;
         
         bolt.SetDirection(parent.transform.right);
         

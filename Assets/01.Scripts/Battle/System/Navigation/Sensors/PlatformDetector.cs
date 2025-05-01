@@ -9,20 +9,20 @@ public class PlatformDetector: MonoBehaviour
     private Collider2D tCollider;
     private Vector2 tRayPoint = Vector2.zero;
 
-    private BoxCollider2D collider;
+    private BoxCollider2D _collider;
     
     private void Awake()
     {
         target = transform.parent.gameObject;
-        collider = GetComponent<BoxCollider2D>();
+        _collider = GetComponent<BoxCollider2D>();
         tCollider = GetComponentInParent<Collider2D>();
     }
 
     // notice: 콜라이더가 맨처음에 인식 못하는 현상 발생 
     private void OnEnable()
     {
-        collider.enabled = false;
-        collider.enabled = true;
+        _collider.enabled = false;
+        _collider.enabled = true;
     }
 
     private void OnTriggerEnter2D(Collider2D other)

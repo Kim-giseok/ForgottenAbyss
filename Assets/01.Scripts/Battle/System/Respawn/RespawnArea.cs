@@ -10,7 +10,6 @@ public class RespawnArea : MonoBehaviour
     private List<GameObject> currEnemies;
     
     public int maxCount;
-    private int currCount = 0;
     
     public float cooldown;
 
