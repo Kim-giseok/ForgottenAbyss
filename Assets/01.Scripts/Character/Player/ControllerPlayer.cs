@@ -9,27 +9,19 @@ using UnityEngine.SocialPlatforms;
 public class ControllerPlayer : MonoBehaviour
 {
     public Vector2 inputVec;
-    private float speed; //�̵��ӵ�
-    public float jumpPower; //������
-    public float dashDistance; //�뽬�Ÿ�
-    public float dashTime; //�뽬���ӽð�
-    public int jumplimit; //���� ���� Ƚ��
-    public int currentJumpCount; //���� ���� Ƚ��
-    public LayerMask platformLayerMask; //���� �� ������ �÷��� ���̾�
-    public LayerMask invincibilityLayerMask; //���� ���¿��� ������ ���̾�
+    private float speed; 
+    public float jumpPower; //점프력
+    public float dashDistance; //점프 거리
+    public float dashTime; //대쉬 시간
+    public int jumplimit; //점프 횟수 제한
+    public int currentJumpCount; //현재 점프 카운트
+    public LayerMask platformLayerMask; 
+    public LayerMask invincibilityLayerMask; 
 
-    //public LayerMask wallLayer; //�� ���� ���̾�
-    //public float wallDistance; //�� ���� �Ÿ�
-
-    //public bool isWallDetected; //�� ���� ����
-    //public bool isWallClimbing; //��� ������ ������ ����
-    //public RaycastHit2D wallHit;
-
-    public bool isGround; //�� ��� �ִ��� ����
-    public bool isDashing = false; //�뽬 ����
-    public bool isAttacking = false; //���� ����
-    //public bool isIgnoringCollision = false; //�ݶ��̴� �浹 ���� ����
-    public bool isInvincible = false; //���� ���� ����
+    public bool isGround; 
+    public bool isDashing = false; 
+    public bool isAttacking = false; 
+    public bool isInvincible = false; 
     private bool dashBuffered = false;
     public bool isAlive = true;
 
@@ -42,7 +34,7 @@ public class ControllerPlayer : MonoBehaviour
     public CharacterStatus status;
     PlayerSound playerSound;
 
-    // FSM ���� ����
+    // FSM
     private Dictionary<PlayerState, PlayerStateMachine> states = new Dictionary<PlayerState, PlayerStateMachine>();
     public PlayerState currentState;
     public PlayerState previousState;
@@ -63,18 +55,16 @@ public class ControllerPlayer : MonoBehaviour
         status = GetComponent<CharacterStatus>();
         playerSound = GetComponent<PlayerSound>();
 
-        // ���� �ӽ� �ʱ�ȭ
         InitStateMachine();
     }
 
     private void InitStateMachine()
     {
-        // ���� ���
+        
         states.Add(PlayerState.Idle, new IdleState(this));
         states.Add(PlayerState.Run, new RunState(this));
         states.Add(PlayerState.Jump, new JumpState(this));
         states.Add(PlayerState.Dash, new DashState(this));
-        //states.Add(PlayerState.Attack, new AttackState(this));
         states.Add(PlayerState.Interaction, new InteractionState(this));
         states.Add(PlayerState.Climb, new ClimbState(this));
         states.Add(PlayerState.Slide, new SlideState(this));
@@ -105,16 +95,16 @@ public class ControllerPlayer : MonoBehaviour
 
         previousState = currentState;
 
-        // ���� ���°� �ִٸ� Exit ȣ��
+       
         if (states.ContainsKey(currentState))
         {
             states[currentState].Exit();
         }
 
-        // ���� ����
+        
         currentState = newState;
 
-        // �� ������ Enter ȣ��
+        
         if (states.ContainsKey(currentState))
         {
             states[currentState].Enter();
@@ -123,11 +113,10 @@ public class ControllerPlayer : MonoBehaviour
 
     private void Update()
     {
-        // ���� ���� ������Ʈ
+        
         if (states.ContainsKey(currentState))
         {
             states[currentState].Update();
-            //Debug.Log($"{states[currentState]}");
         }
 
         AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
@@ -165,7 +154,7 @@ public class ControllerPlayer : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        // ���� ���� FixedUpdate
+        
         if (states.ContainsKey(currentState))
         {
             states[currentState].FixedUpdate();
@@ -192,7 +181,7 @@ public class ControllerPlayer : MonoBehaviour
         if (!isAlive) return;
         if (value.isPressed)
         {
-            // ���� ���¿� ���� �Է� ����
+            
             if (states.ContainsKey(currentState))
             {
                 states[currentState].OnJump();
@@ -214,7 +203,7 @@ public class ControllerPlayer : MonoBehaviour
             }
             else
             {
-                // �� �ִϸ��̼��� �ƴϸ� �ٷ� ��� ����
+               
                 if (states.ContainsKey(currentState))
                 {
                     states[currentState].OnDash();
@@ -284,7 +273,6 @@ public class ControllerPlayer : MonoBehaviour
     public void OnCollisionEnter2D(Collision2D collision)
     {
        
-        // ���� ���¿� �浹 �̺�Ʈ ����
         if (states.ContainsKey(currentState))
         {
             states[currentState].OnCollisionEnter(collision);
@@ -318,7 +306,7 @@ public class ControllerPlayer : MonoBehaviour
 
     public void OnCollisionExit2D(Collision2D collision)
     {
-        // ���� ���¿� �浹 ���� �̺�Ʈ ����
+        
         if (states.ContainsKey(currentState))
         {
             states[currentState].OnCollisionExit(collision);
@@ -357,7 +345,7 @@ public class ControllerPlayer : MonoBehaviour
     {
         this.isInvincible = isInvincible;
 
-        // ���� ���� ���� ����
+        // 무적 시 
         if (isInvincible)
         {
             StartCoroutine(InvincibleEffect());
@@ -374,21 +362,16 @@ public class ControllerPlayer : MonoBehaviour
         }
         else
         {
-            // ���� ���� �� ���� ���·� ����
             spriteRenderer.color = new Color(1f, 1f, 1f, 1f);
-            ResetIgnoredCollision(); //���� ���� ����
+            ResetIgnoredCollision(); //무적 판정 종료
         }
 
-        //if (!isInvincible)
-        //{
-        //    ResetIgnoredCollision(); //���� ���� ����
-        //}
-
+        
     }
 
-    public void ResetIgnoredCollision() //���� ���� ����
+    public void ResetIgnoredCollision()
     {
-        // ���� �߿� �����ߴ� ��� �ݶ��̴����� �浹 ���� �ʱ�ȭ
+       
         Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, 10f, invincibilityLayerMask);
 
         foreach (Collider2D collider in colliders)
@@ -415,7 +398,7 @@ public class ControllerPlayer : MonoBehaviour
         animator.SetBool("IsAttacking", false);
         BoltsPool.Instance.DestroyMelee(transform);
 
-        // ���� ���� �� ����Ű�� ������ �����ִٸ� �ӵ� ����
+        
         if (inputVec.x != 0)
         {
             animator.SetBool("IsRun", true);
@@ -427,7 +410,7 @@ public class ControllerPlayer : MonoBehaviour
     {
         Collider2D[] platformColliders = Physics2D.OverlapCircleAll(transform.position, 10f, platformLayerMask);
 
-        foreach (Collider2D platformCollider in platformColliders) //�ݶ��̴� ����
+        foreach (Collider2D platformCollider in platformColliders) 
         {
             if (rigid.velocity.y < 0)
             {

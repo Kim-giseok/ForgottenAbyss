@@ -36,11 +36,6 @@ public class IdleState : PlayerStateMachine
         }
     }
 
-    //public override void OnAttack()
-    //{
-    //    player.ChangeState(PlayerState.Attack);
-    //}
-
     public override void OnInteraction()
     {
         player.ChangeState(PlayerState.Interaction);
