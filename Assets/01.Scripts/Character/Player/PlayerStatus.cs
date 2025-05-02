@@ -165,17 +165,17 @@ public class PlayerStatus : CharacterStatus
    
     private void Update()
     {
-        // 테스트용
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            float cur = stats[StatType.CurrentHP];
-            SetStat(StatType.CurrentHP, cur - 10f);
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha2)) // 테스트용
-        {
-            float cur = stats[StatType.CurrentMP];
-            SetStat(StatType.CurrentMP, Mathf.Max(0, cur - 10f));
-        }
+        //// 테스트용
+        //if (Input.GetKeyDown(KeyCode.Alpha1))
+        //{
+        //    float cur = stats[StatType.CurrentHP];
+        //    SetStat(StatType.CurrentHP, cur - 10f);
+        //}
+        //if (Input.GetKeyDown(KeyCode.Alpha2)) // 테스트용
+        //{
+        //    float cur = stats[StatType.CurrentMP];
+        //    SetStat(StatType.CurrentMP, Mathf.Max(0, cur - 10f));
+        //}
 
         TestExp();
         
