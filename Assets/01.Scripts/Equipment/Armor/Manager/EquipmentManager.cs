@@ -19,6 +19,7 @@ public class EquipmentManager : MonoBehaviour
     private MemoryPieceSO equippedMemorySO;
     private InventorySlot equippedMemorySlot;
 
+    private bool isSetBonusApplied = false;
 
     private IEnumerator Start()
     {
@@ -97,6 +98,9 @@ public class EquipmentManager : MonoBehaviour
 
         string bonusLog = string.Join(", ", armor.statBonuses.Select(b => $"{b.statType} {b.bonusType} +{b.value}"));
         Debug.Log($"[Test] 장착 성공: {armor.name} → {armor.slot}, {bonusLog}");
+
+        RemoveSetBonus(); // 기존 보너스 제거 후
+        ApplySetBonus();
     }
 
     public void UnequipArmor(ArmorSlot slot)
@@ -109,7 +113,9 @@ public class EquipmentManager : MonoBehaviour
 
             string bonusLog = string.Join(", ", armor.armor.statBonuses.Select(b => $"{b.statType} {b.bonusType} -{b.value}"));
             Debug.Log($"[Test] 장착 해제: {armor.armor.name} → {armor.slot}, {bonusLog}");
-        }  
+        }
+        RemoveSetBonus();
+        ApplySetBonus();
     }
 
     public ArmorSO GetEquippedArmor(ArmorSlot slot)
@@ -170,6 +176,47 @@ public class EquipmentManager : MonoBehaviour
 
             playerStatus.SetStat(statType, restoredValue);
             Debug.Log($"[RemoveStatBonus] {statType}: {currentValue} → {restoredValue}");
+        }
+    }
+
+    private void ApplySetBonus()
+    {
+        // 기본적으로 모든 방어구가 장착되어 있어야 한다고 가정
+        if (equippedArmors.Count != 4)
+            return;
+
+        // 모든 방어구의 세트 이름이 동일한지 체크
+        string setName = equippedArmors.First().Value.armor.setName;
+        foreach (var armorPair in equippedArmors)
+        {
+            if (armorPair.Value.armor.setName != setName)
+                return; // 하나라도 세트가 다르면 보너스 미적용
+        }
+
+        // 모든 조건을 만족하면 세트 보너스 적용
+        if (!isSetBonusApplied)
+        {
+            isSetBonusApplied = true;
+
+            playerStatus.stats.TryGetValue(StatType.MaxHP, out float currentHealth);
+            float finalHealth = currentHealth + 30;
+
+            playerStatus.SetStat(StatType.MaxHP, finalHealth);
+            Debug.Log($"[SetBonus] {setName} 세트 보너스 적용: Health {currentHealth} → {finalHealth}");
+        }
+    }
+
+    private void RemoveSetBonus()
+    {
+        if (isSetBonusApplied)
+        {
+            isSetBonusApplied = false;
+
+            playerStatus.stats.TryGetValue(StatType.MaxHP, out float currentHealth);
+            float restoredHealth = currentHealth - 30;
+
+            playerStatus.SetStat(StatType.MaxHP, restoredHealth);
+            Debug.Log($"[SetBonus] 세트 보너스 제거: Health {currentHealth} → {restoredHealth}");
         }
     }
 

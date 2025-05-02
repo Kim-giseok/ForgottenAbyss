@@ -18,5 +18,7 @@ public class ArmorSO : Item
     public int armorId;
     public ArmorSlot slot;
 
+    public string setName;
+
     public List<ArmorStatBonus> statBonuses = new();
 }

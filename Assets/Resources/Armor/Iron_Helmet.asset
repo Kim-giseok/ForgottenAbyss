@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a8f55a5d968504541a37bc347e9f5857, type: 3}
-  m_Name: TEST Boots
+  m_Name: Iron_Helmet
   m_EditorClassIdentifier: 
-  itemName: Iron Boots
-  itemIcon: {fileID: -1353309538, guid: 14b217cd54e39f04883c5c75a1fa39ca, type: 3}
-  itemDescription: Speed + 5%
+  itemName: Iron Helmet
+  itemIcon: {fileID: 812910026, guid: 14b217cd54e39f04883c5c75a1fa39ca, type: 3}
+  itemDescription: Def + 5
   itemType: 0
-  armorId: 403
-  slot: 3
+  armorId: 400
+  slot: 0
   statBonuses:
-  - statType: 10
+  - statType: 5
     value: 5
-    bonusType: 1
+    bonusType: 0
