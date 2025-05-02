@@ -8,15 +8,7 @@ public class MachineReciever : Machine
     [SerializeField] GameObject[] recieveItem;
     [SerializeField] int recieveNum;
 
-    public override void Active(LaberBase rootlaber)
-    {
-        activatedEvent.RemoveListener(RecieveObject);
-        activatedEvent.AddListener(RecieveObject);
-
-        base.Active(rootlaber);
-    }
-
-    void RecieveObject()
+    public void RecieveObject()
     {
         if (recieveItem.Length <= 0) return;
         for (int i = 0; i < recieveNum; i++)

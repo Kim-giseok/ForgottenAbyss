@@ -26,7 +26,7 @@ public class ObjectSimpleMove : MonoBehaviour
                 transform.position += direction * speed * Time.deltaTime;
                 yield return null;
             }
-            transform.position = movePoint;
+            transform.position = nextP;
         }
     }
 }
