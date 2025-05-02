@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class MachineTrap : Machine
 {
+    [Header("TrapParameter")]
     [SerializeField] float atk;
 
     private void OnTriggerEnter2D(Collider2D collision)
