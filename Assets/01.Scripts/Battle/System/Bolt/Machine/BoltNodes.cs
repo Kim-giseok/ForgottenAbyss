@@ -5,7 +5,7 @@ public class LinearBolt : BoltNode
     public override void Update()
     {
         if (currTime >= 0.4f) Next();
-        bolt.rigidbody.velocity = bolt.direction * bolt.speed;
+        bolt.Rigidbody.velocity = bolt.direction * bolt.speed;
     }
 }
 
@@ -14,9 +14,9 @@ public class RainBolt : BoltNode
     public override void Start()
     {
         
-        bolt.rigidbody.drag = 20;
-        bolt.rigidbody.gravityScale = 32f;
-        bolt.rigidbody.AddForce(new Vector2(Random.Range(-8f, 8f), 4f) * 40f, ForceMode2D.Impulse);
+        bolt.Rigidbody.drag = 20;
+        bolt.Rigidbody.gravityScale = 32f;
+        bolt.Rigidbody.AddForce(new Vector2(Random.Range(-8f, 8f), 4f) * 40f, ForceMode2D.Impulse);
     }
 
     public override void Update() { if (currTime >= 0.4f) Next(); }
@@ -25,9 +25,9 @@ public class RainBolt : BoltNode
     {
         // bolt.trailRenderer.enabled = true;
         
-        bolt.rigidbody.drag = 0;
-        bolt.rigidbody.gravityScale = 0f;
-        bolt.rigidbody.AddForce(Vector2.down * 40f, ForceMode2D.Impulse);
+        bolt.Rigidbody.drag = 0;
+        bolt.Rigidbody.gravityScale = 0f;
+        bolt.Rigidbody.AddForce(Vector2.down * 40f, ForceMode2D.Impulse);
     }
 }
 
@@ -59,12 +59,12 @@ public class DecrescendoBolt : BoltNode
 {
     public override void Start()
     {
-        bolt.rigidbody.velocity = Vector2.zero;
-        bolt.rigidbody.drag = 8f;
-        bolt.rigidbody.AddForce(bolt.direction * bolt.speed, ForceMode2D.Impulse);
+        bolt.Rigidbody.velocity = Vector2.zero;
+        bolt.Rigidbody.drag = 8f;
+        bolt.Rigidbody.AddForce(bolt.direction * bolt.speed, ForceMode2D.Impulse);
     }
     public override void Update() { if (currTime >= 0.2f) Next(); }
-    public override void End() { bolt.rigidbody.drag = 0; }
+    public override void End() { bolt.Rigidbody.drag = 0; }
 }
 
 public class RecursiveBolt : BoltNode
@@ -89,12 +89,12 @@ public class BlackHoleBolt : BoltNode
     {
         bolt.SetSize(4);
         bolt.animHandler.Play("BlackHole");
-        bolt.renderer.color = Color.black;
+        bolt.Renderer.color = Color.black;
         
-        bolt.rigidbody.drag = 2;
+        bolt.Rigidbody.drag = 2;
         
         Debug.Log(bolt.direction);
-        bolt.rigidbody.AddForce(Vector2.down * 12f, ForceMode2D.Impulse);
+        bolt.Rigidbody.AddForce(Vector2.down * 12f, ForceMode2D.Impulse);
     }
 
     public override void Update()
@@ -112,7 +112,7 @@ public class BlackHoleBolt : BoltNode
     public override void End()
     {
         bolt.animHandler.Play("None");
-        bolt.rigidbody.drag = 0;
+        bolt.Rigidbody.drag = 0;
     }
 }
 
@@ -153,7 +153,7 @@ public class ForwardBolt : BoltNode
 {
     public override void Start()
     {
-        bolt.collider.enabled = false;
+        bolt.Collider.enabled = false;
     }
 
     public override void Update()
@@ -162,11 +162,11 @@ public class ForwardBolt : BoltNode
         var currPos = bolt.transform.position;
         if (Mathf.Abs(currPos.z - 0) < 1f)
         {
-            bolt.collider.enabled = true;
+            bolt.Collider.enabled = true;
         }
         else
         {
-            bolt.collider.enabled = false;
+            bolt.Collider.enabled = false;
         }
 
         // 왜인지 모르지만 잘 맞는다
@@ -174,6 +174,6 @@ public class ForwardBolt : BoltNode
         currPos.y += bolt.direction.y / 100;
         currPos.z -= 0.1f;
         
-        bolt.collider.transform.position = currPos;
+        bolt.Collider.transform.position = currPos;
     }
 }
