@@ -4,17 +4,11 @@ using UnityEngine;
 
 public class MachineReciever : Machine
 {
+    [Header("RecieveParameter")]
     [SerializeField] GameObject[] recieveItem;
     [SerializeField] int recieveNum;
 
-    public override void Active(LaberBase rootlaber)
-    {
-        base.Active(rootlaber);
-        if (!isActivated) return;
-        ActionAfterAnimation(RecieveObject);
-    }
-
-    void RecieveObject()
+    public void RecieveObject()
     {
         if (recieveItem.Length <= 0) return;
         for (int i = 0; i < recieveNum; i++)
