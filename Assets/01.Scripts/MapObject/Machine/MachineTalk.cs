@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MachineTalk : MachineLoop
+public class MachineTalk : Machine
 {
     [SerializeField] NpcSentence sentence;
 

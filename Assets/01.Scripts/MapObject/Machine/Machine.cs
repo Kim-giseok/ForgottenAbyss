@@ -8,13 +8,20 @@ public class Machine : MonoBehaviour
     [SerializeField] protected Animator machineAnim;
     [SerializeField] protected bool isActivated = false;
 
+    [Header("Loop parameter")]
+    [SerializeField] protected bool isLoop;
+    [SerializeField] protected float waitTime;
+    protected LaberBase rootLaber;
+
     public virtual void Active(LaberBase rootlaber)
     {
+        rootLaber = rootlaber;
         if (isActivated) return;
         machineAnim.SetFloat("Active", 1);
         isActivated = true;
 
         Debug.Log(name + " activated");
+        if (isLoop) ActionAfterAnimation(UnActive, waitTime);
     }
 
     public virtual void UnActive()
@@ -22,6 +29,8 @@ public class Machine : MonoBehaviour
         if (!isActivated) return;
         machineAnim.SetFloat("Active", -1);
         isActivated = false;
+
+        if (isLoop) ActionAfterAnimation(rootLaber.DisSwitchMachine);
     }
 
     protected void ActionAfterAnimation(Action action, float additionalWaitTime = 0f)

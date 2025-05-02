@@ -48,7 +48,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   machineAnim: {fileID: 2552249430622463951}
-  rootLaber: {fileID: 0}
+  isActivated: 0
+  isLoop: 1
   waitTime: 0
   sentence: {fileID: 1580853053219079757}
 --- !u!114 &1580853053219079757
@@ -64,8 +65,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sentences: []
-  TalkPoint: {fileID: 0}
-  talkBoxPrefab: {fileID: 0}
+  displayEndEvents:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!95 &2552249430622463951
 Animator:
   serializedVersion: 5

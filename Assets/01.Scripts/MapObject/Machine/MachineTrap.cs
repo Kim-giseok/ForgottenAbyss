@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MachineTrap : MachineLoop
+public class MachineTrap : Machine
 {
     [SerializeField] float atk;
 
