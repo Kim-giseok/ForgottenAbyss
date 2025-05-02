@@ -94,12 +94,12 @@ public class InventoryUIManager : MonoBehaviour
 
                 if (armor != null && newArmor != null && armor.slot == newArmor.slot)
                 {
-                    slot.SetOutline(false);
+                    slot.RefreshOutline();
                 }
             }
             else
             {
-                slot.SetOutline(false);
+                slot.RefreshOutline();
             }
         }
     }

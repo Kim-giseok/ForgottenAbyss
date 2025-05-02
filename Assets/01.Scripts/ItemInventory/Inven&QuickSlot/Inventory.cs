@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Inventory : MonoBehaviour
@@ -9,7 +10,6 @@ public class Inventory : MonoBehaviour
     public List<Item> items = new List<Item>(); // 아이템 목록
     public event Action onItemChanged; // 슬롯 개수 변경 시 호출
 
-
     void Awake()
     {
         if (Instance == null) Instance = this;
@@ -17,11 +17,25 @@ public class Inventory : MonoBehaviour
     }
 
     // 아이템 추가
-    public bool AddItem(Item item)
+    public bool AddItem(Item newItem)
     {
-        if (item == null) return false;
+        if (newItem == null) return false;
 
-        items.Add(item);
+        // 같은 아이템 찾기 (이름 기반 Equals() 적용됨)
+        var existing = items.FirstOrDefault(i => i.Equals(newItem) && i.currentAmount < i.maxStack);
+
+        if (existing != null)
+        {
+            existing.currentAmount++;
+        }
+        else
+        {
+            // 아이템 복사해서 넣기
+            Item clone = Instantiate(newItem);
+            clone.currentAmount = 1;
+            items.Add(clone);
+        }
+
         onItemChanged?.Invoke();
         return true;
     }
@@ -46,7 +60,14 @@ public class Inventory : MonoBehaviour
         {
             if (items[i] == item)
             {
-                items.RemoveAt(i);
+                if (item.currentAmount > 1)
+                {
+                    item.currentAmount--;
+                }
+                else
+                {
+                    items.RemoveAt(i);
+                }
 
                 // 퀵슬롯에도 동기화
                 QuickSlotController.Instance.NotifyItemRemoved(item);

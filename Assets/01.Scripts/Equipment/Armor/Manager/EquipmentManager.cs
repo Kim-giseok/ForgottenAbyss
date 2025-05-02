@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 
 public class EquipmentManager : MonoBehaviour
 {
-    private Dictionary<ArmorSlot, ArmorSO> equippedArmors = new();
+    private Dictionary<ArmorSlot, (ArmorSO armor, InventorySlot slot)> equippedArmors = new();
     private CharacterStatus playerStatus;
 
     public event Action<ArmorSO> OnEquipArmor;
@@ -17,7 +17,9 @@ public class EquipmentManager : MonoBehaviour
     public event Action<MemoryPieceSO> OnUnequipMemory;
 
     private MemoryPieceSO equippedMemorySO;
+    private InventorySlot equippedMemorySlot;
 
+    private bool isSetBonusApplied = false;
 
     private IEnumerator Start()
     {
@@ -73,11 +75,11 @@ public class EquipmentManager : MonoBehaviour
         }
     }
 
-    public void EquipArmor(ArmorSO armor)
+    public void EquipArmor(ArmorSO armor, InventorySlot slot = null)
     {
         if (equippedArmors.TryGetValue(armor.slot, out var equippedArmor))
         {
-            if (equippedArmor == armor)
+            if (equippedArmor.slot == slot)
             {
                 UnequipArmor(armor.slot);
                 EquipArmor(armor);
@@ -90,31 +92,43 @@ public class EquipmentManager : MonoBehaviour
             }
         }
 
-        equippedArmors[armor.slot] = armor;
+        equippedArmors[armor.slot] = (armor, slot);
         ApplyStatBonus(armor);
         OnEquipArmor?.Invoke(armor);
 
         string bonusLog = string.Join(", ", armor.statBonuses.Select(b => $"{b.statType} {b.bonusType} +{b.value}"));
         Debug.Log($"[Test] 장착 성공: {armor.name} → {armor.slot}, {bonusLog}");
+
+        RemoveSetBonus(); // 기존 보너스 제거 후
+        ApplySetBonus();
     }
 
     public void UnequipArmor(ArmorSlot slot)
     {
         if (equippedArmors.TryGetValue(slot, out var armor))
         {
-            RemoveStatBonus(armor);
+            RemoveStatBonus(armor.armor);
             equippedArmors.Remove(slot);
-            OnUnequipArmor?.Invoke(armor);
+            OnUnequipArmor?.Invoke(armor.armor);
 
-            string bonusLog = string.Join(", ", armor.statBonuses.Select(b => $"{b.statType} {b.bonusType} -{b.value}"));
-            Debug.Log($"[Test] 장착 해제: {armor.name} → {armor.slot}, {bonusLog}");
-        }  
+            string bonusLog = string.Join(", ", armor.armor.statBonuses.Select(b => $"{b.statType} {b.bonusType} -{b.value}"));
+            Debug.Log($"[Test] 장착 해제: {armor.armor.name} → {armor.slot}, {bonusLog}");
+        }
+        RemoveSetBonus();
+        ApplySetBonus();
     }
 
     public ArmorSO GetEquippedArmor(ArmorSlot slot)
     {
         equippedArmors.TryGetValue(slot, out var armor);
-        return armor;
+        return armor.armor;
+    }
+
+    public InventorySlot GetEquippedArmorSlot(ArmorSlot slot)
+    {
+        if (equippedArmors.TryGetValue(slot, out var data))
+            return data.slot;
+        return null;
     }
 
     public Dictionary<StatType, float> GetTotalArmorStats()
@@ -123,7 +137,7 @@ public class EquipmentManager : MonoBehaviour
 
         foreach (var armor in equippedArmors.Values)
         {
-            foreach (var bonus in armor.statBonuses)
+            foreach (var bonus in armor.armor.statBonuses)
             {
                 if (!total.ContainsKey(bonus.statType))
                     total[bonus.statType] = 0;
@@ -165,6 +179,47 @@ public class EquipmentManager : MonoBehaviour
         }
     }
 
+    private void ApplySetBonus()
+    {
+        // 기본적으로 모든 방어구가 장착되어 있어야 한다고 가정
+        if (equippedArmors.Count != 4)
+            return;
+
+        // 모든 방어구의 세트 이름이 동일한지 체크
+        string setName = equippedArmors.First().Value.armor.setName;
+        foreach (var armorPair in equippedArmors)
+        {
+            if (armorPair.Value.armor.setName != setName)
+                return; // 하나라도 세트가 다르면 보너스 미적용
+        }
+
+        // 모든 조건을 만족하면 세트 보너스 적용
+        if (!isSetBonusApplied)
+        {
+            isSetBonusApplied = true;
+
+            playerStatus.stats.TryGetValue(StatType.MaxHP, out float currentHealth);
+            float finalHealth = currentHealth + 30;
+
+            playerStatus.SetStat(StatType.MaxHP, finalHealth);
+            Debug.Log($"[SetBonus] {setName} 세트 보너스 적용: Health {currentHealth} → {finalHealth}");
+        }
+    }
+
+    private void RemoveSetBonus()
+    {
+        if (isSetBonusApplied)
+        {
+            isSetBonusApplied = false;
+
+            playerStatus.stats.TryGetValue(StatType.MaxHP, out float currentHealth);
+            float restoredHealth = currentHealth - 30;
+
+            playerStatus.SetStat(StatType.MaxHP, restoredHealth);
+            Debug.Log($"[SetBonus] 세트 보너스 제거: Health {currentHealth} → {restoredHealth}");
+        }
+    }
+
     private void ReApplyArmorStats()
     {
         var currentStats = GetTotalArmorStats();
@@ -172,15 +227,15 @@ public class EquipmentManager : MonoBehaviour
         foreach (var armor in equippedArmors.Values)
         {
             // 이미 적용된 스탯이면 추가하지 않음
-            foreach (var bonus in armor.statBonuses)
+            foreach (var bonus in armor.armor.statBonuses)
             {
                 if (currentStats.TryGetValue(bonus.statType, out float existingValue) && existingValue >= bonus.value)
                 {
-                    Debug.Log($"[ReApplyArmorStats] {armor.name}: {bonus.statType} 중복 적용 X");
+                    Debug.Log($"[ReApplyArmorStats] {armor.armor.name}: {bonus.statType} 중복 적용 X");
                     continue;
                 }
 
-                ApplyStatBonus(armor);
+                ApplyStatBonus(armor.armor);
             }
         }
     }
@@ -192,7 +247,7 @@ public class EquipmentManager : MonoBehaviour
             equippedArmors = equippedArmors.Select(kvp => new EquippedSlotData
             {
                 slot = kvp.Key,
-                armorId = kvp.Value.armorId
+                armorId = kvp.Value.armor.armorId
             }).ToList()
         };
 
@@ -215,7 +270,7 @@ public class EquipmentManager : MonoBehaviour
                 if (armor.slot == entry.slot)
                 {
                     // 이미 장착된 아이템인지 확인 후 중복 장착 방지
-                    if (equippedArmors.TryGetValue(entry.slot, out var equippedArmor) && equippedArmor == armor)
+                    if (equippedArmors.TryGetValue(entry.slot, out var equippedArmor) && equippedArmor.armor == armor)
                     {
                         Debug.Log($"[Load] 이미 장착된 아이템: {armor.name}, 장착 스킵");
                         continue; // 중복 장착 방지
@@ -249,18 +304,30 @@ public class EquipmentManager : MonoBehaviour
         //SaveEquippedArmors();
     }
 
-    public void EquipMemoryPiece(MemoryPieceSO memorySO)
+    public void EquipMemoryPiece(MemoryPieceSO memorySO, InventorySlot slot)
     {
-        if (equippedMemorySO == memorySO)
+
+        if (equippedMemorySO != null && equippedMemorySO.currentMemoryPieceId == memorySO.currentMemoryPieceId)
+        {
+            // 클릭한 슬롯이 이미 장착된 슬롯이라면 토글(해제)
+            if (equippedMemorySlot == slot)
+            {
+                UnequipMemoryPiece();
+                return;
+            }
+            else
+            {
+                // 다른 슬롯에서 클릭한 경우에는 기존 장착을 해제한 후 진행
+                UnequipMemoryPiece();
+            }
+        }
+        else if (equippedMemorySO != null)
         {
             UnequipMemoryPiece();
-            return;
         }
 
-        if (equippedMemorySO != null)
-            UnequipMemoryPiece();
-
         equippedMemorySO = memorySO;
+        equippedMemorySlot = slot;
         SystemManager.Instance.weaponManager.EquipMemoryPiece(memorySO);
         OnEquipMemory?.Invoke(memorySO);
     }
@@ -271,8 +338,19 @@ public class EquipmentManager : MonoBehaviour
 
         var old = equippedMemorySO;
         equippedMemorySO = null;
+        equippedMemorySlot = null;
         SystemManager.Instance.weaponManager.UnequipMemoryPiece();
         OnUnequipMemory?.Invoke(old);
+    }
+
+    public MemoryPieceSO GetEquippedMemoryPiece()
+    {
+        return equippedMemorySO;
+    }
+
+    public InventorySlot GetEquippedMemorySlot()
+    {
+        return equippedMemorySlot;
     }
 
     public bool IsArmorEquipped(ArmorSlot slot)
