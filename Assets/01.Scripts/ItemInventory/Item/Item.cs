@@ -16,8 +16,25 @@ public class Item : ScriptableObject
     public string itemDescription;
     public ItemType itemType;
 
+    [HideInInspector] public int currentAmount = 1; // 현재 수량
+    public int maxStack = 99; // 최대 스텍 수
+
     public virtual bool Use()
     {       
         return false;
+    }
+
+    public override bool Equals(object obj)
+    {
+        if (obj is Item other)
+        {
+            return this.itemName == other.itemName;
+        }
+        return false;
+    }
+
+    public override int GetHashCode()
+    {
+        return itemName.GetHashCode();
     }
 }

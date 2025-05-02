@@ -10,28 +10,21 @@ public class PotionItem : ConsumableItem
     public override bool Use()
     {
         PlayerStatus player = GameObject.FindObjectOfType<PlayerStatus>();
-
-        if (player == null)
-        {
-            Debug.LogWarning("플레이어를 찾을 수 없습니다.");
-            return false;
-        }
+        if (player == null) return false;
 
         float current = player.GetStat(targetStat);
         float max = player.GetStat(GetMaxStatType(targetStat));
 
-        if (current >= max)
-        {
-            Debug.Log($"[{itemName}] {targetStat}이 이미 최대입니다.");
-            return false;
-        }
+        if (current >= max) return false;
 
         float newValue = Mathf.Min(current + healAmount, max);
         player.SetStat(targetStat, newValue);
 
-        Debug.Log($"[{itemName}] {targetStat}을(를) {healAmount}만큼 회복! → {newValue}/{max}");
+        currentAmount--;
 
-        return true;
+        Debug.Log($"[{itemName}] {targetStat} +{healAmount} (남은 수량: {currentAmount})");
+
+        return currentAmount <= 0; // 0 되면 제거
     }
 
     private StatType GetMaxStatType(StatType stat)
