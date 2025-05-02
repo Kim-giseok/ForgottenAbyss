@@ -25,5 +25,4 @@ public abstract class SlotBase : MonoBehaviour, IDropHandler
             itemUI.gameObject.SetActive(false);
         }
     }
-
 }

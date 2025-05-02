@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -7,8 +8,10 @@ public class InventorySlot : SlotBase, IPointerClickHandler
 {
     public SlotMode mode = SlotMode.Editable; // 기본값은 일반모드
     private ItemUI itemUI;
-    public GameObject equippedOutline; // 장착된 아이템용 외곽선
 
+    [SerializeField] private TextMeshProUGUI amountText; // 아이템 수량 표시
+
+    public GameObject equippedOutline; // 장착된 아이템용 외곽선
     private Outline outline;
 
     private void Awake()
@@ -72,6 +75,14 @@ public class InventorySlot : SlotBase, IPointerClickHandler
         {
             equippedOutline?.SetActive(false);
         }
+
+        UpdateAmount(item.currentAmount);
+    }
+
+    private void UpdateAmount(int amount)
+    {
+        if (amountText != null)
+            amountText.text = amount > 1 ? amount.ToString() : "";
     }
 
     public void SetOutline(bool active, Color color = default)
@@ -85,6 +96,12 @@ public class InventorySlot : SlotBase, IPointerClickHandler
         {
             outline.effectColor = color == default(Color) ? Color.red : color;
         }
+    }
+
+    public override void ClearSlot()
+    {
+        base.ClearSlot(); // 기본 슬롯 초기화
+        UpdateAmount(0); // 수량 텍스트 초기화
     }
 
     public void OnPointerClick(PointerEventData eventData)
