@@ -1,3 +1,5 @@
+using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,6 +9,9 @@ public class EquippedItemUI : MonoBehaviour
     public Image armorIcon;
     public Image glovesIcon;
     public Image shoesIcon;
+
+    public TextMeshProUGUI nameText;
+    public TextMeshProUGUI descriptionText;
 
     private EquipmentManager equipManager => SystemManager.Instance.equipmentManager;
 
@@ -48,5 +53,17 @@ public class EquippedItemUI : MonoBehaviour
             img.sprite = null;
             img.enabled = false;
         }
+    }
+
+    public void ShowItemDetails(ArmorSO armor)
+    {
+        nameText.text = armor.itemName;
+        descriptionText.text = armor.itemDescription;
+    }
+
+    public void HideItemDetails()
+    {
+        nameText.text = "";
+        descriptionText.text = "";
     }
 }
