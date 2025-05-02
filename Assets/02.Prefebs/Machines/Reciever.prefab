@@ -48,6 +48,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   machineAnim: {fileID: 874264554450282891}
+  isActivated: 0
+  activatedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  unactivatedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  isLoop: 0
+  waitTime: 0
   recieveItem: []
   recieveNum: 0
 --- !u!61 &7668138020508233137

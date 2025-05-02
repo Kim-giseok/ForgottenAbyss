@@ -4,14 +4,15 @@ using UnityEngine;
 
 public class MachineTalk : Machine
 {
+    [Header("TalkParameter")]
     [SerializeField] NpcSentence sentence;
 
     public override void Active(LaberBase rootlaber)
     {
-        base.Active(rootlaber);
-        if (!isActivated) return;
+        activatedEvent.RemoveListener(DisplaySentence);
+        activatedEvent.AddListener(DisplaySentence);
 
-        DisplaySentence();
+        base.Active(rootlaber);
     }
 
     void DisplaySentence()
