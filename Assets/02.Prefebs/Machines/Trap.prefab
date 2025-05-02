@@ -126,8 +126,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   machineAnim: {fileID: 874264554450282891}
-  rootLaber: {fileID: 0}
-  waitTime: 0
+  isActivated: 0
+  isLoop: 1
+  waitTime: 5
   atk: 10
 --- !u!61 &2977953936483250521
 BoxCollider2D:
