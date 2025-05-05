@@ -1,4 +1,5 @@
 using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -8,6 +9,7 @@ public class QuickSlot : SlotBase
     [SerializeField] private GameObject outlineObject; // 선택된 슬롯 테두리
     [SerializeField] private Image cooldownOverlay; // UI 위에 덮이는 반투명 이미지
     [SerializeField] private float cooldownTime = 3f;
+    [SerializeField] private TextMeshProUGUI amountText; // 아이템 수량 표시
 
     public int SlotIndex { get; private set; }
 
@@ -75,11 +77,19 @@ public class QuickSlot : SlotBase
             itemUI.SetItem(item);
             itemUI.SetDraggable(true);
         }
+
+        UpdateAmount(item.currentAmount);
     }
 
     public override void SetItem(Item item)
     {
         SetLinkedItem(item);
+    }
+
+    private void UpdateAmount(int amount)
+    {
+        if (amountText != null)
+            amountText.text = amount > 1 ? amount.ToString() : "";
     }
 
     public void UseItem()
@@ -91,29 +101,16 @@ public class QuickSlot : SlotBase
             {
                 if (Inventory.Instance != null)
                 {
-                    bool removed = Inventory.Instance.RemoveItemByReference(linkedItem);
-
-                    //if (removed)
-                    //{
-                    //    Debug.Log($"[QuickSlot] 인벤토리에서 '{linkedItem?.name ?? "Unknown"}' 제거됨");
-                    //}
-                    //else
-                    //{
-                    //    Debug.LogWarning($"[QuickSlot] 인벤토리에 '{linkedItem.name}' 없음");
-                    //}
-
+                    Inventory.Instance.RemoveItemByReference(linkedItem);
                     Inventory.Instance.RefreshInventoryUI();
                     QuickSlotController.Instance.NotifyItemRemoved(linkedItem);
                 }
-                else
-                {
-                    Debug.LogError("[QuickSlot] Inventory.Instance가 null입니다. 인벤토리 매니저가 없음");
-                }
 
-                waitingToClear = true;// 퀵슬롯 자체도 클리어
+                waitingToClear = true; // 퀵슬롯 자체도 클리어
             }
-            remainingCooldown = cooldownTime;
 
+            UpdateAmount(linkedItem.currentAmount); // 스택 감소 후 UI업데이트
+            remainingCooldown = cooldownTime;
             StartCoroutine(BlinkIcon());
         }
 
@@ -146,6 +143,7 @@ public class QuickSlot : SlotBase
         base.ClearSlot();
         linkedItem = null;
         waitingToClear = false;
+        UpdateAmount(0);
     }
 
     public void OnPointerClick(PointerEventData eventData)
