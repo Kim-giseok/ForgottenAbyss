@@ -9,6 +9,9 @@ public class BTMachine
     // 일반 BT는 컨트롤러를 주입 받는다. 프로젝 타일 역시 주입을 받아서 노드를 그리게 한다.
     private EnemyBaseController controller;
     public BTContext context = new();
+
+    public bool isIgnoreRefresh = false;
+    public bool isRefreshRequested = false;
     
     public Action OnLooped;
     
@@ -61,10 +64,6 @@ public class BTMachine
     
     // 현재 노드가 없는 경우 문제 발생 
     // controller에서 한번 거칠 필요 있을까 의문 필요
-    public void OnDetected(EnemyDetectHandler.DetectType detectType, bool value)
-    {
-        currNode?.OnPhysicsDetected(detectType, value);
-    }
     
     public void OnAgentDetected(EnemyAgent.Status status)
     {

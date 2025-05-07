@@ -11,6 +11,7 @@ public class CancelAttached : Node
     }
 }
 
+// 공격가 대쉬가 섞인 형태
 // 캐릭터 비활성화로 인한 리지드 바디 직접 참조 문제 발생
 public class DashAttack : Node
 {
@@ -57,6 +58,7 @@ public class DashAttack : Node
     }
 }
 
+// 노드 합치기
 public class Explosion : Node
 {
     public override void Start()
@@ -91,6 +93,7 @@ public class Explosion : Node
     }
 }
 
+// 공격해야 다음 노드로 넘어가는 형태로 분리하기
 public class ComboDashAttack : Node
 {
     private List<string> combo = new() { "Combo1", "Combo2", "Combo3" };

@@ -31,12 +31,12 @@ public class SettingsMenu : MonoBehaviour
     public void RestartStage()
     {
         CloseSettingsMenuUI();
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        SceneLoader.Instance.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     public void ReturnStartScene()
     {
         CloseSettingsMenuUI();
-        SceneManager.LoadScene(0);
+        SceneLoader.Instance.LoadScene("Test_Title");
     }
 }

@@ -46,7 +46,6 @@ public abstract class Node
     public virtual void GetStatus(Status newStatus, Node caller) {}
     
     // notice : EnemyDetectHandler 에서 앞으로 갈 수 있는 지 등의 정보를 전달
-    public virtual void OnPhysicsDetected(EnemyDetectHandler.DetectType detectType, bool able) {}
 
     public virtual void OnAgentDetected(EnemyAgent.Status status) { }
     
