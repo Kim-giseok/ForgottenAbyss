@@ -7,7 +7,7 @@ public class GoldTextUpdater : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI goldText; // 골드텍스트 연동
 
-    private void Start()
+    private void OnEnable()
     {
         if (GoldManager.Instance != null)
         {
