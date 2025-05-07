@@ -12,12 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8f55a5d968504541a37bc347e9f5857, type: 3}
   m_Name: Iron_Boots
   m_EditorClassIdentifier: 
-  itemName: Iron Boots
+  itemName: "\uCCA0 \uC2E0\uBC1C"
   itemIcon: {fileID: -1353309538, guid: 14b217cd54e39f04883c5c75a1fa39ca, type: 3}
-  itemDescription: Speed + 5%
+  itemDescription: "\uC774\uB3D9 \uC18D\uB3C4 + 5%"
   itemType: 0
+  currentAmount: 1
+  maxStack: 99
   armorId: 403
   slot: 3
+  setName: Iron
   statBonuses:
   - statType: 10
     value: 5
