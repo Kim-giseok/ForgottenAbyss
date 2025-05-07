@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class MapSpawnManager : Singleton<MapSpawnManager>
 {
+    [SerializeField] FLAGKEY stageClearedFlag;
     [SerializeField] private Map[] maps;
     [SerializeField] CinemachineConfiner2D confiner2D;
     int mapIdx = 0;
@@ -38,6 +39,7 @@ public class MapSpawnManager : Singleton<MapSpawnManager>
     {
         if (mapIdx >= maps.Length)
         {
+            ActivateFlag.ActiveFlag(stageClearedFlag);
             SceneLoader.Instance.LoadScene("Village"); //���� ���� ������ ����
             return;
         }

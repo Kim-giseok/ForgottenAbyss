@@ -53,4 +53,9 @@ public class Machine : MonoBehaviour
 
         action.Invoke();
     }
+
+    public void OpenGotoTitlePopUp(string popupDesc)
+    {
+        UIManager.Instance.confirmationUI.PopUpUI(popupDesc, () => SceneLoader.Instance.LoadScene("Test_Title"));
+    }
 }
