@@ -73,6 +73,7 @@ public class SoundManager : SingletonLoadRemain<SoundManager>
 
     public void PlaySFX(AudioClip sfx)
     {
+        Debug.Log(volumes[VOLTYPE.SFX]);
         sfxSource.PlayOneShot(sfx, volumes[VOLTYPE.MASTER] * volumes[VOLTYPE.SFX]);
     }
 

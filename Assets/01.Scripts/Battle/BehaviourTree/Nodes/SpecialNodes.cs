@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class GuardNode : Node
@@ -33,6 +34,11 @@ public class HitNode : Node
         // controller.Flip(direction.x > 0);
         
         if(eController.statusHandler.isIgnoreHitAction) eController.Renderer.color = Color.red;
+        
+        // 순서 바뀌면 문제 생길 수 있음
+        var currSoundClip = controller.soundHandler.GetClip(EnemySoundHandler.SoundType.Hit);
+        if(currSoundClip) SoundManager.Instance.PlaySFX(currSoundClip);
+
         eController.animnHandler.Play("Hit");
         eController.statusHandler.isHit = false;
 
@@ -57,6 +63,8 @@ public class DieNode : Node
         controller.Collider.enabled = false; // 죽은 이후로는 피격 불가능하도록 처리
         controller.Rigidbody.velocity = Vector3.zero; // fix: 넉백으로 날라가는 현상 발생
         controller.Rigidbody.isKinematic = true;
+
+        // SoundManager.Instance.PlaySFX(controller.soundHandler.GetClip(EnemySoundHandler.SoundType.Hit));
         
         eController.animnHandler.Play("Die");
     }
