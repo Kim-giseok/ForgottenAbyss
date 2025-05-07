@@ -14,7 +14,8 @@ public class LoadingScene : MonoBehaviour
         if (UIManager.Instance != null)
         {
             UIManager.Instance.HideIngameUI();
-            //UIManager.Instance.HideDeathUI();
+            UIManager.Instance.HideDeathUI();
+            UIManager.Instance.HideGuideUI();
         }
   
         SceneLoader.Instance.fade.StartFadeIn();
@@ -66,6 +67,7 @@ public class LoadingScene : MonoBehaviour
             if (targetScene != "Test_Title" && targetScene != "IntroScene")
             {
                 UIManager.Instance.ShowIngameUI();
+                UIManager.Instance.ShowGuideUI();
             }
         }
     }
