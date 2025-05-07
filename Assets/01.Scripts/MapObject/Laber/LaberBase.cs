@@ -6,26 +6,27 @@ using UnityEngine;
 
 public class LaberBase : MonoBehaviour
 {
-    [SerializeField] Machine[] targetMachines;
     [SerializeField] Animator laberAnim;
+    [SerializeField] Machine[] targetMachines;
     protected bool isSwitched = false;
 
-    [Header("Once active parameter")]
-    [SerializeField] bool activeOnce;
-    [SerializeField] FLAGKEY flagName = FLAGKEY.DEFAULTFLAG;
+    [Header("")]
+    [SerializeField] FLAGKEY activatableConditionFlag = FLAGKEY.IGNOREFLAG;
+    [SerializeField] FLAGKEY activeOnceFlag = FLAGKEY.IGNOREFLAG;
 
-    bool isAleadyActivated => activeOnce && ActivateFlag.CheckFlag(flagName);
+    bool isActivatable => (activatableConditionFlag == FLAGKEY.IGNOREFLAG || ActivateFlag.CheckFlag(activatableConditionFlag)) && !isSwitched;
+    bool isAleadyActivated => activeOnceFlag != FLAGKEY.IGNOREFLAG && ActivateFlag.CheckFlag(activeOnceFlag);
 
     public virtual void SwitchMachine()
     {
-        if (isSwitched || isAleadyActivated) return;
+        if (!isActivatable || isAleadyActivated) return;
 
         laberAnim?.SetFloat("Active", 1);
         foreach (var targetMachine in targetMachines)
             targetMachine.Active(this);
 
         isSwitched = true;
-        ActivateFlag.ActiveFlag(flagName);
+        ActivateFlag.ActiveFlag(activeOnceFlag);
     }
 
     public virtual void DisSwitchMachine()

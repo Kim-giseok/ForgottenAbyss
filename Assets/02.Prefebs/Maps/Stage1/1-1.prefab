@@ -497,6 +497,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   machineAnim: {fileID: 7683297444988172762}
   isActivated: 0
+  activatedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  unactivatedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  isLoop: 0
+  waitTime: 0
 --- !u!95 &7683297444988172762
 Animator:
   serializedVersion: 5
@@ -2318,11 +2326,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 607881c967f830647b23c3f6afc77d9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  laberAnim: {fileID: 6110450174999154851}
   targetMachines:
   - {fileID: 2140804774002791276}
-  laberAnim: {fileID: 6110450174999154851}
-  activeOnce: 0
-  flagName: 0
+  activatableConditionFlag: 0
+  activeOnceFlag: 0
   enemies: []
 --- !u!95 &6110450174999154851
 Animator:
@@ -2440,6 +2448,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   machineAnim: {fileID: 8172840106125611689}
   isActivated: 0
+  activatedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  unactivatedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  isLoop: 0
+  waitTime: 0
 --- !u!95 &8172840106125611689
 Animator:
   serializedVersion: 5
@@ -4231,6 +4247,10 @@ PrefabInstance:
     - target: {fileID: 2458435931544872376, guid: aebba97b0c71715479612608c480d66d, type: 3}
       propertyPath: activeOnce
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2458435931544872376, guid: aebba97b0c71715479612608c480d66d, type: 3}
+      propertyPath: activeOnceFlag
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2458435931544872376, guid: aebba97b0c71715479612608c480d66d, type: 3}
       propertyPath: targetMachines.Array.size

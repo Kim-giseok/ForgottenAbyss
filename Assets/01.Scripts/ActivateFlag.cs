@@ -6,7 +6,7 @@ using UnityEngine;
 
 public enum FLAGKEY
 {
-    DEFAULTFLAG,
+    IGNOREFLAG,
     INTRO_DIALOGUE,
     BASE_BATTLE_TUTORIAL,
     WEAPON_SWAP_TUTORIAL,
@@ -37,15 +37,9 @@ public static class ActivateFlag
 #endif
     }
 
-    public static void ActiveFlag(FLAGKEY key)
-    {
-        flags[key] = true;
-    }
+    public static void ActiveFlag(FLAGKEY key) => flags[key] = true;
 
-    public static bool CheckFlag(FLAGKEY key)
-    {
-        return flags.ContainsKey(key) && flags[key];
-    }
+    public static bool CheckFlag(FLAGKEY key) => flags.ContainsKey(key) && flags[key];
 
     static void SaveFlags()
     {
