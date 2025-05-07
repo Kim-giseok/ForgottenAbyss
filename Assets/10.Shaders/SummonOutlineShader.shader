@@ -1,4 +1,4 @@
-Shader "Custom/PlayerOutlineShader"
+Shader "Custom/SummonOutlineShader"
 {
     Properties
     {
@@ -65,10 +65,11 @@ Shader "Custom/PlayerOutlineShader"
                 float edgeFactor = (1 - texUp.a) + (1 - texDown.a) + (1 - texLeft.a) + (1 - texRight.a);
                 fixed4 outline = _OutlineColor * saturate(edgeFactor);
 
-                fixed4 finalColor = texColor;  // 원본 색상 유지
-                finalColor.rgb = texColor.rgb + outline.rgb * outline.a;
+                fixed4 finalColor = texColor; 
+                finalColor.rgb = outline.rgb;
+                finalColor.a = texColor.a;
 
-                return finalColor; // 원본 텍스처 + 경계를 활용한 아웃라인
+                return finalColor;
             }
             ENDCG
         }
