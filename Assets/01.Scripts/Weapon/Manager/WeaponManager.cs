@@ -88,6 +88,8 @@ public class WeaponManager : MonoBehaviour
             EquipWeapon(defaultSwordSO);
 
             swapper.SetWeaponIcons(defaultSwordSO.weaponIcon, defaultBowSO.weaponIcon);
+
+            ActivateFlag.ActiveFlag(FLAGKEY.FIRST_WEAPON_EQUIP);
         }
         else
         {
