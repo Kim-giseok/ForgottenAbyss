@@ -2,13 +2,13 @@ using UnityEngine;
 
 public class AttackNode : Node
 {
-    private readonly EnemySkillCommand _currSkillCommand;
+    private readonly EnemySkillCommand command;
     
-    public AttackNode(EnemySkillCommand currSkillCommand) => this._currSkillCommand = currSkillCommand;
+    public AttackNode(EnemySkillCommand command) => this.command = command;
 
     public override void Start()
     {
-        controller.animnHandler.Play(_currSkillCommand.animName);
+        controller.animnHandler.Play(command.animName);
         // if(currSkill.isLookTarget) controller.LookTarget();
     }
     
@@ -16,7 +16,7 @@ public class AttackNode : Node
     {
         if (isFire)
         {
-            _currSkillCommand.action.Invoke();
+            command.action.Invoke();
         }
         else
         {
@@ -26,12 +26,12 @@ public class AttackNode : Node
     
     public override void OnAnimated(AnimationStatus status, AnimatorStateInfo animInfo)
     {
-        if (!animInfo.IsName("Attack")) return;
+        if (!animInfo.IsName(command.animName)) return;
         if (status == AnimationStatus.Start)
         {
-            if (_currSkillCommand.attackType == EnemySkillCommand.AttackType.Dash)
+            if (command.attackType == EnemySkillCommand.AttackType.Dash)
             {
-                _currSkillCommand.action.Invoke();
+                command.action.Invoke();
             }
         }
 

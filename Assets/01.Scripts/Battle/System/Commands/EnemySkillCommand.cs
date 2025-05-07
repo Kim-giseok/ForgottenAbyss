@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 
+// SO로 관리되도록 한다.
 public class EnemySkillCommand
 {
     public string animName;
@@ -11,7 +12,8 @@ public class EnemySkillCommand
     
     public float cost; // 마나비용
     public float castingTime;
-
+    public float damage; // 혹은 계수로 관리
+    
     public float afterCastingTime; // 스킬 사용 이후 지연 시간
 
     public float effect;

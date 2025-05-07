@@ -13,9 +13,8 @@ GameObject:
   - component: {fileID: 4224962415243767637}
   - component: {fileID: 6343810600225957374}
   - component: {fileID: 7961252460757587955}
-  - component: {fileID: 234904951919220855}
   m_Layer: 0
-  m_Name: NighBoneSkillItem
+  m_Name: Memory_Archer
   m_TagString: FieldItem
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -145,7 +144,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee13b3f4dcdd42e4f8664dd7cb448e57, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  item: {fileID: 11400000, guid: 3c1bf52f2f85aa647ac42d629836f142, type: 2}
+  item: {fileID: 11400000, guid: 03538603f2b6d419b8d84ef10265b3eb, type: 2}
   itemImg: {fileID: 1700187939318023768}
 --- !u!50 &7961252460757587955
 Rigidbody2D:
@@ -174,15 +173,3 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &234904951919220855
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2849593479698701841}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c8d59cf4e4e14140885b53fb5da7482b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

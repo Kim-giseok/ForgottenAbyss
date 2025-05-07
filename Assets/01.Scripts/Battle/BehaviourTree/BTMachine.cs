@@ -9,6 +9,9 @@ public class BTMachine
     // 일반 BT는 컨트롤러를 주입 받는다. 프로젝 타일 역시 주입을 받아서 노드를 그리게 한다.
     private EnemyBaseController controller;
     public BTContext context = new();
+
+    public bool isIgnoreRefresh = false;
+    public bool isRefreshRequested = false;
     
     public Action OnLooped;
     

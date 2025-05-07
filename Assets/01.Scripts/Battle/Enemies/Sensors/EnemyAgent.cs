@@ -55,8 +55,10 @@ public class EnemyAgent : MonoBehaviour
     {
         if (this.status == status) return;
         this.status = status;
-        
+     
+        // error : 공격 중일 때는 바로 notify되면 안된다.
         controller.OnAgentDetected(status);
+        // controller.machine.Notify();
     }
     
 
