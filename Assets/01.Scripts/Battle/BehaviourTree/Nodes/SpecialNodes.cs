@@ -36,7 +36,7 @@ public class HitNode : Node
         if(eController.statusHandler.isIgnoreHitAction) eController.Renderer.color = Color.red;
         
         // 순서 바뀌면 문제 생길 수 있음
-        var currSoundClip = controller.soundHandler.GetClip(EnemySoundHandler.SoundType.Hit);
+        var currSoundClip = controller.soundHandler.GetClip(EnemySoundType.Hit);
         if(currSoundClip) SoundManager.Instance.PlaySFX(currSoundClip);
 
         eController.animnHandler.Play("Hit");

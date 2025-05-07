@@ -17,7 +17,7 @@ public class MeleeAttack : Node
     {
         if (isFire)
         {
-            SoundManager.Instance.PlaySFX(controller.soundHandler.soundList[(int)EnemySoundHandler.SoundType.Attack].clip);
+            SoundManager.Instance.PlaySFX(controller.soundHandler.GetClip(EnemySoundType.Attack));
             // 데미지나 사이즈등은 추상화로 접급
             BoltsPool.Instance.CreateMelee(controller.transform, controller.combatHandler.power).Fire();
         }
