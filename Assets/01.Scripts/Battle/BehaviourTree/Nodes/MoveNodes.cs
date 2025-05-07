@@ -61,14 +61,6 @@ public class PatrolMove : Node
         controller.Rigidbody.velocity = new Vector2(context.Get<Vector2>("direction").x, controller.Rigidbody.velocity.y);
     }
     
-    public override void OnPhysicsDetected(EnemyDetectHandler.DetectType detectType, bool able)
-    {
-        if (detectType == EnemyDetectHandler.DetectType.Walkable && able)
-        {
-            SetStatus(Status.Success);
-        }
-    }
-    
     public override void OnAgentDetected(EnemyAgent.Status status)
     {
         if(status != EnemyAgent.Status.None) { SetStatus(Status.Fail); }
@@ -110,13 +102,13 @@ public class TracingNode : Node
         if(status == EnemyAgent.Status.Tracked) { SetStatus(Status.Success); }
     }
 
-    public override void OnPhysicsDetected(EnemyDetectHandler.DetectType detectType, bool able)
-    {
-        if (detectType == EnemyDetectHandler.DetectType.Blocked && able)
-        {
-            controller.Rigidbody.AddForce(Vector2.up * 6, ForceMode2D.Impulse); // 높이가 달라지면?
-        }
-    }
+    // public override void OnPhysicsDetected(EnemyDetectHandler.DetectType detectType, bool able)
+    // {
+    //     if (detectType == EnemyDetectHandler.DetectType.Blocked && able)
+    //     {
+    //         controller.Rigidbody.AddForce(Vector2.up * 6, ForceMode2D.Impulse); // 높이가 달라지면?
+    //     }
+    // }
 }
 
 

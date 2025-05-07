@@ -1,4 +1,4 @@
-using Unity.VisualScripting;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,11 +16,15 @@ public class UIManager : MonoBehaviour
     public PassiveUI passiveUI;
     public ItemTooltip tooltip;
     public CanvasGroup ingameUI;
+    public CanvasGroup DeathUI;
 
     [Header("WorldUI")]
     public RectTransform worldSpaceCanvas;
     public GameObject npcText;
     public SentenceUI talkBox;
+
+    public float fadeDuration = 1f;
+    public float holdTime = 2f;
 
     private void Awake()
     {
@@ -82,5 +86,34 @@ public class UIManager : MonoBehaviour
         ingameUI.alpha = 1f;
         ingameUI.interactable = true;
         ingameUI.blocksRaycasts = true;
+    }
+
+    public void HideDeathUI()
+    {
+        DeathUI.alpha = 0f;
+        DeathUI.interactable = false;
+        DeathUI.blocksRaycasts = false;
+    }
+
+    public void ShowDeathUI()
+    {
+        StartCoroutine(DeathUIAnimation());
+    }
+
+    public IEnumerator DeathUIAnimation()
+    {
+        DeathUI.interactable = true;
+        DeathUI.blocksRaycasts = true;
+
+        float elapsed = 0f;
+        while (elapsed < fadeDuration)
+        {
+            DeathUI.alpha = Mathf.Lerp(0f, 1f, elapsed / fadeDuration);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+        DeathUI.alpha = 1f;
+
+        yield return new WaitForSeconds(holdTime);
     }
 }

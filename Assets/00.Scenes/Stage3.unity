@@ -516,6 +516,8 @@ MonoBehaviour:
   player: {fileID: 0}
   mainCamera: {fileID: 0}
   pStatus: {fileID: 0}
+  cameraShake: {fileID: 0}
+  cameraZoom: {fileID: 0}
 --- !u!4 &1049774203
 Transform:
   m_ObjectHideFlags: 0
@@ -1107,6 +1109,10 @@ PrefabInstance:
     - target: {fileID: 5771899917361786963, guid: 73ebf0a50cec85d46a7a6c23506d898d, type: 3}
       propertyPath: maps.Array.size
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5771899917361786963, guid: 73ebf0a50cec85d46a7a6c23506d898d, type: 3}
+      propertyPath: stageClearedFlag
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 5771899917361786963, guid: 73ebf0a50cec85d46a7a6c23506d898d, type: 3}
       propertyPath: bImages.Array.size

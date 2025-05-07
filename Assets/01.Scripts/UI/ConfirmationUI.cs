@@ -19,7 +19,7 @@ public class ConfirmationUI : BaseUI
         exitBtn.onClick.AddListener(() => gameObject.SetActive(false));
     }
 
-    public void PopUpUI(string text = "Enter?", Action onClickOk = null)
+    public void PopUpUI(string text = "입장하시겠습니까?", Action onClickOk = null)
     {
         gameObject.SetActive(true);
         confirmTxt.text = text;

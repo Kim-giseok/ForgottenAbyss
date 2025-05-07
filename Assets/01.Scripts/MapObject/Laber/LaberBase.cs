@@ -1,55 +1,32 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using UnityEditor;
 using UnityEngine;
-
-public enum FLAGKEY
-{
-    DEFAULTFLAG,
-    INTRO_DIALOGUE,
-    BASE_BATTLE_TUTORIAL,
-    WEAPON_SWAP_TUTORIAL,
-    STAGE_1_CLEAR,
-    STAGE_2_CLEAR,
-    STAGE_3_CLEAR
-}
-
-public static class ActivateFlag
-{
-    static Dictionary<FLAGKEY, bool> flags = new();
-
-    public static void ActiveFlag(FLAGKEY key)
-    {
-        flags[key] = true;
-    }
-
-    public static bool CheckFlag(FLAGKEY key)
-    {
-        return flags.ContainsKey(key) && flags[key];
-    }
-}
 
 public class LaberBase : MonoBehaviour
 {
-    [SerializeField] Machine[] targetMachines;
     [SerializeField] Animator laberAnim;
+    [SerializeField] Machine[] targetMachines;
     protected bool isSwitched = false;
 
-    [Header("Once active parameter")]
-    [SerializeField] bool activeOnce;
-    [SerializeField] FLAGKEY flagName = FLAGKEY.DEFAULTFLAG;
+    [Header("")]
+    [SerializeField] FLAGKEY activatableConditionFlag = FLAGKEY.IGNOREFLAG;
+    [SerializeField] FLAGKEY activeOnceFlag = FLAGKEY.IGNOREFLAG;
 
-    bool isAleadyActivated => activeOnce && ActivateFlag.CheckFlag(flagName);
+    bool isActivatable => (activatableConditionFlag == FLAGKEY.IGNOREFLAG || ActivateFlag.CheckFlag(activatableConditionFlag)) && !isSwitched;
+    bool isAleadyActivated => activeOnceFlag != FLAGKEY.IGNOREFLAG && ActivateFlag.CheckFlag(activeOnceFlag);
 
     public virtual void SwitchMachine()
     {
-        if (isSwitched || isAleadyActivated) return;
+        if (!isActivatable || isAleadyActivated) return;
 
         laberAnim?.SetFloat("Active", 1);
         foreach (var targetMachine in targetMachines)
             targetMachine.Active(this);
 
         isSwitched = true;
-        ActivateFlag.ActiveFlag(flagName);
+        ActivateFlag.ActiveFlag(activeOnceFlag);
     }
 
     public virtual void DisSwitchMachine()
