@@ -1,9 +1,12 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 
+[Serializable]
 public enum FLAGKEY
 {
     IGNOREFLAG,
@@ -16,6 +19,39 @@ public enum FLAGKEY
     FIRST_WEAPON_EQUIP
 }
 
+[Serializable]
+public class SerializableKeyValuePair<TKey, TValue>
+{
+    public TKey key;
+    public TValue value;
+}
+
+[Serializable]
+public class DictionaryList<TKey, TValue>
+{
+    public List<SerializableKeyValuePair<TKey, TValue>> list;
+
+    public DictionaryList<TKey, TValue> FromDic(Dictionary<TKey, TValue> dic)
+    {
+        list = new();
+        foreach (var obj in dic)
+            list.Add(new SerializableKeyValuePair<TKey, TValue> { key = obj.Key, value = obj.Value });
+
+        return this;
+    }
+
+    public Dictionary<TKey, TValue> ToDic()
+    {
+        Dictionary<TKey, TValue> dic = new();
+
+        if (list != null)
+            foreach (var obj in list)
+                dic[obj.key] = obj.value;
+
+        return dic;
+    }
+}
+
 public static class ActivateFlag
 {
     static Dictionary<FLAGKEY, bool> flags = new();
@@ -23,8 +59,9 @@ public static class ActivateFlag
 
     static ActivateFlag()
     {
-        var flagSaveData = flags.ToList();
-        flagSaveData = DataSave<List<KeyValuePair<FLAGKEY, bool>>>.LoadOrBase(flagSaveData, flagSabePath);
+        var flagSaveData = new DictionaryList<FLAGKEY, bool>().FromDic(flags);
+        flagSaveData = DataSave<DictionaryList<FLAGKEY,bool>>.LoadOrBase(flagSaveData, flagSabePath);
+        flags = flagSaveData.ToDic();
 
 #if UNITY_EDITOR
         EditorApplication.playModeStateChanged -= SaveFlags;
@@ -43,13 +80,15 @@ public static class ActivateFlag
 
     static void SaveFlags()
     {
-        var flagSaveData = flags.ToList();
-        DataSave<List<KeyValuePair<FLAGKEY, bool>>>.SaveData(flagSaveData, flagSabePath);
+        var flagSaveData = new DictionaryList<FLAGKEY,bool>().FromDic(flags);
+        DataSave<DictionaryList<FLAGKEY, bool>>.SaveData(flagSaveData, flagSabePath);
     }
 
+#if UNITY_EDITOR
     static void SaveFlags(PlayModeStateChange mode)
     {
         if (mode == PlayModeStateChange.ExitingPlayMode)
             SaveFlags();
     }
+#endif
 }
