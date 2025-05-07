@@ -20,6 +20,8 @@ public class MemorySkillItem: Item
         else
         {
             BoltsPool.Instance.CreateSummon(GameManager.Instance.player.transform, skillName, isRide).Fire();
+
+            return true;
         }
 
         return false;
