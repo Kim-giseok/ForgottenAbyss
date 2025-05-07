@@ -14,7 +14,7 @@ public class LoadingScene : MonoBehaviour
         if (UIManager.Instance != null)
         {
             UIManager.Instance.HideIngameUI();
-            UIManager.Instance.HideDeathUI();
+            //UIManager.Instance.HideDeathUI();
         }
   
         SceneLoader.Instance.fade.StartFadeIn();
