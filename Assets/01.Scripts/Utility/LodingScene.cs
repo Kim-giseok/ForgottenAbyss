@@ -59,7 +59,12 @@ public class LoadingScene : MonoBehaviour
         SceneLoader.Instance.fade.StartFadeIn();
 
         if (UIManager.Instance != null)
-            UIManager.Instance.ShowIngameUI();
+        {
+            if (targetScene != "Test_Title")
+            {
+                UIManager.Instance.ShowIngameUI();
+            }
+        }
     }
 
     private void CleanUpDuplicateComponents()
