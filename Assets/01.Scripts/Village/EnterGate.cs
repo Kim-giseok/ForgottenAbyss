@@ -28,7 +28,7 @@ public class EnterGate : MonoBehaviour, IInteractable
     {
         if(!ActivateFlag.CheckFlag(gateOpenFlag))
         {
-            UIManager.Instance.confirmationUI.PopUpUI("You Can't go now");
+            UIManager.Instance.confirmationUI.PopUpUI("입장할 수 없습니다");
             return;
         }
 
