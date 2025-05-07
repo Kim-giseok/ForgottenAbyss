@@ -13,10 +13,15 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
                 _instance = FindObjectOfType(typeof(T)) as T;
 
             if (_instance == null)
-                _instance = Instantiate(Resources.Load<T>("Prefabs/Managers/"+ typeof(T)));
+            {
+                var instancePrefab = Resources.Load<T>("Prefabs/Managers/" + typeof(T));
 
-            if (_instance == null)
-                _instance = new GameObject($"{typeof(T)}").AddComponent<T>();
+                if (instancePrefab != null)
+                    _instance = Instantiate(instancePrefab);
+                else
+                    _instance = new GameObject($"{typeof(T)}").AddComponent<T>();
+
+            }
 
             return _instance;
         }
