@@ -1,8 +1,9 @@
 
 // 시퀀스를 싱글 노드를 기준으로 해보기
 
+using System;
 using System.Collections.Generic;
-using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class RootNode : Node
 {
@@ -133,26 +134,75 @@ public class RandomNode : Node
     }
 }
 
-// 추후 데코 노드 구현 필요 - 시퀀스 안에서 또 병렬 노드라면 문제 발생
-// public class ParallelNode : Node
-// {
-//     public ParallelNode(params Node[] nodes)
-//     {
-//         foreach(Node child in nodes)
-//         {
-//             child.SetParent(this);
-//             children.Add(child);
-//         }
-//     }
-//     
-//     public override void Start()
-//     {
-//         machine.SetCurrentNode(children[0]);
-//     }
-//
-//     // notice: 복수 실행 자체는 BTMachine에서 처리하며 조건 감지만 이곳에서 처리
-//     public override void GetStatus(Status newStatus, Node caller)
-//     {
-//         SetStatus(newStatus);
-//     }
-// }
+// 문제 발생할 수 있음
+// 액션 노드를 동시에 실행하는 용도로 사용 - 이벤트 인식이 불가능
+public class ParallelNode : Node
+{
+    public ParallelNode(params Node[] nodes)
+    {
+        foreach (Node child in nodes)
+        {
+            child.SetParent(this);
+            children.Add(child);
+        }
+    }
+
+    public override void Start()
+    {
+        foreach (var child in children)
+        {
+            child.SetController(controller);
+            child.Start();
+        }
+    }
+
+    public override void Update()
+    {
+        foreach (var child in children)
+        {
+            child.SetController(controller);
+            child.Update();
+        }
+    }
+
+    public override void End()
+    {
+        foreach (var child in children)
+        {
+            child.SetController(controller);
+            child.End();
+        }
+    }
+}
+
+
+// 컨디션 노드 추가
+public class ConditionNode : Node
+{
+    private readonly Func<EnemyBaseController, bool> callback;
+
+    public ConditionNode(Func<EnemyBaseController, bool> callback, Node child)
+    {
+        this.callback = callback;
+        
+        child.SetParent(this);
+        children.Add(child);
+    }
+
+    public override void Start()
+    {
+        bool result = callback(controller);
+        if (!result)
+        {
+            SetStatus(Status.Fail);
+            return;
+        }
+        
+        machine.SetCurrentNode(children[0]);
+    }
+
+    public override void GetStatus(Status newStatus, Node caller)
+    {
+        SetStatus(newStatus);
+    }
+}

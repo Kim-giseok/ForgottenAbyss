@@ -11,7 +11,7 @@ public class EnemyController : EnemyBaseController, IDamagable
     public float attack;
 
 
-    [FormerlySerializedAs("name")] public Enemies.Enemy Name;
+    [FormerlySerializedAs("name")] public EnemiesBT.Enemy Name;
     
     public EnemyResourceHandler resourceHandler { get; private set; }
     public EnemyStatusHandler statusHandler { get; private set; }
@@ -35,7 +35,7 @@ public class EnemyController : EnemyBaseController, IDamagable
         // 애니메이터 자동 등록
         // animationHandler.SetController(EnemiesAnimator.animators["NightBone"]);
         // 에러처리 필요
-        machine.Define(Enemies.Get(Name)); // 각 개체별 생성되는 방식
+        machine.Define(EnemiesBT.Get(Name)); // 각 개체별 생성되는 방식
         machine.Start();
         
         try { MapSpawnManager.Instance.SpawnedMap.monsterManager.AddList(this); }

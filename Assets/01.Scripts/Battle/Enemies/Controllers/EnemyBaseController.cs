@@ -11,6 +11,7 @@ public class EnemyBaseController: MonoBehaviour
     public EnemyAnimHandler animnHandler { get; protected set; }
     public EnemyCombatHandler combatHandler { get; protected set; }
     public EnemyDetectHandler detectHandler { get; protected set; }
+    public EnemySoundHandler soundHandler { get; protected set; }
     
 
     protected virtual void Awake()
@@ -25,6 +26,7 @@ public class EnemyBaseController: MonoBehaviour
 
         combatHandler = new EnemyCombatHandler();
         detectHandler = GetComponent<EnemyDetectHandler>();
+        soundHandler = GetComponent<EnemySoundHandler>();
         
         // summon에선 없도록 처리
         agent = GetComponent<EnemyAgent>(); // 플레이어의 경우 주면 몬스터를 찾도록(혹은 새 클래스로 분리하기)
@@ -41,10 +43,6 @@ public class EnemyBaseController: MonoBehaviour
         machine.OnAnimatedEvent(value == 1);
     }
 
-    public void OnDetected(EnemyDetectHandler.DetectType detectType, bool value)
-    {
-        machine.OnDetected(detectType, value);
-    }
 
     public void OnAgentDetected(EnemyAgent.Status status)
     {
