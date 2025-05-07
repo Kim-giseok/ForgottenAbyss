@@ -63,7 +63,7 @@ public class LoadingScene : MonoBehaviour
 
         if (UIManager.Instance != null)
         {
-            if (targetScene != "Test_Title")
+            if (targetScene != "Test_Title" && targetScene != "IntroScene")
             {
                 UIManager.Instance.ShowIngameUI();
             }
