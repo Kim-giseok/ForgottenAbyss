@@ -198,11 +198,24 @@ public class EquipmentManager : MonoBehaviour
         {
             isSetBonusApplied = true;
 
-            playerStatus.stats.TryGetValue(StatType.MaxHP, out float currentHealth);
-            float finalHealth = currentHealth + 30;
+            // 세트별 보너스 옵션 설정
+            Dictionary<string, (StatType stat, float multiplier)> setBonusOptions = new Dictionary<string, (StatType, float)>
+            {
+                { "Iron", (StatType.MaxHP, 0.1f) },
+                { "Bronze", (StatType.MaxMP, 0.2f) },
+                { "Gold", (StatType.ATK, 0.2f) },
+                { "Ruby", (StatType.ATK, 0.3f) },
+                { "Diamond", (StatType.ATK, 0.5f) },
+            };
 
-            playerStatus.SetStat(StatType.MaxHP, finalHealth);
-            Debug.Log($"[SetBonus] {setName} 세트 보너스 적용: Health {currentHealth} → {finalHealth}");
+            if (setBonusOptions.TryGetValue(setName, out var bonusOption))
+            {
+                playerStatus.stats.TryGetValue(bonusOption.stat, out float currentStat);
+                float finalStat = currentStat * (1 + bonusOption.multiplier);
+
+                playerStatus.SetStat(bonusOption.stat, finalStat);
+                Debug.Log($"[SetBonus] {setName} 세트 보너스 적용: {bonusOption.stat} {currentStat} → {finalStat}");
+            }
         }
     }
 
