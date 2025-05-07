@@ -7387,15 +7387,32 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1580853053219079757, guid: 2cbf6a9ab79343745b0a8e36d979f394, type: 3}
       propertyPath: sentences.Array.size
-      value: 2
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 1580853053219079757, guid: 2cbf6a9ab79343745b0a8e36d979f394, type: 3}
       propertyPath: sentences.Array.data[0]
-      value: "\uC5EC\uAE34 \uC5B4\uB514\uC9C0?"
+      value: "\uC5EC\uAE34... \uC5B4\uB514\uC9C0?"
       objectReference: {fileID: 0}
     - target: {fileID: 1580853053219079757, guid: 2cbf6a9ab79343745b0a8e36d979f394, type: 3}
       propertyPath: sentences.Array.data[1]
-      value: "\uB098\uB294 \uB204\uAD6C\uC57C?"
+      value: "\uC544\uBB34\uAC83\uB3C4 \uAE30\uC5B5\uB098\uC9C0 \uC54A\uC544.."
+      objectReference: {fileID: 0}
+    - target: {fileID: 1580853053219079757, guid: 2cbf6a9ab79343745b0a8e36d979f394, type: 3}
+      propertyPath: sentences.Array.data[2]
+      value: "\uC774\uB984\uB3C4, \uC774 \uACF3\uC5D0 \uC628 \uC774\uC720\uB3C4.\uC544\uBB34\uAC83\uB3C4"
+      objectReference: {fileID: 0}
+    - target: {fileID: 1580853053219079757, guid: 2cbf6a9ab79343745b0a8e36d979f394, type: 3}
+      propertyPath: sentences.Array.data[3]
+      value: "\uB098\uB294... \uB204\uAD6C\uC9C0?"
+      objectReference: {fileID: 0}
+    - target: {fileID: 1580853053219079757, guid: 2cbf6a9ab79343745b0a8e36d979f394, type: 3}
+      propertyPath: sentences.Array.data[4]
+      value: ....
+      objectReference: {fileID: 0}
+    - target: {fileID: 1580853053219079757, guid: 2cbf6a9ab79343745b0a8e36d979f394, type: 3}
+      propertyPath: sentences.Array.data[5]
+      value: "\uC774\uACF3\uC740 \uC0B4\uC544\uC788\uB294 \uACF3\uB3C4, \uC8FD\uC740
+        \uACF3\uB3C4 \uC544\uB2CC \uAC83 \uAC19\uC544"
       objectReference: {fileID: 0}
     - target: {fileID: 1580853053219079757, guid: 2cbf6a9ab79343745b0a8e36d979f394, type: 3}
       propertyPath: displayEndEvents.m_PersistentCalls.m_Calls.Array.size
@@ -8240,19 +8257,39 @@ PrefabInstance:
       objectReference: {fileID: 4263429615369525729}
     - target: {fileID: 1580853053219079757, guid: 2cbf6a9ab79343745b0a8e36d979f394, type: 3}
       propertyPath: sentences.Array.size
-      value: 3
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 1580853053219079757, guid: 2cbf6a9ab79343745b0a8e36d979f394, type: 3}
       propertyPath: sentences.Array.data[0]
-      value: Hi
+      value: "\uB610 \uD55C \uBA85\uC774 \uB208\uC744 \uB5B4\uAD70. \uB108\uB3C4...
+        \uADF8\uB4E4 \uC911 \uD558\uB098\uC778\uAC00 \uBCF4\uAD70"
       objectReference: {fileID: 0}
     - target: {fileID: 1580853053219079757, guid: 2cbf6a9ab79343745b0a8e36d979f394, type: 3}
       propertyPath: sentences.Array.data[1]
-      value: I'm NPC
+      value: "\uC5EC\uAE34 '\uACBD\uACC4\uC758 \uD2C8', \uC774\uC2B9\uB3C4 \uC800\uC2B9\uB3C4
+        \uC544\uB2CC \uACF3. \uC78A\uD600\uC9C4 \uB098\uB77D\uC758 \uBB38\uD131\uC774\uC9C0"
       objectReference: {fileID: 0}
     - target: {fileID: 1580853053219079757, guid: 2cbf6a9ab79343745b0a8e36d979f394, type: 3}
       propertyPath: sentences.Array.data[2]
-      value: Find your memory
+      value: "\uAE30\uC5B5\uC774 \uC5C6\uACA0\uC9C0. \uAD1C\uCC2E\uC544. \uC774\uACF3\uC5D0
+        \uC624\uB294 \uC790\uB4E4\uC740 \uBAA8\uB450 \uADF8\uB7AC\uC73C\uB2C8\uAE4C"
+      objectReference: {fileID: 0}
+    - target: {fileID: 1580853053219079757, guid: 2cbf6a9ab79343745b0a8e36d979f394, type: 3}
+      propertyPath: sentences.Array.data[3]
+      value: "\uB3CC\uC544\uAC00\uACE0 \uC2F6\uB2E4\uBA74, \uB124\uAC8C \uB0A8\uC740
+        \uB2E8 \uD558\uB098\uC758 \uAE38\uC744 \uB530\uB77C\uC57C \uD574. \uC6B0\uB450\uBA38\uB9AC\uB4E4\u2026
+        \uADF8\uB4E4\uC758 \uD798\uC744 \uD761\uC218\uD574. \uADF8\uB9AC\uACE0 \uAE30\uC5B5\uC744
+        \uB418\uCC3E\uC544"
+      objectReference: {fileID: 0}
+    - target: {fileID: 1580853053219079757, guid: 2cbf6a9ab79343745b0a8e36d979f394, type: 3}
+      propertyPath: sentences.Array.data[4]
+      value: "\uB124 \uC548\uC5D0\uB294 \u2018\uADF8\uB9BC\uC790\u2019\uC758 \uD754\uC801\uC774
+        \uC788\uC5B4.\uB108\uB294 \uADF8\uAC83\uC744 \uB2E4\uB8F0 \uC218 \uC788\uC744\uAC70\uC57C"
+      objectReference: {fileID: 0}
+    - target: {fileID: 1580853053219079757, guid: 2cbf6a9ab79343745b0a8e36d979f394, type: 3}
+      propertyPath: sentences.Array.data[5]
+      value: "\uAE30\uC5B5\uC744 \uB418\uCC3E\uB294 \uAC74 \uACE7 \uB108\uC758 \uC815\uCCB4\uB97C
+        \uB9C8\uC8FC\uD558\uB294 \uC77C\uC774\uC57C. \uC900\uBE44\uB294 \uB418\uC5C8\uB098?"
       objectReference: {fileID: 0}
     - target: {fileID: 2113587801728021610, guid: 2cbf6a9ab79343745b0a8e36d979f394, type: 3}
       propertyPath: m_Name
