@@ -5,6 +5,14 @@ public class FieldItem : MonoBehaviour
     public Item item; // �ʵ忡 ������ �ִ� ������
     public SpriteRenderer itemImg;
 
+    private SpriteRenderer _renderer;
+
+    private void Awake()
+    {
+        _renderer = GetComponentInChildren<SpriteRenderer>();
+        // _renderer.sprite = itemImg.sprite;
+    }
+
     // ������ ����
     public void SetItem(Item newItem)
     {

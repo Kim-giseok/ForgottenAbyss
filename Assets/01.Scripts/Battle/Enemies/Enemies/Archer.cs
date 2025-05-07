@@ -1,5 +1,6 @@
 using UnityEngine;
 
+
 public class RangeMultiAttackNode : Node
 {
     public override void Start()

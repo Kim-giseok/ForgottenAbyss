@@ -1,6 +1,12 @@
 using System.Collections;
 using UnityEngine;
 
+public class EnemyAgis
+{
+    // public Skills skills
+}
+
+// 두개로 분리하기
 public class AgisSpreadShot : Node
 {
     private readonly float duration = 2f;
@@ -118,10 +124,11 @@ public class BlackHoleNode : Node
     }
 }
 
-public class MoveNode : Node
+// 이 스킬이 추상화되도록 하기
+public class AgisMoveNode : Node
 {
     private readonly float velocityX;
-    public MoveNode(float velocityX) => this.velocityX = velocityX;
+    public AgisMoveNode(float velocityX) => this.velocityX = velocityX;
 
     public override void Start()
     {
@@ -132,6 +139,7 @@ public class MoveNode : Node
     {
         float currX = controller.transform.position.x;
         
+        // 조건을 외부에서 한번 빼도록 관리
         if(velocityX == 3 && currX > 8.0f) { SetStatus(Status.Success); return; }
         if(velocityX == -3 && currX < -8.0f) { SetStatus(Status.Success); return; }
         
