@@ -125,7 +125,7 @@ public class Player : MonoBehaviour, IDamagable
     {
         yield return new WaitForSeconds(1.5f);
 
-        //UIManager.Instance.ShowDeathUI();
+        UIManager.Instance.ShowDeathUI();
 
         yield return new WaitForSeconds(3f);
 

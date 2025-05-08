@@ -59,7 +59,7 @@ public class BTMachine
 
     public void OnAnimatedEvent(bool isFire)
     {
-        currNode.OnAnimatedEvent(isFire);
+        currNode?.OnAnimatedEvent(isFire);
     }
     
     // 현재 노드가 없는 경우 문제 발생 

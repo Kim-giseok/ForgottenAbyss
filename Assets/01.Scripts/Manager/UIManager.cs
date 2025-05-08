@@ -17,6 +17,7 @@ public class UIManager : MonoBehaviour
     public ItemTooltip tooltip;
     public CanvasGroup ingameUI;
     public CanvasGroup DeathUI;
+    public GameObject GuideUI;
 
     [Header("WorldUI")]
     public RectTransform worldSpaceCanvas;
@@ -86,6 +87,16 @@ public class UIManager : MonoBehaviour
         ingameUI.alpha = 1f;
         ingameUI.interactable = true;
         ingameUI.blocksRaycasts = true;
+    }
+
+    public void HideGuideUI()
+    {
+        GuideUI.SetActive(false);
+    }
+
+    public void ShowGuideUI()
+    {
+        GuideUI.SetActive(true);
     }
 
     public void HideDeathUI()
