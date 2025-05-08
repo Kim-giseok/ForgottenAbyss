@@ -96,6 +96,7 @@ public class QuickSlot : SlotBase
     {
         if (linkedItem != null && remainingCooldown <= 0)
         {
+            int prevAmount = linkedItem.currentAmount; // 수량 캐싱
             bool isUsed = linkedItem.Use();
             if (isUsed)
             {
@@ -109,7 +110,9 @@ public class QuickSlot : SlotBase
                 waitingToClear = true; // 퀵슬롯 자체도 클리어
             }
 
-            UpdateAmount(linkedItem.currentAmount); // 스택 감소 후 UI업데이트
+            int amountToShow = linkedItem != null ? linkedItem.currentAmount : prevAmount - 1;
+            UpdateAmount(amountToShow);
+
             remainingCooldown = cooldownTime;
             StartCoroutine(BlinkIcon());
         }
