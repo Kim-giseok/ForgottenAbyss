@@ -25,7 +25,7 @@ public class NarrationIntroUI: MonoBehaviour
 
     public GameObject lightEffect;
     
-    void LoadNextScene() { SceneLoader.Instance.LoadScene("Village"); }
+    public void LoadNextScene() { SceneLoader.Instance.LoadScene("Village"); }
 
     private void Awake()
     {
