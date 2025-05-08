@@ -198,24 +198,21 @@ public class EquipmentManager : MonoBehaviour
         {
             isSetBonusApplied = true;
 
-            // 세트별 보너스 옵션 설정
-            Dictionary<string, (StatType stat, float multiplier)> setBonusOptions = new Dictionary<string, (StatType, float)>
+            if (ArmorSetBonus.SetBonuses.TryGetValue(setName, out ArmorSetBonus bonusData))
             {
-                { "Iron", (StatType.MaxHP, 0.1f) },
-                { "Bronze", (StatType.MaxMP, 0.2f) },
-                { "Gold", (StatType.ATK, 0.2f) },
-                { "Ruby", (StatType.ATK, 0.3f) },
-                { "Diamond", (StatType.ATK, 0.5f) },
-            };
+                foreach (var bonus in bonusData.Bonuses)
+                {
+                    playerStatus.stats.TryGetValue(bonus.stat, out float currentStat);
+                    float finalStat = currentStat * (1 + bonus.multiplier);
 
-            if (setBonusOptions.TryGetValue(setName, out var bonusOption))
-            {
-                playerStatus.stats.TryGetValue(bonusOption.stat, out float currentStat);
-                float finalStat = currentStat * (1 + bonusOption.multiplier);
+                    playerStatus.SetStat(bonus.stat, finalStat);
 
-                playerStatus.SetStat(bonusOption.stat, finalStat);
-                Debug.Log($"[SetBonus] {setName} 세트 보너스 적용: {bonusOption.stat} {currentStat} → {finalStat}");
+                    // UI 텍스트 적용
+                    UIManager.Instance.statUI.equippedItemUI.SetBonusText
+                        ($"{bonusData.SetName} 세트", $"{bonusData.Description}");
+                }
             }
+            Debug.Log($"{setName} 세트 보너스 적용");
         }
     }
 
@@ -225,11 +222,25 @@ public class EquipmentManager : MonoBehaviour
         {
             isSetBonusApplied = false;
 
-            playerStatus.stats.TryGetValue(StatType.MaxHP, out float currentHealth);
-            float restoredHealth = currentHealth - 30;
+            // 방어구의 세트 이름 체크
+            string setName = equippedArmors.First().Value.armor.setName;
 
-            playerStatus.SetStat(StatType.MaxHP, restoredHealth);
-            Debug.Log($"[SetBonus] 세트 보너스 제거: Health {currentHealth} → {restoredHealth}");
+            // 해당 세트 보너스 제거
+            if (ArmorSetBonus.SetBonuses.TryGetValue(setName, out ArmorSetBonus bonusData))
+            {
+                foreach (var bonus in bonusData.Bonuses)
+                {
+                    playerStatus.stats.TryGetValue(bonus.stat, out float currentStat);
+                    float restoredStat = currentStat / (1 + bonus.multiplier);
+
+                    playerStatus.SetStat(bonus.stat, restoredStat);
+
+                    Debug.Log($"{setName} 세트 보너스 제거");
+                }
+            }
+
+            // UI 텍스트 초기화
+            UIManager.Instance.statUI.equippedItemUI.ResetBonusText();
         }
     }
 

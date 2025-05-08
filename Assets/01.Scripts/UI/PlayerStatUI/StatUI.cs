@@ -17,6 +17,7 @@ public class StatUI : MonoBehaviour
     public TextMeshProUGUI cdwText;
 
     public GameObject statusUI;
+    public EquippedItemUI equippedItemUI;
 
     PlayerStatus playerStatus => GameManager.Instance.pStatus;
     //PlayerStatus playerStatus = PlayerStatus.Instance;
