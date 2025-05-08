@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public enum EnemySoundType { Hit, Attack }
+public enum EnemySoundType { Hit, Attack, Casting }
 
 [CreateAssetMenu(menuName = "SO/EnemySoundSO")]
 public class EnemySoundSO : ScriptableObject

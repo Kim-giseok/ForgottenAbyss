@@ -15,6 +15,7 @@ public class EnemiesBT
             Enemy.Test,
             new SelectorNode(new IdleNode(1f))
         },
+        // notice: 타격이 발생하면 순차 순회를 통해서 다른 스킬 사용되지 않는 현상 발생
         {
           Enemy.Agis,
           new SelectorNode(
