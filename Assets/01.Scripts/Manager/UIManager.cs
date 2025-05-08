@@ -59,7 +59,7 @@ public class UIManager : MonoBehaviour
 
     public void OffGuidUI()
     {
-        if (npcText.activeSelf)
+        if (npcText != null && npcText.activeSelf)
             npcText.SetActive(false);
     }
 
