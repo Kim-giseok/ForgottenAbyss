@@ -112,6 +112,12 @@ public class Bolt: MonoBehaviour
         return this;
     }
     
+    public Bolt SetTrail(bool enabled)
+    {
+        trailRenderer.enabled = enabled;
+        return this;
+    }
+
     public Bolt SetTrailCurve(BoltsPool.TrailType trailType)
     {
         // Find 방식 비용 문제 발생
@@ -177,6 +183,7 @@ public class Bolt: MonoBehaviour
         animHandler.Play("None");
         Rigidbody.velocity = Vector2.zero;
 
+        trailRenderer.enabled = true;
         trailRenderer.time = 0.2f;
         
         isStarted = false;
