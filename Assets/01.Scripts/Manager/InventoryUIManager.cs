@@ -51,12 +51,17 @@ public class InventoryUIManager : MonoBehaviour
         {
             UpdateUI();
         }
+        else
+        {
+            UIManager.Instance.HideTooltipNextFrame();
+        }
     }
-
 
     public void Close()
     {
         inventoryPanel.SetActive(false);
+        UIManager.Instance.HideTooltipNextFrame(); // ´ÝÀ» ¶§ ÅøÆÁ Á¦°Å
+
     }
 
     public void UpdateUI()
