@@ -16,6 +16,12 @@ public class QuickSlot : SlotBase
     private float remainingCooldown = 0f;
     private bool waitingToClear = false; // 쿨타임 끝나면 삭제
     private Item linkedItem; // 인벤토리에서 참조할 아이템
+    private ItemUI itemUI;
+
+    private void Awake()
+    {
+        itemUI = GetComponentInChildren<ItemUI>(true);
+    }
 
     private void Update()
     {
@@ -53,6 +59,7 @@ public class QuickSlot : SlotBase
             // 드랍할 때 인벤토리에 있는 아이템만 등록
             if (Inventory.Instance.items.Contains(dragged.item))
             {
+                ClearSlot();
                 SetLinkedItem(dragged.item);
             }
         }
@@ -87,6 +94,7 @@ public class QuickSlot : SlotBase
         var itemUI = GetComponentInChildren<ItemUI>(true);
         if (itemUI != null)
         {
+            itemUI.gameObject.SetActive(true); // itemUI다시 켜기
             itemUI.SetItem(item);
             itemUI.SetDraggable(true);
         }
@@ -161,6 +169,12 @@ public class QuickSlot : SlotBase
         linkedItem = null;
         waitingToClear = false;
         UpdateAmount(0);
+
+        if (itemUI != null)
+        {
+            itemUI.RemoveItem();
+            itemUI.gameObject.SetActive(false);
+        }
     }
 
     public void OnPointerClick(PointerEventData eventData)
