@@ -13,6 +13,9 @@ public class EquippedItemUI : MonoBehaviour
     public TextMeshProUGUI nameText;
     public TextMeshProUGUI descriptionText;
 
+    private string setNameText;
+    private string setDescriptionText;
+
     private EquipmentManager equipManager => SystemManager.Instance.equipmentManager;
 
     private void OnEnable()
@@ -39,6 +42,9 @@ public class EquippedItemUI : MonoBehaviour
         SetIcon(armorIcon, equipManager.GetEquippedArmor(ArmorSlot.Chest));
         SetIcon(glovesIcon, equipManager.GetEquippedArmor(ArmorSlot.Gloves));
         SetIcon(shoesIcon, equipManager.GetEquippedArmor(ArmorSlot.Boots));
+
+        nameText.text = setNameText;
+        descriptionText.text = setDescriptionText;
     }
 
     private void SetIcon(Image img, ArmorSO armor)
@@ -63,7 +69,19 @@ public class EquippedItemUI : MonoBehaviour
 
     public void HideItemDetails()
     {
-        nameText.text = "";
-        descriptionText.text = "";
+        nameText.text = setNameText;
+        descriptionText.text = setDescriptionText;
+    }
+
+    public void SetBonusText(string name, string description)
+    {
+        setNameText = name;
+        setDescriptionText = description;
+    }
+
+    public void ResetBonusText()
+    {
+        setNameText = "";
+        setDescriptionText = "";
     }
 }
