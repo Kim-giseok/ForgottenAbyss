@@ -258,7 +258,7 @@ public class DataManager : MonoBehaviour
 
     private void InitArmorSO()
     {
-        var allArmorSOs = Resources.LoadAll<ArmorSO>("Armor");
+        var allArmorSOs = Resources.LoadAll<ArmorSO>("Item/Armor");
         armorSOList = new List<ArmorSO>(allArmorSOs);
 
         foreach (var so in allArmorSOs)
