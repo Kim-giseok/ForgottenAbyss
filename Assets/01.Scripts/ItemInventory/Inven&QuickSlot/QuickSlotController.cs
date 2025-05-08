@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using UnityEditor.Rendering;
 using UnityEngine;
@@ -85,6 +83,17 @@ public class QuickSlotController : MonoBehaviour
             if (slot.HasItem(removedItem))
             {
                 slot.MarkToClearAfterCooldown();
+            }
+        }
+    }
+
+    public void RefreshSlotAmount(Item item)
+    {
+        foreach (var slot in quickSlots)
+        {
+            if (slot.HasItem(item))
+            {
+                slot.UpdateAmount(item.currentAmount);
             }
         }
     }

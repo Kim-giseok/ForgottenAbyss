@@ -106,7 +106,7 @@ public class QuickSlot : SlotBase
         SetLinkedItem(item);
     }
 
-    private void UpdateAmount(int amount)
+    public void UpdateAmount(int amount)
     {
         if (amountText != null)
             amountText.text = amount > 1 ? amount.ToString() : "";
