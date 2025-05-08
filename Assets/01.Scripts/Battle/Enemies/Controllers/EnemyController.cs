@@ -82,7 +82,11 @@ public class EnemyController : EnemyBaseController, IDamagable
                 Instantiate(rewardHandler.money, transform.position + (Vector3.up * 0.5f), Quaternion.identity);
             }
 
-            Instantiate(rewardHandler.GetRewardItem(), transform.position + (Vector3.up * 0.5f), Quaternion.identity);
+            var currItem = rewardHandler.GetRewardItem();
+            if (currItem)
+            {
+                Instantiate(currItem, transform.position + (Vector3.up * 0.5f), Quaternion.identity);
+            }
         }
     }
 }

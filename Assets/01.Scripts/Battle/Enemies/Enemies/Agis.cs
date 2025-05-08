@@ -19,6 +19,7 @@ public class AgisSpreadShot : Node
         // 따라오지 않는 현상 수정 필요
         if (controller is SummonController sContorller)
         {
+            controller.Collider.isTrigger = true;
             controller.Rigidbody.AddForce(sContorller.castingDirection, ForceMode2D.Impulse);
             // controller.transform.SetParent(sContorller.eController.transform);
         }
@@ -48,6 +49,7 @@ public class AgisSpreadShot : Node
 
     public override void End()
     {
+        controller.Collider.isTrigger = false;
         controller.Rigidbody.drag = 0f;
     }
 }
