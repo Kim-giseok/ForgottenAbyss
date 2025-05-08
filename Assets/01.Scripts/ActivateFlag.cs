@@ -16,7 +16,8 @@ public enum FLAGKEY
     STAGE_1_CLEAR,
     STAGE_2_CLEAR,
     STAGE_3_CLEAR,
-    FIRST_WEAPON_EQUIP
+    FIRST_WEAPON_EQUIP,
+    NPCTRIGGER
 }
 
 [Serializable]
