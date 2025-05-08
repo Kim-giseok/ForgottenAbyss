@@ -54,7 +54,7 @@ public class DataManager : MonoBehaviour
         LoadArmorData();
         InitArmorSO();
 
-        GetMemorySkillItem();
+        // GetMemorySkillItem();
 
         IsInitialized = true;
     }
@@ -193,7 +193,7 @@ public class DataManager : MonoBehaviour
             {
                 Addressables.LoadAssetAsync<MemorySkillItem>(location).Completed += (handle) =>
                 {
-                    memorySkillItemList.Add((int)handle.Result.skillName, handle.Result);
+                    // memorySkillItemList.Add((int)handle.Result.skillName, handle.Result);
                 };
             }
         };
