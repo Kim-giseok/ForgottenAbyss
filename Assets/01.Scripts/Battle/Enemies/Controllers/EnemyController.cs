@@ -11,7 +11,9 @@ public class EnemyController : EnemyBaseController, IDamagable
     public float attack;
     
     public int experience;
+    public int gold;
 
+    public bool isIgnoreHitAnim;
 
     [FormerlySerializedAs("name")] public EnemiesBT.Enemy Name;
     
@@ -75,7 +77,7 @@ public class EnemyController : EnemyBaseController, IDamagable
             SoundManager.Instance.Playsfx("DropItem");
             
             Instantiate(rewardHandler.GetRewardItem(), transform.position + (Vector3.up * 0.5f), Quaternion.identity);
-            // 아이템이 없을 수도
+            // 외부에서 관리하도록 처리
             Instantiate(rewardHandler.money, transform.position + (Vector3.up * 0.5f), Quaternion.identity);
             
         }

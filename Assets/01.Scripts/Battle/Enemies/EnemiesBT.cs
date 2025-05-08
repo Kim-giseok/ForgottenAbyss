@@ -20,7 +20,8 @@ public class EnemiesBT
           Enemy.Agis,
           new SelectorNode(
               new SequenceNode(new HitNode(), new SetZeroPosNode(), new DieNode()),
-              new SequenceNode(new BlackHoleNode(), new AgisTriangleNode(), new AgisMoveNode(3), new AgisMoveNode(-3))
+              // new SequenceNode(new BlackHoleNode(), new AgisTriangleNode(), new AgisMoveNode(3), new AgisMoveNode(-3))
+              new SequenceNode(new AgisMoveNode())
               )
         },
         {

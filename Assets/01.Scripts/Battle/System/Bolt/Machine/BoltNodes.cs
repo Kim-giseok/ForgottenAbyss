@@ -93,7 +93,6 @@ public class BlackHoleBolt : BoltNode
         
         bolt.Rigidbody.drag = 2;
         
-        Debug.Log(bolt.direction);
         bolt.Rigidbody.AddForce(Vector2.down * 12f, ForceMode2D.Impulse);
     }
 
