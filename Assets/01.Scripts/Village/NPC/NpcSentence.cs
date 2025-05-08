@@ -21,7 +21,7 @@ public class NpcSentence : MonoBehaviour
         {
             Debug.Log(sentnece);
             UIManager.Instance.OnTalk(this, sentnece);
-            yield return new WaitForSecondsRealtime(sentences.Length * 0.5f);
+            yield return new WaitForSecondsRealtime(sentnece.Length * 0.1f);
         }
         UIManager.Instance.OffTalk();
         displayEndEvents.Invoke();
