@@ -9,6 +9,8 @@ public class EnemyController : EnemyBaseController, IDamagable
     [Header("Resource")] 
     public float health;
     public float attack;
+    
+    public float experience;
 
 
     [FormerlySerializedAs("name")] public EnemiesBT.Enemy Name;
@@ -63,10 +65,16 @@ public class EnemyController : EnemyBaseController, IDamagable
         try { MapSpawnManager.Instance.SpawnedMap.monsterManager.RemoveEnemy(this); }
         catch { Destroy(gameObject); }
 
+        // 경험치 추가
+        GameManager.Instance.player.playerstatus.GainExperience(experience);
+        
         // 피봇 변경으로 인한 위치 조정
         if (rewardHandler)
         {
+            SoundManager.Instance.Playsfx("DropItem");
+            
             Instantiate(rewardHandler.GetRewardItem(), transform.position + (Vector3.up * 0.5f), Quaternion.identity);
+            // 아이템이 없을 수도
             Instantiate(rewardHandler.money, transform.position + (Vector3.up * 0.5f), Quaternion.identity);
             
         }
