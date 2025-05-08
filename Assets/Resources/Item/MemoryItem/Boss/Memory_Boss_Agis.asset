@@ -10,18 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7d1860f3a3844ed992f6e8294440f01e, type: 3}
-  m_Name: Memory_Boss_Skill02
+  m_Name: Memory_Boss_Agis
   m_EditorClassIdentifier: 
-  itemName: "Mud\uC758 \uAE30\uC5B5"
-  itemIcon: {fileID: 21300000, guid: 8d9f4ed40d5f4c64782533b5831c060c, type: 3}
+  itemName: "Agis\uC758 \uAE30\uC5B5"
+  itemIcon: {fileID: 21300000, guid: 81f72894abdf24a4ea7004053273de8b, type: 3}
   itemDescription: "\uAE30\uC5B5 \uC2AC\uB86F\uC5D0 \uC7A5\uCC29 \uAC00\uB2A5"
   itemType: 3
   currentAmount: 1
   maxStack: 99
-  skillName: 0
-  memoryPieceId: 301
-  coolTime: 1
-  MpCost: 1
+  skillName: 2
+  memoryPieceId: 300
+  coolTime: 30
+  MpCost: 50
   isRide: 1
-  isRepeat: 0
-  repeatCount: 1
+  isRepeat: 1
+  repeatCount: 9

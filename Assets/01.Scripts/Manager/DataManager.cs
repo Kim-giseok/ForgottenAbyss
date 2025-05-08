@@ -198,7 +198,7 @@ public class DataManager : MonoBehaviour
 
     private void InitMemoryPieceSO()
     {
-        var allMemoryVisualSOs = Resources.LoadAll<MemoryPieceSO>("Weapon");
+        var allMemoryVisualSOs = Resources.LoadAll<MemoryPieceSO>("MemoryPiece");
         memoryVisualSOList = new List<MemoryPieceSO>(allMemoryVisualSOs);
 
         foreach (var so in allMemoryVisualSOs)
@@ -211,7 +211,9 @@ public class DataManager : MonoBehaviour
             MemoryPieceData matchedData = memoryPieceDataList.MemoryPieces.Find(m => m.Id == so.currentMemoryPieceId);
             if (matchedData != null)
             {
-                var item = Resources.Load<MemorySkillItem>($"Item/{matchedData.ItemName}");
+                string folderPath = matchedData.ItemName.Contains("Boss") ? "MemoryItem/Boss" : "MemoryItem/Enemy";
+
+                var item = Resources.Load<MemorySkillItem>($"Item/{folderPath}/{matchedData.ItemName}");
                 if (item != null)
                 {
                     so.skillItem = item;
