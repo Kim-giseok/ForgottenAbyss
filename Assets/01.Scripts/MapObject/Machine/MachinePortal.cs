@@ -4,9 +4,15 @@ using UnityEngine;
 
 public class MachinePortal : Machine, IInteractable
 {
+    [SerializeField] NpcSentence sentence;
+
     public void ActiveInteraction()
     {
-        if (!isActivated) return;
+        if (!isActivated)
+        {
+            sentence?.TalkNpc();
+            return;
+        }
         MapSpawnManager.Instance.SpawnNextMap();
     }
 

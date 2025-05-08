@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8697486465934222655}
   - component: {fileID: 7668138020508233137}
   - component: {fileID: 7216624940239668031}
+  - component: {fileID: 2410514649009606419}
   m_Layer: 6
   m_Name: Portal
   m_TagString: Untagged
@@ -48,6 +49,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   machineAnim: {fileID: 7216624940239668031}
+  isActivated: 0
+  activatedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  unactivatedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  isLoop: 0
+  waitTime: 0
+  sentence: {fileID: 2410514649009606419}
 --- !u!61 &7668138020508233137
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -114,6 +125,23 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &2410514649009606419
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2113587801728021610}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc8cc23607f355545b64ad8dfc0dd081, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sentences:
+  - "\uB3D9\uC791\uC2DC\uD0AC \uBC29\uBC95\uC744 \uCC3E\uC544\uC57C \uD55C\uB2E4."
+  displayEndEvents:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &3621104216260672573
 GameObject:
   m_ObjectHideFlags: 0
