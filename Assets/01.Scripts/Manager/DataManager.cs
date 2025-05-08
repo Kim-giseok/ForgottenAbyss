@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 
 public class DataManager : MonoBehaviour
 {
@@ -29,6 +30,8 @@ public class DataManager : MonoBehaviour
 
     public Dictionary<int, ArmorSO> armorSODic = new();
     public List<ArmorSO> armorSOList;
+    
+    public Dictionary<int, MemorySkillItem> memorySkillItemList = new();
 
     public bool IsInitialized { get; private set; } = false;
 
@@ -50,6 +53,8 @@ public class DataManager : MonoBehaviour
 
         LoadArmorData();
         InitArmorSO();
+
+        // GetMemorySkillItem();
 
         IsInitialized = true;
     }
@@ -180,6 +185,20 @@ public class DataManager : MonoBehaviour
         }
     }
 
+    private void GetMemorySkillItem()
+    {
+        Addressables.LoadResourceLocationsAsync("MemoryItem").Completed += (handle) =>
+        {
+            foreach (var location in handle.Result)
+            {
+                Addressables.LoadAssetAsync<MemorySkillItem>(location).Completed += (handle) =>
+                {
+                    // memorySkillItemList.Add((int)handle.Result.skillName, handle.Result);
+                };
+            }
+        };
+    }
+
     public WeaponData GetWeaponData(int id)
     {
         return weaponDataList.Weapons.Find(x => x.Id == id);
@@ -220,7 +239,7 @@ public class DataManager : MonoBehaviour
                 }
                 else
                 {
-                    Debug.LogWarning($"[MemoryPieceSO] '{so.name}'¿¡ ¸ÅÄªµÇ´Â MemorySkillItem '{matchedData.ItemName}'À» Ã£À» ¼ö ¾ø½À´Ï´Ù.");
+                    Debug.LogWarning($"[MemoryPieceSO] '{so.name}'ï¿½ï¿½ ï¿½ï¿½Äªï¿½Ç´ï¿½ MemorySkillItem '{matchedData.ItemName}'ï¿½ï¿½ Ã£ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.");
                 }
             }
             else
@@ -269,7 +288,7 @@ public class DataManager : MonoBehaviour
             }
             else
             {
-                Debug.LogWarning($"Áßº¹ ArmorID ¹ß°ß: {so.armorId} - {so.name}");
+                Debug.LogWarning($"ï¿½ßºï¿½ ArmorID ï¿½ß°ï¿½: {so.armorId} - {so.name}");
             }
         }
     }

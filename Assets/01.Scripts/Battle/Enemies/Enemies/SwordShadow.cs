@@ -34,6 +34,8 @@ public class SSDashAttack : Node
         // controller.rigidbody.gravityScale = 0f;
         controller.Rigidbody.drag = 4f;
         controller.Rigidbody.AddForce(new Vector2(controller.agent.GetDirection().x * 24f, 0), ForceMode2D.Impulse);
+
+        controller.soundHandler.Play(EnemySoundType.Attack);
     }
     
     public override void OnAnimated(AnimationStatus status, AnimatorStateInfo animInfo)

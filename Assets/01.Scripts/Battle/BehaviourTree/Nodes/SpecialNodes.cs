@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 public class GuardNode : Node
@@ -21,6 +22,16 @@ public class GuardNode : Node
 // 피격 애니메이션 자체는 발생하더라도 바로 액션 끝나도록
 public class HitNode : Node
 {
+    IEnumerator BlinkRed()
+    {
+        // 디졸브 shader인 경우에만 가능
+        controller.Renderer.material.color = Color.red;
+        yield return new WaitForSeconds(0.2f);
+
+        controller.Renderer.material.color = Color.white;
+        yield return new WaitForSeconds(0.2f);
+    }
+    
     public override void Start()
     {
 
@@ -33,18 +44,17 @@ public class HitNode : Node
         // Vector2 direction = (controller.agent.player.transform.position - controller.transform.position).normalized;
         // controller.Flip(direction.x > 0);
         
-        if(eController.statusHandler.isIgnoreHitAction) eController.Renderer.color = Color.red;
-        
-        // 순서 바뀌면 문제 생길 수 있음
-        var currSoundClip = controller.soundHandler.GetClip(EnemySoundType.Hit);
-        if(currSoundClip) SoundManager.Instance.PlaySFX(currSoundClip);
-
-        eController.animnHandler.Play("Hit");
         eController.statusHandler.isHit = false;
 
-        // 애니메이션이 바로 바뀌어 꺼지는 현상과 충돌
-        if (eController.statusHandler.isIgnoreHitAction && currTime >= 0.2f) { SetStatus(Status.Fail); }
+        controller.soundHandler.Play(EnemySoundType.Hit);
+        if (eController.isIgnoreHitAnim)
+        {
+            controller.StartCoroutine(BlinkRed());
+            SetStatus(Status.Fail);
+            return;
+        }
         
+        eController.animnHandler.Play("Hit");
     }
 
     public override void OnAnimated(AnimationStatus status, AnimatorStateInfo animInfo)

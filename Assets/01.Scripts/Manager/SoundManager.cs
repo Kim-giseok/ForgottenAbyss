@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 
 public enum VOLTYPE
 {
@@ -51,7 +52,7 @@ public class SoundManager : SingletonLoadRemain<SoundManager>
         bgmSource.loop = true;
         PlayBgm();
     }
-
+    
     protected override void OnDestroy()
     {
         base.OnDestroy();

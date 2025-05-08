@@ -10,6 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 39705911e82f49fab6c0f37228bddf4e, type: 3}
-  m_Name: SwordShadowSoundSO
+  m_Name: NightBone
   m_EditorClassIdentifier: 
-  soundList: []
+  soundList:
+  - soundType: 0
+    clip: {fileID: 8300000, guid: abb3929294fea4556a9e905bfe6bfdf9, type: 3}
+  - soundType: 1
+    clip: {fileID: 8300000, guid: e6240a52813d94726a5b067954021a80, type: 3}
+  - soundType: 2
+    clip: {fileID: 8300000, guid: 7fa2b32d31bed420480f8e6ca82eb0b9, type: 3}

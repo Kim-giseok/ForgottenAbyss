@@ -190,6 +190,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 70
   attack: 10
+  experience: 100
+  gold: 150
+  isIgnoreHitAnim: 0
   Name: 2
 --- !u!114 &4783053661208568393
 MonoBehaviour:
@@ -246,9 +249,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14bb306e8dbc45de92a87b707e79ae62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gold: 0
-  items:
-  - {fileID: 2849593479698701841, guid: 524d265fe88a74689ab381cfbeb92ae5, type: 3}
+  money: {fileID: 7285741867182844907, guid: a69d9abdcac4f4e468becd62257e25b5, type: 3}
+  items: []
 --- !u!114 &-1375436410202951740
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -261,4 +263,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ceda65fdd9b4532b6c3a361ae3a97d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  soundSO: {fileID: 0}
+  soundSO: {fileID: 11400000, guid: 93274166891ca4891a5b324307d6e36e, type: 2}

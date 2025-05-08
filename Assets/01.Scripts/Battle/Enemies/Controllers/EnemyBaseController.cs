@@ -12,6 +12,8 @@ public class EnemyBaseController: MonoBehaviour
     public EnemyCombatHandler combatHandler { get; protected set; }
     public EnemyDetectHandler detectHandler { get; protected set; }
     public EnemySoundHandler soundHandler { get; protected set; }
+
+    public EnemyBoard board { get; protected set; }
     
 
     protected virtual void Awake()
@@ -27,6 +29,7 @@ public class EnemyBaseController: MonoBehaviour
         combatHandler = new EnemyCombatHandler();
         detectHandler = GetComponent<EnemyDetectHandler>();
         soundHandler = GetComponent<EnemySoundHandler>();
+        board = new EnemyBoard();
         
         // summon에선 없도록 처리
         agent = GetComponent<EnemyAgent>(); // 플레이어의 경우 주면 몬스터를 찾도록(혹은 새 클래스로 분리하기)

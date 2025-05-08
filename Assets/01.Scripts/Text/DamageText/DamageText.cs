@@ -15,18 +15,18 @@ public class DamageText : MonoBehaviour
         Color targetColor = Color.white;
 
         if (damage > 40)
-            targetColor = new Color(1f, 0.2f, 0.2f); // »¡°£»ö
+            targetColor = new Color(1f, 0.2f, 0.2f); // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         else if (damage > 30)
-            targetColor = new Color(1f, 0.5f, 0f); // ÁÖÈ²»ö
+            targetColor = new Color(1f, 0.5f, 0f); // ï¿½ï¿½È²ï¿½ï¿½
         else if (damage > 20)
-            targetColor = new Color(1f, 1f, 0f); // ³ë¶õ»ö
+            targetColor = new Color(1f, 1f, 0f); // ï¿½ï¿½ï¿½ï¿½ï¿½
 
-        // Å©¸®Æ¼ÄÃÀÏ ¶§ 
+        // Å©ï¿½ï¿½Æ¼ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ 
         if (isCritical)
         {
             dmgText.fontSize = defaultSize * 1.5f;
 
-            // ¾Æ¿ô¶óÀÎ + ±Û·Î¿ì È¿°ú
+            // ï¿½Æ¿ï¿½ï¿½ï¿½ï¿½ï¿½ + ï¿½Û·Î¿ï¿½ È¿ï¿½ï¿½
             dmgText.outlineWidth = 0.2f;
             dmgText.outlineColor = GetOutlineColor(targetColor);
 
@@ -40,7 +40,7 @@ public class DamageText : MonoBehaviour
         }
         else
         {
-            // ÀÏ¹Ý µ¥¹ÌÁöÀÏ °æ¿ì È¿°ú Á¦°Å
+            // ï¿½Ï¹ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ È¿ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             dmgText.outlineWidth = 0f;
             var mat = dmgText.fontMaterial;
             mat.DisableKeyword("GLOW_ON");
@@ -50,7 +50,7 @@ public class DamageText : MonoBehaviour
 
         StartCoroutine(AnimateText(targetColor, dmgText.fontSize, isCritical));
 
-        // À§Ä¡ ·£´ý »ý¼º
+        // ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         Vector2 randomOffset = new Vector2(Random.Range(-0.5f, 0.5f), Random.Range(0f, 1f));
         transform.position += (Vector3)randomOffset;
     }
@@ -72,6 +72,15 @@ public class DamageText : MonoBehaviour
         transform.rotation = Quaternion.LookRotation(cam.transform.forward);
 
         StartCoroutine(AnimateScreenCenterText());
+    }
+
+    public void ShowEXP(int experience)
+    {
+        dmgText.text = "+" + experience;
+        dmgText.color = Color.green;
+        dmgText.outlineColor = Color.white;
+        
+        StartCoroutine(AnimateText(Color.black, dmgText.fontSize, false));
     }
 
     private IEnumerator AnimateText(Color targetColor, float targetFontSize, bool isCritical)
@@ -98,11 +107,11 @@ public class DamageText : MonoBehaviour
         {
             float t = elapsed / duration * speedMultiplier;
 
-            // À§Ä¡¿Í Å©±â ¾Ö´Ï¸ÞÀÌ¼Ç
+            // ï¿½ï¿½Ä¡ï¿½ï¿½ Å©ï¿½ï¿½ ï¿½Ö´Ï¸ï¿½ï¿½Ì¼ï¿½
             transform.position = Vector3.Lerp(startPos + randomYOffset, endPos + randomYOffset, t);
             transform.localScale = Vector3.Lerp(Vector3.one * startSize, Vector3.one * endSize, t);
 
-            // »ö»ó°ú ÆùÆ® Å©±â ¾Ö´Ï¸ÞÀÌ¼Ç
+            // ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ® Å©ï¿½ï¿½ ï¿½Ö´Ï¸ï¿½ï¿½Ì¼ï¿½
             dmgText.color = Color.Lerp(startColor, targetColor, t);
             dmgText.fontSize = Mathf.Lerp(startFontSize, targetFontSize, t);
 
@@ -110,7 +119,7 @@ public class DamageText : MonoBehaviour
             yield return null;
         }
 
-        // ¾Ö´Ï¸ÞÀÌ¼Ç Á¾·á ÈÄ ÃÖÁ¾ °ª Àû¿ë
+        // ï¿½Ö´Ï¸ï¿½ï¿½Ì¼ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         dmgText.color = targetColor;
         dmgText.fontSize = targetFontSize;
 
@@ -131,7 +140,7 @@ public class DamageText : MonoBehaviour
         float elapsed = 0f;
 
         yield return DamageTextManager.Instance.screenFader.FadeIn(fadeDuration);
-        // 1. ÆäÀÌµå ÀÎ
+        // 1. ï¿½ï¿½ï¿½Ìµï¿½ ï¿½ï¿½
         while (elapsed < fadeDuration)
         {
             float t = elapsed / fadeDuration;
@@ -143,7 +152,7 @@ public class DamageText : MonoBehaviour
 
         yield return new WaitForSeconds(holdTime);
 
-        // 3. ÆäÀÌµå ¾Æ¿ô
+        // 3. ï¿½ï¿½ï¿½Ìµï¿½ ï¿½Æ¿ï¿½
         elapsed = 0f;
         while (elapsed < fadeDuration)
         {
@@ -179,25 +188,25 @@ public class DamageText : MonoBehaviour
 
     private Color GetOutlineColor(Color damageColor)
     {
-        // »¡°­
+        // ï¿½ï¿½ï¿½ï¿½
         if (damageColor.r > 0.9f && damageColor.g < 0.3f)
         {
-            // Á»´õ ¾îµÎ¿î »¡°­
+            // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Î¿ï¿½ ï¿½ï¿½ï¿½ï¿½
             return new Color(0.5f, 0f, 0f);
         }
-        // ÁÖÈ²
+        // ï¿½ï¿½È²
         else if (damageColor.r > 0.9f && damageColor.g > 0.4f)
         {
-            // Á»´õ ¾îµÎ¿î ÁÖÈ²
+            // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Î¿ï¿½ ï¿½ï¿½È²
             return new Color(0.5f, 0.25f, 0f);
         }
-        // ³ë¶û
+        // ï¿½ï¿½ï¿½
         else if (damageColor.g > 0.9f)
         {
-            // Á»´õ ¾îµÎ¿î ³ë¶û
+            // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Î¿ï¿½ ï¿½ï¿½ï¿½
             return new Color(0.5f, 0.5f, 0f);
         }
-        // ±âº» Èò»ö¿¡¼± °ËÁ¤»ö
+        // ï¿½âº» ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         else
         {
             return Color.black;

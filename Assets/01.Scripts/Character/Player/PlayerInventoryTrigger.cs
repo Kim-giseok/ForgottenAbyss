@@ -8,6 +8,13 @@ public class PlayerInventoryTrigger : MonoBehaviour
     {
         if (collision.CompareTag("FieldItem"))
         {
+            if (collision.TryGetComponent(out FieldGoldItem goldItem))
+            {
+                GoldManager.Instance.AddGold(goldItem.amount);
+                Destroy(goldItem.gameObject);
+                return;
+            }
+            
             var fieldItem = collision.GetComponent<FieldItem>();
             if (fieldItem != null && Inventory.Instance.AddItem(fieldItem.GetItem()))
             {

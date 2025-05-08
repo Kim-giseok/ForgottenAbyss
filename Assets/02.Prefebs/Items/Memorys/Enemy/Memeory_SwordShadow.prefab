@@ -10,8 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 5452169748831480493}
   - component: {fileID: 4224962415243767637}
-  - component: {fileID: 6343810600225957374}
   - component: {fileID: 7961252460757587955}
+  - component: {fileID: 6343810600225957374}
+  - component: {fileID: 5067342297932640822}
   m_Layer: 0
   m_Name: Memeory_SwordShadow
   m_TagString: FieldItem
@@ -80,20 +81,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.5, y: 2}
   m_EdgeRadius: 0
---- !u!114 &6343810600225957374
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2849593479698701841}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee13b3f4dcdd42e4f8664dd7cb448e57, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  item: {fileID: 11400000, guid: 7014684e25a18455f9d5760a0c4c66fc, type: 2}
-  itemImg: {fileID: 0}
 --- !u!50 &7961252460757587955
 Rigidbody2D:
   serializedVersion: 4
@@ -120,7 +107,33 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
+--- !u!114 &6343810600225957374
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2849593479698701841}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee13b3f4dcdd42e4f8664dd7cb448e57, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  item: {fileID: 11400000, guid: 7014684e25a18455f9d5760a0c4c66fc, type: 2}
+  itemImg: {fileID: 0}
+--- !u!114 &5067342297932640822
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2849593479698701841}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f7852b467bb4c1ea6374adf170be209, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4573006986758388148
 GameObject:
   m_ObjectHideFlags: 0

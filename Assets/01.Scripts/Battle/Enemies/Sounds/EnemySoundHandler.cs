@@ -14,4 +14,10 @@ public class EnemySoundHandler: MonoBehaviour
         if (index >= 0 && index < soundSO.soundList.Count) return soundSO.soundList[index]?.clip;
         return null;
     }
+
+    public void Play(EnemySoundType soundType)
+    {
+        if (!SoundManager.Instance) return;
+        SoundManager.Instance.PlaySFX(GetClip(soundType));
+    }
 }
