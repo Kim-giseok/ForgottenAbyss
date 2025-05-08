@@ -112,7 +112,25 @@ public class BoltsPool : MonoBehaviour // 단위 미사일
         
         return bolt;
     }
-    
+
+    public Bolt CreateParticle(Transform parent, string animName)
+    {
+        Bolt bolt = currBolts.Find(bolt => !bolt.gameObject.activeSelf);
+
+        if (!bolt)
+        {
+            GameObject instance = Instantiate(Bolt, Vector2.zero, Quaternion.identity, transform);
+            bolt = instance.GetComponent<Bolt>();
+            currBolts.Add(bolt);
+        }
+        
+        bolt.hitBox.enabled = false;
+        bolt.gameObject.SetActive(true);
+        bolt.animHandler.Play(animName);
+
+        return bolt;
+    }
+
     public void Disable(GameObject instance)
     {
         instance.SetActive(false);

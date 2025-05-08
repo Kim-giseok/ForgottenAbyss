@@ -76,11 +76,17 @@ public class Bolt: MonoBehaviour
     }
 
     public void AddEffect(BoltEffect effect) => effects.Add(effect);
-    private void Play() => this.isStarted = true;
+    public void Play() => this.isStarted = true;
 
     public Bolt SetSpeed(float speed)
     {
         this.speed = speed;
+        return this;
+    }
+
+    public Bolt SetColor(Color color)
+    {
+        this.Renderer.color = color;
         return this;
     }
 
@@ -179,7 +185,10 @@ public class Bolt: MonoBehaviour
 
     protected virtual void FixedUpdate()
     {
-        if (currTime >= duration) { BoltsPool.Instance.Disable(gameObject); }
+        if (currTime >= duration)
+        {
+            BoltsPool.Instance.Disable(gameObject);
+        }
     }
 
     protected virtual void OnTriggerEnter2D(Collider2D other)

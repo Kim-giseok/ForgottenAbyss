@@ -285,6 +285,10 @@ public class PlayerStatus : CharacterStatus
         // 현재 경험치가 필요 경험치 이상인 경우 레벨 업
         if (stats[StatType.EXP] >= expRequiredForLevel[curLevel])
         {
+            BoltsPool.Instance.CreateParticle(transform, "LevelUp")
+                .SetSize(1.2f).SetDuration(1f).SetPosition(transform.position + new Vector3(0f, 1.5f, 0f)).Play();
+            SoundManager.Instance.Playsfx("LevelUp");
+            
             LevelUp();
 
             CheckLevelUp();
