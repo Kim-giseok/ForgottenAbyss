@@ -13,8 +13,10 @@ public class Item : ScriptableObject
 {
     public string itemName;
     public Sprite itemIcon;
-    public string itemDescription;
     public ItemType itemType;
+
+    [TextArea]
+    public string itemDescription;
 
     [HideInInspector] public int currentAmount = 1; // 현재 수량
     public int maxStack = 99; // 최대 스텍 수
