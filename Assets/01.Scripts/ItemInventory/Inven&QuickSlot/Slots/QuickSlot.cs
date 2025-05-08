@@ -65,6 +65,19 @@ public class QuickSlot : SlotBase
             Debug.LogWarning($"[QuickSlot] '{item.itemName}'은 소모성 아이템이 아니므로 등록할 수 없습니다.");
             return;
         }
+        // 이미 같은 아이템이면 무시
+        if (linkedItem == item)
+        {
+            Debug.Log($"[QuickSlot] '{item.itemName}'은 이미 이 슬롯에 등록되어 있음");
+            return;
+        }
+
+        // 다른 슬롯에도 있으면 무시
+        if (QuickSlotController.Instance.IsAlreadyAssigned(item))
+        {
+            Debug.Log($"[QuickSlot] '{item.itemName}'은 다른 슬롯에 이미 있음");
+            return;
+        }
 
         linkedItem = item;
         currentItem = item;
@@ -137,6 +150,7 @@ public class QuickSlot : SlotBase
         }
         else
         {
+            Debug.Log($"[QuickSlot {SlotIndex}] 즉시 클리어");
             ClearSlot();
         }
     }
