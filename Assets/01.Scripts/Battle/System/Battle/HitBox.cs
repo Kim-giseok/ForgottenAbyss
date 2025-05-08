@@ -93,6 +93,14 @@ public class HitBox : MonoBehaviour // 1회 공격 당의 캐싱이 필요할 �
         if (other.gameObject.layer == LayerMask.NameToLayer("Enemy"))
         {
             damagable.GetDamage(damage);
+
+            // 임시로 데미지 텍스트, 카메라 쉐이크 넣어둠
+            var enemy = other.GetComponent<EnemyController>();
+            if (enemy != null)
+            {
+                DamageTextManager.Instance.ShowDamage(other.transform.position, (int)damage, false);
+                GameManager.Instance.cameraShake.Shake(); 
+            }
             return;
         }
 

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Inventory : MonoBehaviour
@@ -22,7 +23,10 @@ public class Inventory : MonoBehaviour
         if (newItem == null) return false;
 
         // 같은 아이템 찾기 (이름 기반 Equals() 적용됨)
-        var existing = items.FirstOrDefault(i => i.Equals(newItem) && i.currentAmount < i.maxStack);
+        //var existing = items.FirstOrDefault(i => i.Equals(newItem) && i.currentAmount < i.maxStack);
+
+        // 이름 찾기에서 아이콘 찾기로 변경함 (임시)
+        var existing = items.FirstOrDefault(i => i.itemIcon == newItem.itemIcon && i.currentAmount < i.maxStack);
 
         if (existing != null)
         {
