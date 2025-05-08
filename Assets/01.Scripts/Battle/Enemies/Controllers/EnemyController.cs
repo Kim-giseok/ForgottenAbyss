@@ -75,11 +75,14 @@ public class EnemyController : EnemyBaseController, IDamagable
         if (rewardHandler)
         {
             SoundManager.Instance.Playsfx("DropItem");
-            
-            Instantiate(rewardHandler.GetRewardItem(), transform.position + (Vector3.up * 0.5f), Quaternion.identity);
+
             // 외부에서 관리하도록 처리
-            Instantiate(rewardHandler.money, transform.position + (Vector3.up * 0.5f), Quaternion.identity);
-            
+            if (gold > 0)
+            {
+                Instantiate(rewardHandler.money, transform.position + (Vector3.up * 0.5f), Quaternion.identity);
+            }
+
+            Instantiate(rewardHandler.GetRewardItem(), transform.position + (Vector3.up * 0.5f), Quaternion.identity);
         }
     }
 }
