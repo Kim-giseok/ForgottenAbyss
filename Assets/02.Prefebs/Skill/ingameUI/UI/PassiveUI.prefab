@@ -780,7 +780,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &8202957553435129073
 RectTransform:
   m_ObjectHideFlags: 0
@@ -788,7 +788,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1965455522736502734}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -861,14 +861,14 @@ MonoBehaviour:
   hpText: {fileID: 1864412851608374448}
   defText: {fileID: 2215440074842708372}
   speedText: {fileID: 2122243413671187905}
-  coolDownText: {fileID: 0}
-  statPointText: {fileID: 0}
-  atkButton: {fileID: 0}
-  crtButton: {fileID: 0}
-  hpButton: {fileID: 0}
-  defButton: {fileID: 0}
-  speedButton: {fileID: 0}
-  coolDownButton: {fileID: 0}
+  coolDownText: {fileID: 1891521914373610654}
+  statPointText: {fileID: 4944388583466225012}
+  atkButton: {fileID: 4961526870588920934}
+  crtButton: {fileID: 1431821198797748354}
+  hpButton: {fileID: 7743518518961450163}
+  defButton: {fileID: 1322019762223332846}
+  speedButton: {fileID: 2582176571448864979}
+  coolDownButton: {fileID: 6525455249587931371}
 --- !u!1 &2339519375492628977
 GameObject:
   m_ObjectHideFlags: 0
@@ -1831,7 +1831,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 7142391897747247336}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8450011350015619781}
+        m_TargetAssemblyTypeName: PassiveUI, Assembly-CSharp
+        m_MethodName: OnClickCoolDown
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &4475492464262421022
 GameObject:
   m_ObjectHideFlags: 0
