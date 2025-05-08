@@ -48,6 +48,59 @@
       "StatBonuses": [
         {
           "StatType": "SPEED",
+          "Value": 5.0,
+          "BonusType": "Percent"
+        }
+      ]
+    },
+    {
+      "Id": 404,
+      "Name": "Bzone Helmet",
+      "Slot": "Helmet",
+      "StatBonuses": [
+        {
+          "StatType": "DEF",
+          "Value": 10.0,
+          "BonusType": "Flat"
+        }
+      ]
+    },
+    {
+      "Id": 405,
+      "Name": "Bzone Chest",
+      "Slot": "Chest",
+      "StatBonuses": [
+        {
+          "StatType": "MaxHP",
+          "Value": 20.0,
+          "BonusType": "Flat"
+        },
+        {
+          "StatType": "DEF",
+          "Value": 15.0,
+          "BonusType": "Percent"
+        }
+      ]
+    },
+    {
+      "Id": 406,
+      "Name": "Bzone Gloves",
+      "Slot": "Gloves",
+      "StatBonuses": [
+        {
+          "StatType": "ATK",
+          "Value": 15.0,
+          "BonusType": "Percent"
+        }
+      ]
+    },
+    {
+      "Id": 407,
+      "Name": "Bzone Boots",
+      "Slot": "Boots",
+      "StatBonuses": [
+        {
+          "StatType": "SPEED",
           "Value": 10.0,
           "BonusType": "Percent"
         }

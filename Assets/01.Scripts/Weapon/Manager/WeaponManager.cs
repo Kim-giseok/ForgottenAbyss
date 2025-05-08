@@ -67,10 +67,10 @@ public class WeaponManager : MonoBehaviour
         {
             ClearWeaponSaveData();
         }
-        if (Input.GetKeyDown(KeyCode.Alpha0))
-        {
-            Debug_EquipTestMemoryPiece(); // 기억 조각 장착
-        }
+        //if (Input.GetKeyDown(KeyCode.Alpha0))
+        //{
+        //    Debug_EquipTestMemoryPiece(); // 기억 조각 장착
+        //}
 #endif
     }
 
