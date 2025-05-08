@@ -48,6 +48,17 @@ public class UIManager : MonoBehaviour
     public void ShowTooltip(Item item, Vector3 position) => tooltip?.Show(item, position);
     public void HideTooltip() => tooltip?.Hide();
 
+    public void HideTooltipNextFrame()
+    {
+        StartCoroutine(HideTooltipDelayed());
+    }
+
+    private IEnumerator HideTooltipDelayed()
+    {
+        yield return null;
+        tooltip?.Hide();
+    }
+
     public void OnGuidUI(GameObject gameobject)
     {
         Vector3 position = gameobject.transform.position + Vector3.up * 1.5f * gameObject.transform.localScale.y;

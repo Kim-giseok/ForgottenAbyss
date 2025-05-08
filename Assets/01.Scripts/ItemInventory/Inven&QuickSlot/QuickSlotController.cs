@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor.Rendering;
 using UnityEngine;
 
@@ -44,6 +45,11 @@ public class QuickSlotController : MonoBehaviour
         {
             SelectSlot(index); // 다른 슬롯을 누르면 선택만 바뀜
         }
+    }
+
+    public bool IsAlreadyAssigned(Item item)
+    {
+        return quickSlots.Any(slot => slot.HasItem(item));
     }
 
     // 마우스 클릭할때 사용

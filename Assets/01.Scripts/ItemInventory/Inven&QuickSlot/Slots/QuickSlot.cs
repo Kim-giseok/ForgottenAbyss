@@ -16,6 +16,12 @@ public class QuickSlot : SlotBase
     private float remainingCooldown = 0f;
     private bool waitingToClear = false; // 쿨타임 끝나면 삭제
     private Item linkedItem; // 인벤토리에서 참조할 아이템
+    private ItemUI itemUI;
+
+    private void Awake()
+    {
+        itemUI = GetComponentInChildren<ItemUI>(true);
+    }
 
     private void Update()
     {
@@ -53,6 +59,7 @@ public class QuickSlot : SlotBase
             // 드랍할 때 인벤토리에 있는 아이템만 등록
             if (Inventory.Instance.items.Contains(dragged.item))
             {
+                ClearSlot();
                 SetLinkedItem(dragged.item);
             }
         }
@@ -65,6 +72,19 @@ public class QuickSlot : SlotBase
             Debug.LogWarning($"[QuickSlot] '{item.itemName}'은 소모성 아이템이 아니므로 등록할 수 없습니다.");
             return;
         }
+        // 이미 같은 아이템이면 무시
+        if (linkedItem == item)
+        {
+            Debug.Log($"[QuickSlot] '{item.itemName}'은 이미 이 슬롯에 등록되어 있음");
+            return;
+        }
+
+        // 다른 슬롯에도 있으면 무시
+        if (QuickSlotController.Instance.IsAlreadyAssigned(item))
+        {
+            Debug.Log($"[QuickSlot] '{item.itemName}'은 다른 슬롯에 이미 있음");
+            return;
+        }
 
         linkedItem = item;
         currentItem = item;
@@ -74,6 +94,7 @@ public class QuickSlot : SlotBase
         var itemUI = GetComponentInChildren<ItemUI>(true);
         if (itemUI != null)
         {
+            itemUI.gameObject.SetActive(true); // itemUI다시 켜기
             itemUI.SetItem(item);
             itemUI.SetDraggable(true);
         }
@@ -96,6 +117,7 @@ public class QuickSlot : SlotBase
     {
         if (linkedItem != null && remainingCooldown <= 0)
         {
+            int prevAmount = linkedItem.currentAmount; // 수량 캐싱
             bool isUsed = linkedItem.Use();
             if (isUsed)
             {
@@ -109,7 +131,9 @@ public class QuickSlot : SlotBase
                 waitingToClear = true; // 퀵슬롯 자체도 클리어
             }
 
-            UpdateAmount(linkedItem.currentAmount); // 스택 감소 후 UI업데이트
+            int amountToShow = linkedItem != null ? linkedItem.currentAmount : prevAmount - 1;
+            UpdateAmount(amountToShow);
+
             remainingCooldown = cooldownTime;
             StartCoroutine(BlinkIcon());
         }
@@ -134,6 +158,7 @@ public class QuickSlot : SlotBase
         }
         else
         {
+            Debug.Log($"[QuickSlot {SlotIndex}] 즉시 클리어");
             ClearSlot();
         }
     }
@@ -144,6 +169,12 @@ public class QuickSlot : SlotBase
         linkedItem = null;
         waitingToClear = false;
         UpdateAmount(0);
+
+        if (itemUI != null)
+        {
+            itemUI.RemoveItem();
+            itemUI.gameObject.SetActive(false);
+        }
     }
 
     public void OnPointerClick(PointerEventData eventData)

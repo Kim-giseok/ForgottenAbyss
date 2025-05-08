@@ -109,7 +109,7 @@ public class ItemUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (item != null)
+        if (item != null && UIManager.Instance.inventoryUI.gameObject.activeSelf)
             UIManager.Instance.ShowTooltip(item, Input.mousePosition);
     }
 
