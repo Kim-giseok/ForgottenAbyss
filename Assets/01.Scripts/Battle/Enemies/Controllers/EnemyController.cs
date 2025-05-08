@@ -64,6 +64,11 @@ public class EnemyController : EnemyBaseController, IDamagable
         catch { Destroy(gameObject); }
 
         // 피봇 변경으로 인한 위치 조정
-        if (rewardHandler) { Instantiate(rewardHandler.GetRewardItem(), transform.position + (Vector3.up * 0.5f), Quaternion.identity); }
+        if (rewardHandler)
+        {
+            Instantiate(rewardHandler.GetRewardItem(), transform.position + (Vector3.up * 0.5f), Quaternion.identity);
+            Instantiate(rewardHandler.money, transform.position + (Vector3.up * 0.5f), Quaternion.identity);
+            
+        }
     }
 }
