@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 6343810600225957374}
   - component: {fileID: 7961252460757587955}
   m_Layer: 0
-  m_Name: Memory_Archer
+  m_Name: Memory_MoonStone
   m_TagString: FieldItem
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -76,7 +76,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: 9015b42eea1ca6944bbc3179096b4fbb, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 9f1121dc94a3190468672d0cc7d5be9a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -123,7 +123,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 5, y: 5}
+    oldSize: {x: 4.08, y: 6.12}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -144,7 +144,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee13b3f4dcdd42e4f8664dd7cb448e57, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  item: {fileID: 11400000, guid: 03538603f2b6d419b8d84ef10265b3eb, type: 2}
+  item: {fileID: 11400000, guid: c9497720ba746104f93abd25a6e0b859, type: 2}
   itemImg: {fileID: 1700187939318023768}
 --- !u!50 &7961252460757587955
 Rigidbody2D:
