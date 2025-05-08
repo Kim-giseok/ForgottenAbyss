@@ -10,7 +10,7 @@ public class EnemyController : EnemyBaseController, IDamagable
     public float health;
     public float attack;
     
-    public float experience;
+    public int experience;
 
 
     [FormerlySerializedAs("name")] public EnemiesBT.Enemy Name;
@@ -65,6 +65,7 @@ public class EnemyController : EnemyBaseController, IDamagable
         try { MapSpawnManager.Instance.SpawnedMap.monsterManager.RemoveEnemy(this); }
         catch { Destroy(gameObject); }
 
+        DamageTextManager.Instance.ShowExperience(experience);
         // 경험치 추가
         GameManager.Instance.player.playerstatus.GainExperience(experience);
         
