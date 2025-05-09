@@ -70,7 +70,7 @@ public class ItemUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
     // 드래그 시작
     public void OnBeginDrag(PointerEventData eventData)
     {
-        if (isDraggable || item == null) return;
+        if (!isDraggable || item == null) return;
 
         // 풀에서 가져오기
         dragCopy = DragItemPool.Instance.Get();
@@ -80,9 +80,13 @@ public class ItemUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
         copyItemUI.SetItem(item);
 
         dragCopy.transform.position = transform.position;
+
         var copyCanvasGroup = dragCopy.GetComponent<CanvasGroup>();
-        copyCanvasGroup.alpha = 0.6f;
-        copyCanvasGroup.blocksRaycasts = false;
+        if (copyCanvasGroup != null)
+        {
+            copyCanvasGroup.alpha = 0.6f;
+            copyCanvasGroup.blocksRaycasts = false;
+        }
     }
 
     // 드래그 중
