@@ -131,6 +131,30 @@ public class EquipmentManager : MonoBehaviour
         return null;
     }
 
+    public void UpdateEquippedItems()
+    {
+        if (equippedArmors != null && equippedArmors.Any())
+        {
+            Debug.Log($"[EquipmentManager] UpdateEquippedItems() 실행 - 장착 정보 갱신 중!");
+
+            Dictionary<ArmorSlot, (ArmorSO armor, InventorySlot slot)> updatedEquippedArmors = new();
+
+            foreach (var slot in InventoryUIManager.Instance.slots)
+            {
+                if (slot.currentItem != null && slot.currentItem.itemType == ItemType.Equip && slot.currentItem is ArmorSO armor)
+                {
+                    updatedEquippedArmors[armor.slot] = (armor, slot);
+                    Debug.Log($"[EquipmentManager] 장착 정보 갱신 - 슬롯: {armor.slot}, 장착 장비: {armor.name}");
+                }
+            }
+            equippedArmors = updatedEquippedArmors;
+        }
+        else
+        {
+            Debug.Log($"[EquipmentManager] 장착된 아이템 없음 → UpdateEquippedItems 실행 안 함!");
+        }
+    }
+
     public Dictionary<StatType, float> GetTotalArmorStats()
     {
         Dictionary<StatType, float> total = new();
