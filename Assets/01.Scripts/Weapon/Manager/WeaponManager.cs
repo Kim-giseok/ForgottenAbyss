@@ -218,6 +218,11 @@ public class WeaponManager : MonoBehaviour
         return currentWeaponData != null ? currentWeaponData.Damage : 0f;
     }
 
+    public bool IsWeaponEquipped()
+    {
+        return currentWeaponData != null;
+    }
+
     public WeaponData GetCurrentWeaponData() => currentWeaponData;
     public WeaponDataSO GetCurrentWeaponSO() => currentWeaponSO;
 

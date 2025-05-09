@@ -77,6 +77,12 @@ public class SkillController : Singleton<SkillController>
     {
         if (isSkillPlaying || isGettingHit || isDead) return;
 
+        if (!SystemManager.Instance.weaponManager.IsWeaponEquipped())
+        {
+            Debug.LogWarning("Cannot attack: No weapon equipped!");
+            return;
+        }
+
         if (IsTurning())
         {
             SystemManager.Instance.actionBufferUtil.BufferAction(
