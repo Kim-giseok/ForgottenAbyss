@@ -318,8 +318,8 @@ public class PlayerStatus : CharacterStatus
             passiveUI.UpdateStatPointsUI(availableStatPoints);
         }
 
-        stats[StatType.CurrentHP] = stats[StatType.MaxHP];
-        stats[StatType.CurrentMP] = stats[StatType.MaxMP];
+        SetStat(StatType.CurrentHP, stats[StatType.MaxHP]);
+        SetStat(StatType.CurrentMP, stats[StatType.MaxMP]);
 
         int currentLevel = (int)stats[StatType.LEVEL];
         stats[StatType.MaxEXP] = expRequiredForLevel[currentLevel];
@@ -329,7 +329,6 @@ public class PlayerStatus : CharacterStatus
         Debug.Log($"MP: {stats[StatType.MaxMP]}");
         Debug.Log($"ATK: {stats[StatType.ATK]}");
         Debug.Log($"DEF: {stats[StatType.DEF]}");
-
     }
 
    
