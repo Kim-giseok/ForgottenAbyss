@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
@@ -11,6 +9,9 @@ public class PlayerUIBinder : MonoBehaviour
     public TMPro.TextMeshProUGUI hpText; // HP텍스트
     public Slider mpSlider; // MP 게이지바
     public TMPro.TextMeshProUGUI mpText; // MP텍스트
+    public Slider expSlider; // Exp 게이지바
+    public TMPro.TextMeshProUGUI expText; // Exp 텍스트
+    public TMPro.TextMeshProUGUI levelText; // 레벨 텍스트
 
     private void OnEnable()
     {
@@ -50,24 +51,36 @@ public class PlayerUIBinder : MonoBehaviour
         hpSlider.maxValue = 1f;
         mpSlider.minValue = 0f;
         mpSlider.maxValue = 1f;
+        expSlider.minValue = 0f;
+        expSlider.maxValue = 1f;
 
         //초기값 반영
         UpdateHPSlider();
         UpdateMPSlider();
+        UpdateExpSlider();
+        UpdateLevelText();
     }
 
     private void HandleStatChanged(StatType type, float newValue)
     {
         if (type == StatType.CurrentHP || type == StatType.MaxHP)
         {
-            //Debug.Log($"[UIBinder] 체력 반영됨: {newValue}");
             UpdateHPSlider();
         }
 
         if (type == StatType.CurrentMP || type == StatType.MaxMP)
         {
-            //Debug.Log($"[UIBinder] 마나 반영됨: {newValue}");
             UpdateMPSlider();
+        }
+        if (type == StatType.EXP || type == StatType.MaxEXP)
+        {
+            //Debug.Log($"[UIBinder] 경험치 반영됨: {newValue}");
+            UpdateExpSlider();
+        }
+        if (type == StatType.LEVEL)
+        {
+            //Debug.Log($"[UIBinder] level 반영됨: {newValue}");
+            UpdateLevelText();
         }
     }
 
@@ -106,5 +119,31 @@ public class PlayerUIBinder : MonoBehaviour
         {
             mpText.text = $"{(int)curMP} / {(int)maxMP}";
         }
+    }
+
+    // Exp UI갱신 함수
+    private void UpdateExpSlider()
+    {
+        if (playerStatus == null) return;
+        if (!playerStatus.stats.ContainsKey(StatType.EXP) || !playerStatus.stats.ContainsKey(StatType.MaxEXP))
+            return;
+
+        float curExp = playerStatus.stats[StatType.EXP];
+        float maxExp = playerStatus.stats[StatType.MaxEXP];
+
+        expSlider.value = Mathf.Clamp01(curExp / maxExp);
+
+        if (expText != null)
+        {
+            expText.text = $"{(int)curExp} / {(int)maxExp}";
+        }
+    }
+
+    private void UpdateLevelText()
+    {
+        if (playerStatus == null || levelText == null) return;
+
+        int level = (int)playerStatus.stats[StatType.LEVEL];
+        levelText.text = $"Lv. {level}";
     }
 }
