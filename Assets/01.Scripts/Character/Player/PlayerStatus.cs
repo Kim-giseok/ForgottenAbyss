@@ -320,7 +320,7 @@ public class PlayerStatus : CharacterStatus
         SetStat(StatType.CurrentMP, stats[StatType.MaxMP]);
 
         int currentLevel = (int)stats[StatType.LEVEL];
-        stats[StatType.MaxEXP] = expRequiredForLevel[currentLevel];
+        SetStat(StatType.MaxEXP, expRequiredForLevel[currentLevel]);
 
         Debug.Log($"���� ����: {stats[StatType.LEVEL]}");
         Debug.Log($"HP: {stats[StatType.MaxHP]}");
