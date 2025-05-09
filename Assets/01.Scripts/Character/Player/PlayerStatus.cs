@@ -301,7 +301,7 @@ public class PlayerStatus : CharacterStatus
 
         SetStat(StatType.EXP, stats[StatType.EXP] - expRequiredForLevel[(int)stats[StatType.LEVEL]]);
 
-        stats[StatType.LEVEL] = newLevel;
+        SetStat(StatType.LEVEL, newLevel);
 
 
         ApplyLevelStats(newLevel);
