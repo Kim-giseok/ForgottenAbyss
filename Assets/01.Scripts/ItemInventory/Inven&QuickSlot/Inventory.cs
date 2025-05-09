@@ -31,6 +31,7 @@ public class Inventory : MonoBehaviour
         if (existing != null)
         {
             existing.currentAmount++;
+            QuickSlotController.Instance?.RefreshSlotAmount(existing);
         }
         else
         {

@@ -98,7 +98,6 @@ public class QuickSlot : SlotBase
             itemUI.SetItem(item);
             itemUI.SetDraggable(true);
         }
-
         UpdateAmount(item.currentAmount);
     }
 
@@ -107,7 +106,7 @@ public class QuickSlot : SlotBase
         SetLinkedItem(item);
     }
 
-    private void UpdateAmount(int amount)
+    public void UpdateAmount(int amount)
     {
         if (amountText != null)
             amountText.text = amount > 1 ? amount.ToString() : "";
@@ -173,7 +172,9 @@ public class QuickSlot : SlotBase
         if (itemUI != null)
         {
             itemUI.RemoveItem();
-            itemUI.gameObject.SetActive(false);
+
+            // 슬롯은 비워도 드래그&드롭 대상은 되도록 유지
+            itemUI.gameObject.SetActive(true);
         }
     }
 
