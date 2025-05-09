@@ -179,6 +179,9 @@ public class InventorySlot : SlotBase, IPointerClickHandler
                 break;
 
             case ItemType.Consumable:
+                if (currentItem.itemName == "기억의 파편")
+                    break;
+
                 bool isUsed = currentItem.Use();
 
                 if (isUsed)
