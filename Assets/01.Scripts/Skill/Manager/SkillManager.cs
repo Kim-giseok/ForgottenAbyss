@@ -121,6 +121,9 @@ public class SkillManager : MonoBehaviour
         if (nextAvailableTimes.TryGetValue(instance.skillId, out float nextTime) && Time.time < nextTime)
         {
             Debug.Log($"Skill {instance.skillId} is on cooldown. {nextTime - Time.time:F1}s left.");
+
+            if(DamageTextManager.Instance != null )
+                DamageTextManager.Instance.ShowMessage("쿨타임 진행 중입니다! 사용불가");
             return true;
         }
         return false;

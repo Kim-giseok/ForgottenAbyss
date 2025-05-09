@@ -79,7 +79,7 @@ public class SkillController : Singleton<SkillController>
 
         if (!SystemManager.Instance.weaponManager.IsWeaponEquipped())
         {
-            Debug.LogWarning("Cannot attack: No weapon equipped!");
+            Debug.LogWarning("무기가 장착되지 않았습니다. 일반공격 불가!!");
             return;
         }
 
@@ -117,7 +117,9 @@ public class SkillController : Singleton<SkillController>
         if (isGettingHit || isDead) return;
         if (memorySkill == null)
         {
-            Debug.LogWarning("기억 스킬이 장착되지 않았습니다.");
+            if (DamageTextManager.Instance != null)
+                DamageTextManager.Instance.ShowMessage("기억 스킬이 장착되지 않았습니다.");
+
             return;
         }
         TryBufferOrExecuteSkill(memorySkill, "SpecialSkill");
@@ -176,7 +178,9 @@ public class SkillController : Singleton<SkillController>
     {
         if (!SystemManager.Instance.skillManager.IsSkillEquipped(instance))
         {
-            Debug.LogWarning($"Skill ID {instance} is not equipped.");
+            if (DamageTextManager.Instance != null)
+                DamageTextManager.Instance.ShowMessage("스킬이 장착되지 않았습니다!");
+
             return;
         }
 

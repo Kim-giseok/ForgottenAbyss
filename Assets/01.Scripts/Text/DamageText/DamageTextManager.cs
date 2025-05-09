@@ -29,6 +29,14 @@ public class DamageTextManager : SingletonLoadRemain<DamageTextManager>
         obj.GetComponent<DamageText>().ShowEXP(amount);
     }
 
+    public void ShowMessage(string message)
+    {
+        GameObject obj = pool.Get();
+        obj.transform.position = GameManager.Instance.player.transform.position + (Vector3.up * 1.5f);
+
+        obj.GetComponent<DamageText>().ShowMessage(message);
+    }
+
     public void ShowDeath()
     {
         GameObject obj = pool.Get();

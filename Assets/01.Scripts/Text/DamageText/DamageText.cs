@@ -6,11 +6,11 @@ public class DamageText : MonoBehaviour
 {
     public TextMeshProUGUI dmgText;
     private float duration = 1.0f;
+    private float defaultFontSize = 3.0f;
 
     public void Setup(int damage, bool isCritical)
     {
         dmgText.text = damage.ToString();
-        var defaultSize = dmgText.fontSize;
 
         Color targetColor = Color.white;
 
@@ -24,7 +24,7 @@ public class DamageText : MonoBehaviour
         // ũ��Ƽ���� �� 
         if (isCritical)
         {
-            dmgText.fontSize = defaultSize * 1.5f;
+            dmgText.fontSize = defaultFontSize * 1.5f;
 
             // �ƿ����� + �۷ο� ȿ��
             dmgText.outlineWidth = 0.2f;
@@ -33,8 +33,8 @@ public class DamageText : MonoBehaviour
             var mat = dmgText.fontMaterial;
             mat.EnableKeyword("GLOW_ON");
             mat.SetColor("_GlowColor", Color.white);
-            mat.SetFloat("_GlowPower", 0.5f);
-            mat.SetFloat("_GlowOuter", 0.5f);
+            mat.SetFloat("_GlowPower", 0.2f);
+            mat.SetFloat("_GlowOuter", 0.1f);
 
             dmgText.SetAllDirty();
         }
@@ -83,6 +83,16 @@ public class DamageText : MonoBehaviour
         StartCoroutine(AnimateText(Color.black, dmgText.fontSize, false));
     }
 
+    public void ShowMessage(string message)
+    {
+        dmgText.text = message;
+        dmgText.color = Color.red;
+        dmgText.outlineColor = Color.black;
+        dmgText.fontSize = defaultFontSize;
+
+        StartCoroutine(AnimateMessageText());
+    }
+
     private IEnumerator AnimateText(Color targetColor, float targetFontSize, bool isCritical)
     {
         if (isCritical)
@@ -124,6 +134,31 @@ public class DamageText : MonoBehaviour
         dmgText.fontSize = targetFontSize;
 
         ReturnToPool();
+    }
+
+    private IEnumerator AnimateMessageText()
+    {
+        CanvasGroup canvasGroup = GetComponent<CanvasGroup>();
+        if (canvasGroup == null)
+            canvasGroup = gameObject.AddComponent<CanvasGroup>();
+
+        canvasGroup.alpha = 1f;
+        float fadeDuration = 0.4f;
+        float holdTime = 0.4f;
+        float elapsed = 0f;
+
+        yield return new WaitForSeconds(holdTime);
+
+        while (elapsed < fadeDuration)
+        {
+            float t = elapsed / fadeDuration;
+            canvasGroup.alpha = Mathf.Lerp(1f, 0f, t);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        canvasGroup.alpha = 0f;
+        ReturnToPool(); // 풀로 반환
     }
 
     public IEnumerator AnimateScreenCenterText()
