@@ -96,7 +96,7 @@ public class LetterBox : MonoBehaviour
     }
     
     
-    private IEnumerator HandleWidth(bool isShow, Action callback)
+    private IEnumerator HandleWidth(bool isShow, System.Action callback)
     {
         float currTime = 0f;
         

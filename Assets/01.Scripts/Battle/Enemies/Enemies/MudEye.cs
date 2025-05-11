@@ -1,26 +1,6 @@
 using UnityEngine;
 
-public class MudMoveNode : Node
-{
-    private readonly Vector2 direction;
-    
-    public MudMoveNode(Vector2 direction) => this.direction = direction;
-    public override void Start()
-    {
-        controller.Rigidbody.AddForce(direction, ForceMode2D.Impulse);
-    }
-
-    public override void Update()
-    {
-        if(currTime > 0.2f) { SetStatus(Status.Success); }
-    }
-
-    public override void End()
-    {
-        controller.Rigidbody.velocity = Vector2.zero;
-    }
-}
-
+// 특수 이동 노드
 public class MudWarpNode : Node
 {
     public override void Start()
@@ -33,6 +13,7 @@ public class MudWarpNode : Node
 
     public override void OnAnimated(AnimationStatus status, AnimatorStateInfo animInfo)
     {
+        // 애니메이션에 의존하는 것은 여전함
         if (!animInfo.IsName("Warp")) return;
         if (status == AnimationStatus.End) { SetStatus(Status.Success); }
     }

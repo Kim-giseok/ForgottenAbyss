@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
+// moveNode를 확장해서 처리하도록 하기
 public class MoonStoneWalk : Node
 {
     public override void Start()
@@ -23,6 +24,7 @@ public class MoonStoneWalk : Node
     }
 }
 
+// 특수한 이동법에 대한 처리 필요
 public class MoonWarp : Node
 {
     public override void Start()
@@ -61,6 +63,7 @@ public class MoonWarp : Node
     }
 }
 
+// AttackNode로 빼내기
 public class MoonAttack1 : Node
 {
     public override void Start()
@@ -138,6 +141,7 @@ public class MoonCopyRain3 : Node
     }
 }
 
+// z축 특수 공격
 public class MoonFlyingMode : Node
 {
     public override void Start()

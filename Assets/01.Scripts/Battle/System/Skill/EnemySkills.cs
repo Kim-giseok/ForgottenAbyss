@@ -7,5 +7,5 @@ public class Agis
 
 public class Archer
 {
-    public static Node Attack = new AttackNode(new EnemySkillCommand());
+    public static Node Attack = new AttackNode(new EnemyAttackSO());
 }

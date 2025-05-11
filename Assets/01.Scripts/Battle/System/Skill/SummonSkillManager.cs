@@ -12,14 +12,14 @@ public class SummonSkillManager
     public static Dictionary<int, (EnemiesBT.Enemy, Node)> skills { get; private set; } = new()
     {
         // notice: 노드 내부의 많은 속성을 외부 파라미터로 주입할 순 있지만 너무 세분화되어 관리 단위 짜기 어려움
-        { (int)Skill.DashAttack, (EnemiesBT.Enemy.NightBone, new SequenceNode(new InitNode(new Vector2(1.2f, 1.2f)), new DashAttack(), new CancelAttached(), new Explosion())) },
-        { (int)Skill.ComboDashAttack, (EnemiesBT.Enemy.SwordShadow, new SequenceNode(new InitNode(new Vector2(1.8f, 1.8f)), new ComboDashAttack())) },
+        { (int)Skill.DashAttack, (EnemiesBT.Enemy.NightBone, new Sequence(new InitNode(new Vector2(1.2f, 1.2f)), new DashAttack(), new CancelAttached(), new Explosion())) },
+        { (int)Skill.ComboDashAttack, (EnemiesBT.Enemy.SwordShadow, new Sequence(new InitNode(new Vector2(1.8f, 1.8f)), new ComboDashAttack())) },
         // bug: 사이즈 지정하기 전에 이미 생성되어버려서 큰 대상이 나타나는 문제 발생
-        { (int)Skill.Agis, (EnemiesBT.Enemy.Agis, new SequenceNode(new InitNode(new Vector2(0.4f, 0.4f)), new AgisSpreadShot())) },
-        { (int)Skill.AgisRain, (EnemiesBT.Enemy.Agis, new SequenceNode(new InitNode(new Vector2(0.4f, 0.4f)), new AgisRainNode())) },
+        { (int)Skill.Agis, (EnemiesBT.Enemy.Agis, new Sequence(new InitNode(new Vector2(0.4f, 0.4f)), new AgisSpreadShot())) },
+        { (int)Skill.AgisRain, (EnemiesBT.Enemy.Agis, new Sequence(new InitNode(new Vector2(0.4f, 0.4f)), new AgisRainNode())) },
         { (int)Skill.Heal, (EnemiesBT.Enemy.Wizard, new SkillHealNode()) },
         { (int)Skill.ArcherArrow, (EnemiesBT.Enemy.Archer, new RangeMultiAttackNode()) },
-        { (int)Skill.MudWave, (EnemiesBT.Enemy.MudHand, new SequenceNode(new MudCastingNode(), new MudAttackNode())) },
+        { (int)Skill.MudWave, (EnemiesBT.Enemy.MudHand, new Sequence(new MudCastingNode(), new MudAttackNode())) },
         { (int)Skill.MudEye, (EnemiesBT.Enemy.MudEye, new RangeMultiAttackNode()) },
         { (int)Skill.MoonFlyingSummonAttack, (EnemiesBT.Enemy.MoonStone, new MoonFlyingSummonAttack()) }
         

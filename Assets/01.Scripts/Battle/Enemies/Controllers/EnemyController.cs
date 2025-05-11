@@ -6,17 +6,20 @@ public class EnemyController : EnemyBaseController, IDamagable
 {
     // SO로 추후 관리해도 좋을 듯
     public float maxHealth { get; private set; }
+    
     [Header("Resource")] 
     public float health;
+    public float mana;
     public float attack;
     
     public int experience;
     public int gold;
 
     public bool isIgnoreHitAnim;
+    public bool isInvincible;
 
     [FormerlySerializedAs("name")] public EnemiesBT.Enemy Name;
-    
+
     public EnemyResourceHandler resourceHandler { get; private set; }
     public EnemyStatusHandler statusHandler { get; private set; }
     public EnemyRewardHandler rewardHandler { get; private set; }
@@ -39,7 +42,7 @@ public class EnemyController : EnemyBaseController, IDamagable
         // 애니메이터 자동 등록
         // animationHandler.SetController(EnemiesAnimator.animators["NightBone"]);
         // 에러처리 필요
-        machine.Define(EnemiesBT.Get(Name)); // 각 개체별 생성되는 방식
+        machine.Define(EnemiesBT.Get(gameObject.name)); // 각 개체별 생성되는 방식
         machine.Start();
         
         try { MapSpawnManager.Instance.SpawnedMap.monsterManager.AddList(this); }

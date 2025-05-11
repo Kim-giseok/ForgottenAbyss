@@ -67,6 +67,7 @@ public class PatrolMove : Node
     }
 }
 
+// Move 노드로 해소하기
 public class TracingNode : Node
 {
     public override void Start()
@@ -112,63 +113,7 @@ public class TracingNode : Node
 }
 
 
-public class MovePlatformNode : Node
-{
-    public override void Start()
-    {
-        if (NavSurface.Instance.GetPlatformId(controller.agent.target) == NavSurface.Instance.GetPlatformId(controller.gameObject))
-        {
-            // 플랫폼 이동과 추적 간의 순서는 좀 더 생각해보기
-            SetStatus(Status.Success);
-            return;
-        }
-        
-        var targetPlatform = NavSurface.Instance.platforms.Find(platform => platform.id == NavSurface.Instance.GetPlatformId(controller.agent.target));
-        Vector2 destination = targetPlatform.centerCell.WorldPos;
-        context.Set("destination", new Vector3(destination.x, destination.y, 0));
-        
-        controller.Collider.isTrigger = true;
-        controller.Rigidbody.gravityScale = 0;
-        // controller.rigidbody.isKinematic = true;
-    }
 
-    public override void Update()
-    {
-        Vector3 destination = context.Get<Vector3>("destination") + Vector3.up;
-        // 박싱으로 인한 성능 문제 예상해보기
-        Vector3 direction = (destination - controller.transform.position).normalized;
-        controller.transform.position += direction * (Time.deltaTime * 6f);  // 이동
-
-        // 목표에 거의 도달하면 완료
-        if (Vector3.Distance(destination, controller.transform.position) < 0.5f)
-        {
-            // 중앙까지는 잘 도착햇지만 다시 플레이어 추적을 해야해서 에러남
-            Debug.Log(3);
-            SetStatus(Status.Success);
-        }
-    }
-
-    public override void End()
-    {
-        controller.Collider.isTrigger = false;
-        // controller.rigidbody.isKinematic = false;
-        controller.Rigidbody.gravityScale = 2;
-    }
-}
-
-public class DashNode : Node // 현재 방향이거나 타겟 방향
-{
-    private int direction;
-    public override void Start()
-    {
-    }
-
-    public override void Update()
-    {
-        if(currTime > 1) { SetStatus(Status.Success); return; }
-        controller.Rigidbody.velocity = new Vector2(controller.transform.localEulerAngles.y == 180 ? -2 : 2, controller.Rigidbody.velocity.y);
-    }
-}
 
 // summon인 경우 위치 체크 문제 발생
 public class JumpNode : Node

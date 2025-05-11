@@ -1,8 +1,9 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
-// SO로 관리되도록 한다.
-public class EnemySkillCommand
+[CreateAssetMenu(menuName = "SO/Enemy/AttackSO")]
+public class EnemyAttackSO: ScriptableObject
 {
     public string animName;
 
@@ -19,6 +20,8 @@ public class EnemySkillCommand
     public float effect;
     public float range; // 사거리
 
+    public bool isMeleeAttack;
+
     public enum AttackType { Base, OneShot, Dash }
     public AttackType attackType;
     
@@ -29,11 +32,11 @@ public class EnemySkillCommand
     // 앞에 condition부터 시작해서 캐스팅과 애프터 캐스팅까지 필요
     public List<Node> ResultNode;
 
-    public Action action;
+    public System.Action action;
     public bool isLookTarget;
 
     public Node Get()
     {
-        return new SequenceNode();
+        return new Sequence();
     }
 }

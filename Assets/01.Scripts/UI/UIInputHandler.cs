@@ -6,12 +6,12 @@ using UnityEngine.InputSystem;
 
 public class UIInputHandler : MonoBehaviour
 {
-    private Dictionary<KeyCode, Action> keyActions;
+    private Dictionary<KeyCode, System.Action> keyActions;
 
     private void Awake()
     {
-        // SingletonÀ» ¹Ù·Î »ç¿ë
-        keyActions = new Dictionary<KeyCode, Action>
+        // Singletonï¿½ï¿½ ï¿½Ù·ï¿½ ï¿½ï¿½ï¿½
+        keyActions = new Dictionary<KeyCode, System.Action>
         {
             { KeyCode.I, () => UIManager.Instance?.ToggleInventory() },
             { KeyCode.Escape, HandleEscapeKey },
@@ -36,7 +36,7 @@ public class UIInputHandler : MonoBehaviour
     {
         if (UIManager.Instance.shopUI.gameObject.activeSelf)
         {
-            // »óÁ¡ÀÌ ¿­¸° »óÅÂ¸é »óÁ¡¸¸ ´ÝÀ½
+            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Â¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             UIManager.Instance.shopUI.gameObject.SetActive(false);
             GameObject player = GameObject.FindWithTag("Player");
             if (player != null)
@@ -48,18 +48,18 @@ public class UIInputHandler : MonoBehaviour
         else if (UIManager.Instance.statUI != null && UIManager.Instance.statUI.statusUI != null
              && UIManager.Instance.statUI.statusUI.activeSelf)
         {
-            // statUI°¡ ¿­·ÁÀÖÀ¸¸é statUI¸¸ ´ÝÀ½
+            // statUIï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ statUIï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             UIManager.Instance.statUI.OffStatUI();
         }
         else if (UIManager.Instance.passiveUI != null && UIManager.Instance.passiveUI.passiveUI != null
              && UIManager.Instance.passiveUI.passiveUI.activeSelf)
         {
-            // statUI°¡ ¿­·ÁÀÖÀ¸¸é statUI¸¸ ´ÝÀ½
+            // statUIï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ statUIï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             UIManager.Instance.passiveUI.OffPassiveUI();
         }
         else
         {
-            //»óÁ¡ÀÌ ¾È¿­·Á ÀÖÀ¸¸é ¼³Á¤Ã¢ ¿­±â
+            //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½È¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ã¢ ï¿½ï¿½ï¿½ï¿½
             UIManager.Instance?.ToggleSettings();
         }
     }

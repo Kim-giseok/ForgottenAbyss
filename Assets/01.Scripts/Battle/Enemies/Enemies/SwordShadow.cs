@@ -1,5 +1,6 @@
 using UnityEngine;
 
+// 캐스팅 노드로 통일
 public class SSCastingNode : Node
 {
     public override void Start()
@@ -16,6 +17,7 @@ public class SSCastingNode : Node
     }
 }
 
+// 이동 + 공격인 상황(특수하게 분리가 필요)
 public class SSDashAttack : Node
 {
     private string animationName;

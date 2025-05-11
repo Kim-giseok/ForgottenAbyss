@@ -9,7 +9,7 @@ public class Inventory : MonoBehaviour
     public static Inventory Instance;
 
     public List<Item> items = new List<Item>(); // 아이템 목록
-    public event Action onItemChanged; // 슬롯 개수 변경 시 호출
+    public event System.Action onItemChanged; // 슬롯 개수 변경 시 호출
 
     void Awake()
     {

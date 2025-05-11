@@ -14,7 +14,6 @@ public class EnemyBaseController: MonoBehaviour
     public EnemySoundHandler soundHandler { get; protected set; }
 
     public EnemyBoard board { get; protected set; }
-    
 
     protected virtual void Awake()
     {

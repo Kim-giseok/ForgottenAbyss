@@ -29,10 +29,10 @@ public class EnemySkillSO: ScriptableObject
     // 앞에 condition부터 시작해서 캐스팅과 애프터 캐스팅까지 필요
     public List<Node> ResultNode;
 
-    public Action action;
+    public System.Action action;
 
     public Node Get()
     {
-        return new SequenceNode();
+        return new Sequence();
     }
 }

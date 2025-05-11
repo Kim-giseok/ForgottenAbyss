@@ -39,12 +39,12 @@ public class Machine : MonoBehaviour
         if (isLoop) ActionAfterAnimation(rootLaber.DisSwitchMachine);
     }
 
-    protected void ActionAfterAnimation(Action action, float additionalWaitTime = 0f)
+    protected void ActionAfterAnimation(System.Action action, float additionalWaitTime = 0f)
     {
         StartCoroutine(WaitAniTime(action, additionalWaitTime));
     }
 
-    IEnumerator WaitAniTime(Action action, float additionalWaitTime = 0f)
+    IEnumerator WaitAniTime(System.Action action, float additionalWaitTime = 0f)
     {
         yield return null;
         yield return new WaitForSeconds(machineAnim.GetCurrentAnimatorStateInfo(0).length);

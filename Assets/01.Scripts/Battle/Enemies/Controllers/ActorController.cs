@@ -1,15 +1,13 @@
-using UnityEngine;
-
 public class ActorController: EnemyBaseController
 {
     public SummonSkillManager.Animation currAnimation;
     private void Start()
     {
-        Define(currAnimation);
+        Set(currAnimation);
         machine.Start();
     }
 
-    private void Define(SummonSkillManager.Animation animationName)
+    private void Set(SummonSkillManager.Animation animationName)
     {
         var (_, node) = SummonSkillManager.Animations[(int)animationName];
 
@@ -17,10 +15,10 @@ public class ActorController: EnemyBaseController
         // 한텀 돌면 삭제가 아니라 잠시 정지
         machine.OnLooped += () =>
         {
-            Debug.Log("end");
-            // EnemyRespawner.Instance.Create(Enemies.Enemy.Agis, transform.position);
+            machine.SetPlaying(false);
         };
         
         machine.Define(node);
+        machine.Start();
     }
 }

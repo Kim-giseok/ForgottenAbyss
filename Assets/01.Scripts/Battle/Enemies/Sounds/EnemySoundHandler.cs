@@ -1,17 +1,18 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 // resource 또는 SoundSO로 관리 필요
 public class EnemySoundHandler: MonoBehaviour
 {
-    public EnemySoundSO soundSO;
+    [FormerlySerializedAs("soundSO")] public EnemySoundsSO soundsSO;
     
     public AudioClip GetClip(EnemySoundType type)
     {
-        if (!soundSO) return null;
+        if (!soundsSO) return null;
         
         int index = (int)type;
-        if (index >= 0 && index < soundSO.soundList.Count) return soundSO.soundList[index]?.clip;
+        if (index >= 0 && index < soundsSO.soundList.Count) return soundsSO.soundList[index]?.clip;
         return null;
     }
 

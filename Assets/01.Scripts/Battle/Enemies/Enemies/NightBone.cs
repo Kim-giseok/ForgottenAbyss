@@ -29,7 +29,7 @@ public class ExplosionNode : Node
     }
 }
 
-// 공통으로 사용할 수 있을 듯
+// waitNode에서 casting으로 
 public class ChargingNode : Node
 {
     private float duration = 2;
@@ -49,17 +49,5 @@ public class ChargingNode : Node
     {
         controller.LookTarget();
         if(currTime >= duration) { SetStatus(Status.Success); return; }
-    }
-}
-
-public class StopNode : Node
-{
-    public override void Start()
-    {
-        if(controller.agent.status != EnemyAgent.Status.Tracked) { SetStatus(Status.Fail); return; }
-
-        controller.Rigidbody.velocity = Vector2.zero;
-        SetStatus(Status.Success);
-        return;
     }
 }

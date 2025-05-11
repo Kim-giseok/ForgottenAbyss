@@ -1,12 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class EnemyAgis
-{
-    // public Skills skills
-}
-
-// 두개로 분리하기
+// 두개로 분리하기 - move Node + 
 public class AgisSpreadShot : Node
 {
     private readonly float duration = 2f;
@@ -90,39 +85,13 @@ public class AgisRainNode : Node
     }
 }
 
-public class SummoningNode : Node
-{
-    public override void Start()
-    {
-        // ProjectileManager.Instance.CreateSummon(controller.transform, SummonSkillManager.Skill.BossSkill3, false);
-    }
-
-    public override void Update()
-    {
-        if(currTime >= 1f) { SetStatus(Status.Success); return; }
-    }
-}
-
+// 단순 액션 노드로 빼기ㄴ
 public class SetZeroPosNode : Node
 {
     public override void Start()
     {
         controller.transform.position = Vector2.zero;
         SetStatus(Status.Success);
-    }
-}
-
-public class BlackHoleNode : Node
-{
-    public override void Start()
-    {
-        BoltsPool.Instance.Create(controller.transform, Bolts.Type.BlackHole).SetEffect(Bolts.EffectType.Penetration)
-            .SetDirection(Vector2.down * 6f).SetDuration(4).Fire();
-    }
-    
-    public override void Update()
-    {
-        if(currTime >= 2f) { SetStatus(Status.Success); return; }
     }
 }
 
@@ -209,25 +178,5 @@ public class AgisMoveNode : Node
     public override void End()
     {
         controller.Rigidbody.velocity = Vector2.zero;
-    }
-}
-
-public class AgisTriangleNode : Node
-{
-    public override void Start()
-    {
-        Vector2[] offsets = {
-            new(16f, 0f),
-            new(48f, 0f),
-            new(-16f, 0f),
-            new(-48f, 0f),
-        };
-
-        foreach (var offset in offsets)
-        {
-            BoltsPool.Instance.CreateSummon(controller.transform, SummonSkillManager.Skill.AgisRain).SetCastingDirection(offset).Fire();
-        }
-        
-        SetStatus(Status.Success);
     }
 }

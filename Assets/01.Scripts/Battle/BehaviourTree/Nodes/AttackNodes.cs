@@ -1,10 +1,9 @@
-using System;
-using System.Collections;
-using Unity.VisualScripting;
-using UnityEngine;
-
 
 // 무기가 Node를 결정할 수 있도록
+
+using UnityEngine;
+
+// 기본 노드로 빼내기
 public class MeleeAttack : Node
 {
     public override void Start()
@@ -37,29 +36,5 @@ public class MeleeAttack : Node
     public override void End() // notice: 공격 중 피격 당하는 경우
     {
         BoltsPool.Instance.DisableMelee(controller.transform);
-    }
-}
-
-public class RangeAttackNode : Node
-{
-    public override void Start()
-    {
-        controller.animnHandler.Play("Attack");
-        controller.LookTarget();
-    }
-    
-    public override void OnAnimatedEvent(bool isFire)
-    {
-        // 콜백으로 공격 방식 추상화
-        if (isFire)
-        {
-            BoltsPool.Instance.Create(controller.transform, Bolts.Type.Linear).SetDamage(10).SetDirection(controller.agent.GetDirection()).Fire();
-        }
-    }
-    
-    public override void OnAnimated(AnimationStatus status, AnimatorStateInfo animInfo)
-    {
-        if (!animInfo.IsName("Attack")) return;
-        if (status == AnimationStatus.End) { SetStatus(Status.Success); }
     }
 }

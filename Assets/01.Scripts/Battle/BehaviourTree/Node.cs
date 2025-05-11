@@ -6,7 +6,7 @@ public abstract class Node
     protected Node parent;
     public List<Node> children { get; private set; } = new();
     
-    protected EnemyBaseController controller; 
+    public EnemyBaseController controller { get; private set; } 
     protected BTMachine machine;
     protected BTContext context;
     

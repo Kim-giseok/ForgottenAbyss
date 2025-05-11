@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using BT;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -13,7 +14,7 @@ public class BTMachine
     public bool isIgnoreRefresh = false;
     public bool isRefreshRequested = false;
     
-    public Action OnLooped;
+    public System.Action OnLooped;
     
     public bool isPlaying { get; private set; } = false;
     public float currTime = 0;
@@ -73,7 +74,7 @@ public class BTMachine
 
     public void Define(Node newNode)    
     {
-        rootNode = new RootNode(newNode);
+        rootNode = new Root(newNode);
     }
 
     public void Start()

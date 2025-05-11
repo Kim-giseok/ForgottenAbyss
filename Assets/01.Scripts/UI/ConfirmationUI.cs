@@ -10,7 +10,7 @@ public class ConfirmationUI : BaseUI
     [SerializeField] TextMeshProUGUI confirmTxt;
     [SerializeField] Button okBtn;
     [SerializeField] Button exitBtn;
-    Action onClick;
+    System.Action onClick;
 
     private void Awake()
     {
@@ -19,7 +19,7 @@ public class ConfirmationUI : BaseUI
         exitBtn.onClick.AddListener(() => gameObject.SetActive(false));
     }
 
-    public void PopUpUI(string text = "입장하시겠습니까?", Action onClickOk = null)
+    public void PopUpUI(string text = "입장하시겠습니까?", System.Action onClickOk = null)
     {
         gameObject.SetActive(true);
         confirmTxt.text = text;

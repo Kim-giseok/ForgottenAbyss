@@ -5,9 +5,11 @@ using System;
 using System.Collections.Generic;
 using Random = UnityEngine.Random;
 
-public class RootNode : Node
+namespace BT
 {
-    public RootNode(Node node)
+ public class Root : Node
+{
+    public Root(Node node)
     {
         node.SetParent(this);
         children.Add(node);
@@ -30,79 +32,6 @@ public class RootNode : Node
     }
 }
 
-// node에 index 
-public class SequenceNode : Node
-{
-    public SequenceNode(params Node[] nodes)
-    {
-        foreach (Node child in nodes)
-        {
-            child.SetParent(this);
-            children.Add(child);
-        }
-    }
-
-    public override void Start()
-    {
-        machine.SetCurrentNode(children[0]);
-    }
-
-    public override void GetStatus(Status newStatus , Node caller)
-    {
-
-        if (newStatus == Status.Fail)
-        {
-            SetStatus(Status.Fail);
-            return;
-        }
-        
-        // bug: 복사본이 있다면 다음 인덱스로 인식하지 못하는 문제 발생
-        int currIndex = children.IndexOf(caller);
-        if (currIndex < children.Count - 1)
-        {
-            machine.SetCurrentNode(children[currIndex + 1]);
-            return;
-        }
-
-        SetStatus(Status.Success);
-    }
-}
-
-public class SelectorNode : Node
-{
-    public SelectorNode(params Node[] nodes)
-    {
-        foreach(Node child in nodes)
-        {
-            child.SetParent(this);
-            children.Add(child);
-        }
-    }
-    
-    public override void Start()
-    {
-        machine.SetCurrentNode(children[0]);
-    }
-    
-    public override void GetStatus(Status newStatus, Node caller)
-    {
-
-        if (newStatus == Status.Fail)
-        {
-            int currIndex = children.IndexOf(caller);
-            if (currIndex < children.Count - 1)
-            {
-                machine.SetCurrentNode(children[currIndex + 1]);
-                return;
-            }
-            
-            SetStatus(Status.Fail);
-            return;
-        }
-        
-        SetStatus(Status.Success);
-    }
-}
 
 
 // 공통 노드로 가야할 듯
@@ -177,11 +106,11 @@ public class ParallelNode : Node
 
 
 // 컨디션 노드 추가
-public class ConditionNode : Node
+public class Condition : Node
 {
     private readonly Func<EnemyBaseController, bool> callback;
 
-    public ConditionNode(Func<EnemyBaseController, bool> callback, Node child)
+    public Condition(Func<EnemyBaseController, bool> callback, Node child)
     {
         this.callback = callback;
         
@@ -205,4 +134,5 @@ public class ConditionNode : Node
     {
         SetStatus(newStatus);
     }
+}   
 }

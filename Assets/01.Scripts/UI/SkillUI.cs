@@ -27,11 +27,11 @@ public class SkillUI : MonoBehaviour
     private float memoryCooldown;
 
 
-    public event Action OnInitialized;
+    public event System.Action OnInitialized;
     public bool IsInitialized = false;
 
     private Dictionary<int, float[]> weaponCooldownTable = new Dictionary<int, float[]>();
-    private Coroutine[] skillCoroutines; // °¢ ½ºÅ³¿¡ ´ëÇÑ ÄÚ·çÆ¾À» ÀúÀå
+    private Coroutine[] skillCoroutines; // ï¿½ï¿½ ï¿½ï¿½Å³ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ú·ï¿½Æ¾ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
     void Start()
     {
@@ -39,7 +39,7 @@ public class SkillUI : MonoBehaviour
         for( int i = 0; i < textPros.Length; i++)
         {
             hideSkillTimeTexts[i] = textPros[i].GetComponent<TextMeshProUGUI>();
-            hideSkillButtons[i].SetActive(false); // ¹öÆ° ºñÈ°¼ºÈ­
+            hideSkillButtons[i].SetActive(false); // ï¿½ï¿½Æ° ï¿½ï¿½È°ï¿½ï¿½È­
         }
 
         IsInitialized = true;
@@ -48,65 +48,65 @@ public class SkillUI : MonoBehaviour
 
     void Update()
     {
-       // HideSkillCheck(); // ¸Å ÇÁ·¹ÀÓ¸¶´Ù ¸ðµç¤¤ ½ºÅ³ÀÇ ÄðÅ¸ÀÓ Ã¼Å© < µÎ¹øÃ¼Å©µÇ¼­ »¯À½
+       // HideSkillCheck(); // ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ó¸ï¿½ï¿½ï¿½ ï¿½ï¿½ç¤¤ ï¿½ï¿½Å³ï¿½ï¿½ ï¿½ï¿½Å¸ï¿½ï¿½ Ã¼Å© < ï¿½Î¹ï¿½Ã¼Å©ï¿½Ç¼ï¿½ ï¿½ï¿½ï¿½ï¿½
     }
 
-    //½ºÅ³ ¹öÆ°À» È°¼ºÈ­ÇÏ°í, ÄðÅ¸ÀÓ ½ÃÀÛ
+    //ï¿½ï¿½Å³ ï¿½ï¿½Æ°ï¿½ï¿½ È°ï¿½ï¿½È­ï¿½Ï°ï¿½, ï¿½ï¿½Å¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     public void HideSkillSetting(int skillNum, float coolTime)
     {
-        if (!isHideSkills[skillNum]) //ÀÌ¹Ì È°¼ºÈ­µÈ ½ºÅ³¿¡ ´ëÇØ Áßº¹ ¼³Á¤ ¹æÁö
+        if (!isHideSkills[skillNum]) //ï¿½Ì¹ï¿½ È°ï¿½ï¿½È­ï¿½ï¿½ ï¿½ï¿½Å³ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ßºï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         {
-            hideSkillButtons[skillNum].SetActive(true); // ¹öÆ° ÇÒ¼ºÈ­
-            getSkillTimes[skillNum] = coolTime; // ÄðÅ¸ÀÓ ¼³Á¤ (¿ÜºÎ¿¡¼­ ¹ÞÀº °ª)
-            //skillTimes[skillNum] = coolTime;    // ÃÑ ÄðÅ¸ÀÓ ±â·Ïµµ °»½Å  < ÄðÅ¸ÀÓ ui ¾÷µ¥ÀÌÆ®¿¡ ¹®Á¦°¡ ÀÖ¾î Á¦°ÅÇÔ ÀÌÈÄ Á¤»óÀÛµ¿µÊ
-            isHideSkills[skillNum] = true; // ½ºÅ³ÀÌ È°¼ºÈ­µÊ
+            hideSkillButtons[skillNum].SetActive(true); // ï¿½ï¿½Æ° ï¿½Ò¼ï¿½È­
+            getSkillTimes[skillNum] = coolTime; // ï¿½ï¿½Å¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ (ï¿½ÜºÎ¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½)
+            //skillTimes[skillNum] = coolTime;    // ï¿½ï¿½ ï¿½ï¿½Å¸ï¿½ï¿½ ï¿½ï¿½Ïµï¿½ ï¿½ï¿½ï¿½ï¿½  < ï¿½ï¿½Å¸ï¿½ï¿½ ui ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö¾ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ûµï¿½ï¿½ï¿½
+            isHideSkills[skillNum] = true; // ï¿½ï¿½Å³ï¿½ï¿½ È°ï¿½ï¿½È­ï¿½ï¿½
 
-            // ÇØ´ç ¼³Á¤¿¡ ´ëÇÑ ÄÚ·çÆ¾ ½ÇÇà
+            // ï¿½Ø´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ú·ï¿½Æ¾ ï¿½ï¿½ï¿½ï¿½
             if (skillCoroutines[skillNum] != null)
             {
-                StopCoroutine(skillCoroutines[skillNum]); // ±âÁ¸ ÄÚ·çÆ¾ÀÌ ÀÖÀ¸¸é Á¤Áö
+                StopCoroutine(skillCoroutines[skillNum]); // ï¿½ï¿½ï¿½ï¿½ ï¿½Ú·ï¿½Æ¾ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             }
-            skillCoroutines[skillNum] = StartCoroutine(SkillTimeCheck(skillNum)); // »õ ÄÚ·çÆ¾ ½ÃÀÛ
+            skillCoroutines[skillNum] = StartCoroutine(SkillTimeCheck(skillNum)); // ï¿½ï¿½ ï¿½Ú·ï¿½Æ¾ ï¿½ï¿½ï¿½ï¿½
         }
     }
 
-    // °¢ ½ºÅ³ÀÇ ÄðÅ¸ÀÓ Ã¼Å© ÈÄ UI¾÷µ¥ÀÌÆ®
+    // ï¿½ï¿½ ï¿½ï¿½Å³ï¿½ï¿½ ï¿½ï¿½Å¸ï¿½ï¿½ Ã¼Å© ï¿½ï¿½ UIï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
     private void HideSkillCheck()
     {
         for (int i = 0; i <isHideSkills.Length; i++)
         {
-            // ÇØ´ç ½ºÅ³ÀÌ È°¼ºÈ­µÆÀ½ ÄðÅ¸ÀÓ Ã¼Å©
+            // ï¿½Ø´ï¿½ ï¿½ï¿½Å³ï¿½ï¿½ È°ï¿½ï¿½È­ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Å¸ï¿½ï¿½ Ã¼Å©
             if (isHideSkills[i] && getSkillTimes[i] > 0)
             {
-                UpdateSkillUI(i); //ÄðÅ¸ÀÓ ¾÷µ¥ÀÌÆ®
+                UpdateSkillUI(i); //ï¿½ï¿½Å¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
             }
         }
     }
 
     private void UpdateSkillUI(int skillNum)
     {
-        getSkillTimes[skillNum] -= Time.deltaTime; // ³²Àº ÄðÅ¸ÀÓ Â÷°¨
-        if (getSkillTimes[skillNum] <= 0) // ÄðÅ¸ÀÓÀÌ ³¡³ª¸é
+        getSkillTimes[skillNum] -= Time.deltaTime; // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Å¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        if (getSkillTimes[skillNum] <= 0) // ï¿½ï¿½Å¸ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         {
-            getSkillTimes[skillNum] = 0; // 0À¸·Î ¼³Á¤
-            isHideSkills[skillNum] = false; // ½ºÅ³ÀÌ ºñÈ°¼ºÈ­µÊ
-            hideSkillButtons[skillNum].SetActive(false); // ¹öÆ° ºñÈ°¼ºÈ­
+            getSkillTimes[skillNum] = 0; // 0ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+            isHideSkills[skillNum] = false; // ï¿½ï¿½Å³ï¿½ï¿½ ï¿½ï¿½È°ï¿½ï¿½È­ï¿½ï¿½
+            hideSkillButtons[skillNum].SetActive(false); // ï¿½ï¿½Æ° ï¿½ï¿½È°ï¿½ï¿½È­
         }
-        // ³²Àº ÄðÅ¸ÀÓ ÅØ½ºÆ® ¾÷µ¥ÀÌÆ®
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Å¸ï¿½ï¿½ ï¿½Ø½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
         hideSkillTimeTexts[skillNum].text = getSkillTimes[skillNum].ToString("0.0");
 
-        //ÄðÅ¸ÀÓÀ» ºñÀ²·Î °è»êÇØ ÀÌ¹ÌÁö °»½Å
+        //ï¿½ï¿½Å¸ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ì¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         float time = getSkillTimes[skillNum] / skillTimes[skillNum];
         hideSkillImages[skillNum].fillAmount = time;
     }
 
-    // ÄðÅ¸ÀÓ Ã³¸®ÇÏ´Â ÄÚ·çÆ¾
+    // ï¿½ï¿½Å¸ï¿½ï¿½ Ã³ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½Ú·ï¿½Æ¾
     IEnumerator SkillTimeCheck(int skillNum)
     {
         while (getSkillTimes[skillNum] > 0)
         {
-            yield return null; // ÇÑ ÇÁ·¡ÀÓ ´ë±â
-            UpdateSkillUI(skillNum); //uI°»½Å
+            yield return null; // ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
+            UpdateSkillUI(skillNum); //uIï¿½ï¿½ï¿½ï¿½
         }
     }
 
@@ -184,17 +184,17 @@ public class SkillUI : MonoBehaviour
             if (hideSkillButtons[i] != null)
                 hideSkillButtons[i].SetActive(false);
             else
-                Debug.LogWarning($"[SkillUI] hideSkillButtons[{i}]°¡ nullÀÔ´Ï´Ù.");
+                Debug.LogWarning($"[SkillUI] hideSkillButtons[{i}]ï¿½ï¿½ nullï¿½Ô´Ï´ï¿½.");
 
             if (hideSkillImages[i] != null)
                 hideSkillImages[i].fillAmount = 0f;
             else
-                Debug.LogWarning($"[SkillUI] hideSkillImages[{i}]°¡ nullÀÔ´Ï´Ù.");
+                Debug.LogWarning($"[SkillUI] hideSkillImages[{i}]ï¿½ï¿½ nullï¿½Ô´Ï´ï¿½.");
 
             if (hideSkillTimeTexts[i] != null)
                 hideSkillTimeTexts[i].text = "";
             else
-                Debug.LogWarning($"[SkillUI] hideSkillTimeTexts[{i}]°¡ nullÀÔ´Ï´Ù.");
+                Debug.LogWarning($"[SkillUI] hideSkillTimeTexts[{i}]ï¿½ï¿½ nullï¿½Ô´Ï´ï¿½.");
         }
     }
 
@@ -228,6 +228,6 @@ public class SkillUI : MonoBehaviour
             isHideSkills[idx] = false; 
         }
 
-        Debug.Log($"[SkillUI] ClearSkillIcon: {type} ÃÊ±âÈ­ ¿Ï·á");
+        Debug.Log($"[SkillUI] ClearSkillIcon: {type} ï¿½Ê±ï¿½È­ ï¿½Ï·ï¿½");
     }
 }

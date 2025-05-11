@@ -6,9 +6,9 @@ public class ActionBufferUtil : MonoBehaviour
 {
     private List<BufferedAction> bufferedActions = new List<BufferedAction>();
 
-    public void BufferAction(string name, Func<bool> condition, Action action)
+    public void BufferAction(string name, Func<bool> condition, System.Action action)
     {
-        // ÀÌ¸§ Áßº¹ Á¦°Å
+        // ï¿½Ì¸ï¿½ ï¿½ßºï¿½ ï¿½ï¿½ï¿½ï¿½
         bufferedActions.RemoveAll(a => a.Name == name);
         bufferedActions.Add(new BufferedAction(name, condition, action));
     }

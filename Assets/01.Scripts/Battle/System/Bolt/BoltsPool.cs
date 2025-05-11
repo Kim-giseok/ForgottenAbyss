@@ -159,4 +159,12 @@ public class BoltsPool : MonoBehaviour // 단위 미사일
 
         return currSummon;
     }
+
+    public void Clear()
+    {
+        foreach (var bolt in currBolts)
+        {
+            bolt.gameObject.SetActive(false);
+        }
+    }
 }

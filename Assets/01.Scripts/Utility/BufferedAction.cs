@@ -4,9 +4,9 @@ public class BufferedAction
 {
     public string Name { get; private set; }
     private Func<bool> condition;
-    private Action action;
+    private System.Action action;
 
-    public BufferedAction(string name, Func<bool> condition, Action action)
+    public BufferedAction(string name, Func<bool> condition, System.Action action)
     {
         Name = name;
         this.condition = condition;

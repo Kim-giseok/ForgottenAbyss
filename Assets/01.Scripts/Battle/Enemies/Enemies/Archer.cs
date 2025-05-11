@@ -55,6 +55,7 @@ public class RangeMultiAttackNode : Node
     }
 }
 
+// move + 무적모드로 처리
 public class PlayRollingAnimation : Node
 {
     public override void Start()

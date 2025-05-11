@@ -5,6 +5,8 @@ public class EnemyAnimHandler: MonoBehaviour
     private EnemyBaseController controller;
     private Animator animator;
     
+    public float baseAnimationTime; // 슬로우 모드 구현을 위한
+    
     public enum Status { None, Start, End } 
     private Status currStatus = Status.None;
     private int currClipHash;
