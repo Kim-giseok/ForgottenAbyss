@@ -1,20 +1,22 @@
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
+using UnityEngine.SceneManagement;
 
 public class EnemiesAnimator
 {
     public static Dictionary<string, RuntimeAnimatorController> animators = new();
 
-    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
     private static void Init()
     {
-        RuntimeAnimatorController[] loadedAnimators = 
-            Resources.LoadAll<RuntimeAnimatorController>("EnemyAnimators");
-
-        foreach (var animator in loadedAnimators)
+        Addressables.LoadAssetsAsync<RuntimeAnimatorController>("EnemyAnimator", null).Completed += (handle) =>
         {
-            animators[animator.name] = animator;
-        }
+            foreach (var animator in handle.Result)
+            {
+                animators.Add(animator.name, animator);
+            }
+        };
     }
 }

@@ -48,7 +48,7 @@ public class MapSpawnManager : Singleton<MapSpawnManager>
             Destroy(SpawnedMap.gameObject);
 
         SpawnedMap = Instantiate(maps[mapIdx++]);
-        foreach (var item in GameObject.FindGameObjectsWithTag("FieldItem")) { Destroy(item.gameObject); }
+        foreach (var item in GameObject.FindGameObjectsWithTag("FieldItem")) { item.gameObject.SetActive(false); }
         SpawnedMap.MapStart();
         confiner2D.m_BoundingShape2D = SpawnedMap.CameraCollider;
     }

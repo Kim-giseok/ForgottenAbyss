@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class FieldItemDropAnimator: MonoBehaviour
 {
@@ -8,8 +10,23 @@ public class FieldItemDropAnimator: MonoBehaviour
     private float xOffsetRange = 1.8f;
     
     private Coroutine animCoroutine;
+    private Collider2D _collider;
+    
+    private SpriteRenderer _renderer;
 
-    void Start()
+    private void Awake()
+    {
+        _collider = GetComponent<Collider2D>();
+        _renderer = GetComponentInChildren<SpriteRenderer>();
+        _collider.enabled = false;
+    }
+
+    private void OnEnable()
+    {
+        _collider.enabled = false;
+    }
+
+    public void Spawn()
     {
         Vector2 start = transform.position;
         Vector2 end = start + new Vector2(Random.Range(-xOffsetRange, xOffsetRange), 0f);
@@ -32,6 +49,10 @@ public class FieldItemDropAnimator: MonoBehaviour
         }
 
         transform.position = startPoint;
+
+        yield return new WaitForSeconds(0.5f);
+        
         StopCoroutine(animCoroutine);
+        _collider.enabled = true;
     }
 }
