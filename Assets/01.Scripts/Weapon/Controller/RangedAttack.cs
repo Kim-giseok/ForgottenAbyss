@@ -55,7 +55,7 @@ public class RangedAttack : MonoBehaviour
     public void OnRangedCheck(float bufferTime)
     {
         canNextCombo = true;
-        DamageTextManager.Instance.ShowComboTiming(bufferTime);
+        //DamageTextManager.Instance.ShowComboTiming(bufferTime);
         StartCoroutine(RangedInputBuffer(bufferTime));
     }
 
