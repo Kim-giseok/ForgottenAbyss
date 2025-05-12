@@ -39,12 +39,11 @@ public class DashState : PlayerStateMachine
     }
     public override void Update()
     {
-        // ´ë½¬ Áß Á¡ÇÁÅ° ÀÔ·Â °¨Áö
+        //ëŒ€ì‹œ ì¤‘ ì í”„ í‚¤ ì…ë ¥ ì‹œ ëŒ€ì‹œ ìº”ìŠ¬
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            // Á¡ÇÁ »óÅÂ·Î Áï½Ã ÀüÈ¯
             player.ChangeState(PlayerState.Jump);
-            return; // Á¡ÇÁ »óÅÂ·Î ÀüÈ¯ÇßÀ¸¹Ç·Î ³ª¸ÓÁö Update ·ÎÁ÷ °Ç³Ê¶Ü
+            return; 
         }
 
         dashTimer += Time.deltaTime;
