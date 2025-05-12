@@ -1,8 +1,8 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
+using UnityEngine.SceneManagement;
 
 public enum VOLTYPE
 {
@@ -35,6 +35,20 @@ public class SoundManager : SingletonLoadRemain<SoundManager>
     [SerializeField] AudioClip bgm;
 
     [SerializeField] AudioClip[] sfxList;
+    private Dictionary<string, AudioClip> addressSfxList = new();
+
+    protected override void OnSceneLoaded(Scene scene, LoadSceneMode mode) { }
+
+    protected override void Init()
+    {
+        Addressables.LoadAssetsAsync<AudioClip>("SFX", null).Completed += (handle) =>
+        {
+            foreach (var clip in handle.Result)
+            {
+                addressSfxList.Add(clip.name, clip);
+            }
+        };
+    }
 
     protected override void Awake()
     {
@@ -79,6 +93,12 @@ public class SoundManager : SingletonLoadRemain<SoundManager>
 
     public void Playsfx(string sfxName)
     {
+        if (addressSfxList.ContainsKey(sfxName))
+        {
+            PlaySFX(addressSfxList[sfxName]);
+            return;
+        }
+        
         AudioClip sfx = null;
         foreach (var clip in sfxList)
             if (clip.name == sfxName)
