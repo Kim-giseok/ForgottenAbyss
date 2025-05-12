@@ -12,7 +12,7 @@ public class FieldItemPool: SingletonLoadRemain<FieldItemPool>
     private readonly List<FieldGoldItem> _currCoins = new();
 
     public FieldItem memoryItem;
-    private readonly Dictionary<string, MemorySkillItem> _memoryItemList = new();
+    public Dictionary<string, MemorySkillItem> MemoryItemList { get; private set; } = new();
     private readonly List<FieldItem> _currMemoryItems = new();
     
     protected override void OnSceneLoaded(Scene scene, LoadSceneMode mode) {}
@@ -23,7 +23,7 @@ public class FieldItemPool: SingletonLoadRemain<FieldItemPool>
         {
             foreach (var memoryItemSO in handle.Result)
             { 
-                _memoryItemList.Add(memoryItemSO.name, memoryItemSO);
+                MemoryItemList.Add(memoryItemSO.name, memoryItemSO);
             }
         };
     }
@@ -37,7 +37,7 @@ public class FieldItemPool: SingletonLoadRemain<FieldItemPool>
             _currMemoryItems.Add(newMemoryItem);
         }
 
-        if (_memoryItemList.TryGetValue(itemName, out var currSkillItem))
+        if (MemoryItemList.TryGetValue(itemName, out var currSkillItem))
         {
             newMemoryItem.Define(currSkillItem);
         }

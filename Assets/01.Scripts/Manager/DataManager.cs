@@ -48,8 +48,8 @@ public class DataManager : MonoBehaviour
         LoadWeaponData();
         InitWeaponSO();
 
-        // LoadMemoryPieceData();
-        // InitMemoryPieceSO();
+        LoadMemoryPieceData();
+        InitMemoryPieceSO();
 
         LoadArmorData();
         InitArmorSO();

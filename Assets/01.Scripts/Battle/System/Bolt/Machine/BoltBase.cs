@@ -3,7 +3,7 @@ using UnityEngine;
 public class BoltNode
 {
     private StepMachine machine;
-    protected Bolt bolt;
+    protected BoltBuilder bolt;
 
     protected float currTime => bolt.currTime - machine.snapshotTime;
     public BoltContext context = new();
@@ -26,7 +26,7 @@ public class BoltNode
 
 public abstract class BoltEffect
 {
-    public Bolt bolt { get; private set; }
-    public void Connect(Bolt controller) => this.bolt = controller;
+    public BoltBuilder bolt { get; private set; }
+    public void Connect(BoltBuilder controller) => this.bolt = controller;
     public abstract void Execute(Collider2D other);
 }
