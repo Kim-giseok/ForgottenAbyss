@@ -130,7 +130,12 @@ public class SummonController: EnemyBaseController
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.A)) { machine.currNode.OnPressed(); } // 임시 등록
-        if (isCasterAttached) { caster.transform.position = transform.position; }
+
+        if (isCasterAttached)
+        {
+            direction = GameManager.Instance.player.controller.inputVec;
+            caster.transform.position = transform.position;
+        }
     }
 
     private void OnDestroy()
@@ -140,12 +145,5 @@ public class SummonController: EnemyBaseController
         cRenderer.enabled = true;
         Collider.isTrigger = false;
         if(isPlayerCaster) { pController.isInvincible = false; }
-    }
-
-    // 현재 노드에게 알림 - 인식은 되는 것으로 확인됨
-    private void OnMove(InputValue value)
-    {
-        // 현재 다이렉션을 입력 값으로 적용
-        direction = value.Get<Vector2>().normalized;
     }
 }
