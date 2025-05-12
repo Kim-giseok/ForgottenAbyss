@@ -1,23 +1,31 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class FieldItem : MonoBehaviour
 {
     public Item item; // �ʵ忡 ������ �ִ� ������
-    public SpriteRenderer itemImg;
-
-    private SpriteRenderer _renderer;
+    
+    private readonly List<SpriteRenderer> _renderers = new();
+    private FieldItemDropAnimator _dropAnimator;
 
     private void Awake()
     {
-        _renderer = GetComponentInChildren<SpriteRenderer>();
-        // _renderer.sprite = itemImg.sprite;
+        _dropAnimator = GetComponent<FieldItemDropAnimator>();
+    }
+
+    public void Define(Item newItem)
+    {
+        item = newItem;
+        _renderers.Add(transform.GetChild(0).GetComponent<SpriteRenderer>());
+        _renderers.Add(transform.GetChild(0).GetChild(0).GetComponent<SpriteRenderer>());
+        _renderers.ForEach(spriteRenderer => spriteRenderer.sprite = item.itemIcon);
     }
 
     // ������ ����
     public void SetItem(Item newItem)
     {
         item = newItem;
-        itemImg.sprite = item.itemIcon;
     }
     // ������ ��ȯ
     public Item GetItem()
@@ -28,6 +36,11 @@ public class FieldItem : MonoBehaviour
     // ������ ����
     public void DestroyItem()
     {
-        Destroy(gameObject);
+        gameObject.SetActive(false);
+    }
+
+    public void Spawn()
+    {
+        _dropAnimator.Spawn();
     }
 }

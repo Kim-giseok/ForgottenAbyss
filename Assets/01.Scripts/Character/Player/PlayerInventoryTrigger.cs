@@ -13,7 +13,7 @@ public class PlayerInventoryTrigger : MonoBehaviour
             {
                 // 오브젝트 풀에서 관리하기
                 GoldManager.Instance.AddGold(goldItem.amount);
-                Destroy(goldItem.gameObject);
+                collision.gameObject.SetActive(false);
                 return;
             }
             

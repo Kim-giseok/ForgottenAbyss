@@ -167,6 +167,7 @@ public class Bolt: MonoBehaviour
         trailRenderer.Clear();
         currTime = 0;
         hitBox.gameObject.SetActive(true);
+        animHandler.Play("None");
     }
 
     // 삭제가 없으므로
@@ -180,7 +181,6 @@ public class Bolt: MonoBehaviour
         
         machine.Clear();
         effects.Clear();
-        animHandler.Play("None");
         Rigidbody.velocity = Vector2.zero;
 
         trailRenderer.enabled = true;

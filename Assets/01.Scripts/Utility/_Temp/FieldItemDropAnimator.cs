@@ -21,7 +21,12 @@ public class FieldItemDropAnimator: MonoBehaviour
         _collider.enabled = false;
     }
 
-    void Start()
+    private void OnEnable()
+    {
+        _collider.enabled = false;
+    }
+
+    public void Spawn()
     {
         Vector2 start = transform.position;
         Vector2 end = start + new Vector2(Random.Range(-xOffsetRange, xOffsetRange), 0f);
