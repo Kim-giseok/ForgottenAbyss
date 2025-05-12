@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class FieldItemDropAnimator: MonoBehaviour
 {
@@ -8,6 +10,13 @@ public class FieldItemDropAnimator: MonoBehaviour
     private float xOffsetRange = 1.8f;
     
     private Coroutine animCoroutine;
+    private Collider2D _collider;
+
+    private void Awake()
+    {
+        _collider = GetComponent<Collider2D>();
+        _collider.enabled = false;
+    }
 
     void Start()
     {
@@ -32,6 +41,10 @@ public class FieldItemDropAnimator: MonoBehaviour
         }
 
         transform.position = startPoint;
+
+        yield return new WaitForSeconds(0.5f);
+        
         StopCoroutine(animCoroutine);
+        _collider.enabled = true;
     }
 }
