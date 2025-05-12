@@ -8,8 +8,10 @@ public class PlayerInventoryTrigger : MonoBehaviour
     {
         if (collision.CompareTag("FieldItem"))
         {
+            SoundManager.Instance.Playsfx("GetItem");
             if (collision.TryGetComponent(out FieldGoldItem goldItem))
             {
+                // 오브젝트 풀에서 관리하기
                 GoldManager.Instance.AddGold(goldItem.amount);
                 Destroy(goldItem.gameObject);
                 return;
