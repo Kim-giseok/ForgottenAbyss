@@ -193,8 +193,9 @@ public class RangedAttack : MonoBehaviour
 
         if (!animator.GetCurrentAnimatorStateInfo(0).IsName(rangedData.comboSteps[attackIndex - 1].animationName))
         {
-            animator.SetInteger("BowCombo", attackIndex);
+            animator.ResetTrigger("BowTrigger");
             animator.SetTrigger("BowTrigger");
+            animator.SetInteger("BowCombo", attackIndex);
         }
     }
 }

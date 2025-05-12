@@ -128,9 +128,10 @@ public class ComboAttack : MonoBehaviour
 
         if (!animator.GetCurrentAnimatorStateInfo(0).IsName(comboData.comboSteps[attackIndex - 1].animationName))
         {
-            animator.SetInteger("SwordCombo", attackIndex);
-            animator.SetTrigger("SwordTrigger");
-        }// 다시 콤보 시작
+            animator.ResetTrigger("AttackTrigger");
+            animator.SetTrigger("AttackTrigger");
+            animator.SetInteger("AttackCombo", attackIndex);
+        }
     }
 
     void OnAttackReset()
