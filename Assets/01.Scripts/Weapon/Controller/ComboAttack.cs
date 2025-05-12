@@ -10,7 +10,7 @@ public class ComboAttack : MonoBehaviour
 
     private ComboAttackSO comboData;
 
-    int attackIndex = 0;
+    public int attackIndex = 0;
     bool canNextCombo = false;
     bool inputCombo = false;
 

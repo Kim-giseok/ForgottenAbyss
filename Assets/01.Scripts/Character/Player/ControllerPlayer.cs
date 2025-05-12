@@ -181,7 +181,15 @@ public class ControllerPlayer : MonoBehaviour
         if (!isAlive) return;
         if (value.isPressed)
         {
-            
+            var weaponData = SystemManager.Instance.weaponManager.GetCurrentWeaponData();
+            var skillController = SkillController.Instance;
+
+            if (weaponData.Type == WeaponType.Sword && skillController.comboAttack.attackIndex >= 3)
+            {
+                Debug.Log("콤보가 3 이상이라 점프할 수 없습니다!");
+                return;
+            }
+
             if (states.ContainsKey(currentState))
             {
                 states[currentState].OnJump();
