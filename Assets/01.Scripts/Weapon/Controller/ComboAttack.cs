@@ -108,7 +108,7 @@ public class ComboAttack : MonoBehaviour
         if (inputCombo)
         {
             inputCombo = false;
-            StartCoroutine(RestartComboAfterDelay(0.2f));
+            StartCoroutine(RestartComboAfterDelay(0.1f));
         }
         else
         {
@@ -124,8 +124,12 @@ public class ComboAttack : MonoBehaviour
         attackIndex = 1;
         IsAttacking = true;
         canNextCombo = true;
-        animator.SetInteger("AttackCombo", attackIndex);
-        animator.SetTrigger("AttackTrigger"); // 다시 콤보 시작
+
+        if (!animator.GetCurrentAnimatorStateInfo(0).IsName(comboData.comboSteps[attackIndex - 1].animationName))
+        {
+            animator.SetInteger("SwordCombo", attackIndex);
+            animator.SetTrigger("SwordTrigger");
+        }// 다시 콤보 시작
     }
 
     void OnAttackReset()

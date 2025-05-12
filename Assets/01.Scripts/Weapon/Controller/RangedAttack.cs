@@ -174,7 +174,7 @@ public class RangedAttack : MonoBehaviour
         {
             inputCombo = false;
 
-            StartCoroutine(RestartRangedComboAfterDelay(0.2f));
+            StartCoroutine(RestartRangedComboAfterDelay(0.1f));
         }
         else
         {
@@ -189,7 +189,11 @@ public class RangedAttack : MonoBehaviour
         attackIndex = 1;
         IsAttacking = true;
         canNextCombo = true;
-        animator.SetInteger("BowCombo", attackIndex);
-        animator.SetTrigger("BowTrigger");
+
+        if (!animator.GetCurrentAnimatorStateInfo(0).IsName(rangedData.comboSteps[attackIndex - 1].animationName))
+        {
+            animator.SetInteger("BowCombo", attackIndex);
+            animator.SetTrigger("BowTrigger");
+        }
     }
 }
