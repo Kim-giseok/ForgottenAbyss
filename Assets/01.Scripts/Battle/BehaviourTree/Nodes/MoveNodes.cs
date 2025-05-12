@@ -13,7 +13,7 @@ public class IdleNode : Node
     public override void Start()
     {
         controller.Rigidbody.velocity = new Vector2(0, controller.Rigidbody.velocity.y);
-        controller.animnHandler.Play("Idle");
+        controller.animHandler.Play("Idle");
     }
 
     public override void Update()
@@ -48,7 +48,7 @@ public class PatrolMove : Node
             SetStatus(Status.Fail); return;
         } 
      
-        controller.animnHandler.Play("Run");
+        controller.animHandler.Play("Run");
     }
 
     public override void Update()
@@ -74,7 +74,7 @@ public class TracingNode : Node
         // 추적이 완료되면 무한 재귀 발생
         if(controller.agent.status == EnemyAgent.Status.None) { SetStatus(Status.Fail); return; }
         if(controller.agent.status == EnemyAgent.Status.Tracked) { SetStatus(Status.Success); return; }
-        controller.animnHandler.Play("Run");
+        controller.animHandler.Play("Run");
     }
     
     public override void Update()

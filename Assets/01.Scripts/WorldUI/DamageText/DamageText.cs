@@ -1,7 +1,6 @@
 using TMPro;
 using UnityEngine;
 using System.Collections;
-using Unity.Android.Types;
 
 public class DamageText : MonoBehaviour
 {

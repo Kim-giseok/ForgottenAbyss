@@ -6,17 +6,17 @@ using UnityEngine.SceneManagement;
 
 public class EnemiesAnimator
 {
+    public static bool IsLoaded;
+    
     public static Dictionary<string, RuntimeAnimatorController> animators = new();
 
-    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     private static void Init()
     {
         Addressables.LoadAssetsAsync<RuntimeAnimatorController>("EnemyAnimator", null).Completed += (handle) =>
         {
-            foreach (var animator in handle.Result)
-            {
-                animators.Add(animator.name, animator);
-            }
+            foreach (var animator in handle.Result) { animators.TryAdd(animator.name, animator); }
+            IsLoaded = true;
         };
     }
 }

@@ -54,7 +54,7 @@ public class HitNode : Node
             return;
         }
         
-        eController.animnHandler.Play("Hit");
+        eController.animHandler.Play("Hit");
     }
 
     public override void OnAnimated(AnimationStatus status, AnimatorStateInfo animInfo)
@@ -76,7 +76,7 @@ public class DieNode : Node
 
         // SoundManager.Instance.PlaySFX(controller.soundHandler.GetClip(EnemySoundHandler.SoundType.Hit));
         
-        eController.animnHandler.Play("Die");
+        eController.animHandler.Play("Die");
     }
 
     public override void OnAnimated(AnimationStatus status, AnimatorStateInfo animInfo)

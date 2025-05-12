@@ -89,7 +89,7 @@ public class SummonController: EnemyBaseController
     public void Define(SummonSkillManager.Skill skillName)
     {
         var (enemy, node) = SummonSkillManager.skills[(int)skillName];
-        animnHandler.SetController(EnemiesAnimator.animators[enemy.ToString()]);
+        animHandler.SetController(EnemiesAnimator.animators[enemy.ToString()]);
 
         // bug: 한번 실행 후 마지막 start가 진행되는 것으로 보임
         // notice: 머신도 제거되는 지 체크 후 이벤트 제거 필요

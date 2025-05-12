@@ -4,11 +4,11 @@ public class EnemyBaseController: MonoBehaviour
 {
     public EnemyAgent agent { get; private set; }
     public BTMachine machine { get; protected set; }
-    public Collider2D Collider { get; protected set; }
+    public CapsuleCollider2D Collider { get; protected set; }
     public Rigidbody2D Rigidbody { get; protected set; }
     public SpriteRenderer Renderer { get; protected set; }
     public Material material { get; protected set; }
-    public EnemyAnimHandler animnHandler { get; protected set; }
+    public EnemyAnimHandler animHandler { get; protected set; }
     public EnemyCombatHandler combatHandler { get; protected set; }
     public EnemyDetectHandler detectHandler { get; protected set; }
     public EnemySoundHandler soundHandler { get; protected set; }
@@ -20,11 +20,11 @@ public class EnemyBaseController: MonoBehaviour
     {
         machine = new(this);
 
-        Collider = GetComponent<Collider2D>();
+        Collider = GetComponent<CapsuleCollider2D>();
         Rigidbody = GetComponent<Rigidbody2D>();
         Renderer = GetComponent<SpriteRenderer>(); 
         material = Renderer.material;
-        animnHandler = GetComponent<EnemyAnimHandler>();
+        animHandler = GetComponent<EnemyAnimHandler>();
 
         combatHandler = new EnemyCombatHandler();
         detectHandler = GetComponent<EnemyDetectHandler>();

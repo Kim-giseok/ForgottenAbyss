@@ -3,7 +3,7 @@ using UnityEngine;
 public class EnemyAnimHandler: MonoBehaviour
 {
     private EnemyBaseController controller;
-    private Animator animator;
+    public Animator animator { get; private set; }
     
     public enum Status { None, Start, End } 
     private Status currStatus = Status.None;

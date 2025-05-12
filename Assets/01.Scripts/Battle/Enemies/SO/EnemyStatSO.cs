@@ -1,7 +1,10 @@
 using UnityEngine;
 
-public class EnemySO: ScriptableObject
+[CreateAssetMenu(menuName = "SO/Enemy/StatSO")]
+public class EnemyStatSO: ScriptableObject
 {
+    public string enemyName;
+    
     public float health;
     public float mana;
     

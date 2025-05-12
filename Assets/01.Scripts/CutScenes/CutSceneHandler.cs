@@ -20,7 +20,7 @@ public class CutSceneHandler: MonoBehaviour
     
     public void OnAgisNarrationEnd()
     {
-        EnemyRespawner.Instance.Create(EnemiesBT.Enemy.Agis, transform.position);
+        EnemyRespawner.Instance.Create(Enemy.Agis, transform.position);
         Destroy(gameObject);
     }
 

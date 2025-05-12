@@ -43,6 +43,9 @@ public class BTMachine
     // ReSharper disable Unity.PerformanceAnalysis
     public void SetCurrentNode(Node node)
     {
+        // err: null이 나오면 안되기 때문에 왜 인지 파악해보기
+        if (node == null) return;
+        
         SetPlaying(false);
         
         currNode?.End();
