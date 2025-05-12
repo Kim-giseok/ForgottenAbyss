@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class DamageTextManager : SingletonLoadRemain<DamageTextManager>
@@ -44,5 +45,31 @@ public class DamageTextManager : SingletonLoadRemain<DamageTextManager>
         obj.transform.position = Vector3.zero;
         UIManager.Instance.HideIngameUI();
         obj.GetComponent<DamageText>().Setup("You Die", Color.red);
+    }
+
+    public void ShowComboTiming(float duration)
+    {
+        GameObject obj = pool.Get();
+        obj.transform.position = GameManager.Instance.player.transform.position + (Vector3.up * 1.2f);
+
+        DamageText damageText = obj.GetComponent<DamageText>();
+        StartCoroutine(UpdateComboTimer(damageText, duration));
+    }
+
+    IEnumerator UpdateComboTimer(DamageText damageText, float duration)
+    {
+        float elapsedTime = 0f;
+
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.deltaTime;
+            float remainingTime = duration - elapsedTime;
+
+            damageText.ShowMessage($"콤보 입력 가능! ({remainingTime:F1}초)", Color.green);
+
+            yield return null;
+        }
+
+        damageText.ShowMessage("");
     }
 }

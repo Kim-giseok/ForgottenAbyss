@@ -59,6 +59,7 @@ public class ComboAttack : MonoBehaviour
     void OnComboCheck(float bufferTime)
     {
         canNextCombo = true;
+        DamageTextManager.Instance.ShowComboTiming(bufferTime);
         StartCoroutine(ComboInputBuffer(bufferTime));
     }
 

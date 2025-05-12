@@ -1,12 +1,26 @@
 using TMPro;
 using UnityEngine;
 using System.Collections;
+using Unity.Android.Types;
 
 public class DamageText : MonoBehaviour
 {
     public TextMeshProUGUI dmgText;
+
+    private Material originalMaterial;
+
     private float duration = 1.0f;
     private float defaultFontSize = 3.0f;
+
+    void Awake()
+    {
+        originalMaterial = new Material(dmgText.fontMaterial);
+    }
+
+    public void ResetMaterial()
+    {
+        dmgText.fontMaterial = originalMaterial;
+    }
 
     public void Setup(int damage, bool isCritical)
     {
@@ -21,32 +35,32 @@ public class DamageText : MonoBehaviour
         else if (damage > 20)
             targetColor = new Color(1f, 1f, 0f); // �����
 
+        Material newMat = new Material(originalMaterial);
+
         // ũ��Ƽ���� �� 
         if (isCritical)
         {
             dmgText.fontSize = defaultFontSize * 1.5f;
 
             // �ƿ����� + �۷ο� ȿ��
-            dmgText.outlineWidth = 0.2f;
-            dmgText.outlineColor = GetOutlineColor(targetColor);
+            newMat.SetColor("_OutlineColor", targetColor);
+            newMat.SetFloat("_OutlineWidth", 0.125f);
 
-            var mat = dmgText.fontMaterial;
-            mat.EnableKeyword("GLOW_ON");
-            mat.SetColor("_GlowColor", Color.white);
-            mat.SetFloat("_GlowPower", 0.2f);
-            mat.SetFloat("_GlowOuter", 0.1f);
-
-            dmgText.SetAllDirty();
+            newMat.EnableKeyword("GLOW_ON");
+            newMat.SetColor("_GlowColor", Color.white);
+            newMat.SetFloat("_GlowPower", 0.2f);
+            newMat.SetFloat("_GlowOuter", 0.1f);
         }
         else
         {
             // �Ϲ� �������� ��� ȿ�� ����
-            dmgText.outlineWidth = 0f;
-            var mat = dmgText.fontMaterial;
-            mat.DisableKeyword("GLOW_ON");
-
-            dmgText.SetAllDirty();
+            newMat.SetColor("_OutlineColor", targetColor);
+            newMat.SetFloat("_OutlineWidth", 0.05f);
+            newMat.DisableKeyword("GLOW_ON");
         }
+
+        dmgText.fontMaterial = newMat;
+        dmgText.SetAllDirty();
 
         StartCoroutine(AnimateText(targetColor, dmgText.fontSize, isCritical));
 
@@ -83,12 +97,19 @@ public class DamageText : MonoBehaviour
         StartCoroutine(AnimateText(Color.black, dmgText.fontSize, false));
     }
 
-    public void ShowMessage(string message)
+    public void ShowMessage(string message, Color? color = default)
     {
         dmgText.text = message;
-        dmgText.color = Color.red;
-        dmgText.outlineColor = Color.black;
+        dmgText.color = color ?? Color.red;
+
+        Material newMat = new Material(originalMaterial);
+
+        newMat.SetColor("_OutlineColor", Color.black);
+        newMat.SetFloat("_OutlineWidth", 0.1f);
+
+        dmgText.fontMaterial = newMat;
         dmgText.fontSize = defaultFontSize;
+        dmgText.SetAllDirty();
 
         StartCoroutine(AnimateMessageText());
     }
@@ -251,5 +272,6 @@ public class DamageText : MonoBehaviour
     private void ReturnToPool()
     {
         DamageTextManager.Instance.pool.ReturnToPool(gameObject);
+        ResetMaterial();
     }
 }
