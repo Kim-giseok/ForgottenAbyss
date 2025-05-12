@@ -69,11 +69,10 @@ public class RangedAttack : MonoBehaviour
     {
         Debug.Log($"[Ranged] OnRangedNext called. inputCombo: {inputCombo}, attackIndex: {attackIndex}");
 
-
         if (inputCombo && attackIndex < rangedData.comboSteps.Count)
         {
             attackIndex++;
-            Debug.Log("attackindec ++");
+            Debug.Log("attackindex ++");
             inputCombo = false;
             PlayRangedAnimation();
         }
@@ -170,9 +169,26 @@ public class RangedAttack : MonoBehaviour
             return;
 
         IsAttacking = false;
-        attackIndex = 0;
-        inputCombo = false;
         canNextCombo = false;
-        animator.Play("Idle");
+
+        if (inputCombo)
+        {
+            inputCombo = false;
+
+            StartCoroutine(RestartRangedComboAfterDelay(0.1f));
+        }
+        else
+        {
+            attackIndex = 0;
+            animator.Play("Idle");
+        }
+    }
+    private IEnumerator RestartRangedComboAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        attackIndex = 1;
+        IsAttacking = true;
+        canNextCombo = true;
+        PlayRangedAnimation();
     }
 }
