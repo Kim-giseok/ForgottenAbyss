@@ -27,13 +27,16 @@ public class DashState : PlayerStateMachine
         player.animator.SetTrigger("DashTrigger");
         player.SetInvincibility(true);
 
+        player.canAttack = false;
+        player.canSkill = false;
+
         dashTimer = 0f;
 
         player.rigid.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
 
         Vector2 dashDirection = new Vector2(player.inputVec.x, 0);
         player.rigid.velocity = new Vector2(dashDirection.x * player.dashDistance / player.dashTime, player.rigid.velocity.y);
-        Debug.Log($"{player.dashDistance/player.dashTime}");
+        //Debug.Log($"{player.dashDistance/player.dashTime}");
     }
     public override void Update()
     {
@@ -52,6 +55,9 @@ public class DashState : PlayerStateMachine
     {
         player.animator.SetBool("IsDash", false);
         SkillController.Instance.ResetAttack();
+
+        player.canAttack = true;
+        player.canSkill = true;
 
         player.rigid.collisionDetectionMode = CollisionDetectionMode2D.Discrete;
 

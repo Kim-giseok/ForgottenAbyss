@@ -145,6 +145,7 @@ public class SkillManager : MonoBehaviour
         instance.PlayAnimation(anim);
 
         StartCoroutine(instance.ResetAnimator(anim));
+        //yield return new WaitForSeconds(anim.GetCurrentAnimatorStateInfo(0).length);
         StartCoroutine(instance.PlayEffect(spawnPoint));
         instance.Execute(GameManager.Instance.player.gameObject);
 

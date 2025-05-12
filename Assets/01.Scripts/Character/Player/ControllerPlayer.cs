@@ -24,6 +24,8 @@ public class ControllerPlayer : MonoBehaviour
     public bool isInvincible = false; 
     private bool dashBuffered = false;
     public bool isAlive = true;
+    public bool canAttack = false;
+    public bool canSkill = false;
 
     public Rigidbody2D rigid;
     public Animator animator;
@@ -200,22 +202,30 @@ public class ControllerPlayer : MonoBehaviour
     void OnDash(InputValue value) //�뽬 Ű �Է�
     {
         if (!isAlive) return;
-        AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
-        bool isTurn = stateInfo.IsTag("Turn");
+
+        //AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+        //bool isTurn = stateInfo.IsTag("Turn");
+
+        var skillController = SkillController.Instance;
 
         if (value.isPressed)
         {
-            if (isTurn)
+            //if (isTurn)
+            //{
+            //    dashBuffered = true;
+            //}
+            //else
+            //{
+
+            //    if (states.ContainsKey(currentState))
+            //    {
+            //        states[currentState].OnDash();
+            //    }
+            //}
+
+            if (states.ContainsKey(currentState) && !skillController.isSkillPlaying)
             {
-                dashBuffered = true;
-            }
-            else
-            {
-               
-                if (states.ContainsKey(currentState))
-                {
-                    states[currentState].OnDash();
-                }
+                states[currentState].OnDash();
             }
         }
     }
@@ -264,8 +274,8 @@ public class ControllerPlayer : MonoBehaviour
             isFacingRight = false;
             transform.localEulerAngles = new Vector3(0, 180, 0);
 
-            if (isLocomotion && isMoving)
-                animator.SetTrigger("TurnTrigger");
+            //if (isLocomotion && isMoving)
+            //    animator.SetTrigger("TurnTrigger");
         }
         else if (inputVec.x > 0 && !isFacingRight && !isAttack)
         {
@@ -273,8 +283,8 @@ public class ControllerPlayer : MonoBehaviour
             isFacingRight = true;
             transform.localEulerAngles = new Vector3(0, 0, 0);
 
-            if (isLocomotion && isMoving)
-                animator.SetTrigger("TurnTrigger");
+            //if (isLocomotion && isMoving)
+            //    animator.SetTrigger("TurnTrigger");
         }
     }
 
