@@ -11,10 +11,13 @@ public class FieldItemDropAnimator: MonoBehaviour
     
     private Coroutine animCoroutine;
     private Collider2D _collider;
+    
+    private SpriteRenderer _renderer;
 
     private void Awake()
     {
         _collider = GetComponent<Collider2D>();
+        _renderer = GetComponentInChildren<SpriteRenderer>();
         _collider.enabled = false;
     }
 
