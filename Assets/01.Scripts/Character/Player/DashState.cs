@@ -39,13 +39,13 @@ public class DashState : PlayerStateMachine
     }
     public override void Update()
     {
-        // ´ë½¬ Áß Á¡ÇÁÅ° ÀÔ·Â °¨Áö
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            // Á¡ÇÁ »óÅÂ·Î Áï½Ã ÀüÈ¯
-            player.ChangeState(PlayerState.Jump);
-            return; // Á¡ÇÁ »óÅÂ·Î ÀüÈ¯ÇßÀ¸¹Ç·Î ³ª¸ÓÁö Update ·ÎÁ÷ °Ç³Ê¶Ü
-        }
+        //// ï¿½ë½¬ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Å° ï¿½Ô·ï¿½ ï¿½ï¿½ï¿½ï¿½
+        //if (Input.GetKeyDown(KeyCode.Space))
+        //{
+        //    // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Â·ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½È¯
+        //    player.ChangeState(PlayerState.Jump);
+        //    return; // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Â·ï¿½ ï¿½ï¿½È¯ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Update ï¿½ï¿½ï¿½ï¿½ ï¿½Ç³Ê¶ï¿½
+        //}
 
         dashTimer += Time.deltaTime;
         if (dashTimer >= player.dashTime) //ëŒ€ì‰¬ ì¢…ë£Œ
@@ -58,6 +58,7 @@ public class DashState : PlayerStateMachine
             player.rigid.velocity = new Vector2(player.inputVec.x * player.status.stats[StatType.SPEED], player.rigid.velocity.y);
         }
     }
+
     public override void Exit()
     {
         player.animator.SetBool("IsDash", false);

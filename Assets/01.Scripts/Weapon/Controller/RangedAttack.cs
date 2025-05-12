@@ -29,7 +29,9 @@ public class RangedAttack : MonoBehaviour
         if (IsAttacking)
         {
             if (canNextCombo)
+            {
                 inputCombo = true;
+            }      
         }
         else
         {
@@ -44,6 +46,8 @@ public class RangedAttack : MonoBehaviour
         animator.ResetTrigger("BowTrigger");
         animator.SetTrigger("BowTrigger");
         animator.SetInteger("BowCombo", attackIndex);
+
+        UpdateRangedAttackUI(attackIndex-1);
     }
 
     private void PlayRangedAnimation()
@@ -74,6 +78,7 @@ public class RangedAttack : MonoBehaviour
             inputCombo = false;
             attackIndex++;
             animator.SetInteger("BowCombo", attackIndex);
+            UpdateRangedAttackUI(attackIndex-1);
             PlayRangedAnimation();
         }
         else
@@ -163,6 +168,19 @@ public class RangedAttack : MonoBehaviour
         }
     }
 
+    private void UpdateRangedAttackUI(int stepIndex)
+    {
+        if (rangedData != null && stepIndex >= 0 && stepIndex < rangedData.comboSteps.Count)
+        {
+            Sprite newIcon = rangedData.comboSteps[stepIndex].stepIcon;
+
+            if (SystemManager.Instance.skillManager.skillUI != null)
+            {
+                SystemManager.Instance.skillManager.skillUI.SetSkillIcon(SkillSlotType.Basic, newIcon);
+            }
+        }
+    }
+
     public void EndRangedAttack()
     {
         if (this == null || animator == null || !gameObject.activeInHierarchy)
@@ -182,6 +200,7 @@ public class RangedAttack : MonoBehaviour
             attackIndex = 0;
             animator.SetInteger("BowCombo", 0);
             animator.Play("Idle");
+            UpdateRangedAttackUI(attackIndex);
         }
     }
     private IEnumerator RestartRangedComboAfterDelay(float delay)
@@ -196,6 +215,7 @@ public class RangedAttack : MonoBehaviour
             animator.ResetTrigger("BowTrigger");
             animator.SetTrigger("BowTrigger");
             animator.SetInteger("BowCombo", attackIndex);
+            UpdateRangedAttackUI(attackIndex - 1);
         }
     }
 }

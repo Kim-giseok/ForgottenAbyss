@@ -69,5 +69,16 @@ public class CombatInstance
         }
     }
 
-    public Sprite GetIcon() => icon;
+    public Sprite GetStepIcon(int stepIndex)
+    {
+        if (weaponType == WeaponType.Bow && rangedSO != null)
+        {
+            if (stepIndex >= 0 && stepIndex < rangedSO.comboSteps.Count)
+            {
+                return rangedSO.comboSteps[stepIndex].stepIcon;
+            }
+        }
+
+        return icon;
+    }
 }

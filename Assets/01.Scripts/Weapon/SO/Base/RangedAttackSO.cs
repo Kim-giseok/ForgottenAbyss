@@ -31,7 +31,8 @@ public class RangedAttackSO : ScriptableObject
                 fireDelay = step.fireDelay,
                 multiplier = step.multiplier,
                 isSpread = step.isSpread,
-                spreadAngle = step.spreadAngle
+                spreadAngle = step.spreadAngle,
+                stepIcon = step.stepIcon
             });
         }
 
@@ -49,4 +50,5 @@ public class RangedComboStep
     public float multiplier = 1f;        // °è¼ö
     public bool isSpread = false;
     public float spreadAngle = 15f;
+    public Sprite stepIcon;
 }
