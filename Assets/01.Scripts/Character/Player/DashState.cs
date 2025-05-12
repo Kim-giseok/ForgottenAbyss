@@ -37,6 +37,14 @@ public class DashState : PlayerStateMachine
     }
     public override void Update()
     {
+        // 대쉬 중 점프키 입력 감지
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            // 점프 상태로 즉시 전환
+            player.ChangeState(PlayerState.Jump);
+            return; // 점프 상태로 전환했으므로 나머지 Update 로직 건너뜀
+        }
+
         dashTimer += Time.deltaTime;
         if (dashTimer >= player.dashTime) //대쉬 종료
         {
