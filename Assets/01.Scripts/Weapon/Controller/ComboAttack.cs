@@ -108,7 +108,7 @@ public class ComboAttack : MonoBehaviour
         if (inputCombo)
         {
             inputCombo = false;
-            StartCoroutine(RestartComboAfterDelay(0.1f));
+            StartCoroutine(RestartComboAfterDelay(0.2f));
         }
         else
         {

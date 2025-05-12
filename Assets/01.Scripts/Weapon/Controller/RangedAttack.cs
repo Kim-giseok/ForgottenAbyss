@@ -174,7 +174,7 @@ public class RangedAttack : MonoBehaviour
         {
             inputCombo = false;
 
-            StartCoroutine(RestartRangedComboAfterDelay(0.1f));
+            StartCoroutine(RestartRangedComboAfterDelay(0.2f));
         }
         else
         {
