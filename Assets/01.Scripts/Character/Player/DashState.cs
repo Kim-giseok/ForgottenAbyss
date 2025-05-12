@@ -39,6 +39,14 @@ public class DashState : PlayerStateMachine
     }
     public override void Update()
     {
+        // ´ë½¬ Áß Á¡ÇÁÅ° ÀÔ·Â °¨Áö
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            // Á¡ÇÁ »óÅÂ·Î Áï½Ã ÀüÈ¯
+            player.ChangeState(PlayerState.Jump);
+            return; // Á¡ÇÁ »óÅÂ·Î ÀüÈ¯ÇßÀ¸¹Ç·Î ³ª¸ÓÁö Update ·ÎÁ÷ °Ç³Ê¶Ü
+        }
+
         dashTimer += Time.deltaTime;
         if (dashTimer >= player.dashTime) //ëŒ€ì‰¬ ì¢…ë£Œ
         {

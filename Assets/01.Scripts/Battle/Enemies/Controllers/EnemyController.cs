@@ -6,13 +6,13 @@ public class EnemyController : EnemyBaseController, IDamagable
 {
     // SO로 추후 관리해도 좋을 듯
     public float maxHealth { get; private set; }
+    
     [Header("Resource")] 
     public float health;
     public float attack;
     
     public int experience;
-    public int gold;
-
+    // status로 관리해야할까?
     public bool isIgnoreHitAnim;
 
     [FormerlySerializedAs("name")] public EnemiesBT.Enemy Name;
@@ -75,18 +75,9 @@ public class EnemyController : EnemyBaseController, IDamagable
         if (rewardHandler)
         {
             SoundManager.Instance.Playsfx("DropItem");
-
-            // 외부에서 관리하도록 처리
-            if (gold > 0)
-            {
-                Instantiate(rewardHandler.money, transform.position + (Vector3.up * 0.5f), Quaternion.identity);
-            }
-
-            var currItem = rewardHandler.GetRewardItem();
-            if (currItem)
-            {
-                Instantiate(currItem, transform.position + (Vector3.up * 0.5f), Quaternion.identity);
-            }
+            
+            rewardHandler.CreateCoin();
+            rewardHandler.CreateMemoryItem();
         }
     }
 }
