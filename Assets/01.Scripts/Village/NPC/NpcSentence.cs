@@ -5,6 +5,7 @@ using UnityEngine.Events;
 
 public class NpcSentence : MonoBehaviour
 {
+    [TextArea]
     public string[] sentences;
     [SerializeField] UnityEvent displayEndEvents;
     
