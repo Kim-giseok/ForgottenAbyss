@@ -5,6 +5,7 @@ using UnityEngine.Events;
 
 public class NpcSentence : MonoBehaviour
 {
+    [TextArea]
     public string[] sentences;
     [SerializeField] UnityEvent displayEndEvents;
     
@@ -19,9 +20,8 @@ public class NpcSentence : MonoBehaviour
 
         foreach (var sentnece in sentences)
         {
-            Debug.Log(sentnece);
             UIManager.Instance.OnTalk(this, sentnece);
-            yield return new WaitForSecondsRealtime(sentnece.Length * 0.1f);
+            yield return new WaitForSecondsRealtime(sentnece.Length * 0.12f);
         }
         UIManager.Instance.OffTalk();
         displayEndEvents.Invoke();

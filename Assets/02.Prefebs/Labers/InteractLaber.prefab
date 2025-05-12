@@ -47,8 +47,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4ecced5e31df154a94922bad05df07a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetMachines: []
   laberAnim: {fileID: 6505933833311063045}
+  targetMachines: []
+  activatableConditionFlag: 0
+  activeOnceFlag: 0
 --- !u!61 &2796516333006488116
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -187,7 +189,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: -1
+  m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 789b5e018dbb9a24faf428135a5105ef, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
