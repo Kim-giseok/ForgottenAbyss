@@ -127,6 +127,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   machineAnim: {fileID: 874264554450282891}
   isActivated: 0
+  activatedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  unactivatedEvent:
+    m_PersistentCalls:
+      m_Calls: []
   isLoop: 1
   waitTime: 5
   atk: 10
@@ -268,7 +274,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: -1
+  m_SortingOrder: 0
   m_Sprite: {fileID: 9145141427673839578, guid: dabfa97ac60dc0e45ab9b6c176918384, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0

@@ -46,10 +46,12 @@ public class Player : MonoBehaviour, IDamagable
 
     public void Update()
     {
+#if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.N))
         {
             StartCoroutine(TestGetDamage()); //테스트용
         }
+#endif
 
         RegenerateStats();
     }
