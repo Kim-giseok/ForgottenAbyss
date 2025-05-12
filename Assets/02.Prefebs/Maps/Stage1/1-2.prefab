@@ -4496,16 +4496,6 @@ Tilemap:
       m_TileObjectToInstantiateIndex: 65535
       dummyAlignment: 0
       m_AllTileFlags: 1073741825
-  - first: {x: 21, y: 18, z: 0}
-    second:
-      serializedVersion: 2
-      m_TileIndex: 8
-      m_TileSpriteIndex: 4
-      m_TileMatrixIndex: 0
-      m_TileColorIndex: 0
-      m_TileObjectToInstantiateIndex: 65535
-      dummyAlignment: 0
-      m_AllTileFlags: 1073741825
   m_AnimatedTiles: {}
   m_TileAssetArray:
   - m_RefCount: 0
@@ -4524,7 +4514,7 @@ Tilemap:
     m_Data: {fileID: 0}
   - m_RefCount: 0
     m_Data: {fileID: 0}
-  - m_RefCount: 363
+  - m_RefCount: 362
     m_Data: {fileID: 11400000, guid: 8d6f378663f1a7448962dcdd727a4944, type: 2}
   - m_RefCount: 0
     m_Data: {fileID: 0}
@@ -4555,7 +4545,7 @@ Tilemap:
     m_Data: {fileID: 0}
   - m_RefCount: 0
     m_Data: {fileID: 0}
-  - m_RefCount: 363
+  - m_RefCount: 362
     m_Data: {fileID: 2099569724, guid: b425613db706e0a49821a35253ec9db1, type: 3}
   - m_RefCount: 0
     m_Data: {fileID: 0}
@@ -4586,7 +4576,7 @@ Tilemap:
   - m_RefCount: 0
     m_Data: {fileID: 0}
   m_TileMatrixArray:
-  - m_RefCount: 363
+  - m_RefCount: 362
     m_Data:
       e00: 1
       e01: 0
@@ -4605,7 +4595,7 @@ Tilemap:
       e32: 0
       e33: 1
   m_TileColorArray:
-  - m_RefCount: 363
+  - m_RefCount: 362
     m_Data: {r: 1, g: 1, b: 1, a: 1}
   m_TileObjectToInstantiateArray: []
   m_AnimationFrameRate: 1
@@ -4787,9 +4777,9 @@ CompositeCollider2D:
       - X: 220000000
         Y: 100000000
       - X: 220000000
-        Y: 190000000
+        Y: 180000000
       - X: 210000000
-        Y: 190000000
+        Y: 180000000
       - X: 210000000
         Y: 40000000
       - X: 240000000
@@ -4835,8 +4825,8 @@ CompositeCollider2D:
     - - {x: 43.999973, y: -8}
       - {x: 43.999973, y: 10}
       - {x: 22, y: 10.00003}
-      - {x: 21.999971, y: 19}
-      - {x: 21, y: 18.999971}
+      - {x: 21.999971, y: 18}
+      - {x: 21, y: 17.999971}
       - {x: 21.000029, y: 4}
       - {x: 24, y: 4.000029}
       - {x: 24.000029, y: 5}
@@ -5269,14 +5259,14 @@ PolygonCollider2D:
     m_Paths:
     - - {x: 44, y: 6}
       - {x: 22.5, y: 6}
-      - {x: 22.5, y: 2}
-      - {x: 22, y: 2}
+      - {x: 22.5, y: 4}
+      - {x: 22, y: 4}
       - {x: 22, y: 18}
       - {x: -13, y: 18}
       - {x: -13, y: -6}
       - {x: 22, y: -6}
-      - {x: 22, y: -2}
-      - {x: 22.5, y: -2}
+      - {x: 22, y: 0}
+      - {x: 22.5, y: 0}
       - {x: 22.5, y: -7}
       - {x: 44, y: -7}
   m_UseDelaunayMesh: 0
