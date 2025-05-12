@@ -129,6 +129,7 @@ public class SkillController : Singleton<SkillController>
     public void SetSkillPlaying(bool value) => isSkillPlaying = value;
     public void OnSetSkillFalse() => isSkillPlaying = false;
 
+    // 턴 애니메이션을 임시로 일단 제거해뒀음, 임시라 일단 여긴 나둘건데 턴 애니메이션 못고치면 걍 안쓰는 방향으로 갈듯
     public bool IsTurning()
     {
         AnimatorStateInfo stateInfo = GameManager.Instance.player.animator.GetCurrentAnimatorStateInfo(0);

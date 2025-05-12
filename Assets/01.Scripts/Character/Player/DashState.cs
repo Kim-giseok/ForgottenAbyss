@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+ï»¿using System.Collections;
 using UnityEngine;
 
 public class DashState : PlayerStateMachine
@@ -14,7 +13,7 @@ public class DashState : PlayerStateMachine
 
         if (curMp < cost)
         {
-            Debug.Log("½ºÅÂ¹Ì³Ê ºÎÁ· - ´ë½¬ Ãë¼Ò");
+            Debug.Log("ìŠ¤íƒœë¯¸ë„ˆ ë¶€ì¡± - ëŒ€ì‰¬ ì·¨ì†Œ");
 
             player.ChangeState(player.previousState);
             return;
@@ -41,11 +40,11 @@ public class DashState : PlayerStateMachine
     public override void Update()
     {
         dashTimer += Time.deltaTime;
-        if (dashTimer >= player.dashTime) //´ë½¬ Á¾·á
+        if (dashTimer >= player.dashTime) //ëŒ€ì‰¬ ì¢…ë£Œ
         {
-            if (player.inputVec.x != 0)
+            if (player.inputVec.x != 0 && player.isGround)
                 player.ChangeState(PlayerState.Run);
-            else
+            else if(player.inputVec.x == 0  && player.isGround)
                 player.ChangeState(PlayerState.Idle);
 
             player.rigid.velocity = new Vector2(player.inputVec.x * player.status.stats[StatType.SPEED], player.rigid.velocity.y);
@@ -59,14 +58,21 @@ public class DashState : PlayerStateMachine
         player.canAttack = true;
         player.canSkill = true;
 
+        player.StartCoroutine(WaitForLandingToResetCollision());
         player.rigid.collisionDetectionMode = CollisionDetectionMode2D.Discrete;
-
-        player.StartCoroutine(DelayedInvincibilityOff(0.25f)); //´ë½¬ ¹«ÀûÆÇÁ¤ Á¶±İ ´õ ±æ°Ô
+        player.StartCoroutine(DelayedInvincibilityOff(0.25f)); //ëŒ€ì‰¬ ë¬´ì íŒì • ì¡°ê¸ˆ ë” ê¸¸ê²Œ
     }
 
     private IEnumerator DelayedInvincibilityOff(float delay)
     {
         yield return new WaitForSeconds(delay);
         player.SetInvincibility(false);
+    }
+
+    private IEnumerator WaitForLandingToResetCollision()
+    {
+        yield return new WaitUntil(() => player.isGround);
+        player.IgnorePlatformCollision();
+        Debug.Log("ëŒ€ì‰¬ ì¢…ë£Œ í›„ ì°©ì§€ ì‹œ ì¶©ëŒ ë³µêµ¬ë¨!");
     }
 }
