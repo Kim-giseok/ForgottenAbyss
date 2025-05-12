@@ -419,7 +419,7 @@ public class ControllerPlayer : MonoBehaviour
 
     public void IgnorePlatformCollision()
     {
-        Debug.Log($"Velocity Y: {rigid.velocity.y}, IgnoreCollision 적용: {rigid.velocity.y < 0}");
+        //Debug.Log($"Velocity Y: {rigid.velocity.y}, IgnoreCollision 적용: {rigid.velocity.y < 0}");
         Collider2D[] platformColliders = Physics2D.OverlapCircleAll(transform.position, 10f, platformLayerMask);
 
         foreach (Collider2D platformCollider in platformColliders) 

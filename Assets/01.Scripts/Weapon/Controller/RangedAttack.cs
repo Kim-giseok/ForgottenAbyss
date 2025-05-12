@@ -44,7 +44,6 @@ public class RangedAttack : MonoBehaviour
         animator.ResetTrigger("BowTrigger");
         animator.SetTrigger("BowTrigger");
         animator.SetInteger("BowCombo", attackIndex);
-        PlayRangedAnimation();
     }
 
     private void PlayRangedAnimation()
@@ -71,9 +70,9 @@ public class RangedAttack : MonoBehaviour
 
         if (inputCombo && attackIndex < rangedData.comboSteps.Count)
         {
-            attackIndex++;
-            Debug.Log("attackindex ++");
             inputCombo = false;
+            attackIndex++;
+            animator.SetInteger("BowCombo", attackIndex);
             PlayRangedAnimation();
         }
         else
@@ -180,6 +179,7 @@ public class RangedAttack : MonoBehaviour
         else
         {
             attackIndex = 0;
+            animator.SetInteger("BowCombo", 0);
             animator.Play("Idle");
         }
     }
@@ -189,6 +189,7 @@ public class RangedAttack : MonoBehaviour
         attackIndex = 1;
         IsAttacking = true;
         canNextCombo = true;
-        PlayRangedAnimation();
+        animator.SetInteger("BowCombo", attackIndex);
+        animator.SetTrigger("BowTrigger");
     }
 }

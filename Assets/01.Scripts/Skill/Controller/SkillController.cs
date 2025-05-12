@@ -22,6 +22,9 @@ public class SkillController : Singleton<SkillController>
     public bool isSkillPlaying = false;
     public bool isBowAttack = false;
 
+    private float lastAttackTime = 0f;
+    private float attackCooldown = 0.2f;
+
     private void Start()
     {
         Initialized();
@@ -75,6 +78,12 @@ public class SkillController : Singleton<SkillController>
 
     void OnAttack(InputValue value)
     {
+        if (Time.time - lastAttackTime < attackCooldown) return;
+
+        lastAttackTime = Time.time;
+
+        Debug.Log(lastAttackTime);
+
         if (!IsExecutable() && !IsBufferable()) return;
 
         if (!SystemManager.Instance.weaponManager.IsWeaponEquipped())

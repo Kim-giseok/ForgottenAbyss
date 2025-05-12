@@ -64,7 +64,21 @@ public class ComboAttack : MonoBehaviour
 
     IEnumerator ComboInputBuffer(float time)
     {
-        yield return new WaitForSeconds(time);
+        float elapsed = 0f;
+
+        while (elapsed < time)
+        {
+            elapsed += Time.deltaTime;
+
+            if (inputCombo)
+            {
+                OnComboNext();
+                yield break;
+            }
+
+            yield return null;
+        }
+
         canNextCombo = false;
     }
 
@@ -108,6 +122,8 @@ public class ComboAttack : MonoBehaviour
     {
         yield return new WaitForSeconds(delay);
         attackIndex = 1;
+        IsAttacking = true;
+        canNextCombo = true;
         animator.SetInteger("AttackCombo", attackIndex);
         animator.SetTrigger("AttackTrigger"); // 다시 콤보 시작
     }
