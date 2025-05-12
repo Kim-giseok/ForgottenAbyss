@@ -10,7 +10,7 @@ public class ComboAttack : MonoBehaviour
 
     private ComboAttackSO comboData;
 
-    int attackIndex = 0;
+    public int attackIndex = 0;
     bool canNextCombo = false;
     bool inputCombo = false;
 
@@ -59,12 +59,27 @@ public class ComboAttack : MonoBehaviour
     void OnComboCheck(float bufferTime)
     {
         canNextCombo = true;
+        //DamageTextManager.Instance.ShowComboTiming(bufferTime);
         StartCoroutine(ComboInputBuffer(bufferTime));
     }
 
     IEnumerator ComboInputBuffer(float time)
     {
-        yield return new WaitForSeconds(time);
+        float elapsed = 0f;
+
+        while (elapsed < time)
+        {
+            elapsed += Time.deltaTime;
+
+            if (inputCombo)
+            {
+                OnComboNext();
+                yield break;
+            }
+
+            yield return null;
+        }
+
         canNextCombo = false;
     }
 
@@ -85,29 +100,38 @@ public class ComboAttack : MonoBehaviour
 
     public void EndComboAttack()
     {
-        if (this == null)
-        {
-            Debug.LogWarning("EndComboAttack: this == null");
-        }
-        if (animator == null)
-        {
-            Debug.LogWarning("EndComboAttack: animator == null");
-        }
-        if (!gameObject.activeInHierarchy)
-        {
-            Debug.LogWarning("EndComboAttack: 비활성화 상태임");
-        }
-
         if (this == null || animator == null || !gameObject.activeInHierarchy)
             return;
 
-
         IsAttacking = false;
-        attackIndex = 0;
-        animator.SetInteger("AttackCombo", 0);
-        inputCombo = false;
         canNextCombo = false;
-        animator.Play("Idle");
+
+        if (inputCombo)
+        {
+            inputCombo = false;
+            StartCoroutine(RestartComboAfterDelay(0.1f));
+        }
+        else
+        {
+            attackIndex = 0;
+            animator.SetInteger("AttackCombo", 0);
+            animator.Play("Idle");
+        }
+    }
+
+    private IEnumerator RestartComboAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        attackIndex = 1;
+        IsAttacking = true;
+        canNextCombo = true;
+
+        if (!animator.GetCurrentAnimatorStateInfo(0).IsName(comboData.comboSteps[attackIndex - 1].animationName))
+        {
+            animator.ResetTrigger("AttackTrigger");
+            animator.SetTrigger("AttackTrigger");
+            animator.SetInteger("AttackCombo", attackIndex);
+        }
     }
 
     void OnAttackReset()
@@ -151,7 +175,7 @@ public class ComboAttack : MonoBehaviour
         Vector3 startPos = transform.position;
 
         // 점프 방향 (대각선 위)
-        Vector3 jumpDir = (transform.right + Vector3.up).normalized;
+        Vector3 jumpDir = (transform.right + Vector3.up*0.5f).normalized;
         Vector3 peakPos = startPos + jumpDir * height;
 
         Vector3 horizontalDir = transform.right;

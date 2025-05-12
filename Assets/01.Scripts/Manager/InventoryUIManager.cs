@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEditor.Progress;
 
 public class InventoryUIManager : MonoBehaviour
 {
@@ -80,6 +81,11 @@ public class InventoryUIManager : MonoBehaviour
             {
                 slots[i].ClearSlot();
             }
+        }
+
+        foreach (var slot in slots)
+        {
+            slot.RefreshOutline();
         }
 
         Debug.Log($"[InventoryUIManager] UpdateUI 완료: {items.Count}개 아이템 표시됨");

@@ -191,8 +191,8 @@ MonoBehaviour:
   health: 60
   attack: 10
   experience: 100
-  gold: 100
   isIgnoreHitAnim: 0
+  memoryItemName: NightBone
   Name: 6
 --- !u!114 &2027139450456777946
 MonoBehaviour:
@@ -249,9 +249,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14bb306e8dbc45de92a87b707e79ae62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  money: {fileID: 7285741867182844907, guid: a69d9abdcac4f4e468becd62257e25b5, type: 3}
-  items:
-  - {fileID: 2849593479698701841, guid: abd4c1f18c98f4c4991c2d1f0abcf7db, type: 3}
+  gold: 150
+  memoryItems:
+  - NightBone
 --- !u!114 &-3297562227795331136
 MonoBehaviour:
   m_ObjectHideFlags: 0

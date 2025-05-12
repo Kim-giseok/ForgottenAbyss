@@ -44,7 +44,6 @@ public class RangedAttack : MonoBehaviour
         animator.ResetTrigger("BowTrigger");
         animator.SetTrigger("BowTrigger");
         animator.SetInteger("BowCombo", attackIndex);
-        PlayRangedAnimation();
     }
 
     private void PlayRangedAnimation()
@@ -56,6 +55,7 @@ public class RangedAttack : MonoBehaviour
     public void OnRangedCheck(float bufferTime)
     {
         canNextCombo = true;
+        //DamageTextManager.Instance.ShowComboTiming(bufferTime);
         StartCoroutine(RangedInputBuffer(bufferTime));
     }
 
@@ -69,12 +69,11 @@ public class RangedAttack : MonoBehaviour
     {
         Debug.Log($"[Ranged] OnRangedNext called. inputCombo: {inputCombo}, attackIndex: {attackIndex}");
 
-
         if (inputCombo && attackIndex < rangedData.comboSteps.Count)
         {
-            attackIndex++;
-            Debug.Log("attackindec ++");
             inputCombo = false;
+            attackIndex++;
+            animator.SetInteger("BowCombo", attackIndex);
             PlayRangedAnimation();
         }
         else
@@ -170,9 +169,33 @@ public class RangedAttack : MonoBehaviour
             return;
 
         IsAttacking = false;
-        attackIndex = 0;
-        inputCombo = false;
         canNextCombo = false;
-        animator.Play("Idle");
+
+        if (inputCombo)
+        {
+            inputCombo = false;
+
+            StartCoroutine(RestartRangedComboAfterDelay(0.1f));
+        }
+        else
+        {
+            attackIndex = 0;
+            animator.SetInteger("BowCombo", 0);
+            animator.Play("Idle");
+        }
+    }
+    private IEnumerator RestartRangedComboAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        attackIndex = 1;
+        IsAttacking = true;
+        canNextCombo = true;
+
+        if (!animator.GetCurrentAnimatorStateInfo(0).IsName(rangedData.comboSteps[attackIndex - 1].animationName))
+        {
+            animator.ResetTrigger("BowTrigger");
+            animator.SetTrigger("BowTrigger");
+            animator.SetInteger("BowCombo", attackIndex);
+        }
     }
 }

@@ -73,22 +73,15 @@ public class InventorySlot : SlotBase, IPointerClickHandler
         currentItem = item;
         iconImage.sprite = item.itemIcon;
         iconImage.enabled = true;
-
+        
         if (itemUI != null)
         {
             itemUI.SetItem(item);
         }
 
-        // 장비 장착여부 확인 후 외곽선 표시
-        if (item.itemType == ItemType.Equip && item is ArmorSO armor)
-        {
-            bool isEquipped = SystemManager.Instance.equipmentManager.GetEquippedArmor(armor.slot)?.armorId == armor.armorId;
-            RefreshOutline();
-        }
-        else
-        {
-            RefreshOutline();
-        }
+        SystemManager.Instance.equipmentManager.UpdateEquippedItems();
+
+        RefreshOutline();
 
         UpdateAmount(item.currentAmount);
     }
@@ -113,19 +106,19 @@ public class InventorySlot : SlotBase, IPointerClickHandler
                 if (currentItem is ArmorSO armor)
                 {
                     bool isEquipped = SystemManager.Instance.equipmentManager.GetEquippedArmorSlot(armor.slot) == this;
-                    equippedOutline?.SetActive(isEquipped);
+                    equippedOutline.SetActive(isEquipped);
                 }
                 break;
 
             case ItemType.Memory:
                 {
                     bool isEquipped = SystemManager.Instance.equipmentManager.GetEquippedMemorySlot() == this;
-                    equippedOutline?.SetActive(isEquipped);
+                    equippedOutline.SetActive(isEquipped);
                 }
                 break;
 
             default:
-                equippedOutline?.SetActive(false);
+                equippedOutline.SetActive(false);
                 break;
         }
     }
@@ -134,6 +127,7 @@ public class InventorySlot : SlotBase, IPointerClickHandler
     {
         base.ClearSlot(); // 기본 슬롯 초기화
         UpdateAmount(0); // 수량 텍스트 초기화
+        equippedOutline.SetActive(false);
     }
 
     public void OnPointerClick(PointerEventData eventData)

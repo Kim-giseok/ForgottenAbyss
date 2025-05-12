@@ -263,6 +263,18 @@ public class DataManager : MonoBehaviour
         return null;
     }
 
+    public MemoryPieceSO GetMemoryVisualSOById(int memoryPieceId)
+    {
+        foreach (var so in memoryVisualSODic.Values)
+        {
+            if (so.currentMemoryPieceId == memoryPieceId)
+                return so;
+        }
+
+        Debug.LogWarning($"MemoryVisualSO with ID {memoryPieceId} not found.");
+        return null;
+    }
+
     public MemorySkillItem GetMemorySkillItemById(int memoryPieceId)
     {
         var memorySO = memoryVisualSOList.Find(x => x.currentMemoryPieceId == memoryPieceId);

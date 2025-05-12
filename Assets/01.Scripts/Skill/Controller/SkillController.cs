@@ -19,8 +19,11 @@ public class SkillController : Singleton<SkillController>
 
     private bool isGettingHit = false;
     private bool isDead = false;
-    private bool isSkillPlaying = false;
+    public bool isSkillPlaying = false;
     public bool isBowAttack = false;
+
+    private float lastAttackTime = 0f;
+    private float attackCooldown = 0.2f;
 
     private void Start()
     {
@@ -75,7 +78,13 @@ public class SkillController : Singleton<SkillController>
 
     void OnAttack(InputValue value)
     {
-        if (isSkillPlaying || isGettingHit || isDead) return;
+        if (Time.time - lastAttackTime < attackCooldown) return;
+
+        lastAttackTime = Time.time;
+
+        Debug.Log(lastAttackTime);
+
+        if (!IsExecutable() && !IsBufferable()) return;
 
         if (!SystemManager.Instance.weaponManager.IsWeaponEquipped())
         {
@@ -87,8 +96,8 @@ public class SkillController : Singleton<SkillController>
         {
             SystemManager.Instance.actionBufferUtil.BufferAction(
                 "NormalAttack",
-                () => !IsTurning() && !isSkillPlaying,
-                () => combatSkill.Execute());
+                () => IsExecutable(),
+                () => StartCoroutine(DelayedCombatExecution()));
         }
         else
         {
@@ -100,21 +109,21 @@ public class SkillController : Singleton<SkillController>
 
     void OnFirstSkill(InputValue value)
     {
-        if (isGettingHit || isDead) return;
+        if (!IsExecutable() && !IsBufferable()) return;
         TryBufferOrExecuteSkill(skill01, "FirstSkill");
         Debug.Log("S: 스킬1");
     }
 
     void OnSecondSkill(InputValue value)
     {
-        if (isGettingHit || isDead) return;
+        if (!IsExecutable() && !IsBufferable()) return;
         TryBufferOrExecuteSkill(skill02, "SecondSkill");
         Debug.Log("D: 스킬2");
     }
 
     void OnSpecialSkill(InputValue value)
     {
-        if (isGettingHit || isDead) return;
+        if (!IsExecutable() && !IsBufferable()) return;
         if (memorySkill == null)
         {
             if (DamageTextManager.Instance != null)
@@ -129,10 +138,27 @@ public class SkillController : Singleton<SkillController>
     public void SetSkillPlaying(bool value) => isSkillPlaying = value;
     public void OnSetSkillFalse() => isSkillPlaying = false;
 
+    // 턴 애니메이션을 임시로 일단 제거해뒀음, 임시라 일단 여긴 나둘건데 턴 애니메이션 못고치면 걍 안쓰는 방향으로 갈듯
     public bool IsTurning()
     {
         AnimatorStateInfo stateInfo = GameManager.Instance.player.animator.GetCurrentAnimatorStateInfo(0);
-        return stateInfo.IsTag("Turn") || stateInfo.IsTag("Fall");
+        return stateInfo.IsTag("Turn") || stateInfo.IsTag("Fall") || stateInfo.IsTag("Dash");
+    }
+
+    public bool IsExecutable()
+    {
+        var player = GameManager.Instance.player.controller;
+
+        if(!player.canAttack || !player.canSkill || isGettingHit || isDead) return false;
+        else return true;
+    }
+
+    public bool IsBufferable()
+    {
+        var player = GameManager.Instance.player.controller;
+
+        if (!player.canAttack || !player.canSkill) return true;
+        return false;
     }
 
     public bool IsAttacking()
@@ -163,6 +189,20 @@ public class SkillController : Singleton<SkillController>
         isSkillPlaying = false;
     }
 
+    private IEnumerator DelayedUseSkillRoutine(SkillInstance instance)
+    {
+        yield return new WaitUntil(() => !IsTurning());
+        yield return new WaitForSeconds(0.1f);
+        StartCoroutine(UseSkillRoutine(instance));
+    }
+
+    private IEnumerator DelayedCombatExecution()
+    {
+        yield return new WaitUntil(() => !IsTurning());
+        yield return new WaitForSeconds(0.1f);
+        combatSkill.Execute();
+    }
+
     public float GetAnimPlayTime(SkillInstance instance)
     {
         if (SystemManager.Instance.skillManager.IsMemorySkill(instance))
@@ -186,16 +226,17 @@ public class SkillController : Singleton<SkillController>
 
         if (IsAttacking()) return;
 
-        if (IsTurning())
+        if (IsExecutable())
+        {
+            StartCoroutine(UseSkillRoutine(instance));
+        }
+        else if (IsBufferable()) // 즉시 실행 불가능하지만 이후 실행될 가능성이 있다면 버퍼링
         {
             SystemManager.Instance.actionBufferUtil.BufferAction(
                 bufferName,
-                () => !IsTurning() && !IsAttacking(),
-                () => StartCoroutine(UseSkillRoutine(instance)));
-        }
-        else
-        {
-            StartCoroutine(UseSkillRoutine(instance));
+                () => IsExecutable(),
+                () => StartCoroutine(UseSkillRoutine(instance))
+            );
         }
     }
 

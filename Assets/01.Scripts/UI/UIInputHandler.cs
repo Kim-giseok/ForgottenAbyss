@@ -16,8 +16,8 @@ public class UIInputHandler : MonoBehaviour
             { KeyCode.I, () => UIManager.Instance?.ToggleInventory() },
             { KeyCode.Escape, HandleEscapeKey },
             //{ KeyCode.Tab, () => UIManager.Instance?.SwapWeapons() }
-            { KeyCode.V, () => UIManager.Instance?.OnStatUI() },
-            { KeyCode.K, () => UIManager.Instance?.OnPassiveUI() }
+            { KeyCode.V, () => UIManager.Instance?.ToggleStatUI() },
+            { KeyCode.K, () => UIManager.Instance?.TogglePassiveUI() }
         };
     }
 

@@ -303,10 +303,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68e4352b8584b49edb0f5da93bdaf397, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 200
+  health: 1
   attack: 1
   experience: 200
-  gold: 0
   isIgnoreHitAnim: 1
   Name: 1
 --- !u!114 &1963007142685713099
@@ -477,9 +476,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14bb306e8dbc45de92a87b707e79ae62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  money: {fileID: 7285741867182844907, guid: a69d9abdcac4f4e468becd62257e25b5, type: 3}
-  items:
-  - {fileID: 2849593479698701841, guid: 56d16be28e8a85d489f574f748a07c3b, type: 3}
+  gold: 0
 --- !u!114 &5747385994184927861
 MonoBehaviour:
   m_ObjectHideFlags: 0

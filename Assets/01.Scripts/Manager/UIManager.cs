@@ -138,4 +138,38 @@ public class UIManager : MonoBehaviour
 
         yield return new WaitForSeconds(holdTime);
     }
+
+    public void ToggleStatUI()
+    {
+        if (statUI != null)
+        {
+            if (statUI.statusUI != null && statUI.statusUI.activeSelf)
+            {
+                // If it's open, close it
+                statUI.OffStatUI();
+            }
+            else
+            {
+                // If it's closed, open it
+                statUI.OnStatusUI();
+            }
+        }
+    }
+
+    public void TogglePassiveUI()
+    {
+        if (passiveUI != null)
+        {
+            if (passiveUI.passiveUI != null && passiveUI.passiveUI.activeSelf)
+            {
+                // If it's open, close it
+                passiveUI.OffPassiveUI();
+            }
+            else
+            {
+                // If it's closed, open it
+                passiveUI.OnPassiveUI();
+            }
+        }
+    }
 }
