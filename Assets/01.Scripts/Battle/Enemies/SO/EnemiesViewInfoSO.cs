@@ -11,7 +11,7 @@ public class EnemyViewInfo
 }
 
 [CreateAssetMenu(menuName = "SO/Enemy/ViewInfoSO")]
-public class EnemiesViewInfoSO: ScriptableObject
+public class EnemiesViewInfoSO: EnemySO
 {
     public List<EnemyViewInfo> EnemyViewInfos;
 }

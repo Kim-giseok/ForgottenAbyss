@@ -1,13 +1,13 @@
+using System.Collections.Generic;
 using UnityEngine;
 
+public enum EnemyStatType { Health, Mana, Stamina, Attack, Speed }
+
+[System.Serializable]
+public class EnemyStatInfo { public EnemyStatType statType; public float value; }
+
 [CreateAssetMenu(menuName = "SO/Enemy/StatSO")]
-public class EnemyStatSO: ScriptableObject
+public class EnemyStatSO: EnemySO
 {
-    public string enemyName;
-    
-    public float health;
-    public float mana;
-    
-    public float attack;
-    public float speed;
+    public List<EnemyStatInfo> stats;
 }

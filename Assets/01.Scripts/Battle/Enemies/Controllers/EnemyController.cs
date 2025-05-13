@@ -1,25 +1,12 @@
-using System.Linq;
+using System;
 using System.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
-using static UnityEditor.AnimationUtility;
 
 public class EnemyController : EnemyBaseController, IDamagable
 {
     public bool isBaked = false;
-    public EnemySoundSO SoundSO { get; private set; } 
-    
-    // SO로 추후 관리해도 좋을 듯
-    public float maxHealth { get; private set; }
-    
-    [Header("Resource")] 
-    public float health;
-    public float attack;
-    public int experience;
-    
     // status로 관리해야할까?
     public bool isIgnoreHitAnim;
-
     public Enemy enemyName;
     
     public EnemyResourceHandler resourceHandler { get; private set; }
@@ -41,42 +28,40 @@ public class EnemyController : EnemyBaseController, IDamagable
     // animator 변경 시 첫번 째 스프라이트 렌더러로 등록하기
     public void OnValidate()
     {
-        Addressables.LoadAssetsAsync<RuntimeAnimatorController>("EnemyAnimator", null).Completed += (handle) =>
-        {
-            var currAnimator = handle.Result.FirstOrDefault(anim => anim.name == enemyName.ToString());
-            if (!currAnimator) return;
-            
-            Debug.Log(currAnimator.name);
-            
-            var animator = GetComponent<Animator>();
-            animator.runtimeAnimatorController = currAnimator;
-            
-            var firstClip = animator.runtimeAnimatorController.animationClips.FirstOrDefault();
-            if (!firstClip) return;
-            
-            var bindings = GetObjectReferenceCurveBindings(firstClip);
-        
-            foreach (var binding in bindings)
-            {
-                var keyframes = GetObjectReferenceCurve(firstClip, binding);
-                var firstSprite = keyframes.FirstOrDefault().value as Sprite;
-                if(!firstSprite) continue;
-                
-                GetComponent<SpriteRenderer>().sprite = firstSprite;
-                break;
-            }
-            
-            Addressables.LoadAssetAsync<EnemiesViewInfoSO>("EnemiesViewInfoSO").Completed += (handle) =>
-            {
-                var currInfo = handle.Result.EnemyViewInfos.Find(info => info.enemyName == enemyName.ToString());
-                if (currInfo == null) return;
-                transform.localScale = new Vector2(currInfo.ratio, currInfo.ratio);
-                
-                var currCollider = GetComponent<CapsuleCollider2D>();
-                currCollider.size = currInfo.size;
-                currCollider.offset = new Vector2(0, currInfo.size.y / 2);
-            };
-        };
+        // Addressables.LoadAssetsAsync<RuntimeAnimatorController>("EnemyAnimator", null).Completed += (handle) =>
+        // {
+        //     var currAnimator = handle.Result.FirstOrDefault(anim => anim.name == enemyName.ToString());
+        //     if (!currAnimator) return;
+        //    
+        //     var animator = GetComponent<Animator>();
+        //     animator.runtimeAnimatorController = currAnimator;
+        //     
+        //     var firstClip = animator.runtimeAnimatorController.animationClips.FirstOrDefault();
+        //     if (!firstClip) return;
+        //     
+        //     var bindings = GetObjectReferenceCurveBindings(firstClip);
+        //
+        //     foreach (var binding in bindings)
+        //     {
+        //         var keyframes = GetObjectReferenceCurve(firstClip, binding);
+        //         var firstSprite = keyframes.FirstOrDefault().value as Sprite;
+        //         if(!firstSprite) continue;
+        //         
+        //         GetComponent<SpriteRenderer>().sprite = firstSprite;
+        //         break;
+        //     }
+        //     
+        //     Addressables.LoadAssetAsync<EnemiesViewInfoSO>("EnemiesViewInfoSO").Completed += (handle) =>
+        //     {
+        //         var currInfo = handle.Result.EnemyViewInfos.Find(info => info.enemyName == enemyName.ToString());
+        //         if (currInfo == null) return;
+        //         transform.localScale = new Vector2(currInfo.ratio, currInfo.ratio);
+        //         
+        //         var currCollider = GetComponent<CapsuleCollider2D>();
+        //         currCollider.size = currInfo.size;
+        //         currCollider.offset = new Vector2(0, currInfo.size.y / 2);
+        //     };
+        // };
     }
 
     #if UNITY_EDITOR
@@ -98,19 +83,21 @@ public class EnemyController : EnemyBaseController, IDamagable
             machine.Start();
         }
 
-        try { MapSpawnManager.Instance.SpawnedMap.monsterManager.AddList(this); }
-        catch { Debug.Log("there is no MapspawnManager"); }
+        // try { MapSpawnManager.Instance.SpawnedMap.monsterManager.AddList(this); }
+        // catch { Debug.Log("there is no MapspawnManager"); }
     }
-
+    
     public void SetConfig(string newEnemyName)
     {
-        resourceHandler.Define(EnemiesLoader.GetStatSO(newEnemyName));
-        SoundSO = EnemiesLoader.GetSoundSO(newEnemyName);
+        resourceHandler.Define(EnemiesLoader.Get<EnemyStatSO>(newEnemyName));
+        
+        soundHandler.Define(EnemiesLoader.Get<EnemySoundSO>(newEnemyName));
+        rewardHandler.Define(EnemiesLoader.Get<EnemyRewardSO>(newEnemyName));
         
         // 미리 등록 되면 등록할 필요 없는 요소들
         animHandler.SetController(EnemiesAnimator.animators[newEnemyName]);
         
-        var info = EnemiesLoader.enemiesInfoSO.EnemyViewInfos.Find(info => info.enemyName == enemyName.ToString());
+        var info = EnemiesLoader.EnemiesInfoSO.EnemyViewInfos.Find(info => info.enemyName == enemyName.ToString());
         if (info == null) return;
         
         transform.localScale = new Vector2(info.ratio, info.ratio);
@@ -122,21 +109,19 @@ public class EnemyController : EnemyBaseController, IDamagable
     {
         enemyName = newEnemyName;
         SetConfig(newEnemyName.ToString());
-        
         machine.Define(EnemiesBT.Get(enemyName));
         machine.Start();
     }
 
     public void GetDamage(float damage)
     {
-        // resourceHandler에서 처리
+        resourceHandler.Modify(EnemyStatType.Health, -damage);
+        statusHandler.SetMode(EnmeyMode.Hit, true);
         
         // 방어력 개념도 구현하기
-        health -= damage;
-        statusHandler.stamina -= 1;
-        if (statusHandler.stamina <= 0) { statusHandler.stamina = 3; }
-
-        statusHandler.isHit = true;
+        // statusHandler.stamina -= 1;
+        // if (statusHandler.stamina <= 0) { statusHandler.stamina = 3; }
+        
         machine.Notify();
     }
     
@@ -144,20 +129,29 @@ public class EnemyController : EnemyBaseController, IDamagable
     // ReSharper disable Unity.PerformanceAnalysis
     public void Die()
     {
+        gameObject.SetActive(false);
         try { MapSpawnManager.Instance.SpawnedMap.monsterManager.RemoveEnemy(this); }
-        catch { Destroy(gameObject); }
+        catch { gameObject.SetActive(false); }
 
-        DamageTextManager.Instance.ShowExperience(experience);
+        DamageTextManager.Instance.ShowExperience(rewardHandler.Experience);
         // 경험치 추가
-        GameManager.Instance.player.playerstatus.GainExperience(experience);
+        GameManager.Instance.player.playerstatus.GainExperience(rewardHandler.Experience);
         
         // 피봇 변경으로 인한 위치 조정
         if (rewardHandler)
         {
             SoundManager.Instance.Playsfx("DropItem");
             
-            rewardHandler.CreateCoin();
-            rewardHandler.CreateMemoryItem();
+            rewardHandler.DropCoin();
+            rewardHandler.DropMemoryItem();
         }
+    }
+
+    private void OnDisable()
+    {
+        // Die 이후 초기화
+        statusHandler.SetMode(EnmeyMode.Hit, false);
+        Collider.enabled = true;
+        Rigidbody.isKinematic = false;
     }
 }
