@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public enum EnmeyMode { Defense, Hit }
@@ -9,8 +8,11 @@ public enum EnmeyMode { Defense, Hit }
 public class EnemyStatusHandler: MonoBehaviour
 {
     public enum StatusEffect { Slow, Stun, Freeze, Faint }
+
+    private Dictionary<int, EnemyStatus> CurrStatus { get; set; } = new();
     
-    public Dictionary<int, bool> Modes { get; private set; } = new();
+    
+    private Dictionary<int, bool> Modes { get; set; } = new();
     public void SetMode(EnmeyMode enmeyMode, bool value) => Modes[(int)enmeyMode] = value;
     public bool GetMode(EnmeyMode enmeyMode) => Modes[(int)enmeyMode];
 
