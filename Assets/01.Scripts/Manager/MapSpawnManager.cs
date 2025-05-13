@@ -11,6 +11,7 @@ public class MapSpawnManager : Singleton<MapSpawnManager>
     [SerializeField] CinemachineConfiner2D confiner2D;
     int mapIdx = 0;
     public Map SpawnedMap { get; private set; }
+
     public Sprite[] backgroundSprites;
     public BackGround backgroundprefeb;
     public BackGround[] backgrounds;
@@ -46,9 +47,11 @@ public class MapSpawnManager : Singleton<MapSpawnManager>
 
         if (SpawnedMap != null)
             Destroy(SpawnedMap.gameObject);
+        foreach (var item in GameObject.FindGameObjectsWithTag("FieldItem"))
+        { item.gameObject.SetActive(false); }
 
         SpawnedMap = Instantiate(maps[mapIdx++]);
-        foreach (var item in GameObject.FindGameObjectsWithTag("FieldItem")) { item.gameObject.SetActive(false); }
+
         SpawnedMap.MapStart();
         confiner2D.m_BoundingShape2D = SpawnedMap.CameraCollider;
     }
