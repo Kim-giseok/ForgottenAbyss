@@ -39,13 +39,7 @@ public class DashState : PlayerStateMachine
     }
     public override void Update()
     {
-        //대시 중 점프 키 입력 시 대시 캔슬
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            player.ChangeState(PlayerState.Jump);
-            return; 
-        }
-
+        
         dashTimer += Time.deltaTime;
         if (dashTimer >= player.dashTime) //대쉬 종료
         {
@@ -57,6 +51,15 @@ public class DashState : PlayerStateMachine
             player.rigid.velocity = new Vector2(player.inputVec.x * player.status.stats[StatType.SPEED], player.rigid.velocity.y);
         }
     }
+
+    public override void OnJump()
+    {
+        if (player.isGround)
+        {
+            player.ChangeState(PlayerState.Jump);
+        }
+    }
+
     public override void Exit()
     {
         player.animator.SetBool("IsDash", false);
