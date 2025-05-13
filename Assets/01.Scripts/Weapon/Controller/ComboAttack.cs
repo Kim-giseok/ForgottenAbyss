@@ -319,12 +319,13 @@ public class ComboAttack : MonoBehaviour
                     closest = hit.gameObject;
                 }
             }
-
+            DebugDrawUtil.DrawCircle(origin, radius, Color.red, 0.5f);
             return closest != null ? new List<GameObject> { closest } : new List<GameObject>();
         }
         else
         {
             // 3~6타: 관통 공격
+            DebugDrawUtil.DrawCircle(origin, radius, Color.red, 0.5f);
             return hits.Select(hit => hit.gameObject).ToList();
         }
     }
