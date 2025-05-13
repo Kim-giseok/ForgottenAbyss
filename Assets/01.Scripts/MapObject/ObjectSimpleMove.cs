@@ -30,7 +30,7 @@ public class ObjectSimpleMove : MonoBehaviour
         }
     }
 
-    private void OnDrawGizmosSelected()
+    private void OnDrawGizmos()
     {
         if (moveDirects == null) return;
 
