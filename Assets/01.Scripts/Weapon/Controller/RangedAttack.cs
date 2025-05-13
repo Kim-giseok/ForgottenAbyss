@@ -6,7 +6,8 @@ public class RangedAttack : MonoBehaviour
 {
     [SerializeField] private Animator animator;
     [SerializeField] private Transform firePoint;
-
+    [SerializeField] private ComboBar comboBar;
+    
     private GameObjectPool projectilePool;
     private RangedAttackSO rangedData;
     private int attackIndex = 0;
@@ -59,7 +60,8 @@ public class RangedAttack : MonoBehaviour
     public void OnRangedCheck(float bufferTime)
     {
         canNextCombo = true;
-        //DamageTextManager.Instance.ShowComboTiming(bufferTime);
+        //여기에다가 콤보 입력 타이머 실행
+        comboBar.StartCombo(bufferTime);
         StartCoroutine(RangedInputBuffer(bufferTime));
     }
 

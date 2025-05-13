@@ -7,6 +7,7 @@ public class ComboAttack : MonoBehaviour
 {
     [SerializeField] private Animator animator;
     [SerializeField] private int maxCombo = 6;
+    [SerializeField] private ComboBar comboBar;
 
     private ComboAttackSO comboData;
 
@@ -60,7 +61,8 @@ public class ComboAttack : MonoBehaviour
     void OnComboCheck(float bufferTime)
     {
         canNextCombo = true;
-        //DamageTextManager.Instance.ShowComboTiming(bufferTime);
+
+        comboBar.StartCombo(bufferTime);
         StartCoroutine(ComboInputBuffer(bufferTime));
     }
 
