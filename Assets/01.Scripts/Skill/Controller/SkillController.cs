@@ -245,10 +245,10 @@ public class SkillController : Singleton<SkillController>
 
     public void ResetAttack()
     {
-        isSkillPlaying = false;
-
         if (SystemManager.Instance.weaponManager.GetCurrentWeaponData() != null) 
         {
+            isSkillPlaying = false;
+
             var currentWeaponType = SystemManager.Instance.weaponManager.GetCurrentWeaponData().Type;
 
             switch (currentWeaponType)
