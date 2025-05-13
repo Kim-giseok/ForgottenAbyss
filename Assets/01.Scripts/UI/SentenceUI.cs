@@ -26,7 +26,7 @@ public class SentenceUI : MonoBehaviour
             sentenceTxt.text += sentence[i];
             // rect.sizeDelta = new Vector2(rect.sizeDelta.x, sentenceTxt.preferredHeight);
             SoundManager.Instance.Playsfx("Tick");
-            yield return new WaitForSecondsRealtime(0.08f);
+            yield return new WaitForSecondsRealtime(0.06f);
         }
     }
 }

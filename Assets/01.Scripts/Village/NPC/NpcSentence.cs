@@ -21,7 +21,7 @@ public class NpcSentence : MonoBehaviour
         foreach (var sentnece in sentences)
         {
             UIManager.Instance.OnTalk(this, sentnece);
-            yield return new WaitForSecondsRealtime(sentnece.Length * 0.12f);
+            yield return new WaitForSecondsRealtime(sentnece.Length * 0.1f);
         }
         UIManager.Instance.OffTalk();
         displayEndEvents.Invoke();
