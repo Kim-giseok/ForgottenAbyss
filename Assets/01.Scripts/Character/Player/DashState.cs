@@ -39,14 +39,6 @@ public class DashState : PlayerStateMachine
     }
     public override void Update()
     {
-        //// �뽬 �� ����Ű �Է� ����
-        //if (Input.GetKeyDown(KeyCode.Space))
-        //{
-        //    // ���� ���·� ��� ��ȯ
-        //    player.ChangeState(PlayerState.Jump);
-        //    return; // ���� ���·� ��ȯ�����Ƿ� ������ Update ���� �ǳʶ�
-        //}
-
         dashTimer += Time.deltaTime;
         if (dashTimer >= player.dashTime) //대쉬 종료
         {
@@ -56,6 +48,14 @@ public class DashState : PlayerStateMachine
                 player.ChangeState(PlayerState.Idle);
 
             player.rigid.velocity = new Vector2(player.inputVec.x * player.status.stats[StatType.SPEED], player.rigid.velocity.y);
+        }
+    }
+
+    public override void OnJump()
+    {
+        if (player.isGround)
+        {
+            player.ChangeState(PlayerState.Jump);
         }
     }
 
@@ -70,6 +70,7 @@ public class DashState : PlayerStateMachine
         player.StartCoroutine(WaitForLandingToResetCollision());
         player.rigid.collisionDetectionMode = CollisionDetectionMode2D.Discrete;
         player.StartCoroutine(DelayedInvincibilityOff(0.25f)); //대쉬 무적판정 조금 더 길게
+        player.StartCoroutine(DashCooldown(0.5f));
     }
 
     private IEnumerator DelayedInvincibilityOff(float delay)
@@ -83,5 +84,12 @@ public class DashState : PlayerStateMachine
         yield return new WaitUntil(() => player.isGround);
         player.IgnorePlatformCollision();
         Debug.Log("대쉬 종료 후 착지 시 충돌 복구됨!");
+    }
+
+    private IEnumerator DashCooldown(float delay)
+    {
+        player.canDash = false;
+        yield return new WaitForSeconds(delay);
+        player.canDash = true;
     }
 }
