@@ -30,7 +30,8 @@ public class ComboAttackSO : ScriptableObject
                 moveDistance = step.moveDistance,
                 inputBufferTime = step.inputBufferTime,
                 radius = step.radius,
-                offset = step.offset
+                offset = step.offset,
+                stepIcon = step.stepIcon
             });
         }
 
@@ -47,4 +48,5 @@ public class ComboStep
     public float inputBufferTime;   // 다음 입력을 받을 수 있는 시간
     public float radius;
     public float offset;
+    public Sprite stepIcon;
 }

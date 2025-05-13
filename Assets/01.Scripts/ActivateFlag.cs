@@ -17,7 +17,8 @@ public enum FLAGKEY
     STAGE_2_CLEAR,
     STAGE_3_CLEAR,
     FIRST_WEAPON_EQUIP,
-    NPCTRIGGER
+    NPCTRIGGER,
+    PUSH_LABER_TUTORIAL
 }
 
 [Serializable]

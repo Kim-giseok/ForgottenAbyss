@@ -26,6 +26,7 @@ public class ControllerPlayer : MonoBehaviour
     public bool isAlive = true;
     public bool canAttack = false;
     public bool canSkill = false;
+    public bool canDash = true;
 
     public Rigidbody2D rigid;
     public Animator animator;
@@ -202,6 +203,7 @@ public class ControllerPlayer : MonoBehaviour
     void OnDash(InputValue value) //�뽬 Ű �Է�
     {
         if (!isAlive) return;
+        if (!canDash) return;
 
         var skillController = SkillController.Instance;
 

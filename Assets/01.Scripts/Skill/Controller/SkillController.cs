@@ -163,8 +163,9 @@ public class SkillController : Singleton<SkillController>
 
     public bool IsAttacking()
     {
+        // 활이 검보다 안좋은 것같아서 스킬 사용 제한을 임시로 풀어줌 평타 중 스킬 사용 가능
         return (comboAttack != null && comboAttack.IsAttacking) ||
-               (rangedAttack != null && rangedAttack.IsAttacking) ||
+               //(rangedAttack != null && rangedAttack.IsAttacking) ||
                isSkillPlaying;
     }
 
@@ -224,7 +225,7 @@ public class SkillController : Singleton<SkillController>
             return;
         }
 
-        if (IsAttacking()) return;
+        if (combatSkill.weaponType != WeaponType.Bow && IsAttacking()) return;
 
         if (IsExecutable())
         {
@@ -245,26 +246,38 @@ public class SkillController : Singleton<SkillController>
 
     public void ResetAttack()
     {
-        isSkillPlaying = false;
+        if (SystemManager.Instance.weaponManager.GetCurrentWeaponData() != null) 
+        {
+            isSkillPlaying = false;
 
-        if (comboAttack != null && comboAttack.gameObject.activeInHierarchy)
-        {
-            comboAttack.EndComboAttack();
-        }
-        else
-        {
-            comboAttack = FindObjectOfType<ComboAttack>();
-            Debug.LogWarning("comboAttack이 null이거나 Destroy됨 → 재연결 시도");
-        }
+            var currentWeaponType = SystemManager.Instance.weaponManager.GetCurrentWeaponData().Type;
 
-        if (rangedAttack != null && rangedAttack.gameObject.activeInHierarchy)
-        {
-            rangedAttack.EndRangedAttack();
-        }
-        else
-        {
-            rangedAttack = FindObjectOfType<RangedAttack>();
-            Debug.LogWarning("rangedAttack이 null이거나 Destroy됨 → 재연결 시도");
+            switch (currentWeaponType)
+            {
+                case WeaponType.Sword:
+                    if (comboAttack != null && comboAttack.gameObject.activeInHierarchy)
+                        comboAttack.EndComboAttack();
+                    else
+                    {
+                        comboAttack = FindObjectOfType<ComboAttack>();
+                        Debug.LogWarning("comboAttack이 null이거나 Destroy됨 → 재연결 시도");
+                    }
+                    break;
+
+                case WeaponType.Bow:
+                    if (rangedAttack != null && rangedAttack.gameObject.activeInHierarchy)
+                        rangedAttack.EndRangedAttack();
+                    else
+                    {
+                        rangedAttack = FindObjectOfType<RangedAttack>();
+                        Debug.LogWarning("rangedAttack이 null이거나 Destroy됨 → 재연결 시도");
+                    }
+                    break;
+
+                default:
+                    Debug.LogWarning($"ResetAttack() - 알 수 없는 무기 타입: {currentWeaponType}");
+                    break;
+            }
         }
     }
 }

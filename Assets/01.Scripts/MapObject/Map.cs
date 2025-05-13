@@ -7,7 +7,7 @@ public class Map : MonoBehaviour
 {
     [SerializeField] Transform startP;
     [field: SerializeField] public Collider2D CameraCollider { get; private set; }
-    public MonsterManager monsterManager { get; private set; }
+    [field: SerializeField] public MonsterManager monsterManager { get; private set; }
 
     public void MapStart()
     {
@@ -18,9 +18,10 @@ public class Map : MonoBehaviour
         }
         catch (Exception e)
         {
-            Debug.Log(e.Message);
+            Debug.LogError(e.Message);
         }
 
-        monsterManager = GetComponentInChildren<MonsterManager>();
+        if (monsterManager == null)
+            monsterManager = GetComponentInChildren<MonsterManager>();
     }
 }

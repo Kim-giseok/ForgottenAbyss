@@ -69,5 +69,23 @@ public class CombatInstance
         }
     }
 
-    public Sprite GetIcon() => icon;
+    public Sprite GetStepIcon(int stepIndex)
+    {
+        if (weaponType == WeaponType.Bow && rangedSO != null)
+        {
+            if (stepIndex >= 0 && stepIndex < rangedSO.rangedSteps.Count)
+            {
+                return rangedSO.rangedSteps[stepIndex].stepIcon;
+            }
+        }
+        else if(weaponType == WeaponType.Sword && comboSO != null)
+        {
+            if (stepIndex >= 0 && stepIndex < comboSO.comboSteps.Count)
+            {
+                return comboSO.comboSteps[stepIndex].stepIcon;
+            }
+        }
+
+        return icon;
+    }
 }

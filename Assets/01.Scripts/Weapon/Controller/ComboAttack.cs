@@ -7,6 +7,7 @@ public class ComboAttack : MonoBehaviour
 {
     [SerializeField] private Animator animator;
     [SerializeField] private int maxCombo = 6;
+    [SerializeField] private ComboBar comboBar;
 
     private ComboAttackSO comboData;
 
@@ -53,13 +54,15 @@ public class ComboAttack : MonoBehaviour
         animator.ResetTrigger("AttackTrigger");
         animator.SetTrigger("AttackTrigger");
         animator.SetInteger("AttackCombo", attackIndex);
+        UpdateComboAttackUI(attackIndex - 1);
     }
 
 
     void OnComboCheck(float bufferTime)
     {
         canNextCombo = true;
-        //DamageTextManager.Instance.ShowComboTiming(bufferTime);
+
+        comboBar.StartCombo(bufferTime);
         StartCoroutine(ComboInputBuffer(bufferTime));
     }
 
@@ -90,7 +93,9 @@ public class ComboAttack : MonoBehaviour
             inputCombo = false;
             attackIndex++;
             animator.SetInteger("AttackCombo", attackIndex);
+            UpdateComboAttackUI(attackIndex - 1);
             animator.Play(comboData.comboSteps[attackIndex - 1].animationName);
+            comboBar.PlayEffect();
         }
         else
         {
@@ -116,6 +121,7 @@ public class ComboAttack : MonoBehaviour
             attackIndex = 0;
             animator.SetInteger("AttackCombo", 0);
             animator.Play("Idle");
+            UpdateComboAttackUI(attackIndex);
         }
     }
 
@@ -131,6 +137,8 @@ public class ComboAttack : MonoBehaviour
             animator.ResetTrigger("AttackTrigger");
             animator.SetTrigger("AttackTrigger");
             animator.SetInteger("AttackCombo", attackIndex);
+            comboBar.PlayEffect();
+            UpdateComboAttackUI(attackIndex - 1);
         }
     }
 
@@ -318,6 +326,19 @@ public class ComboAttack : MonoBehaviour
         {
             // 3~6타: 관통 공격
             return hits.Select(hit => hit.gameObject).ToList();
+        }
+    }
+
+    private void UpdateComboAttackUI(int stepIndex)
+    {
+        if (comboData != null && stepIndex >= 0 && stepIndex < comboData.comboSteps.Count)
+        {
+            Sprite newIcon = comboData.comboSteps[stepIndex].stepIcon;
+            Debug.Log($"UpdateComboAttackUI - 현재 아이콘: {newIcon.name}, 현재 장착 무기: {comboData.name}");
+            if (SystemManager.Instance.skillManager.skillUI != null)
+            {
+                SystemManager.Instance.skillManager.skillUI.SetSkillIcon(SkillSlotType.Basic, newIcon);
+            }
         }
     }
 }

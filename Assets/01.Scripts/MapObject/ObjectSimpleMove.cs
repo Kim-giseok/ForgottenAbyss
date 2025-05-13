@@ -29,4 +29,21 @@ public class ObjectSimpleMove : MonoBehaviour
             transform.position = nextP;
         }
     }
+
+    private void OnDrawGizmos()
+    {
+        if (moveDirects == null) return;
+
+        Gizmos.color = Color.red;
+        Vector3 startP = transform.position;
+
+        foreach (var movedirect in moveDirects)
+        {
+            Vector3 nextP = startP + movedirect;
+            Gizmos.DrawLine(startP, nextP);
+            startP = nextP;
+        }
+
+        Gizmos.DrawSphere(startP, 0.2f);
+    }
 }

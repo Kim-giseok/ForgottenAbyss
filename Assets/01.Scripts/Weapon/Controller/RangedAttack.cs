@@ -6,7 +6,10 @@ public class RangedAttack : MonoBehaviour
 {
     [SerializeField] private Animator animator;
     [SerializeField] private Transform firePoint;
-
+    [SerializeField] private int maxCombo = 3;
+    [SerializeField] private ComboBar comboBar;
+    [SerializeField] private Animator shotAnimator;
+    
     private GameObjectPool projectilePool;
     private RangedAttackSO rangedData;
     private int attackIndex = 0;
@@ -29,7 +32,9 @@ public class RangedAttack : MonoBehaviour
         if (IsAttacking)
         {
             if (canNextCombo)
+            {
                 inputCombo = true;
+            }      
         }
         else
         {
@@ -44,36 +49,53 @@ public class RangedAttack : MonoBehaviour
         animator.ResetTrigger("BowTrigger");
         animator.SetTrigger("BowTrigger");
         animator.SetInteger("BowCombo", attackIndex);
+
+        UpdateRangedAttackUI(attackIndex-1);
     }
 
     private void PlayRangedAnimation()
     {
-        string animName = rangedData.comboSteps[attackIndex - 1].animationName;
+        string animName = rangedData.rangedSteps[attackIndex - 1].animationName;
         animator.Play(animName);
     }
 
     public void OnRangedCheck(float bufferTime)
     {
         canNextCombo = true;
-        //DamageTextManager.Instance.ShowComboTiming(bufferTime);
+        //여기에다가 콤보 입력 타이머 실행
+        comboBar.StartCombo(bufferTime);
         StartCoroutine(RangedInputBuffer(bufferTime));
     }
 
     IEnumerator RangedInputBuffer(float time)
     {
-        yield return new WaitForSeconds(time);
+        float elapsed = 0f;
+
+        while (elapsed < time)
+        {
+            elapsed += Time.deltaTime;
+
+            if (inputCombo)
+            {
+                OnRangedNext();
+                yield break;
+            }
+
+            yield return null;
+        }
+
         canNextCombo = false;
     }
 
     public void OnRangedNext()
     {
-        Debug.Log($"[Ranged] OnRangedNext called. inputCombo: {inputCombo}, attackIndex: {attackIndex}");
-
-        if (inputCombo && attackIndex < rangedData.comboSteps.Count)
+        if (inputCombo && attackIndex < maxCombo)
         {
             inputCombo = false;
             attackIndex++;
             animator.SetInteger("BowCombo", attackIndex);
+            UpdateRangedAttackUI(attackIndex-1);
+            comboBar.PlayEffect();
             PlayRangedAnimation();
         }
         else
@@ -89,9 +111,9 @@ public class RangedAttack : MonoBehaviour
 
     public void OnFireProjectile()
     {
-        if (rangedData == null || rangedData.comboSteps.Count < attackIndex || attackIndex <= 0) return;
+        if (rangedData == null || rangedData.rangedSteps.Count < attackIndex || attackIndex <= 0) return;
 
-        RangedComboStep step = rangedData.comboSteps[attackIndex - 1];
+        RangedComboStep step = rangedData.rangedSteps[attackIndex - 1];
 
         StartCoroutine(FireProjectiles(step));
     }
@@ -111,6 +133,7 @@ public class RangedAttack : MonoBehaviour
                 onKnockBack(0.2f);
             }
 
+            shotAnimator.SetTrigger("ShotTrigger");
             SpawnProjectile(direction);
 
             yield return new WaitForSeconds(step.fireDelay);
@@ -151,14 +174,27 @@ public class RangedAttack : MonoBehaviour
         {
             int comboStepIndex = attackIndex - 1;
 
-            if (comboStepIndex >= 0 && comboStepIndex < rangedData.comboSteps.Count)
+            if (comboStepIndex >= 0 && comboStepIndex < rangedData.rangedSteps.Count)
             {
-                float multiplier = rangedData.comboSteps[comboStepIndex].multiplier;
+                float multiplier = rangedData.rangedSteps[comboStepIndex].multiplier;
                 pp.Setup(direction, caster: this.gameObject, multiplier);
             }
             else
             {
-                Debug.LogWarning($"[RangedAttack] Invalid combo step index: {comboStepIndex}, attackIndex: {attackIndex}, total steps: {rangedData.comboSteps.Count}");
+                Debug.LogWarning($"[RangedAttack] Invalid combo step index: {comboStepIndex}, attackIndex: {attackIndex}, total steps: {rangedData.rangedSteps.Count}");
+            }
+        }
+    }
+
+    private void UpdateRangedAttackUI(int stepIndex)
+    {
+        if (rangedData != null && stepIndex >= 0 && stepIndex < rangedData.rangedSteps.Count)
+        {
+            Sprite newIcon = rangedData.rangedSteps[stepIndex].stepIcon;
+            Debug.Log($"UpdateRangedAttackUI - 현재 아이콘: {newIcon.name}, 현재 장착 무기: {rangedData.name}");
+            if (SystemManager.Instance.skillManager.skillUI != null)
+            {
+                SystemManager.Instance.skillManager.skillUI.SetSkillIcon(SkillSlotType.Basic, newIcon);
             }
         }
     }
@@ -174,7 +210,6 @@ public class RangedAttack : MonoBehaviour
         if (inputCombo)
         {
             inputCombo = false;
-
             StartCoroutine(RestartRangedComboAfterDelay(0.1f));
         }
         else
@@ -182,8 +217,10 @@ public class RangedAttack : MonoBehaviour
             attackIndex = 0;
             animator.SetInteger("BowCombo", 0);
             animator.Play("Idle");
+            UpdateRangedAttackUI(attackIndex);
         }
     }
+
     private IEnumerator RestartRangedComboAfterDelay(float delay)
     {
         yield return new WaitForSeconds(delay);
@@ -191,11 +228,34 @@ public class RangedAttack : MonoBehaviour
         IsAttacking = true;
         canNextCombo = true;
 
-        if (!animator.GetCurrentAnimatorStateInfo(0).IsName(rangedData.comboSteps[attackIndex - 1].animationName))
+        if (!animator.GetCurrentAnimatorStateInfo(0).IsName(rangedData.rangedSteps[attackIndex - 1].animationName))
         {
             animator.ResetTrigger("BowTrigger");
             animator.SetTrigger("BowTrigger");
             animator.SetInteger("BowCombo", attackIndex);
+            comboBar.PlayEffect();
+            UpdateRangedAttackUI(attackIndex - 1);
         }
+    }
+
+    public void AdvanceCombo()
+    {
+        if (attackIndex < maxCombo)
+        {
+            inputCombo = true;
+            OnRangedCheck(1f);
+        }
+        else
+            EndRangedAttack();
+    }
+
+    public void PlayComboEffect()
+    {
+        comboBar.PlayEffect();
+    }
+
+    public void PlayShotEffect()
+    {
+        shotAnimator.SetTrigger("ShotTrigger");
     }
 }

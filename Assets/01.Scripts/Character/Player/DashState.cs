@@ -39,14 +39,6 @@ public class DashState : PlayerStateMachine
     }
     public override void Update()
     {
-        // ´ë½¬ Áß Á¡ÇÁÅ° ÀÔ·Â °¨Áö
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            // Á¡ÇÁ »óÅÂ·Î Áï½Ã ÀüÈ¯
-            player.ChangeState(PlayerState.Jump);
-            return; // Á¡ÇÁ »óÅÂ·Î ÀüÈ¯ÇßÀ¸¹Ç·Î ³ª¸ÓÁö Update ·ÎÁ÷ °Ç³Ê¶Ü
-        }
-
         dashTimer += Time.deltaTime;
         if (dashTimer >= player.dashTime) //ëŒ€ì‰¬ ì¢…ë£Œ
         {
@@ -58,6 +50,15 @@ public class DashState : PlayerStateMachine
             player.rigid.velocity = new Vector2(player.inputVec.x * player.status.stats[StatType.SPEED], player.rigid.velocity.y);
         }
     }
+
+    public override void OnJump()
+    {
+        if (player.isGround)
+        {
+            player.ChangeState(PlayerState.Jump);
+        }
+    }
+
     public override void Exit()
     {
         player.animator.SetBool("IsDash", false);
@@ -69,6 +70,7 @@ public class DashState : PlayerStateMachine
         player.StartCoroutine(WaitForLandingToResetCollision());
         player.rigid.collisionDetectionMode = CollisionDetectionMode2D.Discrete;
         player.StartCoroutine(DelayedInvincibilityOff(0.25f)); //ëŒ€ì‰¬ ë¬´ì íŒì • ì¡°ê¸ˆ ë” ê¸¸ê²Œ
+        player.StartCoroutine(DashCooldown(0.5f));
     }
 
     private IEnumerator DelayedInvincibilityOff(float delay)
@@ -82,5 +84,12 @@ public class DashState : PlayerStateMachine
         yield return new WaitUntil(() => player.isGround);
         player.IgnorePlatformCollision();
         Debug.Log("ëŒ€ì‰¬ ì¢…ë£Œ í›„ ì°©ì§€ ì‹œ ì¶©ëŒ ë³µêµ¬ë¨!");
+    }
+
+    private IEnumerator DashCooldown(float delay)
+    {
+        player.canDash = false;
+        yield return new WaitForSeconds(delay);
+        player.canDash = true;
     }
 }
