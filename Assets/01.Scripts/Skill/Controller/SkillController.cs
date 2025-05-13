@@ -163,8 +163,9 @@ public class SkillController : Singleton<SkillController>
 
     public bool IsAttacking()
     {
+        // 활이 검보다 안좋은 것같아서 스킬 사용 제한을 임시로 풀어줌 평타 중 스킬 사용 가능
         return (comboAttack != null && comboAttack.IsAttacking) ||
-               (rangedAttack != null && rangedAttack.IsAttacking) ||
+               //(rangedAttack != null && rangedAttack.IsAttacking) ||
                isSkillPlaying;
     }
 
@@ -224,7 +225,7 @@ public class SkillController : Singleton<SkillController>
             return;
         }
 
-        if (IsAttacking()) return;
+        if (combatSkill.weaponType != WeaponType.Bow && IsAttacking()) return;
 
         if (IsExecutable())
         {

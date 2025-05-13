@@ -26,6 +26,7 @@ public class BowSkill02ExecutionSO : SkillExecutionSO
             if (visualSO != null)
             {
                 Transform spawnPoint = caster.transform;
+                SkillController.Instance.rangedAttack.PlayComboEffect();
                 CoroutineRunner.instance.StartCoroutine(PlayEffectWithDelay(visualSO, spawnPoint, data, castData));
             }
         }
@@ -37,11 +38,12 @@ public class BowSkill02ExecutionSO : SkillExecutionSO
 
     private IEnumerator PlayEffectWithDelay(SkillVisualSO visualSO, Transform spawnPoint, SkillData data, SkillCastData castData)
     {
-        GameManager.Instance.cameraZoom.ZoomIn(0.3f);
+        GameManager.Instance.cameraZoom.ZoomIn(0.5f);
         
         if (visualSO.effectDelay > 0f)
             yield return new WaitForSeconds(visualSO.effectDelay);
 
+        SkillController.Instance.rangedAttack.PlayShotEffect();
         GameManager.Instance.cameraZoom.ZoomOut();
 
         List<Transform> enemies = FindEnemiesAround(spawnPoint.position, 10f);
@@ -73,6 +75,7 @@ public class BowSkill02ExecutionSO : SkillExecutionSO
             }
             yield return new WaitForSeconds(delayBetweenShots);
         }
+        SkillController.Instance.rangedAttack.AdvanceCombo();
         SkillController.Instance.isBowAttack = false;
     }
 

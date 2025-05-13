@@ -237,4 +237,25 @@ public class RangedAttack : MonoBehaviour
             UpdateRangedAttackUI(attackIndex - 1);
         }
     }
+
+    public void AdvanceCombo()
+    {
+        if (attackIndex < maxCombo)
+        {
+            inputCombo = true;
+            OnRangedCheck(1f);
+        }
+        else
+            EndRangedAttack();
+    }
+
+    public void PlayComboEffect()
+    {
+        comboBar.PlayEffect();
+    }
+
+    public void PlayShotEffect()
+    {
+        shotAnimator.SetTrigger("ShotTrigger");
+    }
 }
