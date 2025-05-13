@@ -19,6 +19,7 @@ GameObject:
   - component: {fileID: 4405339887889641033}
   - component: {fileID: 1654516397738940589}
   - component: {fileID: -9013779219291190337}
+  - component: {fileID: -6672324078619232886}
   m_Layer: 9
   m_Name: SwordShadow
   m_TagString: Untagged
@@ -189,11 +190,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isBaked: 1
-  health: 50
-  attack: 10
-  experience: 100
   isIgnoreHitAnim: 0
-  enemyName: 0
+  enemyName: 7
 --- !u!114 &6211334845711148440
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -249,7 +247,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14bb306e8dbc45de92a87b707e79ae62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gold: 200
 --- !u!114 &-9013779219291190337
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -262,3 +259,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ceda65fdd9b4532b6c3a361ae3a97d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &-6672324078619232886
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8922458991402315721}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82442f8733084530962e46c1a7bb21e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  castingDirection: {x: 0, y: 0}
