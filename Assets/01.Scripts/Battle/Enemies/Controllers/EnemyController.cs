@@ -42,7 +42,6 @@ public class EnemyController : EnemyBaseController, IDamagable
         resourceHandler = GetComponent<EnemyResourceHandler>();
         statusHandler = new EnemyStatusHandler();
         rewardHandler = GetComponent<EnemyRewardHandler>();
-        
     }
 
     // animator 변경 시 첫번 째 스프라이트 렌더러로 등록하기

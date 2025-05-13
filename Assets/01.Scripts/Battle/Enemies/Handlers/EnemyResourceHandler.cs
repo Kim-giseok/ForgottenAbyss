@@ -6,11 +6,11 @@ public class EnemyResourceHandler: MonoBehaviour
     private EnemyStatSO _statSO;
     private EnemyController controller;
     
-    public float health;
-    public float attack;
-    public float defence;
-    public float speed;
-    public float mana;
+    private float health;
+    private float attack;
+    private float defence;
+    private float speed;
+    private float mana;
 
     private void Awake()
     {

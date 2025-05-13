@@ -4,20 +4,23 @@ using UnityEngine;
 // resource 또는 SoundSO로 관리 필요
 public class EnemySoundHandler: MonoBehaviour
 {
-    public EnemySoundSO soundSO;
+    private EnemySoundSO _soundSO;
+    public void Define(EnemySoundSO newSoundSO) => _soundSO = newSoundSO;
     
-    public AudioClip GetClip(EnemySoundType type)
+    private AudioClip GetClip(EnemySoundType type)
     {
-        if (!soundSO) return null;
+        if (!_soundSO) return null;
         
         int index = (int)type;
-        if (index >= 0 && index < soundSO.soundList.Count) return soundSO.soundList[index]?.clip;
+        if (index >= 0 && index < _soundSO.soundList.Count) return _soundSO.soundList[index]?.clip;
         return null;
     }
 
     public void Play(EnemySoundType soundType)
     {
         if (!SoundManager.Instance) return;
-        SoundManager.Instance.PlaySFX(GetClip(soundType));
+        var currClip = GetClip(soundType);
+        if (!currClip) return;
+        SoundManager.Instance.PlaySFX(currClip);
     }
 }
