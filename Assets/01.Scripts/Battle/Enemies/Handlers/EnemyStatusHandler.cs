@@ -7,7 +7,7 @@ public enum EnmeyMode { Defense, Hit }
 // 디폴트는 동일하게 가져가지만 몬스터마다 다르게
 public class EnemyStatusHandler: MonoBehaviour
 {
-    private Dictionary<int, EnemyStatus> CurrStatus { get; set; } = new();
+    private LinkedList<EnemyStatus> CurrStatus { get; set; } = new();
     
     private Dictionary<int, bool> Modes { get; set; } = new();
     public void SetMode(EnmeyMode enmeyMode, bool value) => Modes[(int)enmeyMode] = value;
