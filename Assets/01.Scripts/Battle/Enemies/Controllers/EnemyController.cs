@@ -119,7 +119,7 @@ public class EnemyController : EnemyBaseController, IDamagable
         resourceHandler.Modify(EnemyStatType.Health, -damage);
         statusHandler.SetMode(EnmeyMode.Hit, true);
         BoltsPool.Instance.CreateParticle(transform, Random.Range(0, 2) == 1 ? "Hit" : "Hit2")
-            .SetSize(0.1f).SetColor(Color.yellow).SetPosition(transform.position + new Vector3(Random.Range(-0.2f, 0.2f), 0.5f + Random.Range(-0.2f, 0.2f))).Play();
+            .SetSize(0.1f).SetColor(Color.yellow).SetPosition(transform.position + new Vector3(Random.Range(-0.2f, 0.2f), 0.6f + Random.Range(-0.2f, 0.2f))).Play();
         
         // 방어력 개념도 구현하기
         // statusHandler.stamina -= 1;
