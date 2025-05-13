@@ -13,13 +13,9 @@ public class UIDamageDetector: MonoBehaviour, IDamagable
     {
         controller.GetDamage(damage);
 
-        if (controller.health <= 0)
+        if (controller.resourceHandler.Get(EnemyStatType.Health).currValue <= 0)
         {
             BoltsPool.Instance.Clear();
         }
-        
-        Debug.Log(controller.maxHealth);
-        Debug.Log(controller.health);
-        // UI 값 변경
     }
 }

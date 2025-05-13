@@ -125,6 +125,7 @@ public class BoltsPool : MonoBehaviour // 단위 미사일
             currBolts.Add(bolt);
         }
         
+        bolt.SetTrail(false);
         bolt.hitBox.enabled = false;
         bolt.gameObject.SetActive(true);
         bolt.animHandler.Play(animName);

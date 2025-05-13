@@ -16,7 +16,7 @@ public class MonsterManager : LaberBase
     public void RemoveEnemy(EnemyController enemy)
     {
         enemies.Remove(enemy);
-        Destroy(enemy.gameObject);
+        enemy.gameObject.SetActive(false);
         if (enemies.Count <= 0)
             EnemyCleared();
     }

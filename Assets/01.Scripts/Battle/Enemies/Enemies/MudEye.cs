@@ -25,7 +25,7 @@ public class MudWarpNode : Node
 {
     public override void Start()
     {
-        controller.animnHandler.Play("Warp");
+        controller.animHandler.Play("Warp");
         float clampedX = Random.Range(-7, 7);
         float clampedY = Random.Range(-5, 5);
         controller.transform.position = new Vector2(clampedX, clampedY);
@@ -43,7 +43,7 @@ public class MudSpawnNode : Node
     public override void Start()
     {
         var currPos = NavSurface.Instance.GetPlatform(controller.agent.target).centerCell.WorldPos + new Vector2(0, 1.7f);
-        EnemyRespawner.Instance.Create(EnemiesBT.Enemy.MudHand, currPos);
+        EnemiesPool.Instance.Create(Enemy.MudHand, currPos);
         SetStatus(Status.Success);
     }
 }

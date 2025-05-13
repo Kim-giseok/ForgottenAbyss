@@ -84,7 +84,6 @@ public class HitBox : MonoBehaviour // 1회 공격 당의 캐싱이 필요할 �
         // notice: UI에게 notify하는 방식으로 관리하기
         // Vector3 textPosition = transform.position + Vector3.up * 1f;
         // DamageTextManager.Instance.ShowDamage(textPosition, (int)damage);
-        
         if (!other.TryGetComponent(out IDamagable damagable) || ownerLayer == other.gameObject.layer) return;
 
         
@@ -99,7 +98,7 @@ public class HitBox : MonoBehaviour // 1회 공격 당의 캐싱이 필요할 �
             if (enemy != null)
             {
                 DamageTextManager.Instance.ShowDamage(other.transform.position, (int)damage, false);
-                GameManager.Instance.cameraShake.Shake(); 
+                // GameManager.Instance.cameraShake.Shake(); 
             }
             return;
         }

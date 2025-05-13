@@ -8,7 +8,7 @@ public class AttackNode : Node
 
     public override void Start()
     {
-        controller.animnHandler.Play(command.animName);
+        controller.animHandler.Play(command.animName);
         // if(currSkill.isLookTarget) controller.LookTarget();
     }
     
@@ -56,7 +56,7 @@ public class WaitNode : Node
     public override void Start()
     {
         controller.Rigidbody.velocity = new Vector2(0, controller.Rigidbody.velocity.y);
-        controller.animnHandler.Play(currWaitCommand.animName);
+        controller.animHandler.Play(currWaitCommand.animName);
     }
 
     public override void Update()

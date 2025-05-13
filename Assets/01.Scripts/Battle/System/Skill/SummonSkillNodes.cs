@@ -19,8 +19,8 @@ public class DashAttack : Node
     {
         if (controller is not SummonController sController) { SetStatus(Status.Fail); return; }
         
-        controller.animnHandler.SetSpeed(2f);
-        controller.animnHandler.Play("Attack");
+        controller.animHandler.SetSpeed(2f);
+        controller.animHandler.Play("Attack");
         
         context.Set("direction", sController.cRigidbody.velocity.normalized);
         sController.Flip(Mathf.Approximately(sController.caster.eulerAngles.y, 0));
@@ -53,7 +53,7 @@ public class DashAttack : Node
 
     public override void End()
     {
-        controller.animnHandler.SetSpeed(1f);
+        controller.animHandler.SetSpeed(1f);
         BoltsPool.Instance.DisableMelee(controller.transform);
     }
 }
@@ -64,8 +64,8 @@ public class Explosion : Node
     public override void Start()
     {
         if(controller is not SummonController sController) { SetStatus(Status.Fail); return; }
-        sController.animnHandler.Play("Explosion");
-        controller.animnHandler.SetSpeed(1f);
+        sController.animHandler.Play("Explosion");
+        controller.animHandler.SetSpeed(1f);
     }
 
     public override void OnAnimatedEvent(bool isFire)
@@ -89,7 +89,7 @@ public class Explosion : Node
 
     public override void End()
     {
-        controller.animnHandler.SetSpeed(1f);
+        controller.animHandler.SetSpeed(1f);
     }
 }
 
@@ -102,7 +102,7 @@ public class ComboDashAttack : Node
     {
         if (controller is not SummonController sController) return;
 
-        controller.animnHandler.Play(combo[currComboCount]);
+        controller.animHandler.Play(combo[currComboCount]);
 
         controller.Rigidbody.velocity = Vector2.zero;
         controller.Rigidbody.gravityScale = 0f;
@@ -182,7 +182,7 @@ public class SkillHealNode : Node
     {
         if(controller is not SummonController sController) return;
         
-        controller.animnHandler.Play("Heal");
+        controller.animHandler.Play("Heal");
         Collider2D[] hits = Physics2D.OverlapCircleAll(controller.transform.position, 20f, LayerMask.GetMask("Enemy"));
         foreach (var hit in hits)
         {

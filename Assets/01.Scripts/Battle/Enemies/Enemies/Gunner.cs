@@ -5,7 +5,7 @@ public class GunnerRangeAttack : Node
 {
     public override void Start()
     {
-        controller.animnHandler.Play("Attack");
+        controller.animHandler.Play("Attack");
         controller.LookTarget();
     }
 

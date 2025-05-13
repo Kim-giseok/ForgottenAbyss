@@ -4,7 +4,7 @@ public class MudAggroNode : Node
 {
     public override void Start()
     {
-        controller.animnHandler.Play("Idle");
+        controller.animHandler.Play("Idle");
     }
     public override void Update()
     {
@@ -18,7 +18,7 @@ public class MudIdleNode : Node
 {
     public override void Start()
     {
-        controller.animnHandler.Play("Idle");
+        controller.animHandler.Play("Idle");
     }
 
     public override void Update()
@@ -32,7 +32,7 @@ public class MudCastingNode : Node
 {
     public override void Start()
     {
-        controller.animnHandler.Play("Casting");
+        controller.animHandler.Play("Casting");
     }
 
     public override void Update()
@@ -53,7 +53,7 @@ public class MudAttackNode : Node
 {
     public override void Start()
     {
-        controller.animnHandler.Play("Attack");
+        controller.animHandler.Play("Attack");
         if(controller is EnemyController) { controller.LookTarget(); }
         // controller.rigidbody.drag = 4f;
     }

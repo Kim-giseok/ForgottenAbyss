@@ -3,21 +3,23 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+// 이름으로 BT를 지정하는 부분 고민해보기
+public enum Enemy { Test, Agis, Archer, Ghost, GhostChild, Gunner, NightBone, SwordShadow, Wizard, MudEye, MudHand, Bringer, MoonStone }
+
 public class EnemiesBT
 {
     // notice: enum을 추가하면 한칸씩 밀리는 현상 발생
-    public enum Enemy { Test, Agis, Archer, Ghost, GhostChild, Gunner, NightBone, SwordShadow, Wizard, MudEye, MudHand, Bringer, MoonStone }
-    public static Node Get(Enemy enemy) => behaviour[enemy];
+    public static Node Get(Enemy enemy) => behaviour[(int)enemy];
 
-    private static Dictionary<Enemy, Node> behaviour = new()
+    private static Dictionary<int, Node> behaviour = new()
     {
         {
-            Enemy.Test,
+            (int)Enemy.Test,
             new SelectorNode(new IdleNode(1f))
         },
         // notice: 타격이 발생하면 순차 순회를 통해서 다른 스킬 사용되지 않는 현상 발생
         {
-          Enemy.Agis,
+          (int)Enemy.Agis,
           new SelectorNode(
               new SequenceNode(new HitNode(), new SetZeroPosNode(), new DieNode()),
               // new SequenceNode(new BlackHoleNode(), new AgisTriangleNode(), new AgisMoveNode(3), new AgisMoveNode(-3))
@@ -27,7 +29,7 @@ public class EnemiesBT
         {
             // 거리에 길수록 아처에게 유리해지도록 처리
             // 너무 많이 다가오면 롤링
-            Enemy.Archer,
+            (int)Enemy.Archer,
             new SelectorNode(
                 new SequenceNode(new HitNode(), new DieNode()),
                 new SequenceNode(new TracingNode(), new StopNode(), new ChargingNode(2f), new RangeMultiAttackNode()),
@@ -35,7 +37,7 @@ public class EnemiesBT
                 )
         },
         {
-            Enemy.Ghost,
+            (int)Enemy.Ghost,
             new SelectorNode(
                 new SequenceNode(new HitNode(), new DieNode()),
                 new SequenceNode(new IdleNode(1), new PatrolMove(1))
@@ -43,7 +45,7 @@ public class EnemiesBT
         },
         {
             // 관통 + 튕기는 효과를 주로 다루는
-            Enemy.Gunner,
+            (int)Enemy.Gunner,
             new SelectorNode(
                 new SequenceNode(new HitNode(), new DieNode()), 
                 new SequenceNode(new TracingNode(), 
@@ -60,7 +62,7 @@ public class EnemiesBT
         },
         {
             // 탱커 - 폭팔 발생 시 도주 필요
-            Enemy.NightBone,
+            (int)Enemy.NightBone,
             new SelectorNode(
                 new SequenceNode(new HitNode(), new DieNode()), 
                 new SequenceNode(
@@ -74,7 +76,7 @@ public class EnemiesBT
         },
         {
             // 소드맨 - 속도가 빨라서 원거리 공격이 파훼법(방어가 필요할 듯)
-            Enemy.SwordShadow,
+            (int)Enemy.SwordShadow,
             new SelectorNode(
                 new SequenceNode(new HitNode(), new DieNode()), 
                 new SequenceNode(
@@ -86,7 +88,7 @@ public class EnemiesBT
                 new SequenceNode(new IdleNode(1), new PatrolMove(1)))
         },
         {
-            Enemy.Wizard,
+            (int)Enemy.Wizard,
             new SelectorNode(
                 new SequenceNode(new HitNode(), new DieNode()), 
                     new SequenceNode( new StopNode(), new IdleNode(1.6f), new WizadRecursiveNode(), new IdleNode(1.6f)),
@@ -94,7 +96,7 @@ public class EnemiesBT
                 )
         },
         {
-            Enemy.MudEye,
+            (int)Enemy.MudEye,
             new SelectorNode(
                 new SequenceNode(new HitNode(), new DieNode()),
                 // new SequenceNode(new MudWarpNode(), new MudWarpNode(), new MudWarpNode())
@@ -102,14 +104,14 @@ public class EnemiesBT
                 )
         },
         {
-            Enemy.MudHand,
+            (int)Enemy.MudHand,
             new SelectorNode(
                 new SequenceNode(new HitNode(), new DieNode()),
                 new SequenceNode(new MudAggroNode(), new MudCastingNode(), new MudAttackNode(), new MudIdleNode())
             )
         },
         {
-            Enemy.Bringer,
+            (int)Enemy.Bringer,
             new SelectorNode(
                 new SequenceNode(new HitNode(), new DieNode()),
                 new SequenceNode(new TracingNode(), new StopNode(), new BringerAttackNode(), new IdleNode(1f)),
@@ -117,7 +119,7 @@ public class EnemiesBT
                 )
         },
         {
-            Enemy.MoonStone,
+            (int)Enemy.MoonStone,
             new SelectorNode(
                 new SequenceNode(new HitNode(), new DieNode()),
                 // new SequenceNode(new TracingNode(), new StopNode(), new BringerAttackNode(), new IdleNode(1f)),

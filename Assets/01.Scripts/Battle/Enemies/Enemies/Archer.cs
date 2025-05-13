@@ -5,7 +5,7 @@ public class RangeMultiAttackNode : Node
 {
     public override void Start()
     {
-        controller.animnHandler.Play("Attack");
+        controller.animHandler.Play("Attack");
         if (controller is EnemyController) { controller.LookTarget(); }
     }
     
@@ -59,7 +59,7 @@ public class PlayRollingAnimation : Node
 {
     public override void Start()
     {
-        controller.animnHandler.Play("Rolling");
+        controller.animHandler.Play("Rolling");
     }
 
     public override void OnAnimated(AnimationStatus status, AnimatorStateInfo animInfo)

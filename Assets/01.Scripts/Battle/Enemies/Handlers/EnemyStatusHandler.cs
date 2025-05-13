@@ -1,25 +1,43 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
+public enum EnmeyMode { Defense, Hit }
+
 // 디폴트는 동일하게 가져가지만 몬스터마다 다르게
-public class EnemyStatusHandler
+public class EnemyStatusHandler: MonoBehaviour
 {
-    public bool isIgnoreHitAction = false; // 원거리 친구만 false
-    public Vector3 startPosition;
+    private LinkedList<EnemyStatus> CurrStatus { get; set; } = new();
     
-    public bool isHit = false;
-    public bool isDefense = false;
-    
-    public bool isFainted = false; // notice: 기절 기능 - 난이도
-    public int stamina = 3; // 스테미나의 경우 다른 목적으로 사용(이동 정도라던지)
-    public int stunAccumulation;
+    private Dictionary<int, bool> Modes { get; set; } = new();
+    public void SetMode(EnmeyMode enmeyMode, bool value) => Modes[(int)enmeyMode] = value;
+    public bool GetMode(EnmeyMode enmeyMode) => Modes[(int)enmeyMode];
 
-    public int bullete; // 총알의 갯수
-    
-    
-    public int faintedDuration = 3;
 
-    public bool isCombat = false; // 한번 전투 중이면 지속 체크
+    private void Awake()
+    {
+        foreach (EnmeyMode mode in Enum.GetValues(typeof(EnmeyMode)))
+        {
+            Modes[(int)mode] = false;
+        }
+    }
     
+
+    // public bool isIgnoreHitAction = false; // 원거리 친구만 false
+    // public Vector3 startPosition;
+    // public bool isDefense {get; private set;}
+    // public int stunAccumulation;
+    // public bool isFainted = false; // notice: 기절 기능 - 난이도
+    // public int bullete; // 총알의 갯수
+    // public int faintedDuration = 3;
+    // public bool isCombat = false; // 한번 전투 중이면 지속 체크
+    // public float castingDegree;
+    
+    // 보드에서 관리하기
     public Vector2 castingDirection; // 스킬을 발사하는 방향
-    public float castingDegree;
+
+    private void Update()
+    {
+        
+    }
 }

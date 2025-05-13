@@ -8,7 +8,7 @@ public class GuardNode : Node
     {
         if (controller is EnemyController enemyController)
         {
-            enemyController.statusHandler.isDefense = true;
+            // enemyController.statusHandler.isDefense = true;
         }
     }
 
@@ -37,14 +37,16 @@ public class HitNode : Node
 
         // do: 시퀀스를 통행 애초에 진입이 안되도록 노드 지정
         if (controller is not EnemyController eController) return;
-        if (!eController.statusHandler.isHit) { SetStatus(Status.Fail); return; }
-        if(eController.health <= 0) { SetStatus(Status.Success); return; }
+        if (!eController.statusHandler.GetMode(EnmeyMode.Hit)) { SetStatus(Status.Fail); return; }
+        
+        
+        if(eController.resourceHandler.Get(EnemyStatType.Health).currValue <= 0) { SetStatus(Status.Success); return; }
 
         // 타격 받은 쪽으로 회전
         // Vector2 direction = (controller.agent.player.transform.position - controller.transform.position).normalized;
-        // controller.Flip(direction.x > 0);
         
-        eController.statusHandler.isHit = false;
+        // controller.Flip(direction.x > 0);
+        eController.statusHandler.SetMode(EnmeyMode.Hit, false);
 
         controller.soundHandler.Play(EnemySoundType.Hit);
         if (eController.isIgnoreHitAnim)
@@ -54,7 +56,7 @@ public class HitNode : Node
             return;
         }
         
-        eController.animnHandler.Play("Hit");
+        eController.animHandler.Play("Hit");
     }
 
     public override void OnAnimated(AnimationStatus status, AnimatorStateInfo animInfo)
@@ -68,7 +70,7 @@ public class DieNode : Node
 {
     public override void Start()
     {
-        if (controller is not EnemyController eController || eController.health > 0) { SetStatus(Status.Fail); return;}
+        if (controller is not EnemyController eController || eController.resourceHandler.Get(EnemyStatType.Health).currValue > 0) { SetStatus(Status.Fail); return;}
         
         controller.Collider.enabled = false; // 죽은 이후로는 피격 불가능하도록 처리
         controller.Rigidbody.velocity = Vector3.zero; // fix: 넉백으로 날라가는 현상 발생
@@ -76,7 +78,7 @@ public class DieNode : Node
 
         // SoundManager.Instance.PlaySFX(controller.soundHandler.GetClip(EnemySoundHandler.SoundType.Hit));
         
-        eController.animnHandler.Play("Die");
+        eController.animHandler.Play("Die");
     }
 
     public override void OnAnimated(AnimationStatus status, AnimatorStateInfo animInfo)
