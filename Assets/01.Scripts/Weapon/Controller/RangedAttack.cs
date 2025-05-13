@@ -81,6 +81,7 @@ public class RangedAttack : MonoBehaviour
             attackIndex++;
             animator.SetInteger("BowCombo", attackIndex);
             UpdateRangedAttackUI(attackIndex-1);
+            comboBar.PlayEffect();
             PlayRangedAnimation();
         }
         else
