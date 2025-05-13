@@ -1,8 +1,10 @@
 using UnityEngine;
 
 // 디폴트는 동일하게 가져가지만 몬스터마다 다르게
-public class EnemyStatusHandler
+public class EnemyStatusHandler: MonoBehaviour
 {
+    public enum StatusEffect { Slow, Stun, Freeze }
+    
     public bool isIgnoreHitAction = false; // 원거리 친구만 false
     public Vector3 startPosition;
     
@@ -22,4 +24,9 @@ public class EnemyStatusHandler
     
     public Vector2 castingDirection; // 스킬을 발사하는 방향
     public float castingDegree;
+
+    private void Update()
+    {
+        
+    }
 }

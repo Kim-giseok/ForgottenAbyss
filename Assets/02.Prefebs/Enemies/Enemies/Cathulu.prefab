@@ -187,9 +187,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68e4352b8584b49edb0f5da93bdaf397, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isBaked: 1
   health: 10
   attack: 3
-  Name: 6
+  experience: 0
+  isIgnoreHitAnim: 0
+  enemyName: 0
 --- !u!114 &9027306651360493588
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -222,7 +225,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gold: 0
-  items: []
 --- !u!114 &9207142676412704055
 MonoBehaviour:
   m_ObjectHideFlags: 0

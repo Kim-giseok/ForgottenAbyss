@@ -18,6 +18,7 @@ GameObject:
   - component: {fileID: 4784821745386414212}
   - component: {fileID: 2951707433889288643}
   - component: {fileID: 2200073313575053761}
+  - component: {fileID: -7130422698486207054}
   m_Layer: 9
   m_Name: Enemy
   m_TagString: Untagged
@@ -35,7 +36,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.4, y: 1.4, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -173,7 +174,7 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
-  m_Size: {x: 0.5, y: 1}
+  m_Size: {x: 1, y: 1}
   m_Direction: 0
 --- !u!114 &6947580246029699812
 MonoBehaviour:
@@ -187,10 +188,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68e4352b8584b49edb0f5da93bdaf397, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animationValue: 1
+  isBaked: 1
   health: 10
   attack: 3
-  name: 6
+  experience: 0
+  isIgnoreHitAnim: 0
+  enemyName: 0
 --- !u!114 &5201733921047369293
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -223,7 +226,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gold: 0
-  items: []
 --- !u!114 &2951707433889288643
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -246,5 +248,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 46c040b7a0f8f4dad9d0d516dc583541, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &-7130422698486207054
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3858289895822317212}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ef6ac73392c4642be0848c826fe0619, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

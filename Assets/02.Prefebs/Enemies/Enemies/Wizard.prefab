@@ -80,7 +80,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 1845653314, guid: 86529927209ba480cae1a3a5bb3ba580, type: 3}
+  m_Sprite: {fileID: -65009413, guid: e9520a30eb6d64e55bd02a43b76a6491, type: 3}
   m_Color: {r: 0.8962264, g: 0.8962264, b: 0.8962264, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -186,9 +186,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68e4352b8584b49edb0f5da93bdaf397, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isBaked: 1
   health: 30
   attack: 10
-  Name: 8
+  experience: 0
+  isIgnoreHitAnim: 0
+  enemyName: 0
 --- !u!114 &-5581525008616595135
 MonoBehaviour:
   m_ObjectHideFlags: 0

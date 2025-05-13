@@ -1,13 +1,7 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using UnityEditor;
-using UnityEditor.Animations;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
-using UnityEngine.Serialization;
 using static UnityEditor.AnimationUtility;
 
 public class EnemyController : EnemyBaseController, IDamagable
@@ -40,7 +34,7 @@ public class EnemyController : EnemyBaseController, IDamagable
         base.Awake();
         
         resourceHandler = GetComponent<EnemyResourceHandler>();
-        statusHandler = new EnemyStatusHandler();
+        statusHandler = GetComponent<EnemyStatusHandler>();
         rewardHandler = GetComponent<EnemyRewardHandler>();
     }
 
@@ -51,6 +45,8 @@ public class EnemyController : EnemyBaseController, IDamagable
         {
             var currAnimator = handle.Result.FirstOrDefault(anim => anim.name == enemyName.ToString());
             if (!currAnimator) return;
+            
+            Debug.Log(currAnimator.name);
             
             var animator = GetComponent<Animator>();
             animator.runtimeAnimatorController = currAnimator;
