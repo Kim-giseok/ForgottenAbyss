@@ -137,6 +137,7 @@ public class ComboAttack : MonoBehaviour
             animator.ResetTrigger("AttackTrigger");
             animator.SetTrigger("AttackTrigger");
             animator.SetInteger("AttackCombo", attackIndex);
+            comboBar.PlayEffect();
             UpdateComboAttackUI(attackIndex - 1);
         }
     }

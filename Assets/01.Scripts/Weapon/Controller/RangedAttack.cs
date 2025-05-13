@@ -6,6 +6,7 @@ public class RangedAttack : MonoBehaviour
 {
     [SerializeField] private Animator animator;
     [SerializeField] private Transform firePoint;
+    [SerializeField] private int maxCombo = 3;
     [SerializeField] private ComboBar comboBar;
     
     private GameObjectPool projectilePool;
@@ -67,15 +68,27 @@ public class RangedAttack : MonoBehaviour
 
     IEnumerator RangedInputBuffer(float time)
     {
-        yield return new WaitForSeconds(time);
+        float elapsed = 0f;
+
+        while (elapsed < time)
+        {
+            elapsed += Time.deltaTime;
+
+            if (inputCombo)
+            {
+                OnRangedNext();
+                yield break;
+            }
+
+            yield return null;
+        }
+
         canNextCombo = false;
     }
 
     public void OnRangedNext()
     {
-        Debug.Log($"[Ranged] OnRangedNext called. inputCombo: {inputCombo}, attackIndex: {attackIndex}");
-
-        if (inputCombo && attackIndex < rangedData.rangedSteps.Count)
+        if (inputCombo && attackIndex < maxCombo)
         {
             inputCombo = false;
             attackIndex++;
@@ -195,7 +208,6 @@ public class RangedAttack : MonoBehaviour
         if (inputCombo)
         {
             inputCombo = false;
-
             StartCoroutine(RestartRangedComboAfterDelay(0.1f));
         }
         else
@@ -219,6 +231,7 @@ public class RangedAttack : MonoBehaviour
             animator.ResetTrigger("BowTrigger");
             animator.SetTrigger("BowTrigger");
             animator.SetInteger("BowCombo", attackIndex);
+            comboBar.PlayEffect();
             UpdateRangedAttackUI(attackIndex - 1);
         }
     }
