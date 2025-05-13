@@ -8,6 +8,7 @@ public class RangedAttack : MonoBehaviour
     [SerializeField] private Transform firePoint;
     [SerializeField] private int maxCombo = 3;
     [SerializeField] private ComboBar comboBar;
+    [SerializeField] private Animator shotAnimator;
     
     private GameObjectPool projectilePool;
     private RangedAttackSO rangedData;
@@ -132,6 +133,7 @@ public class RangedAttack : MonoBehaviour
                 onKnockBack(0.2f);
             }
 
+            shotAnimator.SetTrigger("ShotTrigger");
             SpawnProjectile(direction);
 
             yield return new WaitForSeconds(step.fireDelay);
