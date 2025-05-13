@@ -96,7 +96,7 @@ public class EnemyController : EnemyBaseController, IDamagable
         if (isBaked)
         {
             // 빌드 타임에서는 비효율적인 액션일 수 있음
-            Set(enemyName.ToString()); 
+            SetConfig(enemyName.ToString()); 
             // 에러처리 필요
             machine.Define(EnemiesBT.Get(enemyName)); // 각 개체별 생성되는 방식
             machine.Start();
@@ -106,7 +106,7 @@ public class EnemyController : EnemyBaseController, IDamagable
         catch { Debug.Log("there is no MapspawnManager"); }
     }
 
-    public void Set(string newEnemyName)
+    public void SetConfig(string newEnemyName)
     {
         resourceHandler.Define(EnemiesLoader.GetStatSO(newEnemyName));
         SoundSO = EnemiesLoader.GetSoundSO(newEnemyName);
@@ -122,6 +122,14 @@ public class EnemyController : EnemyBaseController, IDamagable
         Collider.offset = new Vector2(0, info.size.y / 2);
     }
 
+    public void Init(Enemy newEnemyName)
+    {
+        enemyName = newEnemyName;
+        SetConfig(newEnemyName.ToString());
+        
+        machine.Define(EnemiesBT.Get(enemyName));
+        machine.Start();
+    }
 
     public void GetDamage(float damage)
     {
