@@ -9,7 +9,7 @@ public class RangedAttackSO : ScriptableObject
     public string description;
     public Sprite icon;
 
-    public List<RangedComboStep> comboSteps = new();
+    public List<RangedComboStep> rangedSteps = new();
 
     public RangedAttackSO Clone()
     {
@@ -20,10 +20,10 @@ public class RangedAttackSO : ScriptableObject
         clone.description = this.description;
         clone.icon = this.icon;
 
-        clone.comboSteps = new List<RangedComboStep>();
-        foreach (var step in this.comboSteps)
+        clone.rangedSteps = new List<RangedComboStep>();
+        foreach (var step in this.rangedSteps)
         {
-            clone.comboSteps.Add(new RangedComboStep
+            clone.rangedSteps.Add(new RangedComboStep
             {
                 animationName = step.animationName,
                 projectilePrefab = step.projectilePrefab,

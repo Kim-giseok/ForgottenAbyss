@@ -73,9 +73,16 @@ public class CombatInstance
     {
         if (weaponType == WeaponType.Bow && rangedSO != null)
         {
-            if (stepIndex >= 0 && stepIndex < rangedSO.comboSteps.Count)
+            if (stepIndex >= 0 && stepIndex < rangedSO.rangedSteps.Count)
             {
-                return rangedSO.comboSteps[stepIndex].stepIcon;
+                return rangedSO.rangedSteps[stepIndex].stepIcon;
+            }
+        }
+        else if(weaponType == WeaponType.Sword && comboSO != null)
+        {
+            if (stepIndex >= 0 && stepIndex < comboSO.comboSteps.Count)
+            {
+                return comboSO.comboSteps[stepIndex].stepIcon;
             }
         }
 

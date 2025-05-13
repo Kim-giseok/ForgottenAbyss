@@ -247,24 +247,36 @@ public class SkillController : Singleton<SkillController>
     {
         isSkillPlaying = false;
 
-        if (comboAttack != null && comboAttack.gameObject.activeInHierarchy)
+        if (SystemManager.Instance.weaponManager.GetCurrentWeaponData() != null) 
         {
-            comboAttack.EndComboAttack();
-        }
-        else
-        {
-            comboAttack = FindObjectOfType<ComboAttack>();
-            Debug.LogWarning("comboAttack이 null이거나 Destroy됨 → 재연결 시도");
-        }
+            var currentWeaponType = SystemManager.Instance.weaponManager.GetCurrentWeaponData().Type;
 
-        if (rangedAttack != null && rangedAttack.gameObject.activeInHierarchy)
-        {
-            rangedAttack.EndRangedAttack();
-        }
-        else
-        {
-            rangedAttack = FindObjectOfType<RangedAttack>();
-            Debug.LogWarning("rangedAttack이 null이거나 Destroy됨 → 재연결 시도");
+            switch (currentWeaponType)
+            {
+                case WeaponType.Sword:
+                    if (comboAttack != null && comboAttack.gameObject.activeInHierarchy)
+                        comboAttack.EndComboAttack();
+                    else
+                    {
+                        comboAttack = FindObjectOfType<ComboAttack>();
+                        Debug.LogWarning("comboAttack이 null이거나 Destroy됨 → 재연결 시도");
+                    }
+                    break;
+
+                case WeaponType.Bow:
+                    if (rangedAttack != null && rangedAttack.gameObject.activeInHierarchy)
+                        rangedAttack.EndRangedAttack();
+                    else
+                    {
+                        rangedAttack = FindObjectOfType<RangedAttack>();
+                        Debug.LogWarning("rangedAttack이 null이거나 Destroy됨 → 재연결 시도");
+                    }
+                    break;
+
+                default:
+                    Debug.LogWarning($"ResetAttack() - 알 수 없는 무기 타입: {currentWeaponType}");
+                    break;
+            }
         }
     }
 }

@@ -52,7 +52,7 @@ public class RangedAttack : MonoBehaviour
 
     private void PlayRangedAnimation()
     {
-        string animName = rangedData.comboSteps[attackIndex - 1].animationName;
+        string animName = rangedData.rangedSteps[attackIndex - 1].animationName;
         animator.Play(animName);
     }
 
@@ -73,7 +73,7 @@ public class RangedAttack : MonoBehaviour
     {
         Debug.Log($"[Ranged] OnRangedNext called. inputCombo: {inputCombo}, attackIndex: {attackIndex}");
 
-        if (inputCombo && attackIndex < rangedData.comboSteps.Count)
+        if (inputCombo && attackIndex < rangedData.rangedSteps.Count)
         {
             inputCombo = false;
             attackIndex++;
@@ -94,9 +94,9 @@ public class RangedAttack : MonoBehaviour
 
     public void OnFireProjectile()
     {
-        if (rangedData == null || rangedData.comboSteps.Count < attackIndex || attackIndex <= 0) return;
+        if (rangedData == null || rangedData.rangedSteps.Count < attackIndex || attackIndex <= 0) return;
 
-        RangedComboStep step = rangedData.comboSteps[attackIndex - 1];
+        RangedComboStep step = rangedData.rangedSteps[attackIndex - 1];
 
         StartCoroutine(FireProjectiles(step));
     }
@@ -156,24 +156,24 @@ public class RangedAttack : MonoBehaviour
         {
             int comboStepIndex = attackIndex - 1;
 
-            if (comboStepIndex >= 0 && comboStepIndex < rangedData.comboSteps.Count)
+            if (comboStepIndex >= 0 && comboStepIndex < rangedData.rangedSteps.Count)
             {
-                float multiplier = rangedData.comboSteps[comboStepIndex].multiplier;
+                float multiplier = rangedData.rangedSteps[comboStepIndex].multiplier;
                 pp.Setup(direction, caster: this.gameObject, multiplier);
             }
             else
             {
-                Debug.LogWarning($"[RangedAttack] Invalid combo step index: {comboStepIndex}, attackIndex: {attackIndex}, total steps: {rangedData.comboSteps.Count}");
+                Debug.LogWarning($"[RangedAttack] Invalid combo step index: {comboStepIndex}, attackIndex: {attackIndex}, total steps: {rangedData.rangedSteps.Count}");
             }
         }
     }
 
     private void UpdateRangedAttackUI(int stepIndex)
     {
-        if (rangedData != null && stepIndex >= 0 && stepIndex < rangedData.comboSteps.Count)
+        if (rangedData != null && stepIndex >= 0 && stepIndex < rangedData.rangedSteps.Count)
         {
-            Sprite newIcon = rangedData.comboSteps[stepIndex].stepIcon;
-
+            Sprite newIcon = rangedData.rangedSteps[stepIndex].stepIcon;
+            Debug.Log($"UpdateRangedAttackUI - 현재 아이콘: {newIcon.name}, 현재 장착 무기: {rangedData.name}");
             if (SystemManager.Instance.skillManager.skillUI != null)
             {
                 SystemManager.Instance.skillManager.skillUI.SetSkillIcon(SkillSlotType.Basic, newIcon);
@@ -203,6 +203,7 @@ public class RangedAttack : MonoBehaviour
             UpdateRangedAttackUI(attackIndex);
         }
     }
+
     private IEnumerator RestartRangedComboAfterDelay(float delay)
     {
         yield return new WaitForSeconds(delay);
@@ -210,7 +211,7 @@ public class RangedAttack : MonoBehaviour
         IsAttacking = true;
         canNextCombo = true;
 
-        if (!animator.GetCurrentAnimatorStateInfo(0).IsName(rangedData.comboSteps[attackIndex - 1].animationName))
+        if (!animator.GetCurrentAnimatorStateInfo(0).IsName(rangedData.rangedSteps[attackIndex - 1].animationName))
         {
             animator.ResetTrigger("BowTrigger");
             animator.SetTrigger("BowTrigger");
