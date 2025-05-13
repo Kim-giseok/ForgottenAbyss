@@ -3998,7 +3998,19 @@ MonoBehaviour:
     \uB9C8\uC8FC\uD558\uB294 \uC77C\uC774\uC57C. \uC900\uBE44\uB294 \uB418\uC5C8\uB098?"
   displayEndEvents:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1536459385783876334, guid: fc2f9e15b1bc64ab5bd01c470f510edc, type: 3}
+        m_TargetAssemblyTypeName: SceneMediator, Assembly-CSharp
+        m_MethodName: SetCutSceneMode
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &452882852566652620
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4027,6 +4039,18 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1536459385783876334, guid: fc2f9e15b1bc64ab5bd01c470f510edc, type: 3}
+        m_TargetAssemblyTypeName: SceneMediator, Assembly-CSharp
+        m_MethodName: SetCutSceneMode
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
         m_CallState: 2
   unactivatedEvent:
     m_PersistentCalls:
@@ -8595,7 +8619,7 @@ MonoBehaviour:
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 0
+          m_BoolArgument: 1
         m_CallState: 2
   unactivatedEvent:
     m_PersistentCalls:

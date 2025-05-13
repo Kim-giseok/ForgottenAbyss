@@ -23,7 +23,7 @@ public class NpcSentence : MonoBehaviour
             UIManager.Instance.OnTalk(this, sentnece);
             
             while (!UIManager.Instance.talkBox.isFinished) { yield return null; }
-            yield return new WaitForSeconds(0.8f);
+            yield return new WaitForSeconds(0.6f);
         }
         
         UIManager.Instance.OffTalk();
