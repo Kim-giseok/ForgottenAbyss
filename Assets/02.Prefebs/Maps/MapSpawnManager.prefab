@@ -45,8 +45,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 547ea204a272d3544ad7bbb0527971bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  stageClearedFlag: 0
   maps: []
-  confiner2D: {fileID: 2822396453728229522}
+  confiner2D: {fileID: 6248111849549784282}
   backgroundSprites: []
   backgroundprefeb: {fileID: 4441312715085752639, guid: 4876623f1ff67a342803267fc6b609fc, type: 3}
   backgrounds: []
@@ -155,7 +156,7 @@ MonoBehaviour:
   m_PivotOffset: {x: 0, y: 0, z: 0}
   m_AmplitudeGain: 0
   m_FrequencyGain: 0
-  mNoiseOffsets: {x: 0, y: 0, z: 0}
+  mNoiseOffsets: {x: -699.59717, y: -178.46933, z: 501.41547}
 --- !u!1 &7260778884252836288
 GameObject:
   m_ObjectHideFlags: 0
@@ -166,7 +167,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1389838763672698607}
   - component: {fileID: 1496321414165934364}
-  - component: {fileID: 2822396453728229522}
+  - component: {fileID: 6248111849549784282}
   m_Layer: 0
   m_Name: Virtual Camera
   m_TagString: Untagged
@@ -229,7 +230,7 @@ MonoBehaviour:
         m_Calls: []
   m_LegacyBlendHint: 0
   m_ComponentOwner: {fileID: 1855107766027173506}
---- !u!114 &2822396453728229522
+--- !u!114 &6248111849549784282
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -243,4 +244,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_BoundingShape2D: {fileID: 0}
   m_Damping: 0.5
-  m_MaxWindowSize: -1
+  m_MaxWindowSize: 0
