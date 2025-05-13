@@ -2,6 +2,8 @@
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
+using System;
+using System.Collections.Generic;
 
 public class EnemyTableEditor : EditorWindow
 {
@@ -12,39 +14,65 @@ public class EnemyTableEditor : EditorWindow
         wnd.titleContent = new GUIContent("Enemy Table");
     }
 
+    private enum EnemyType { NightBone, SwordShadow, Archer, Agis }
+
+    private readonly string[] statNames = { "HP", "MP", "Attack", "Speed" };
+    private readonly Dictionary<(EnemyType, string), IntegerField> fields = new();
+
     private void CreateGUI()
     {
+        // 전체 테이블
         var root = rootVisualElement;
+        root.style.flexDirection = FlexDirection.Column;
+        root.style.paddingTop = 10;
+        root.style.paddingLeft = 10;
 
-        // 헤더
-        var header = new VisualElement();
-        header.style.flexDirection = FlexDirection.Row;
+        // --- Header Row (Stat Names) ---
+        var headerRow = new VisualElement { style = { flexDirection = FlexDirection.Row } };
+        headerRow.Add(new Label("Enemy") { style = { width = 102, unityFontStyleAndWeight= FontStyle.Bold, height = 22 } });
 
-        header.Add(new Label("Monster Name") { style = { width = 150 } });
-        header.Add(new Label("HP") { style = { width = 100 } });
-        root.Add(header);
+        foreach (var stat in statNames)
+        {
+            headerRow.Add(new Label(stat) { style = { width = 106, unityFontStyleAndWeight = FontStyle.Bold, height = 20 } });
+        }
 
-        // 데이터 입력 행
-        var nameField = new TextField() { label = "", style = { width = 150 } };
-        var hpField = new IntegerField() { label = "", style = { width = 100 } };
+        root.Add(headerRow);
 
-        var row = new VisualElement();
-        row.style.flexDirection = FlexDirection.Row;
-        row.Add(nameField);
-        row.Add(hpField);
-        root.Add(row);
+        // --- Rows per Enemy ---
+        foreach (EnemyType enemy in Enum.GetValues(typeof(EnemyType)))
+        {
+            var row = new VisualElement { style = { flexDirection = FlexDirection.Row, marginBottom = 4 } };
+            row.Add(new Label(enemy.ToString()) { style = { width = 100, unityTextAlign = TextAnchor.MiddleLeft, height = 20 } });
 
-        // 출력 버튼
+            foreach (var stat in statNames)
+            {
+                var field = new IntegerField { style = { width = 100 } };
+                fields[(enemy, stat)] = field;
+                row.Add(field);
+            }
+
+            root.Add(row);
+        }
+
+        // --- Print Button ---
         var button = new Button(() =>
         {
-            string name = nameField.value;
-            int hp = hpField.value;
-            Debug.Log($"몬스터 이름: {name}, 체력: {hp}");
+            foreach (EnemyType enemy in Enum.GetValues(typeof(EnemyType)))
+            {
+                string line = $"{enemy}:";
+                foreach (var stat in statNames)
+                {
+                    int value = fields[(enemy, stat)].value;
+                    line += $" {stat}={value}";
+                }
+                Debug.Log(line);
+            }
         })
         {
-            text = "Print to Console"
+            text = "Print Stats to Console"
         };
 
+        button.style.marginTop = 10;
         root.Add(button);
     }
 }
