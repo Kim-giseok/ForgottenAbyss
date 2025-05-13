@@ -5,11 +5,16 @@ using UnityEngine;
 public class ComboBar : MonoBehaviour
 {
     [SerializeField] private SpriteRenderer barSprite; // 게이지 스프라이트
+    [SerializeField] private Color startColor = Color.green;
+    [SerializeField] private Color endColor = Color.red;
 
     private float currentTime = 0f;
     private float maxTime = 1f;
     private bool isComboActive = false;
     private Vector3 initialScale;
+    private int comboIndex = 0;
+
+    public Animator comboEffectAnimator;
 
     private void Awake()
     {
@@ -22,7 +27,11 @@ public class ComboBar : MonoBehaviour
         {
             currentTime -= Time.deltaTime;
             float fillAmount = Mathf.Clamp01(currentTime / maxTime);
-            barSprite.transform.localScale = new Vector3(initialScale.x * fillAmount, initialScale.y, initialScale.z);
+
+            barSprite.color = Color.Lerp(endColor, startColor, fillAmount);
+
+            float newScaleX = Mathf.Abs(initialScale.x * fillAmount);
+            barSprite.transform.localScale = new Vector3(newScaleX, initialScale.y, initialScale.z);
 
             if (currentTime <= 0)
             {
@@ -34,6 +43,7 @@ public class ComboBar : MonoBehaviour
     public void StartCombo(float bufferTime)
     {
         isComboActive = true;
+        comboIndex++;
         maxTime = bufferTime;
         currentTime = maxTime;
         barSprite.gameObject.SetActive(true);
@@ -47,6 +57,12 @@ public class ComboBar : MonoBehaviour
     public void EndCombo()
     {
         isComboActive = false;
+        comboIndex = 0;
         barSprite.gameObject.SetActive(false);
+    }
+
+    public void PlayEffect()
+    {
+        if (comboIndex != 0) comboEffectAnimator.SetTrigger("ComboTrigger");
     }
 }

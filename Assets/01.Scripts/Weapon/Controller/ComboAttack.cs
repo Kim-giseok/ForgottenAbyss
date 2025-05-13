@@ -95,6 +95,7 @@ public class ComboAttack : MonoBehaviour
             animator.SetInteger("AttackCombo", attackIndex);
             UpdateComboAttackUI(attackIndex - 1);
             animator.Play(comboData.comboSteps[attackIndex - 1].animationName);
+            comboBar.PlayEffect();
         }
         else
         {
