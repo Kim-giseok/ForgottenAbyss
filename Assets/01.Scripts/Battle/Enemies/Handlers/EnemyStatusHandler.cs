@@ -14,7 +14,7 @@ public class EnemyStatusHandler: MonoBehaviour
     
     public enum HitType { Normal, Stun }
     public HitType hitType { get; private set; }
-    public void SetHitType(HitType newHitType) => newHitType = newHitType;
+    // public void SetHitType(HitType newHitType) => newHitType = newHitType;
     
     public bool GetMode(EnmeyMode enemyMode) => Modes[(int)enemyMode];
 
