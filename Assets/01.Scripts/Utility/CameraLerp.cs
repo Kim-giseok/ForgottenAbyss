@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class CameraController : MonoBehaviour
+public class CameraLerp : MonoBehaviour
 {
     public Transform player { get; private set; }
 

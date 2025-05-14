@@ -1,16 +1,15 @@
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public class SceneMediator: SingletonLoadRemain<SceneMediator>
+public class SceneManamger: SingletonLoadRemain<SceneManamger>
 {
-    private LetterBox _letterBox;
-    private Camera mainCamera;
+    public LetterBox letterBox;
+    public SceneCameraController CameraController { get; private set; }
 
     protected override void Awake()
     {
         base.Awake();
-        _letterBox = GetComponentInChildren<LetterBox>();
-        mainCamera = Camera.main;
+        CameraController = GetComponent<SceneCameraController>();
     }
 
     public void SetCutSceneMode(bool isCutsceneMode)
@@ -19,14 +18,13 @@ public class SceneMediator: SingletonLoadRemain<SceneMediator>
         {
             UIManager.Instance.HideIngameUI();
             if(GameManager.Instance) GameManager.Instance.PausePlayer();
-            
-            Instance._letterBox.ShowLetterBox(true);
+            Instance.letterBox.ShowLetterBox(true);
         }
         else
         {
             UIManager.Instance.ShowIngameUI();
             if(GameManager.Instance) GameManager.Instance.PausePlayer(false);
-            Instance._letterBox.ShowLetterBox(false);
+            Instance.letterBox.ShowLetterBox(false);
         }
     }
 }
