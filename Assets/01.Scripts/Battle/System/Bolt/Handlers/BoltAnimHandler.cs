@@ -3,7 +3,7 @@ using UnityEngine;
 // animHandler는 역할 동일
 public class BoltAnimHandler: MonoBehaviour
 {
-    private Bolt controller;
+    private BoltBuilder bolt;
     private Animator animator;
     
     public enum Status { None, Start, End } 
@@ -17,7 +17,7 @@ public class BoltAnimHandler: MonoBehaviour
     
     private void Awake()
     {
-        controller = GetComponent<Bolt>();
+        bolt = GetComponent<BoltBuilder>();
         animator = GetComponent<Animator>();
     }
 
@@ -44,9 +44,12 @@ public class BoltAnimHandler: MonoBehaviour
             // controller.machine.currNode.OnAnimated(Node.AnimationStatus.Start, stateInfo);
         }
 
+        // 파티클 형식일 때 disable 하기
         if (progress > 0.95f && currStatus != Status.End)
         {
             currStatus = Status.End;
+            // 미디에디터로 빼기
+            if(bolt.IsParticle) BoltsPool.Instance.Disable(gameObject);
 
             // if (controller.machine.currNode == null) return;
             // controller.machine.currNode.SetController(controller);

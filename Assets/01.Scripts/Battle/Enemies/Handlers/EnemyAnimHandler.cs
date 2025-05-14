@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class EnemyAnimHandler: MonoBehaviour
@@ -20,7 +21,7 @@ public class EnemyAnimHandler: MonoBehaviour
         controller = GetComponent<EnemyBaseController>();
         animator = GetComponent<Animator>();
     }
-
+    
     private void Update()
     {
         AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);

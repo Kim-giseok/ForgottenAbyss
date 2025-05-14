@@ -44,20 +44,20 @@ public class PlayerProjectile : MonoBehaviour
             if (other.TryGetComponent<IDamagable>(out var damageable))
             {
                 var data = BasicAttackData.Create(
-                caster: caster,                      // ¹ß»ç ÁÖÃ¼ (ÇÃ·¹ÀÌ¾î)
-                target: other.gameObject,               // ¸ÂÀº ´ë»ó
-                comboMultiplier: comboMultiplier// Å¸¼ö¿¡ µû¸¥ °è¼ö
+                caster: caster,                      // ï¿½ß»ï¿½ ï¿½ï¿½Ã¼ (ï¿½Ã·ï¿½ï¿½Ì¾ï¿½)
+                target: other.gameObject,               // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
+                comboMultiplier: comboMultiplier// Å¸ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
                 );
 
                 var result = data.CalculateDamage();
 
-                if (other.GetComponent<EnemyController>() != null) {
+                if (other.TryGetComponent(out EnemyController enemyController)) {
                     
-                    damageable.GetDamage(result.damage);
+                    enemyController.GetDamageByType(result.damage, EnemyStatusHandler.HitType.Normal);
 
                     Vector3 textPosition = other.transform.position + Vector3.up * 1f;
                     DamageTextManager.Instance.ShowDamage(textPosition, (int)result.damage, result.isCrit);
-                    GameManager.Instance.cameraShake.Shake(0.1f, 0.2f);
+                    GameManager.Instance.cameraShake.Shake(0.1f, 0.6f);
                 }
 
                 if(other.GetComponent<LaberDamagerble>() != null)
@@ -79,7 +79,7 @@ public class PlayerProjectile : MonoBehaviour
 
     private void ReturnToPool()
     {
-        // Ç® ¹ÝÈ¯
+        // Ç® ï¿½ï¿½È¯
         SystemManager.Instance.projectile.Release(gameObject);
     }
 }

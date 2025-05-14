@@ -28,7 +28,8 @@ public class BoltBuilder: MonoBehaviour
     
     public StepMachine machine { get; private set; } // 등록 자체를 순차 등록
     public List<BoltEffect> effects = new();
-    
+    public bool IsParticle { get; private set; }
+
     private void Awake()
     {
         Rigidbody = GetComponent<Rigidbody2D>();
@@ -152,6 +153,12 @@ public class BoltBuilder: MonoBehaviour
         gameObject.SetActive(true);
         machine.Start();
         Play();
+        return this;
+    }
+
+    public BoltBuilder SetParticle(bool isParticle)
+    {
+        IsParticle = isParticle;
         return this;
     }
 }
