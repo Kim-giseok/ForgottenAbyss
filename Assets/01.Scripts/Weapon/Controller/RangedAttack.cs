@@ -267,11 +267,21 @@ public class RangedAttack : MonoBehaviour
         isSkill = true;
         IsAttacking = true;
         comboBar.PlayEffect();
-        OnRangedCheck(0.8f);
+        StartCoroutine(InputTimer(0.5f));
     }
 
     public void PlayShotEffect()
     {
         shotAnimator.SetTrigger("ShotTrigger");
+    }
+
+    IEnumerator InputTimer(float time)
+    {
+        GameManager.Instance.player.controller.canAttack = false;
+
+        yield return new WaitForSeconds(time);
+
+        GameManager.Instance.player.controller.canAttack = true;
+        OnRangedCheck(0.3f);
     }
 }
