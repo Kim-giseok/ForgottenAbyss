@@ -1,6 +1,7 @@
 using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
+using static SummonSkillManager;
 
 public class RangedAttack : MonoBehaviour
 {
@@ -237,7 +238,12 @@ public class RangedAttack : MonoBehaviour
     private IEnumerator RestartRangedComboAfterDelay(float delay)
     {
         yield return new WaitForSeconds(delay);
-        attackIndex = 1;
+
+        if (attackIndex >= maxCombo || attackIndex == 0)
+        {
+            attackIndex = 1; // maxCombo 이거나 0일때 1로 리셋
+        }
+
         IsAttacking = true;
         canNextCombo = true;
 
@@ -253,20 +259,15 @@ public class RangedAttack : MonoBehaviour
 
     public void AdvanceCombo()
     {
-        isSkill = true;
-
-        if (attackIndex < maxCombo)
-        {
-            inputCombo = true;
-            OnRangedCheck(0.3f);
-        }
-        else
-            EndRangedAttack();
+        inputCombo = true;
     }
 
     public void PlayComboEffect()
     {
+        isSkill = true;
+        IsAttacking = true;
         comboBar.PlayEffect();
+        OnRangedCheck(0.8f);
     }
 
     public void PlayShotEffect()

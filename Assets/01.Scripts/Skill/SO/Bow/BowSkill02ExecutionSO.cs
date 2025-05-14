@@ -43,6 +43,7 @@ public class BowSkill02ExecutionSO : SkillExecutionSO
         if (visualSO.effectDelay > 0f)
             yield return new WaitForSeconds(visualSO.effectDelay);
 
+        SkillController.Instance.rangedAttack.AdvanceCombo();
         SkillController.Instance.rangedAttack.PlayShotEffect();
         GameManager.Instance.cameraZoom.ZoomOut();
 
@@ -75,7 +76,6 @@ public class BowSkill02ExecutionSO : SkillExecutionSO
             }
             yield return new WaitForSeconds(delayBetweenShots);
         }
-        SkillController.Instance.rangedAttack.AdvanceCombo();
         SkillController.Instance.isBowAttack = false;
     }
 
