@@ -15,6 +15,7 @@ public class RangedAttack : MonoBehaviour
     private int attackIndex = 0;
     private bool canNextCombo = false;
     private bool inputCombo = false;
+    private bool isSkill = false;
 
     public bool IsAttacking { get; private set; } = false;
 
@@ -62,8 +63,13 @@ public class RangedAttack : MonoBehaviour
     public void OnRangedCheck(float bufferTime)
     {
         canNextCombo = true;
+
         //여기에다가 콤보 입력 타이머 실행
-        comboBar.StartCombo(bufferTime);
+        if(!isSkill)
+            comboBar.StartCombo(bufferTime);
+        else
+            isSkill = false;
+
         StartCoroutine(RangedInputBuffer(bufferTime));
     }
 
@@ -247,10 +253,12 @@ public class RangedAttack : MonoBehaviour
 
     public void AdvanceCombo()
     {
+        isSkill = true;
+
         if (attackIndex < maxCombo)
         {
             inputCombo = true;
-            OnRangedCheck(1f);
+            OnRangedCheck(0.3f);
         }
         else
             EndRangedAttack();
