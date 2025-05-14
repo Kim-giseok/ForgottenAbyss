@@ -24,8 +24,8 @@ public class ControllerPlayer : MonoBehaviour
     public bool isInvincible = false; 
     private bool dashBuffered = false;
     public bool isAlive = true;
-    public bool canAttack = false;
-    public bool canSkill = false;
+    public bool canAttack = true;
+    public bool canSkill = true;
     public bool canDash = true;
 
     public Rigidbody2D rigid;
@@ -90,6 +90,9 @@ public class ControllerPlayer : MonoBehaviour
         {
             Debug.LogWarning("FirePoint�� ã�� �� �����ϴ�!");
         }
+
+        canAttack = true;
+        canSkill = true;
     }
 
     public void ChangeState(PlayerState newState)
@@ -187,7 +190,7 @@ public class ControllerPlayer : MonoBehaviour
             var weaponData = SystemManager.Instance.weaponManager.GetCurrentWeaponData();
             var skillController = SkillController.Instance;
 
-            if (weaponData.Type == WeaponType.Sword && skillController.comboAttack.attackIndex >= 3)
+            if (weaponData != null && weaponData.Type == WeaponType.Sword && skillController.comboAttack.attackIndex >= 3)
             {
                 Debug.Log("콤보가 3 이상이라 점프할 수 없습니다!");
                 return;

@@ -1706,6 +1706,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startP: {fileID: 7893453707778757205}
   <CameraCollider>k__BackingField: {fileID: 6879363045227159321}
+  <monsterManager>k__BackingField: {fileID: 0}
 --- !u!1 &5437016505993273112
 GameObject:
   m_ObjectHideFlags: 0
@@ -1782,11 +1783,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 607881c967f830647b23c3f6afc77d9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  laberAnim: {fileID: 6110450174999154851}
   targetMachines:
   - {fileID: 4221900758338723518}
-  laberAnim: {fileID: 6110450174999154851}
-  activeOnce: 0
-  flagName: 0
+  activatableConditionFlag: 0
+  activeOnceFlag: 0
   enemies: []
 --- !u!95 &6110450174999154851
 Animator:
@@ -3012,7 +3013,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 522394515444416918, guid: 8cb82dbafa528cd40b9c1aa017d30253, type: 3}
       propertyPath: m_LocalScale.y
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 522394515444416918, guid: 8cb82dbafa528cd40b9c1aa017d30253, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3097,7 +3098,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 522394515444416918, guid: 8cb82dbafa528cd40b9c1aa017d30253, type: 3}
       propertyPath: m_LocalScale.y
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 522394515444416918, guid: 8cb82dbafa528cd40b9c1aa017d30253, type: 3}
       propertyPath: m_LocalPosition.x
