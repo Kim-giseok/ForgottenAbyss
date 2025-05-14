@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Threading.Tasks;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -114,22 +115,49 @@ public class EnemyController : EnemyBaseController, IDamagable
         machine.Start();
     }
 
-    public void GetDamage(float damage)
+    private void OnHit(float damage)
     {
         resourceHandler.Modify(EnemyStatType.Health, -damage);
-        statusHandler.SetMode(EnmeyMode.Hit, true);
         
         BoltsPool.Instance.CreateParticle(transform, "Hit")
             .SetSize(0.8f).SetColor(new Color(0, 0, 0, 0.2f)).SetPosition(transform.position + new Vector3(Random.Range(-0.2f, 0.2f), 0.6f + Random.Range(-0.2f, 0.2f))).Play();
         BoltsPool.Instance.CreateParticle(transform, "Hit")
             .SetSize(0.15f).SetColor(Color.yellow).SetPosition(transform.position + new Vector3(Random.Range(-0.2f, 0.2f), 0.6f + Random.Range(-0.2f, 0.2f))).Play();
 
+        soundHandler.Play(EnemySoundType.Hit);
+    }
+
+    public void GetDamageByType(float damage, EnemyStatusHandler.HitType hitType = EnemyStatusHandler.HitType.Stun)
+    {
+        if (hitType != EnemyStatusHandler.HitType.Stun) { OnHit(damage); CheckDeath(); return; }
+        if (isIgnoreHitAnim) { OnHit(damage); }
+        else { GetDamage(damage); }
+        CheckDeath();
+    }
+    
+    private void CheckDeath()
+    {
+        if (resourceHandler.Get(EnemyStatType.Health).currValue <= 0)
+        {
+            statusHandler.SetMode(EnmeyMode.Hit, true);
+            machine.Notify();
+        }
+    }
+
+    // ReSharper disable Unity.PerformanceAnalysis
+    public void GetDamage(float damage)
+    {
+        // 타격 받은 쪽으로 회전
+        // Vector2 direction = (controller.agent.player.transform.position - controller.transform.position).normalized;
+        // controller.Flip(direction.x > 0);
+        OnHit(damage);
+        
+        statusHandler.SetMode(EnmeyMode.Hit, true);
+        machine.Notify();
         
         // 방어력 개념도 구현하기
         // statusHandler.stamina -= 1;
         // if (statusHandler.stamina <= 0) { statusHandler.stamina = 3; }
-        
-        machine.Notify();
     }
     
     // 리워드 표시, 리스폰 아리어에서 제거

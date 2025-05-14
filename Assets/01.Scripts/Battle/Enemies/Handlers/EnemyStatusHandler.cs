@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum EnmeyMode { Defense, Hit }
+public enum EnmeyMode { Defense, Hit, IgnoreSturn }
 
 // 디폴트는 동일하게 가져가지만 몬스터마다 다르게
 public class EnemyStatusHandler: MonoBehaviour
@@ -10,8 +10,13 @@ public class EnemyStatusHandler: MonoBehaviour
     private LinkedList<EnemyStatus> CurrStatus { get; set; } = new();
     
     private Dictionary<int, bool> Modes { get; set; } = new();
-    public void SetMode(EnmeyMode enmeyMode, bool value) => Modes[(int)enmeyMode] = value;
-    public bool GetMode(EnmeyMode enmeyMode) => Modes[(int)enmeyMode];
+    public void SetMode(EnmeyMode enemyMode, bool value) => Modes[(int)enemyMode] = value;
+    
+    public enum HitType { Normal, Stun }
+    public HitType hitType { get; private set; }
+    public void SetHitType(HitType newHitType) => newHitType = newHitType;
+    
+    public bool GetMode(EnmeyMode enemyMode) => Modes[(int)enemyMode];
 
 
     private void Awake()

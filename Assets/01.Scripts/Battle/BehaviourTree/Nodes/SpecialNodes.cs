@@ -22,40 +22,14 @@ public class GuardNode : Node
 // 피격 애니메이션 자체는 발생하더라도 바로 액션 끝나도록
 public class HitNode : Node
 {
-    IEnumerator BlinkRed()
-    {
-        // 디졸브 shader인 경우에만 가능
-        controller.Renderer.material.color = Color.red;
-        yield return new WaitForSeconds(0.2f);
-
-        controller.Renderer.material.color = Color.white;
-        yield return new WaitForSeconds(0.2f);
-    }
-    
     public override void Start()
     {
-
         // do: 시퀀스를 통행 애초에 진입이 안되도록 노드 지정
         if (controller is not EnemyController eController) return;
         if (!eController.statusHandler.GetMode(EnmeyMode.Hit)) { SetStatus(Status.Fail); return; }
-        
-        
         if(eController.resourceHandler.Get(EnemyStatType.Health).currValue <= 0) { SetStatus(Status.Success); return; }
-
-        // 타격 받은 쪽으로 회전
-        // Vector2 direction = (controller.agent.player.transform.position - controller.transform.position).normalized;
         
-        // controller.Flip(direction.x > 0);
         eController.statusHandler.SetMode(EnmeyMode.Hit, false);
-
-        controller.soundHandler.Play(EnemySoundType.Hit);
-        if (eController.isIgnoreHitAnim)
-        {
-            controller.StartCoroutine(BlinkRed());
-            SetStatus(Status.Fail);
-            return;
-        }
-        
         eController.animHandler.Play("Hit");
     }
 
@@ -76,7 +50,6 @@ public class DieNode : Node
         controller.Rigidbody.velocity = Vector3.zero; // fix: 넉백으로 날라가는 현상 발생
         controller.Rigidbody.isKinematic = true;
 
-        // SoundManager.Instance.PlaySFX(controller.soundHandler.GetClip(EnemySoundHandler.SoundType.Hit));
         
         eController.animHandler.Play("Die");
     }
