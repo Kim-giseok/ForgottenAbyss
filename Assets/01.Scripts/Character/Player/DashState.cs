@@ -67,7 +67,7 @@ public class DashState : PlayerStateMachine
         player.canAttack = true;
         player.canSkill = true;
 
-        player.StartCoroutine(WaitForLandingToResetCollision());
+        //player.StartCoroutine(WaitForLandingToResetCollision());
         player.rigid.collisionDetectionMode = CollisionDetectionMode2D.Discrete;
         player.StartCoroutine(DelayedInvincibilityOff(0.25f)); //대쉬 무적판정 조금 더 길게
         player.StartCoroutine(DashCooldown(0.5f));
