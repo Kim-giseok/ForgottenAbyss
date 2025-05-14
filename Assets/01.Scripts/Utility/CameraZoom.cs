@@ -41,13 +41,13 @@ public class CameraZoom : MonoBehaviour
         virtualCam = FindObjectOfType<CinemachineVirtualCamera>();
         if (virtualCam == null)
         {
-            Debug.Log("CameraZoom: ¾À ³»¿¡ »ç¿ëÇÒ Ä«¸Þ¶ó ¾øÀ½ (¸¶À»ÀÓ)");
+            Debug.Log("CameraZoom: ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ Ä«ï¿½Þ¶ï¿½ ï¿½ï¿½ï¿½ï¿½ (ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½)");
             return;
         }
         playerTransform = FindObjectOfType<Player>().transform;
         if (playerTransform == null)
         {
-            Debug.LogWarning("CameraZoom: »õ ¾À¿¡¼­ playerTransformÀ» Ã£Áö ¸øÇß½À´Ï´Ù.");
+            Debug.LogWarning("CameraZoom: ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ playerTransformï¿½ï¿½ Ã£ï¿½ï¿½ ï¿½ï¿½ï¿½ß½ï¿½ï¿½Ï´ï¿½.");
             return;
         }
     }
@@ -56,13 +56,13 @@ public class CameraZoom : MonoBehaviour
     {
         if (virtualCam == null)
         {
-            Debug.LogWarning("CameraZoom: virtualCamÀÌ nullÀÔ´Ï´Ù.(¸¶À»ÀÓ)");
+            Debug.LogWarning("CameraZoom: virtualCamï¿½ï¿½ nullï¿½Ô´Ï´ï¿½.(ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½)");
             return;
         }
 
         if (playerTransform == null)
         {
-            Debug.LogWarning("CameraZoom: playerTransformÀÌ nullÀÔ´Ï´Ù.");
+            Debug.LogWarning("CameraZoom: playerTransformï¿½ï¿½ nullï¿½Ô´Ï´ï¿½.");
             return;
         }
 
@@ -86,13 +86,13 @@ public class CameraZoom : MonoBehaviour
     {
         if (virtualCam == null)
         {
-            Debug.LogWarning("CameraZoom: virtualCamÀÌ nullÀÔ´Ï´Ù.(¸¶À»ÀÓ)");
+            Debug.LogWarning("CameraZoom: virtualCamï¿½ï¿½ nullï¿½Ô´Ï´ï¿½.(ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½)");
             return;
         }
 
         if (playerTransform == null)
         {
-            Debug.LogWarning("CameraZoom: playerTransformÀÌ nullÀÔ´Ï´Ù.");
+            Debug.LogWarning("CameraZoom: playerTransformï¿½ï¿½ nullï¿½Ô´Ï´ï¿½.");
             return;
         }
 
@@ -142,14 +142,14 @@ public class CameraZoom : MonoBehaviour
     {
         if (virtualCam == null)
         {
-            Debug.LogWarning("CameraZoom: virtualCamÀÌ nullÀÌ¶ó Ä«¸Þ¶ó ÀÌµ¿À» Áß´ÜÇÕ´Ï´Ù.");
+            Debug.LogWarning("CameraZoom: virtualCamï¿½ï¿½ nullï¿½Ì¶ï¿½ Ä«ï¿½Þ¶ï¿½ ï¿½Ìµï¿½ï¿½ï¿½ ï¿½ß´ï¿½ï¿½Õ´Ï´ï¿½.");
             yield break;
         }
 
         Transform camTransform = virtualCam.transform;
         if (camTransform == null)
         {
-            Debug.LogWarning("CameraZoom: virtualCam.transformÀÌ nullÀÔ´Ï´Ù.");
+            Debug.LogWarning("CameraZoom: virtualCam.transformï¿½ï¿½ nullï¿½Ô´Ï´ï¿½.");
             yield break;
         }
 
