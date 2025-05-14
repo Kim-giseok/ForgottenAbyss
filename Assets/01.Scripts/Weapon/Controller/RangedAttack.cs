@@ -62,7 +62,7 @@ public class RangedAttack : MonoBehaviour
     public void OnRangedCheck(float bufferTime)
     {
         canNextCombo = true;
-        //¿©±â¿¡´Ù°¡ ÄÞº¸ ÀÔ·Â Å¸ÀÌ¸Ó ½ÇÇà
+        //ï¿½ï¿½ï¿½â¿¡ï¿½Ù°ï¿½ ï¿½Þºï¿½ ï¿½Ô·ï¿½ Å¸ï¿½Ì¸ï¿½ ï¿½ï¿½ï¿½ï¿½
         comboBar.StartCombo(bufferTime);
         StartCoroutine(RangedInputBuffer(bufferTime));
     }
@@ -159,11 +159,13 @@ public class RangedAttack : MonoBehaviour
             yield return null;
         }
 
-        transform.position = targetPos; // ¸¶Áö¸· À§Ä¡ º¸Á¤
+        transform.position = targetPos; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ï¿½
     }
 
     void SpawnProjectile(Vector3 direction)
     {
+        SoundManager.Instance.Playsfx("BowAttack1");
+        
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         Quaternion rot = Quaternion.Euler(0, 0, angle);
 
