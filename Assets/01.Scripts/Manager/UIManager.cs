@@ -43,7 +43,8 @@ public class UIManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
 
         DragManager = new DragManager();
-        
+        Debug.Log("[UIManager] DragManager »ý¼ºµÊ");
+
     }
 
     public void ToggleInventory() => inventoryUI?.ToggleInventory();

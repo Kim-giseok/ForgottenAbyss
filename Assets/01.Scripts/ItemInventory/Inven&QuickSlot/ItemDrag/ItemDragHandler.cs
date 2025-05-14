@@ -14,23 +14,23 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
 
     private void Awake()
     {
-        // 임시 연결 나중에 수정
         if (dragCanvas == null)
         {
             dragCanvas = GameObject.Find("DragCanvas")?.GetComponent<RectTransform>();
-            Debug.LogWarning("[ItemDragHandler] dragCanvas 자동 연결됨");
         }
 
         if (dragItemPool == null)
         {
             dragItemPool = FindObjectOfType<DragItemPool>();
-            Debug.LogWarning("[ItemDragHandler] dragItemPool 자동 연결됨");
         }
+    }
 
+    private void Start()
+    {
         if (dragManager == null)
         {
             dragManager = UIManager.Instance?.DragManager;
-            Debug.LogWarning("[ItemDragHandler] dragManager 자동 연결됨");
+            Debug.Log("[ItemDragHandler] Start에서 DragManager 재할당 시도: " + dragManager);
         }
     }
 
