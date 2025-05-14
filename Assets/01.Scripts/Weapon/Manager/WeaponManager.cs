@@ -270,6 +270,8 @@ public class WeaponManager : MonoBehaviour
             Debug.LogWarning($"경로에 무기 SO 없음: {nextWeaponPath}");
 
         swapper.SwapWeapons();
+        skillController.UpdateBasicIcon();
+        skillController.ResetAttack();
     }
 
     public void RefreshSkillController()

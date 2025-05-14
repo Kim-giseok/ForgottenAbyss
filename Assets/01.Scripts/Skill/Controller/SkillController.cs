@@ -244,6 +244,19 @@ public class SkillController : Singleton<SkillController>
     public void SetGettingHit(bool value) => isGettingHit = value;
     public void SetDead(bool value) => isDead = value;
 
+    public void UpdateBasicIcon()
+    {
+        switch (combatSkill.weaponType)
+        {
+            case WeaponType.Bow:
+                rangedAttack.SwapWeapon();
+                break;
+            case WeaponType.Sword:
+                comboAttack.SwapWeapon();
+                break;
+        }
+    }
+
     public void ResetAttack()
     {
         if (SystemManager.Instance.weaponManager.GetCurrentWeaponData() != null) 

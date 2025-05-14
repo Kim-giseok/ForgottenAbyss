@@ -121,7 +121,9 @@ public class ComboAttack : MonoBehaviour
             attackIndex = 0;
             animator.SetInteger("AttackCombo", 0);
             animator.Play("Idle");
-            UpdateComboAttackUI(attackIndex);
+
+            if (SystemManager.Instance.weaponManager.GetCurrentWeaponData().Type == WeaponType.Sword)
+                UpdateComboAttackUI(attackIndex);
         }
     }
 
@@ -328,6 +330,11 @@ public class ComboAttack : MonoBehaviour
             DebugDrawUtil.DrawCircle(origin, radius, Color.red, 0.5f);
             return hits.Select(hit => hit.gameObject).ToList();
         }
+    }
+
+    public void SwapWeapon()
+    {
+        UpdateComboAttackUI(0);
     }
 
     private void UpdateComboAttackUI(int stepIndex)

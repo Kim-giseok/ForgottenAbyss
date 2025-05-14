@@ -186,6 +186,11 @@ public class RangedAttack : MonoBehaviour
         }
     }
 
+    public void SwapWeapon()
+    {
+        UpdateRangedAttackUI(0);
+    }
+
     private void UpdateRangedAttackUI(int stepIndex)
     {
         if (rangedData != null && stepIndex >= 0 && stepIndex < rangedData.rangedSteps.Count)
@@ -217,7 +222,9 @@ public class RangedAttack : MonoBehaviour
             attackIndex = 0;
             animator.SetInteger("BowCombo", 0);
             animator.Play("Idle");
-            UpdateRangedAttackUI(attackIndex);
+
+            if(SystemManager.Instance.weaponManager.GetCurrentWeaponData().Type == WeaponType.Bow)
+                UpdateRangedAttackUI(attackIndex);
         }
     }
 
