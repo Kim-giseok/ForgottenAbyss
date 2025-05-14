@@ -11,22 +11,45 @@ public class InventoryController : MonoBehaviour, IItemContainer
 
     public int SlotCount => slots.Length;
 
+    private void InitSlots()
+    {
+        slots = new Slot[slotSize];
+        for (int i = 0; i < slotSize; i++)
+            slots[i] = new Slot();
+    }
+
     private void Awake()
     {
         Debug.Log($"[InventoryController] Awake called on GameObject: {gameObject.name}, ID: {GetInstanceID()}");
         if (slots == null || slots.Length != slotSize)
         {
-            slots = new Slot[slotSize];
-            for (int i = 0; i < slotSize; i++)
-            {
-                slots[i] = new Slot();
-            }
+            InitSlots();
             Debug.Log("[InventoryController] 슬롯 배열 초기화 완료");
+        }
+    }
+
+    private void OnEnable()
+    {
+        if (slots == null || slots.Length != slotSize)
+        {
+            InitSlots();
+            Debug.Log("[InventoryController] OnEnable에서 슬롯 배열 초기화");
+        }
+    }
+
+    private void EnsureInitialized()
+    {
+        if (slots == null || slots.Length != slotSize)
+        {
+            InitSlots();
+            Debug.Log("[InventoryController] 슬롯 배열 강제 초기화");
         }
     }
 
     public bool AddItem(Item item, int amount)
     {
+        EnsureInitialized();
+
         Debug.Log($"[InventoryController] AddItem() 호출됨 on ID: {GetInstanceID()}");
         if (slots == null)
         {
