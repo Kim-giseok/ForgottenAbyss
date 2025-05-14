@@ -184,7 +184,7 @@ public class RangedAttack : MonoBehaviour
             if (comboStepIndex >= 0 && comboStepIndex < rangedData.rangedSteps.Count)
             {
                 float multiplier = rangedData.rangedSteps[comboStepIndex].multiplier;
-                pp.Setup(direction, caster: this.gameObject, multiplier);
+                pp.Setup(direction, caster: this.gameObject, multiplier, attackIndex);
             }
             else
             {

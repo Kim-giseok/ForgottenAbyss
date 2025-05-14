@@ -11,6 +11,7 @@ public class PlayerProjectile : MonoBehaviour
     private GameObject caster;
     private Rigidbody2D rb;
     private Vector3 startPosition;
+    private float attackIndex;
 
     private void Awake()
     {
@@ -58,6 +59,12 @@ public class PlayerProjectile : MonoBehaviour
                     Vector3 textPosition = other.transform.position + Vector3.up * 1f;
                     DamageTextManager.Instance.ShowDamage(textPosition, (int)result.damage, result.isCrit);
                     GameManager.Instance.cameraShake.Shake(0.1f, 0.2f);
+
+                    if(attackIndex == 3)
+                    {
+                        Vector2 attackerPos = (Vector2)transform.position + Vector2.up * 0.5f;
+                        KnockbackUtil.ApplyKnockback(other.gameObject, attackerPos, 1.5f);
+                    }
                 }
 
                 if(other.GetComponent<LaberDamagerble>() != null)
@@ -70,11 +77,12 @@ public class PlayerProjectile : MonoBehaviour
         else if (other.CompareTag("Ground")) ReturnToPool();
     }
 
-    public void Setup(Vector3 direction, GameObject caster, float multiplier)
+    public void Setup(Vector3 direction, GameObject caster, float multiplier, float index)
     {
         this.caster = caster;
         comboMultiplier = multiplier;
         rb.velocity = direction.normalized * speed;
+        attackIndex = index;
     }
 
     private void ReturnToPool()
