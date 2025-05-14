@@ -186,12 +186,17 @@ public class RangedAttack : MonoBehaviour
         }
     }
 
+    public void SwapWeapon()
+    {
+        UpdateRangedAttackUI(0);
+    }
+
     private void UpdateRangedAttackUI(int stepIndex)
     {
         if (rangedData != null && stepIndex >= 0 && stepIndex < rangedData.rangedSteps.Count)
         {
             Sprite newIcon = rangedData.rangedSteps[stepIndex].stepIcon;
-            Debug.Log($"UpdateRangedAttackUI - 현재 아이콘: {newIcon.name}, 현재 장착 무기: {rangedData.name}");
+
             if (SystemManager.Instance.skillManager.skillUI != null)
             {
                 SystemManager.Instance.skillManager.skillUI.SetSkillIcon(SkillSlotType.Basic, newIcon);
@@ -217,7 +222,9 @@ public class RangedAttack : MonoBehaviour
             attackIndex = 0;
             animator.SetInteger("BowCombo", 0);
             animator.Play("Idle");
-            UpdateRangedAttackUI(attackIndex);
+
+            if(SystemManager.Instance.weaponManager.GetCurrentWeaponData().Type == WeaponType.Bow)
+                UpdateRangedAttackUI(attackIndex);
         }
     }
 
