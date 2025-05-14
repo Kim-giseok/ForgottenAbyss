@@ -196,7 +196,7 @@ public class RangedAttack : MonoBehaviour
         if (rangedData != null && stepIndex >= 0 && stepIndex < rangedData.rangedSteps.Count)
         {
             Sprite newIcon = rangedData.rangedSteps[stepIndex].stepIcon;
-            Debug.Log($"UpdateRangedAttackUI - 현재 아이콘: {newIcon.name}, 현재 장착 무기: {rangedData.name}");
+
             if (SystemManager.Instance.skillManager.skillUI != null)
             {
                 SystemManager.Instance.skillManager.skillUI.SetSkillIcon(SkillSlotType.Basic, newIcon);

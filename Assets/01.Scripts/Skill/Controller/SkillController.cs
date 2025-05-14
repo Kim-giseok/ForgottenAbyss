@@ -229,10 +229,12 @@ public class SkillController : Singleton<SkillController>
 
         if (IsExecutable())
         {
+            Debug.Log("바로 실행");
             StartCoroutine(UseSkillRoutine(instance));
         }
         else if (IsBufferable()) // 즉시 실행 불가능하지만 이후 실행될 가능성이 있다면 버퍼링
         {
+            Debug.Log("버퍼링 실행");
             SystemManager.Instance.actionBufferUtil.BufferAction(
                 bufferName,
                 () => IsExecutable(),

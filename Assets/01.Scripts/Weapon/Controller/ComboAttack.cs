@@ -342,7 +342,7 @@ public class ComboAttack : MonoBehaviour
         if (comboData != null && stepIndex >= 0 && stepIndex < comboData.comboSteps.Count)
         {
             Sprite newIcon = comboData.comboSteps[stepIndex].stepIcon;
-            Debug.Log($"UpdateComboAttackUI - 현재 아이콘: {newIcon.name}, 현재 장착 무기: {comboData.name}");
+ 
             if (SystemManager.Instance.skillManager.skillUI != null)
             {
                 SystemManager.Instance.skillManager.skillUI.SetSkillIcon(SkillSlotType.Basic, newIcon);
