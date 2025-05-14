@@ -130,6 +130,8 @@ public class BoltsPool : MonoBehaviour // 단위 미사일
         bolt.gameObject.SetActive(true);
         bolt.animHandler.Play(animName);
 
+        transform.rotation = Quaternion.Euler(0, parent.transform.eulerAngles.y, 0);
+
         return bolt;
     }
 

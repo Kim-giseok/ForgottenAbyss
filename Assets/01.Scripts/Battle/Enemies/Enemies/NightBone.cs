@@ -18,6 +18,9 @@ public class ExplosionNode : Node
                 .SetSize(2f)
                 .Fire();
             
+            BoltsPool.Instance.CreateParticle(controller.transform, "NightBone_Explosion")
+                .SetSize(2.5f).SetPosition(controller.transform.position + new Vector3(Random.Range(-0.2f, 0.2f), 0.6f + Random.Range(-0.2f, 0.2f))).Play();
+
         }
         else BoltsPool.Instance.DisableMelee(controller.transform);
     }

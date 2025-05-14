@@ -44,6 +44,7 @@ public class BoltAnimHandler: MonoBehaviour
             // controller.machine.currNode.OnAnimated(Node.AnimationStatus.Start, stateInfo);
         }
 
+        // 파티클 형식일 때 disable 하기
         if (progress > 0.95f && currStatus != Status.End)
         {
             currStatus = Status.End;
