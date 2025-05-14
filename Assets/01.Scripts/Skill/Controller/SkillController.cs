@@ -78,6 +78,8 @@ public class SkillController : Singleton<SkillController>
 
     void OnAttack(InputValue value)
     {
+        if(GameManager.Instance.player.controller.canAttack == false) return;
+
         if (Time.time - lastAttackTime < attackCooldown) return;
 
         lastAttackTime = Time.time;

@@ -24,8 +24,10 @@ public class BowSkill01ExecutionSO : SkillExecutionSO
 
     private IEnumerator ExecuteWithEffectDelay(GameObject caster, Vector2 origin, Vector2 direction, SkillCastData castData)
     {
-        GameManager.Instance.cameraZoom.ZoomIn(0.5f);
+        //PlaySound("BowShoot2");
+        GameManager.Instance.cameraZoom.ZoomIn(0.5f);  
         yield return new WaitForSeconds(damageDelay);
+        SkillController.Instance.rangedAttack.AdvanceCombo();
         SkillController.Instance.rangedAttack.PlayShotEffect();
         GameManager.Instance.cameraZoom.ZoomOut();
         float extraLength = 3f; // 범위 확장값
@@ -48,7 +50,6 @@ public class BowSkill01ExecutionSO : SkillExecutionSO
             SkillController.Instance.isBowAttack = false;
         }
 
-        SkillController.Instance.rangedAttack.AdvanceCombo();
         DebugDrawUtil.DrawBox(center, size, angle, Color.red, 0.5f);
     }
 

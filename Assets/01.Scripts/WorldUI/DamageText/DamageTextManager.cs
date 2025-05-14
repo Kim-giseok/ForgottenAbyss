@@ -5,7 +5,7 @@ public class DamageTextManager : SingletonLoadRemain<DamageTextManager>
 {
     public ScreenFader screenFader;
     public DamageTextPool pool;
-
+    
     protected override void Init()
     {
         base.Init();

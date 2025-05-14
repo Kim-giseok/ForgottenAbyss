@@ -8,6 +8,8 @@ public class WeaponSwapper : MonoBehaviour
     public RectTransform frontWeapon;
     public RectTransform backWeapon;
 
+    private bool isSwapping = false;
+
     void Start()
     {
         InitializeWeaponStates(); // 시작할때 무기 상태 초기화
@@ -24,6 +26,14 @@ public class WeaponSwapper : MonoBehaviour
 
     public void SwapWeapons()
     {
+        if (isSwapping)
+        {
+            Debug.Log("무기 스왑 이미 진행 중");
+            return;
+        }
+        
+        isSwapping = true;
+
         StartCoroutine(SwapAnimation());
 
         backWeapon.SetAsLastSibling(); // 앞으로 오는 무기를 맨 위로
@@ -92,6 +102,8 @@ public class WeaponSwapper : MonoBehaviour
         // 밝기 조절
         SetWeaponBrightness(frontWeapon, 1f);   // 앞으로 나온 무기 밝게
         SetWeaponBrightness(backWeapon, 0.7f);  // 뒤로 간 무기 어둡게
+
+        isSwapping = false;
     }
 
     public void SetWeaponIcons(Sprite frontIcon, Sprite backIcon)

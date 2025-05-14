@@ -173,8 +173,11 @@ public class SkillManager : MonoBehaviour
             playerStatus.stats[StatType.CurrentMP] -= cost;
             return true;
         }
-
-        return false;
+        else
+        {
+            DamageTextManager.Instance.ShowMessage($"마나가 부족합니다 (필요한 마나 : {cost})");
+            return false;
+        }     
     }
 
     public bool IsMemorySkill(SkillInstance instance)
