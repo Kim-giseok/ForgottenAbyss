@@ -14,11 +14,7 @@ public abstract class CutScene: MonoBehaviour
 
     private void Awake()
     {
-        OnFinish += () =>
-        {
-            gameObject.SetActive(false);
-            Debug.Log("close");
-        };
+        OnFinish += () => gameObject.SetActive(false);
         CueMachine = new CueMachine { OnFinish = OnFinish };
         Init();
     }

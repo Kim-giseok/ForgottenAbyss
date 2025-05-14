@@ -11,14 +11,17 @@ public class NPCNoticeCutScene: CutScene
     private void Start()
     {
         menuButton = UIManager.Instance.GuideUI.GetComponent<RectTransform>();
-        Debug.Log(menuButton);
     }
 
     protected override void Init()
     {
         Actions = new Action[]
         {
-            () => SetSentence("잠깐"),
+            () =>
+            {
+                GameManager.Instance.PausePlayer();
+                SetSentence("잠깐");
+            },
             () => SetSentence("기억을 되찾기 위해서는 만반의 준비를 해야할 거야"),
             () =>
             {
@@ -50,6 +53,7 @@ public class NPCNoticeCutScene: CutScene
             {
                 Cam.Reset();
                 ResetPointer();
+                GameManager.Instance.PausePlayer(false);
             },
         };
     }
