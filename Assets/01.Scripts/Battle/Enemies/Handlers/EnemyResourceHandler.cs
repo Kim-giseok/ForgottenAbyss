@@ -1,18 +1,43 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyResourceHandler: MonoBehaviour
 {
-    private EnemyController controller;
+    private EnemyStatSO _statSO;
+    private readonly Dictionary<EnemyStatType, EnemyStat> _stats = new();
     
-    public float health;
-    public float attack;
-    public float defence;
-    public float speed;
-    public float mana;
-
-    private void Awake()
+    public void Define(EnemyStatSO newStatSO)
     {
-        controller = GetComponent<EnemyController>();
+        if (!newStatSO) return;
+
+        _statSO = newStatSO;
+        
+        foreach (EnemyStatInfo statInfo in _statSO.stats)
+        {
+            if (_stats.TryGetValue(statInfo.statType, out var existStat))
+            {
+                existStat.Set(statInfo.value);
+            }
+            else
+            {
+                _stats[statInfo.statType] = new EnemyStat(statInfo.statType, statInfo.value);
+
+            }
+        }
+    }
+
+    public EnemyStat Get(EnemyStatType statType)
+    {
+        _stats.TryGetValue(statType, out var stat);
+        return stat;
+    }
+
+    public void Modify(EnemyStatType statType, float amount)
+    {
+        if (_stats.TryGetValue(statType, out var stat))
+        {
+            stat.Modify(amount);
+        }
     }
 }

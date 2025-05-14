@@ -62,6 +62,16 @@ public class JumpState : PlayerStateMachine
 
         }
     }
+
+    public override void OnDash()
+    {
+        if (!isFastFalling) // 빠른 낙하 중이 아닐 때만 대쉬 가능
+        {
+            player.animator.SetBool("IsJump", false);
+            player.ChangeState(PlayerState.Dash);
+        }
+    }
+
     public override void OnAttack()
     {
         //player.ChangeState(PlayerState.Attack);

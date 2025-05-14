@@ -165,20 +165,7 @@ public class PlayerStatus : CharacterStatus
 
     private void Update()
     {
-        //// 테스트용
-        //if (Input.GetKeyDown(KeyCode.Alpha1))
-        //{
-        //    float cur = stats[StatType.CurrentHP];
-        //    SetStat(StatType.CurrentHP, cur - 10f);
-        //}
-        //if (Input.GetKeyDown(KeyCode.Alpha2)) // 테스트용
-        //{
-        //    float cur = stats[StatType.CurrentMP];
-        //    SetStat(StatType.CurrentMP, Mathf.Max(0, cur - 10f));
-        //}
-
-        TestExp();
-
+       
     }
     private void InitializeStats()
     {
@@ -192,7 +179,7 @@ public class PlayerStatus : CharacterStatus
         stats[StatType.EXP] = 0f; //초기 경험치
         stats[StatType.MaxEXP] = 100f; //레벨 업 경험치
         stats[StatType.GOLD] = 0f; //초기 골드
-        stats[StatType.SPEED] = 3f; //이동속도
+        stats[StatType.SPEED] = 3.5f; //이동속도
         stats[StatType.CRITICAL] = 20f; //치명타 확률
         stats[StatType.CRITICAL_DAMAGE] = 150f; //치명타 데미지
         stats[StatType.COOLDOWN_REDUCTION] = 0f; //스킬 쿨타임 감소
@@ -320,7 +307,7 @@ public class PlayerStatus : CharacterStatus
         SetStat(StatType.CurrentMP, stats[StatType.MaxMP]);
 
         int currentLevel = (int)stats[StatType.LEVEL];
-        stats[StatType.MaxEXP] = expRequiredForLevel[currentLevel];
+        SetStat(StatType.MaxEXP, expRequiredForLevel[currentLevel]);
 
         Debug.Log($"���� ����: {stats[StatType.LEVEL]}");
         Debug.Log($"HP: {stats[StatType.MaxHP]}");
@@ -469,13 +456,6 @@ public class PlayerStatus : CharacterStatus
 
     }
 
-    private void TestExp() //테스트용
-    {
-        if (Input.GetKeyDown(KeyCode.Alpha0))
-        {
-            GainExperience(50);
-        }
-    }
 
     public float GetStat(StatType statType)
     {

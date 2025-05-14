@@ -99,7 +99,7 @@ public class PassiveUI : MonoBehaviour
         }
 
         atkLevel++;
-        atkText.text = $"ATK\n Lv {atkLevel}/{maxAtkLevel}";
+        atkText.text = $"공격력\n Lv {atkLevel}/{maxAtkLevel}";
     }
 
     public void OnClickCritical()
@@ -119,7 +119,7 @@ public class PassiveUI : MonoBehaviour
         }
 
         crtLevel++;
-        crtText.text = $"CRT\n Lv {crtLevel}/{maxCrtLevel}";
+        crtText.text = $"치명타 확률\n Lv {crtLevel}/{maxCrtLevel}";
     }
 
     public void OnClickHp()
@@ -159,7 +159,7 @@ public class PassiveUI : MonoBehaviour
         }
 
         defLevel++;
-        defText.text = $"DEF\n Lv {defLevel}/{maxDefLevel}";    
+        defText.text = $"방어력\n Lv {defLevel}/{maxDefLevel}";    
     }
 
     public void OnClickSpeed()
@@ -179,7 +179,7 @@ public class PassiveUI : MonoBehaviour
         }
 
         speedLevel++;
-        speedText.text = $"SPEED\n Lv {speedLevel}/{maxSpeedLevel}";
+        speedText.text = $"이동속도\n Lv {speedLevel}/{maxSpeedLevel}";
     }
 
     public void OnClickCoolDown()
@@ -199,7 +199,7 @@ public class PassiveUI : MonoBehaviour
         }
 
         coolDownLevel++;
-        coolDownText.text = $"COOLDOWN\n Lv {coolDownLevel}/{maxCoolDownLevel}";
+        coolDownText.text = $"스킬 쿨타임 감소\n Lv {coolDownLevel}/{maxCoolDownLevel}";
     }
        
 }

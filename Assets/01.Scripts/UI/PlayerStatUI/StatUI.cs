@@ -64,11 +64,11 @@ public class StatUI : MonoBehaviour
         expText.text = $"Exp: " + playerStatus.stats[StatType.EXP].ToString() + $"/" + playerStatus.stats[StatType.MaxEXP];
         hpText.text = $"HP: " + playerStatus.stats[StatType.CurrentHP].ToString() + $"/" + playerStatus.stats[StatType.MaxHP];
         mpText.text = $"MP: " + playerStatus.stats[StatType.CurrentMP].ToString() + $"/" + playerStatus.stats[StatType.MaxMP];
-        atkText.text = $"ATK: " + playerStatus.stats[StatType.ATK].ToString();
-        defText.text = $"DEF: " + playerStatus.stats[StatType.DEF].ToString();
-        speedText.text = $"SPEED: " + playerStatus.stats[StatType.SPEED].ToString();
-        crtText.text = $"CRITICAL: " + playerStatus.stats[StatType.CRITICAL].ToString() + "%";
-        cdwText.text = $"COOLDOWN: " + playerStatus.stats[StatType.COOLDOWN_REDUCTION].ToString() + "%";
+        atkText.text = $"공격력: " + playerStatus.stats[StatType.ATK].ToString();
+        defText.text = $"방어력: " + playerStatus.stats[StatType.DEF].ToString();
+        speedText.text = $"이동속도: " + playerStatus.stats[StatType.SPEED].ToString();
+        crtText.text = $"치명타 확률: " + playerStatus.stats[StatType.CRITICAL].ToString() + "%";
+        cdwText.text = $"스킬 쿨타임 감소: " + playerStatus.stats[StatType.COOLDOWN_REDUCTION].ToString() + "%";
     }
 
     public void OnStatusUI()

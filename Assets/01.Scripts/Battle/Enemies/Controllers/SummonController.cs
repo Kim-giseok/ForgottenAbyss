@@ -89,7 +89,7 @@ public class SummonController: EnemyBaseController
     public void Define(SummonSkillManager.Skill skillName)
     {
         var (enemy, node) = SummonSkillManager.skills[(int)skillName];
-        animnHandler.SetController(EnemiesAnimator.animators[enemy.ToString()]);
+        animHandler.SetController(EnemiesAnimator.animators[enemy.ToString()]);
 
         // bug: 한번 실행 후 마지막 start가 진행되는 것으로 보임
         // notice: 머신도 제거되는 지 체크 후 이벤트 제거 필요
@@ -130,7 +130,12 @@ public class SummonController: EnemyBaseController
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.A)) { machine.currNode.OnPressed(); } // 임시 등록
-        if (isCasterAttached) { caster.transform.position = transform.position; }
+
+        if (isCasterAttached)
+        {
+            direction = GameManager.Instance.player.controller.inputVec;
+            caster.transform.position = transform.position;
+        }
     }
 
     private void OnDestroy()
@@ -140,12 +145,5 @@ public class SummonController: EnemyBaseController
         cRenderer.enabled = true;
         Collider.isTrigger = false;
         if(isPlayerCaster) { pController.isInvincible = false; }
-    }
-
-    // 현재 노드에게 알림 - 인식은 되는 것으로 확인됨
-    private void OnMove(InputValue value)
-    {
-        // 현재 다이렉션을 입력 값으로 적용
-        direction = value.Get<Vector2>().normalized;
     }
 }

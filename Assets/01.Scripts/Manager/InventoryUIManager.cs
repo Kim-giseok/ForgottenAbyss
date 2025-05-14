@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEditor.Progress;
 
 public class InventoryUIManager : MonoBehaviour
 {
@@ -75,7 +76,6 @@ public class InventoryUIManager : MonoBehaviour
                 slotUI.Clear();
             }
         }
-        Debug.Log("=== [InventoryUIManager] UpdateUI ³¡ ===");
     }
 
     //public void CheckAndUnequipItem(Item newItem)

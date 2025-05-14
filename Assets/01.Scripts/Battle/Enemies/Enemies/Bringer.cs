@@ -5,7 +5,7 @@ public class BringerAttackNode : Node
     public override void Start()
     {
         controller.LookTarget();
-        controller.animnHandler.Play("Attack");
+        controller.animHandler.Play("Attack");
     }
 
     public override void OnAnimatedEvent(bool isFire)

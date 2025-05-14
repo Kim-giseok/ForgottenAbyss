@@ -80,7 +80,7 @@ public class UIManager : MonoBehaviour
     public void OnTalk(NpcSentence sentenceObj, string sentence)
     {
         talkBox.Ondialogue(sentence);
-        talkBox.transform.position = sentenceObj.transform.position;
+        talkBox.transform.position = sentenceObj.transform.position + new Vector3(2f, 2.6f, 0f);
     }
 
     public void OffTalk()
@@ -140,5 +140,39 @@ public class UIManager : MonoBehaviour
         DeathUI.alpha = 1f;
 
         yield return new WaitForSeconds(holdTime);
+    }
+
+    public void ToggleStatUI()
+    {
+        if (statUI != null)
+        {
+            if (statUI.statusUI != null && statUI.statusUI.activeSelf)
+            {
+                // If it's open, close it
+                statUI.OffStatUI();
+            }
+            else
+            {
+                // If it's closed, open it
+                statUI.OnStatusUI();
+            }
+        }
+    }
+
+    public void TogglePassiveUI()
+    {
+        if (passiveUI != null)
+        {
+            if (passiveUI.passiveUI != null && passiveUI.passiveUI.activeSelf)
+            {
+                // If it's open, close it
+                passiveUI.OffPassiveUI();
+            }
+            else
+            {
+                // If it's closed, open it
+                passiveUI.OnPassiveUI();
+            }
+        }
     }
 }

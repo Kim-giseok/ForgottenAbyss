@@ -24,6 +24,9 @@ public class ControllerPlayer : MonoBehaviour
     public bool isInvincible = false; 
     private bool dashBuffered = false;
     public bool isAlive = true;
+    public bool canAttack = true;
+    public bool canSkill = true;
+    public bool canDash = true;
 
     public Rigidbody2D rigid;
     public Animator animator;
@@ -87,6 +90,9 @@ public class ControllerPlayer : MonoBehaviour
         {
             Debug.LogWarning("FirePoint�� ã�� �� �����ϴ�!");
         }
+
+        canAttack = true;
+        canSkill = true;
     }
 
     public void ChangeState(PlayerState newState)
@@ -123,7 +129,7 @@ public class ControllerPlayer : MonoBehaviour
 
         if (!isGround &&  rigid.velocity.y < 0)
         {
-            if (!stateInfo.IsTag("Attack") && !stateInfo.IsTag("Ladder") && !stateInfo.IsTag("WallSlide"))
+            if (!stateInfo.IsTag("Attack") && !stateInfo.IsTag("Ladder") && !stateInfo.IsTag("WallSlide") && !stateInfo.IsTag("Dash"))
             {
                 if (!animator.GetBool("IsFall"))
                 {
@@ -181,7 +187,15 @@ public class ControllerPlayer : MonoBehaviour
         if (!isAlive) return;
         if (value.isPressed)
         {
-            
+            var weaponData = SystemManager.Instance.weaponManager.GetCurrentWeaponData();
+            var skillController = SkillController.Instance;
+
+            if (weaponData != null && weaponData.Type == WeaponType.Sword && skillController.comboAttack.attackIndex >= 3)
+            {
+                Debug.Log("콤보가 3 이상이라 점프할 수 없습니다!");
+                return;
+            }
+
             if (states.ContainsKey(currentState))
             {
                 states[currentState].OnJump();
@@ -192,19 +206,23 @@ public class ControllerPlayer : MonoBehaviour
     void OnDash(InputValue value) //�뽬 Ű �Է�
     {
         if (!isAlive) return;
-        AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
-        bool isTurn = stateInfo.IsTag("Turn");
+        if (!canDash) return;
+
+        var skillController = SkillController.Instance;
 
         if (value.isPressed)
         {
-            if (isTurn)
+            if (states.ContainsKey(currentState))
             {
-                dashBuffered = true;
-            }
-            else
-            {
-               
-                if (states.ContainsKey(currentState))
+                if (skillController.isSkillPlaying)
+                {
+                    SystemManager.Instance.actionBufferUtil.BufferAction(
+                        "Dash",
+                        () => !skillController.isSkillPlaying,
+                        () => states[currentState].OnDash()
+                    );
+                }
+                else
                 {
                     states[currentState].OnDash();
                 }
@@ -256,8 +274,8 @@ public class ControllerPlayer : MonoBehaviour
             isFacingRight = false;
             transform.localEulerAngles = new Vector3(0, 180, 0);
 
-            if (isLocomotion && isMoving)
-                animator.SetTrigger("TurnTrigger");
+            //if (isLocomotion && isMoving)
+            //    animator.SetTrigger("TurnTrigger");
         }
         else if (inputVec.x > 0 && !isFacingRight && !isAttack)
         {
@@ -265,8 +283,8 @@ public class ControllerPlayer : MonoBehaviour
             isFacingRight = true;
             transform.localEulerAngles = new Vector3(0, 0, 0);
 
-            if (isLocomotion && isMoving)
-                animator.SetTrigger("TurnTrigger");
+            //if (isLocomotion && isMoving)
+            //    animator.SetTrigger("TurnTrigger");
         }
     }
 
@@ -285,7 +303,6 @@ public class ControllerPlayer : MonoBehaviour
             animator.SetBool("IsJump", false);
             currentJumpCount = 0;
             rigid.velocity = Vector3.zero;
-           
         }
        
         if (collision.gameObject.layer == LayerMask.NameToLayer("Wall"))
@@ -364,23 +381,22 @@ public class ControllerPlayer : MonoBehaviour
         {
             spriteRenderer.color = new Color(1f, 1f, 1f, 1f);
             ResetIgnoredCollision(); //무적 판정 종료
-        }
-
-        
+        }   
     }
 
     public void ResetIgnoredCollision()
     {
-       
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, 10f, invincibilityLayerMask);
-
-        foreach (Collider2D collider in colliders)
+        if (isGround)
         {
-            Physics2D.IgnoreCollision(playerCollider, collider, false);
+            Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, 10f, invincibilityLayerMask);
+
+            foreach (Collider2D collider in colliders)
+            {
+                Physics2D.IgnoreCollision(playerCollider, collider, false);
+            }
         }
     }
 
-   
     public IEnumerator Attack()
     {
         isAttacking = true;
@@ -408,6 +424,7 @@ public class ControllerPlayer : MonoBehaviour
 
     public void IgnorePlatformCollision()
     {
+        //Debug.Log($"Velocity Y: {rigid.velocity.y}, IgnoreCollision 적용: {rigid.velocity.y < 0}");
         Collider2D[] platformColliders = Physics2D.OverlapCircleAll(transform.position, 10f, platformLayerMask);
 
         foreach (Collider2D platformCollider in platformColliders) 
@@ -416,7 +433,7 @@ public class ControllerPlayer : MonoBehaviour
             {
                 Physics2D.IgnoreCollision(playerCollider, platformCollider, false);
             }
-            else
+            else if (rigid.velocity.y > 0.1f)
             {
                 Physics2D.IgnoreCollision(playerCollider, platformCollider, true);
             }

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 9018304359510724689}
   - component: {fileID: 2796516333006488116}
   - component: {fileID: 6826977418641068788}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: PushLaber
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -47,8 +47,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b57cc27332bb82a4c90d51850cbb8349, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetMachines: []
   laberAnim: {fileID: 6826977418641068788}
+  targetMachines: []
+  activatableConditionFlag: 0
+  activeOnceFlag: 0
   pushCollider: {fileID: 2796516333006488116}
   playerLayer:
     serializedVersion: 2
@@ -85,7 +87,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0.085}
+  m_Offset: {x: 0, y: 0.17}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -96,7 +98,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 0.17}
+  m_Size: {x: 1, y: 0.34}
   m_EdgeRadius: 0
 --- !u!95 &6826977418641068788
 Animator:
@@ -146,7 +148,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 522394515444416918}
@@ -191,7 +193,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: -1
+  m_SortingOrder: 0
   m_Sprite: {fileID: -1352116747390669190, guid: 195f87509ac4e7449b4b41fbd2c47345, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0

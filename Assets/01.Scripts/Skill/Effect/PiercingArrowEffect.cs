@@ -28,6 +28,10 @@ public class PiercingArrowEffect : MonoBehaviour
         line.SetPosition(0, start); // tail
         line.SetPosition(1, start); // head
 
+        Color initialColor = line.material.color;
+        initialColor.a = 0.5f;
+        line.material.color = initialColor;
+
         while (elapsed < drawDuration)
         {
             float headT = Mathf.Clamp01(elapsed / drawDuration);
@@ -38,6 +42,9 @@ public class PiercingArrowEffect : MonoBehaviour
 
             line.SetPosition(0, tailPos);
             line.SetPosition(1, headPos);
+
+            initialColor.a = Mathf.Lerp(0.5f, 1f, headT);
+            line.material.color = initialColor;
 
             elapsed += Time.deltaTime;
             yield return null;

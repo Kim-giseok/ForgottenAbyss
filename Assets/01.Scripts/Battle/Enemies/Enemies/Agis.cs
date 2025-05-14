@@ -131,7 +131,7 @@ public class AgisMoveNode : Node
 {
     public override void Start()
     {
-        controller.animnHandler.Play("Run");
+        controller.animHandler.Play("Run");
 
         if (controller.board.currMoveDirection == Vector2.zero)
         {

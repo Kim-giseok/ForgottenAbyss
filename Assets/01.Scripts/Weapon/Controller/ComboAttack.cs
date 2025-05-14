@@ -7,10 +7,11 @@ public class ComboAttack : MonoBehaviour
 {
     [SerializeField] private Animator animator;
     [SerializeField] private int maxCombo = 6;
+    [SerializeField] private ComboBar comboBar;
 
     private ComboAttackSO comboData;
 
-    int attackIndex = 0;
+    public int attackIndex = 0;
     bool canNextCombo = false;
     bool inputCombo = false;
 
@@ -53,18 +54,35 @@ public class ComboAttack : MonoBehaviour
         animator.ResetTrigger("AttackTrigger");
         animator.SetTrigger("AttackTrigger");
         animator.SetInteger("AttackCombo", attackIndex);
+        UpdateComboAttackUI(attackIndex - 1);
     }
 
 
     void OnComboCheck(float bufferTime)
     {
         canNextCombo = true;
+
+        comboBar.StartCombo(bufferTime);
         StartCoroutine(ComboInputBuffer(bufferTime));
     }
 
     IEnumerator ComboInputBuffer(float time)
     {
-        yield return new WaitForSeconds(time);
+        float elapsed = 0f;
+
+        while (elapsed < time)
+        {
+            elapsed += Time.deltaTime;
+
+            if (inputCombo)
+            {
+                OnComboNext();
+                yield break;
+            }
+
+            yield return null;
+        }
+
         canNextCombo = false;
     }
 
@@ -75,7 +93,9 @@ public class ComboAttack : MonoBehaviour
             inputCombo = false;
             attackIndex++;
             animator.SetInteger("AttackCombo", attackIndex);
+            UpdateComboAttackUI(attackIndex - 1);
             animator.Play(comboData.comboSteps[attackIndex - 1].animationName);
+            comboBar.PlayEffect();
         }
         else
         {
@@ -85,29 +105,43 @@ public class ComboAttack : MonoBehaviour
 
     public void EndComboAttack()
     {
-        if (this == null)
-        {
-            Debug.LogWarning("EndComboAttack: this == null");
-        }
-        if (animator == null)
-        {
-            Debug.LogWarning("EndComboAttack: animator == null");
-        }
-        if (!gameObject.activeInHierarchy)
-        {
-            Debug.LogWarning("EndComboAttack: 비활성화 상태임");
-        }
-
         if (this == null || animator == null || !gameObject.activeInHierarchy)
             return;
 
-
         IsAttacking = false;
-        attackIndex = 0;
-        animator.SetInteger("AttackCombo", 0);
-        inputCombo = false;
         canNextCombo = false;
-        animator.Play("Idle");
+
+        if (inputCombo)
+        {
+            inputCombo = false;
+            StartCoroutine(RestartComboAfterDelay(0.1f));
+        }
+        else
+        {
+            attackIndex = 0;
+            animator.SetInteger("AttackCombo", 0);
+            animator.Play("Idle");
+
+            if (SystemManager.Instance.weaponManager.GetCurrentWeaponData().Type == WeaponType.Sword)
+                UpdateComboAttackUI(attackIndex);
+        }
+    }
+
+    private IEnumerator RestartComboAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        attackIndex = 1;
+        IsAttacking = true;
+        canNextCombo = true;
+
+        if (!animator.GetCurrentAnimatorStateInfo(0).IsName(comboData.comboSteps[attackIndex - 1].animationName))
+        {
+            animator.ResetTrigger("AttackTrigger");
+            animator.SetTrigger("AttackTrigger");
+            animator.SetInteger("AttackCombo", attackIndex);
+            comboBar.PlayEffect();
+            UpdateComboAttackUI(attackIndex - 1);
+        }
     }
 
     void OnAttackReset()
@@ -151,7 +185,7 @@ public class ComboAttack : MonoBehaviour
         Vector3 startPos = transform.position;
 
         // 점프 방향 (대각선 위)
-        Vector3 jumpDir = (transform.right + Vector3.up).normalized;
+        Vector3 jumpDir = (transform.right + Vector3.up*0.5f).normalized;
         Vector3 peakPos = startPos + jumpDir * height;
 
         Vector3 horizontalDir = transform.right;
@@ -287,13 +321,32 @@ public class ComboAttack : MonoBehaviour
                     closest = hit.gameObject;
                 }
             }
-
+            DebugDrawUtil.DrawCircle(origin, radius, Color.red, 0.5f);
             return closest != null ? new List<GameObject> { closest } : new List<GameObject>();
         }
         else
         {
             // 3~6타: 관통 공격
+            DebugDrawUtil.DrawCircle(origin, radius, Color.red, 0.5f);
             return hits.Select(hit => hit.gameObject).ToList();
+        }
+    }
+
+    public void SwapWeapon()
+    {
+        UpdateComboAttackUI(0);
+    }
+
+    private void UpdateComboAttackUI(int stepIndex)
+    {
+        if (comboData != null && stepIndex >= 0 && stepIndex < comboData.comboSteps.Count)
+        {
+            Sprite newIcon = comboData.comboSteps[stepIndex].stepIcon;
+ 
+            if (SystemManager.Instance.skillManager.skillUI != null)
+            {
+                SystemManager.Instance.skillManager.skillUI.SetSkillIcon(SkillSlotType.Basic, newIcon);
+            }
         }
     }
 }

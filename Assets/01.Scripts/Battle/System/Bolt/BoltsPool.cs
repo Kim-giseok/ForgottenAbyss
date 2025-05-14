@@ -14,7 +14,7 @@ public class BoltsPool : MonoBehaviour // 단위 미사일
     public GameObject Bolt;
     public GameObject Summon;
 
-    private List<Bolt> currBolts { get; set; } = new();
+    private List<BoltBuilder> currBolts { get; set; } = new();
     private List<(Transform parent, HitBox hitBox)> currMelees = new(); // 만약 여기서 등록하는 경우, 몬스터가 죽으면 함께 제거 필요
     private List<SummonController> currSummons = new();
     
@@ -88,15 +88,15 @@ public class BoltsPool : MonoBehaviour // 단위 미사일
     }
     
     // ReSharper disable Unity.PerformanceAnalysis
-    public Bolt Create(Transform parent, Bolts.Type boltType)
+    public BoltBuilder Create(Transform parent, Bolts.Type boltType)
     {
-        Bolt bolt = currBolts.Find(bolt => !bolt.gameObject.activeSelf);
+        BoltBuilder bolt = currBolts.Find(bolt => !bolt.gameObject.activeSelf);
         
         if (!bolt)
         {
             // idea: start 될 때 Bolt가 스스로 bolts에 자신을 등록하면 GetComponent를 하지 않아도 되지 않을까?
             GameObject instance = Instantiate(Bolt, Vector2.zero, Quaternion.identity, transform);
-            bolt = instance.GetComponent<Bolt>();
+            bolt = instance.GetComponent<BoltBuilder>();
             currBolts.Add(bolt);
         }
 
@@ -113,17 +113,19 @@ public class BoltsPool : MonoBehaviour // 단위 미사일
         return bolt;
     }
 
-    public Bolt CreateParticle(Transform parent, string animName)
+    // ReSharper disable Unity.PerformanceAnalysis
+    public BoltBuilder CreateParticle(Transform parent, string animName)
     {
-        Bolt bolt = currBolts.Find(bolt => !bolt.gameObject.activeSelf);
+        BoltBuilder bolt = currBolts.Find(bolt => !bolt.gameObject.activeSelf);
 
         if (!bolt)
         {
             GameObject instance = Instantiate(Bolt, Vector2.zero, Quaternion.identity, transform);
-            bolt = instance.GetComponent<Bolt>();
+            bolt = instance.GetComponent<BoltBuilder>();
             currBolts.Add(bolt);
         }
         
+        bolt.SetTrail(false);
         bolt.hitBox.enabled = false;
         bolt.gameObject.SetActive(true);
         bolt.animHandler.Play(animName);
@@ -158,5 +160,13 @@ public class BoltsPool : MonoBehaviour // 단위 미사일
         currSummon.Define(skill);
 
         return currSummon;
+    }
+
+    public void Clear()
+    {
+        foreach (BoltBuilder bolt in currBolts)
+        {
+            bolt.gameObject.SetActive(false);
+        }
     }
 }

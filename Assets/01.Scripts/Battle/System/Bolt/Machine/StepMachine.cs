@@ -4,7 +4,7 @@ using UnityEngine;
 // 각 노드 시간 등록 개념이 어려움
 public class StepMachine
 {
-    public Bolt bolt;
+    public BoltBuilder bolt;
     
     public List<BoltNode> nodes = new();
     public BoltNode currNode;
@@ -13,7 +13,7 @@ public class StepMachine
     public bool isRunning = false;
     
     // notice: bolt만 변경한다면 재사용하도록 가능한지 체크
-    public StepMachine(Bolt bolt) => this.bolt = bolt;
+    public StepMachine(BoltBuilder bolt) => this.bolt = bolt;
 
     // 전략 패턴으로 현재
     public void Run()

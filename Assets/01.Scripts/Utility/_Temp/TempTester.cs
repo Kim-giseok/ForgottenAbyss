@@ -7,6 +7,7 @@ public class TempTester: MonoBehaviour
    {
       if (Input.GetKeyDown(KeyCode.Alpha1))
       {
+         EnemiesPool.Instance.Create(Enemy.NightBone, transform.position + new Vector3(0, 0.1f, 0));
       }
       
       if (Input.GetKeyDown(KeyCode.Alpha2))

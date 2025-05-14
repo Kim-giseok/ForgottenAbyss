@@ -4,7 +4,7 @@ public class SSCastingNode : Node
 {
     public override void Start()
     {
-        controller.animnHandler.Play("Casting");
+        controller.animHandler.Play("Casting");
         controller.LookTarget();
         controller.Rigidbody.velocity = Vector2.zero;
     }
@@ -27,7 +27,7 @@ public class SSDashAttack : Node
 
     public override void Start()
     {
-        controller.animnHandler.Play(animationName);
+        controller.animHandler.Play(animationName);
         controller.LookTarget();
 
         controller.Rigidbody.velocity = Vector2.zero;
@@ -69,7 +69,7 @@ public class RandomCoolTimeNode : Node
         
         controller.Rigidbody.velocity = new Vector2(0, controller.Rigidbody.velocity.y);
         
-        controller.animnHandler.Play("Idle");
+        controller.animHandler.Play("Idle");
     }
 
     public override void Update()
@@ -91,7 +91,7 @@ public class CoolTimeNode : Node
     public CoolTimeNode(float duration) => this.duration = duration;
     public override void Start()
     {
-        controller.animnHandler.Play("Idle");
+        controller.animHandler.Play("Idle");
     }
 
     public override void Update()

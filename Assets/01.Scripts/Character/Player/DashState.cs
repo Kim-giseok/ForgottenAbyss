@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+ï»¿using System.Collections;
 using UnityEngine;
 
 public class DashState : PlayerStateMachine
@@ -14,7 +13,7 @@ public class DashState : PlayerStateMachine
 
         if (curMp < cost)
         {
-            Debug.Log("½ºÅÂ¹Ì³Ê ºÎÁ· - ´ë½¬ Ãë¼Ò");
+            Debug.Log("ìŠ¤íƒœë¯¸ë„ˆ ë¶€ì¡± - ëŒ€ì‰¬ ì·¨ì†Œ");
 
             player.ChangeState(player.previousState);
             return;
@@ -27,40 +26,70 @@ public class DashState : PlayerStateMachine
         player.animator.SetTrigger("DashTrigger");
         player.SetInvincibility(true);
 
+        player.canAttack = false;
+        player.canSkill = false;
+
         dashTimer = 0f;
 
         player.rigid.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
 
         Vector2 dashDirection = new Vector2(player.inputVec.x, 0);
         player.rigid.velocity = new Vector2(dashDirection.x * player.dashDistance / player.dashTime, player.rigid.velocity.y);
-        Debug.Log($"{player.dashDistance/player.dashTime}");
+        //Debug.Log($"{player.dashDistance/player.dashTime}");
     }
     public override void Update()
     {
         dashTimer += Time.deltaTime;
-        if (dashTimer >= player.dashTime) //´ë½¬ Á¾·á
+        if (dashTimer >= player.dashTime) //ëŒ€ì‰¬ ì¢…ë£Œ
         {
-            if (player.inputVec.x != 0)
+            if (player.inputVec.x != 0 && player.isGround)
                 player.ChangeState(PlayerState.Run);
-            else
+            else if(player.inputVec.x == 0  && player.isGround)
                 player.ChangeState(PlayerState.Idle);
 
             player.rigid.velocity = new Vector2(player.inputVec.x * player.status.stats[StatType.SPEED], player.rigid.velocity.y);
         }
     }
+
+    public override void OnJump()
+    {
+        if (player.isGround)
+        {
+            player.ChangeState(PlayerState.Jump);
+        }
+    }
+
     public override void Exit()
     {
         player.animator.SetBool("IsDash", false);
         SkillController.Instance.ResetAttack();
 
-        player.rigid.collisionDetectionMode = CollisionDetectionMode2D.Discrete;
+        player.canAttack = true;
+        player.canSkill = true;
 
-        player.StartCoroutine(DelayedInvincibilityOff(0.25f)); //´ë½¬ ¹«ÀûÆÇÁ¤ Á¶±İ ´õ ±æ°Ô
+        player.StartCoroutine(WaitForLandingToResetCollision());
+        player.rigid.collisionDetectionMode = CollisionDetectionMode2D.Discrete;
+        player.StartCoroutine(DelayedInvincibilityOff(0.25f)); //ëŒ€ì‰¬ ë¬´ì íŒì • ì¡°ê¸ˆ ë” ê¸¸ê²Œ
+        player.StartCoroutine(DashCooldown(0.5f));
     }
 
     private IEnumerator DelayedInvincibilityOff(float delay)
     {
         yield return new WaitForSeconds(delay);
         player.SetInvincibility(false);
+    }
+
+    private IEnumerator WaitForLandingToResetCollision()
+    {
+        yield return new WaitUntil(() => player.isGround);
+        player.IgnorePlatformCollision();
+        Debug.Log("ëŒ€ì‰¬ ì¢…ë£Œ í›„ ì°©ì§€ ì‹œ ì¶©ëŒ ë³µêµ¬ë¨!");
+    }
+
+    private IEnumerator DashCooldown(float delay)
+    {
+        player.canDash = false;
+        yield return new WaitForSeconds(delay);
+        player.canDash = true;
     }
 }

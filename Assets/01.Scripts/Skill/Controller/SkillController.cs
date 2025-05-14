@@ -19,8 +19,11 @@ public class SkillController : Singleton<SkillController>
 
     private bool isGettingHit = false;
     private bool isDead = false;
-    private bool isSkillPlaying = false;
+    public bool isSkillPlaying = false;
     public bool isBowAttack = false;
+
+    private float lastAttackTime = 0f;
+    private float attackCooldown = 0.2f;
 
     private void Start()
     {
@@ -75,14 +78,26 @@ public class SkillController : Singleton<SkillController>
 
     void OnAttack(InputValue value)
     {
-        if (isSkillPlaying || isGettingHit || isDead) return;
+        if (Time.time - lastAttackTime < attackCooldown) return;
+
+        lastAttackTime = Time.time;
+
+        Debug.Log(lastAttackTime);
+
+        if (!IsExecutable() && !IsBufferable()) return;
+
+        if (!SystemManager.Instance.weaponManager.IsWeaponEquipped())
+        {
+            Debug.LogWarning("무기가 장착되지 않았습니다. 일반공격 불가!!");
+            return;
+        }
 
         if (IsTurning())
         {
             SystemManager.Instance.actionBufferUtil.BufferAction(
                 "NormalAttack",
-                () => !IsTurning() && !isSkillPlaying,
-                () => combatSkill.Execute());
+                () => IsExecutable(),
+                () => StartCoroutine(DelayedCombatExecution()));
         }
         else
         {
@@ -94,24 +109,26 @@ public class SkillController : Singleton<SkillController>
 
     void OnFirstSkill(InputValue value)
     {
-        if (isGettingHit || isDead) return;
+        if (!IsExecutable() && !IsBufferable()) return;
         TryBufferOrExecuteSkill(skill01, "FirstSkill");
         Debug.Log("S: 스킬1");
     }
 
     void OnSecondSkill(InputValue value)
     {
-        if (isGettingHit || isDead) return;
+        if (!IsExecutable() && !IsBufferable()) return;
         TryBufferOrExecuteSkill(skill02, "SecondSkill");
         Debug.Log("D: 스킬2");
     }
 
     void OnSpecialSkill(InputValue value)
     {
-        if (isGettingHit || isDead) return;
+        if (!IsExecutable() && !IsBufferable()) return;
         if (memorySkill == null)
         {
-            Debug.LogWarning("기억 스킬이 장착되지 않았습니다.");
+            if (DamageTextManager.Instance != null)
+                DamageTextManager.Instance.ShowMessage("기억 스킬이 장착되지 않았습니다.");
+
             return;
         }
         TryBufferOrExecuteSkill(memorySkill, "SpecialSkill");
@@ -121,16 +138,34 @@ public class SkillController : Singleton<SkillController>
     public void SetSkillPlaying(bool value) => isSkillPlaying = value;
     public void OnSetSkillFalse() => isSkillPlaying = false;
 
+    // 턴 애니메이션을 임시로 일단 제거해뒀음, 임시라 일단 여긴 나둘건데 턴 애니메이션 못고치면 걍 안쓰는 방향으로 갈듯
     public bool IsTurning()
     {
         AnimatorStateInfo stateInfo = GameManager.Instance.player.animator.GetCurrentAnimatorStateInfo(0);
-        return stateInfo.IsTag("Turn") || stateInfo.IsTag("Fall");
+        return stateInfo.IsTag("Turn") || stateInfo.IsTag("Fall") || stateInfo.IsTag("Dash");
+    }
+
+    public bool IsExecutable()
+    {
+        var player = GameManager.Instance.player.controller;
+
+        if(!player.canAttack || !player.canSkill || isGettingHit || isDead) return false;
+        else return true;
+    }
+
+    public bool IsBufferable()
+    {
+        var player = GameManager.Instance.player.controller;
+
+        if (!player.canAttack || !player.canSkill) return true;
+        return false;
     }
 
     public bool IsAttacking()
     {
+        // 활이 검보다 안좋은 것같아서 스킬 사용 제한을 임시로 풀어줌 평타 중 스킬 사용 가능
         return (comboAttack != null && comboAttack.IsAttacking) ||
-               (rangedAttack != null && rangedAttack.IsAttacking) ||
+               //(rangedAttack != null && rangedAttack.IsAttacking) ||
                isSkillPlaying;
     }
 
@@ -155,6 +190,20 @@ public class SkillController : Singleton<SkillController>
         isSkillPlaying = false;
     }
 
+    private IEnumerator DelayedUseSkillRoutine(SkillInstance instance)
+    {
+        yield return new WaitUntil(() => !IsTurning());
+        yield return new WaitForSeconds(0.1f);
+        StartCoroutine(UseSkillRoutine(instance));
+    }
+
+    private IEnumerator DelayedCombatExecution()
+    {
+        yield return new WaitUntil(() => !IsTurning());
+        yield return new WaitForSeconds(0.1f);
+        combatSkill.Execute();
+    }
+
     public float GetAnimPlayTime(SkillInstance instance)
     {
         if (SystemManager.Instance.skillManager.IsMemorySkill(instance))
@@ -170,50 +219,80 @@ public class SkillController : Singleton<SkillController>
     {
         if (!SystemManager.Instance.skillManager.IsSkillEquipped(instance))
         {
-            Debug.LogWarning($"Skill ID {instance} is not equipped.");
+            if (DamageTextManager.Instance != null)
+                DamageTextManager.Instance.ShowMessage("스킬이 장착되지 않았습니다!");
+
             return;
         }
 
-        if (IsAttacking()) return;
+        if (combatSkill.weaponType != WeaponType.Bow && IsAttacking()) return;
 
-        if (IsTurning())
+        if (IsExecutable())
         {
+            Debug.Log("바로 실행");
+            StartCoroutine(UseSkillRoutine(instance));
+        }
+        else if (IsBufferable()) // 즉시 실행 불가능하지만 이후 실행될 가능성이 있다면 버퍼링
+        {
+            Debug.Log("버퍼링 실행");
             SystemManager.Instance.actionBufferUtil.BufferAction(
                 bufferName,
-                () => !IsTurning() && !IsAttacking(),
-                () => StartCoroutine(UseSkillRoutine(instance)));
-        }
-        else
-        {
-            StartCoroutine(UseSkillRoutine(instance));
+                () => IsExecutable(),
+                () => StartCoroutine(UseSkillRoutine(instance))
+            );
         }
     }
 
     public void SetGettingHit(bool value) => isGettingHit = value;
     public void SetDead(bool value) => isDead = value;
 
+    public void UpdateBasicIcon()
+    {
+        switch (combatSkill.weaponType)
+        {
+            case WeaponType.Bow:
+                rangedAttack.SwapWeapon();
+                break;
+            case WeaponType.Sword:
+                comboAttack.SwapWeapon();
+                break;
+        }
+    }
+
     public void ResetAttack()
     {
-        isSkillPlaying = false;
+        if (SystemManager.Instance.weaponManager.GetCurrentWeaponData() != null) 
+        {
+            isSkillPlaying = false;
 
-        if (comboAttack != null && comboAttack.gameObject.activeInHierarchy)
-        {
-            comboAttack.EndComboAttack();
-        }
-        else
-        {
-            comboAttack = FindObjectOfType<ComboAttack>();
-            Debug.LogWarning("comboAttack이 null이거나 Destroy됨 → 재연결 시도");
-        }
+            var currentWeaponType = SystemManager.Instance.weaponManager.GetCurrentWeaponData().Type;
 
-        if (rangedAttack != null && rangedAttack.gameObject.activeInHierarchy)
-        {
-            rangedAttack.EndRangedAttack();
-        }
-        else
-        {
-            rangedAttack = FindObjectOfType<RangedAttack>();
-            Debug.LogWarning("rangedAttack이 null이거나 Destroy됨 → 재연결 시도");
+            switch (currentWeaponType)
+            {
+                case WeaponType.Sword:
+                    if (comboAttack != null && comboAttack.gameObject.activeInHierarchy)
+                        comboAttack.EndComboAttack();
+                    else
+                    {
+                        comboAttack = FindObjectOfType<ComboAttack>();
+                        Debug.LogWarning("comboAttack이 null이거나 Destroy됨 → 재연결 시도");
+                    }
+                    break;
+
+                case WeaponType.Bow:
+                    if (rangedAttack != null && rangedAttack.gameObject.activeInHierarchy)
+                        rangedAttack.EndRangedAttack();
+                    else
+                    {
+                        rangedAttack = FindObjectOfType<RangedAttack>();
+                        Debug.LogWarning("rangedAttack이 null이거나 Destroy됨 → 재연결 시도");
+                    }
+                    break;
+
+                default:
+                    Debug.LogWarning($"ResetAttack() - 알 수 없는 무기 타입: {currentWeaponType}");
+                    break;
+            }
         }
     }
 }

@@ -6,14 +6,14 @@ public class HealNode : Node
 {
     public override void Start()
     {
-        controller.animnHandler.Play("Heal");
+        controller.animHandler.Play("Heal");
         Collider2D[] hits = Physics2D.OverlapCircleAll(controller.transform.position, 200f, LayerMask.GetMask("Enemy"));
         foreach (var hit in hits)
         {
             if (hit.gameObject == controller.gameObject) continue;
             if (!hit.TryGetComponent(out EnemyController econtoller)) continue;
             BoltsPool.Instance.Create(hit.transform, Bolts.Type.Heal).SetSize(1f).Fire();
-            if(econtoller.health <= 30) econtoller.health += 10;
+            if(econtoller.resourceHandler.Get(EnemyStatType.Health).currValue <= 30) econtoller.resourceHandler.Modify(EnemyStatType.Health, 10);
         }
     }
 
@@ -29,7 +29,7 @@ public class WizadRecursiveNode : Node
 {
     public override void Start()
     {
-        controller.animnHandler.Play("Attack");
+        controller.animHandler.Play("Attack");
         controller.LookTarget();
     }
     

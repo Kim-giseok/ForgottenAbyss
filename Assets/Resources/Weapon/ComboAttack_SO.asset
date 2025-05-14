@@ -15,7 +15,7 @@ MonoBehaviour:
   id: 1
   attackName: "\uAC80 \uAE30\uBCF8 \uACF5\uACA9"
   description: "\uCF64\uBCF4\uB85C \uACF5\uACA9\uAC00\uB2A5\uD558\uB2E4 (\uCD1D 6\uD0C0)"
-  icon: {fileID: 21300000, guid: 643b271ec77391943ba4c2dd88857b91, type: 3}
+  icon: {fileID: 21300000, guid: 49abdcd2bb246f34291eb88b40f7313d, type: 3}
   comboSteps:
   - animationName: SwordAttack_1
     damageMultiplier: 0.8
@@ -23,33 +23,39 @@ MonoBehaviour:
     inputBufferTime: 0.25
     radius: 0.75
     offset: 0.3
+    stepIcon: {fileID: 21300000, guid: 49abdcd2bb246f34291eb88b40f7313d, type: 3}
   - animationName: SwordAttack_2
     damageMultiplier: 0.9
     moveDistance: 0
     inputBufferTime: 0.25
     radius: 0.8
     offset: 0.3
+    stepIcon: {fileID: 21300000, guid: 711728ee409381f4895c002dd9ada1a5, type: 3}
   - animationName: SwordAttack_3
     damageMultiplier: 1
     moveDistance: 0
     inputBufferTime: 0.25
     radius: 0.9
     offset: 0.3
+    stepIcon: {fileID: 21300000, guid: cb39e3b308288504a89a6ef277039b65, type: 3}
   - animationName: SwordAttack_4
     damageMultiplier: 1.2
     moveDistance: 0.2
     inputBufferTime: 0.25
     radius: 1
     offset: 0.3
+    stepIcon: {fileID: 21300000, guid: 9426281cc6d8844429d58ded9145d651, type: 3}
   - animationName: SwordAttack_5
     damageMultiplier: 1.4
     moveDistance: 0.4
     inputBufferTime: 0.25
     radius: 1.2
     offset: 0.3
+    stepIcon: {fileID: 21300000, guid: f4fd946e8f2e20d4184ebbbb500b596d, type: 3}
   - animationName: SwordAttack_6
     damageMultiplier: 2
     moveDistance: 0.6
     inputBufferTime: 0.25
     radius: 1.5
     offset: 0
+    stepIcon: {fileID: 21300000, guid: c9de39b0e4131af41a972b4df44136e8, type: 3}

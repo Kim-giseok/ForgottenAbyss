@@ -6,7 +6,7 @@ public class ExplosionNode : Node
 {
     public override void Start()
     {
-        controller.animnHandler.Play("Explosion");
+        controller.animHandler.Play("Explosion");
     }
 
     public override void OnAnimatedEvent(bool isFire)
@@ -41,7 +41,7 @@ public class ChargingNode : Node
     
     public override void Start()
     {
-        controller.animnHandler.Play("Charging");
+        controller.animHandler.Play("Charging");
         controller.soundHandler.Play(EnemySoundType.Casting);
     }
 

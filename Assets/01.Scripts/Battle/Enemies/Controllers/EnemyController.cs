@@ -1,21 +1,14 @@
-using System.Collections;
+using System;
+using System.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.Serialization;
+using Random = UnityEngine.Random;
 
 public class EnemyController : EnemyBaseController, IDamagable
 {
-    // SO로 추후 관리해도 좋을 듯
-    public float maxHealth { get; private set; }
-    [Header("Resource")] 
-    public float health;
-    public float attack;
-    
-    public int experience;
-    public int gold;
-
+    public bool isBaked = false;
+    // status로 관리해야할까?
     public bool isIgnoreHitAnim;
-
-    [FormerlySerializedAs("name")] public EnemiesBT.Enemy Name;
+    public Enemy enemyName;
     
     public EnemyResourceHandler resourceHandler { get; private set; }
     public EnemyStatusHandler statusHandler { get; private set; }
@@ -29,34 +22,109 @@ public class EnemyController : EnemyBaseController, IDamagable
         base.Awake();
         
         resourceHandler = GetComponent<EnemyResourceHandler>();
-        statusHandler = new EnemyStatusHandler();
+        statusHandler = GetComponent<EnemyStatusHandler>();
         rewardHandler = GetComponent<EnemyRewardHandler>();
     }
-    
-    public void Start()
+
+    // animator 변경 시 첫번 째 스프라이트 렌더러로 등록하기
+    public void OnValidate()
     {
-        maxHealth = health; // 리소스 시스템 구현 필요
-        // 애니메이터 자동 등록
-        // animationHandler.SetController(EnemiesAnimator.animators["NightBone"]);
-        // 에러처리 필요
-        machine.Define(EnemiesBT.Get(Name)); // 각 개체별 생성되는 방식
-        machine.Start();
-        
-        try { MapSpawnManager.Instance.SpawnedMap.monsterManager.AddList(this); }
-        catch { Debug.Log("there is no MapspawnManager"); }
+        // Addressables.LoadAssetsAsync<RuntimeAnimatorController>("EnemyAnimator", null).Completed += (handle) =>
+        // {
+        //     var currAnimator = handle.Result.FirstOrDefault(anim => anim.name == enemyName.ToString());
+        //     if (!currAnimator) return;
+        //    
+        //     var animator = GetComponent<Animator>();
+        //     animator.runtimeAnimatorController = currAnimator;
+        //     
+        //     var firstClip = animator.runtimeAnimatorController.animationClips.FirstOrDefault();
+        //     if (!firstClip) return;
+        //     
+        //     var bindings = GetObjectReferenceCurveBindings(firstClip);
+        //
+        //     foreach (var binding in bindings)
+        //     {
+        //         var keyframes = GetObjectReferenceCurve(firstClip, binding);
+        //         var firstSprite = keyframes.FirstOrDefault().value as Sprite;
+        //         if(!firstSprite) continue;
+        //         
+        //         GetComponent<SpriteRenderer>().sprite = firstSprite;
+        //         break;
+        //     }
+        //     
+        //     Addressables.LoadAssetAsync<EnemiesViewInfoSO>("EnemiesViewInfoSO").Completed += (handle) =>
+        //     {
+        //         var currInfo = handle.Result.EnemyViewInfos.Find(info => info.enemyName == enemyName.ToString());
+        //         if (currInfo == null) return;
+        //         transform.localScale = new Vector2(currInfo.ratio, currInfo.ratio);
+        //         
+        //         var currCollider = GetComponent<CapsuleCollider2D>();
+        //         currCollider.size = currInfo.size;
+        //         currCollider.offset = new Vector2(0, currInfo.size.y / 2);
+        //     };
+        // };
     }
 
+    #if UNITY_EDITOR
+    private async Task WaitForAssetsToLoad() { while (!EnemiesLoader.IsLoaded || !EnemiesAnimator.IsLoaded) { await Task.Yield(); } }
+    #endif
+    
+    public async void Start()
+    {
+        #if UNITY_EDITOR
+        await WaitForAssetsToLoad();
+        #endif
+        
+        if (isBaked)
+        {
+            // 빌드 타임에서는 비효율적인 액션일 수 있음
+            SetConfig(enemyName.ToString()); 
+            // 에러처리 필요
+            machine.Define(EnemiesBT.Get(enemyName)); // 각 개체별 생성되는 방식
+            machine.Start();
+        }
+
+        // try { MapSpawnManager.Instance.SpawnedMap.monsterManager.AddList(this); }
+        // catch { Debug.Log("there is no MapspawnManager"); }
+    }
+    
+    public void SetConfig(string newEnemyName)
+    {
+        resourceHandler.Define(EnemiesLoader.Get<EnemyStatSO>(newEnemyName));
+        
+        soundHandler.Define(EnemiesLoader.Get<EnemySoundSO>(newEnemyName));
+        rewardHandler.Define(EnemiesLoader.Get<EnemyRewardSO>(newEnemyName));
+        
+        // 미리 등록 되면 등록할 필요 없는 요소들
+        animHandler.SetController(EnemiesAnimator.animators[newEnemyName]);
+        
+        var info = EnemiesLoader.EnemiesInfoSO.EnemyViewInfos.Find(info => info.enemyName == enemyName.ToString());
+        if (info == null) return;
+        
+        transform.localScale = new Vector2(info.ratio, info.ratio);
+        Collider.size = info.size;
+        Collider.offset = new Vector2(0, info.size.y / 2);
+    }
+
+    public void Init(Enemy newEnemyName)
+    {
+        enemyName = newEnemyName;
+        SetConfig(newEnemyName.ToString());
+        machine.Define(EnemiesBT.Get(enemyName));
+        machine.Start();
+    }
 
     public void GetDamage(float damage)
     {
-        // resourceHandler에서 처리
+        resourceHandler.Modify(EnemyStatType.Health, -damage);
+        statusHandler.SetMode(EnmeyMode.Hit, true);
+        BoltsPool.Instance.CreateParticle(transform, Random.Range(0, 2) == 1 ? "Hit" : "Hit2")
+            .SetSize(0.1f).SetColor(Color.yellow).SetPosition(transform.position + new Vector3(Random.Range(-0.2f, 0.2f), 0.6f + Random.Range(-0.2f, 0.2f))).Play();
         
         // 방어력 개념도 구현하기
-        health -= damage;
-        statusHandler.stamina -= 1;
-        if (statusHandler.stamina <= 0) { statusHandler.stamina = 3; }
-
-        statusHandler.isHit = true;
+        // statusHandler.stamina -= 1;
+        // if (statusHandler.stamina <= 0) { statusHandler.stamina = 3; }
+        
         machine.Notify();
     }
     
@@ -64,29 +132,29 @@ public class EnemyController : EnemyBaseController, IDamagable
     // ReSharper disable Unity.PerformanceAnalysis
     public void Die()
     {
+        gameObject.SetActive(false);
         try { MapSpawnManager.Instance.SpawnedMap.monsterManager.RemoveEnemy(this); }
-        catch { Destroy(gameObject); }
+        catch { gameObject.SetActive(false); }
 
-        DamageTextManager.Instance.ShowExperience(experience);
+        DamageTextManager.Instance.ShowExperience(rewardHandler.Experience);
         // 경험치 추가
-        GameManager.Instance.player.playerstatus.GainExperience(experience);
+        GameManager.Instance.player.playerstatus.GainExperience(rewardHandler.Experience);
         
         // 피봇 변경으로 인한 위치 조정
         if (rewardHandler)
         {
             SoundManager.Instance.Playsfx("DropItem");
-
-            // 외부에서 관리하도록 처리
-            if (gold > 0)
-            {
-                Instantiate(rewardHandler.money, transform.position + (Vector3.up * 0.5f), Quaternion.identity);
-            }
-
-            var currItem = rewardHandler.GetRewardItem();
-            if (currItem)
-            {
-                Instantiate(currItem, transform.position + (Vector3.up * 0.5f), Quaternion.identity);
-            }
+            
+            rewardHandler.DropCoin();
+            rewardHandler.DropMemoryItem();
         }
+    }
+
+    private void OnDisable()
+    {
+        // Die 이후 초기화
+        statusHandler.SetMode(EnmeyMode.Hit, false);
+        Collider.enabled = true;
+        Rigidbody.isKinematic = false;
     }
 }

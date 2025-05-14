@@ -12,11 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59a6d3c100e6eff4c91305ab225e2c26, type: 3}
   m_Name: PotionItemHP
   m_EditorClassIdentifier: 
+  itemID: 1
   itemName: HP Potion
   itemIcon: {fileID: 21300000, guid: 74e1f450cb7144e418b6b67b593469b6, type: 3}
   itemType: 1
-  maxStack: 99
-  isConsumable: 1
   itemDescription: HP +30
+  currentAmount: 1
+  maxStack: 99
   targetStat: 0
   healAmount: 30

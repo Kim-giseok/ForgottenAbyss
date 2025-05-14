@@ -10,14 +10,14 @@ public class MeleeAttack : Node
     public override void Start()
     {
         controller.LookTarget();
-        controller.animnHandler.Play("Attack");
+        controller.animHandler.Play("Attack");
     }
 
     public override void OnAnimatedEvent(bool isFire)
     {
         if (isFire)
         {
-            SoundManager.Instance.PlaySFX(controller.soundHandler.GetClip(EnemySoundType.Attack));
+            controller.soundHandler.Play(EnemySoundType.Attack);
             // 데미지나 사이즈등은 추상화로 접급
             BoltsPool.Instance.CreateMelee(controller.transform, controller.combatHandler.power).Fire();
         }
@@ -44,7 +44,7 @@ public class RangeAttackNode : Node
 {
     public override void Start()
     {
-        controller.animnHandler.Play("Attack");
+        controller.animHandler.Play("Attack");
         controller.LookTarget();
     }
     
