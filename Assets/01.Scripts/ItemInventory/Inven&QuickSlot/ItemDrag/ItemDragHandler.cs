@@ -106,7 +106,6 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         }
 
         var originSlot = dragManager.OriginContainer.GetSlot(dragManager.OriginIndex);
-        var targetSlot = targetContainer.GetSlot(targetIndex);
 
         if (dragManager.OriginContainer == targetContainer)
         {
@@ -115,9 +114,12 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         }
         else
         {
-            // 다른 컨테이너 간 이동
+            // 다른 컨테이너 간 이동 시 반드시 미리 복사한 값을 사용
+            var draggedItem = originSlot.Item;
+            var draggedAmount = originSlot.Quantity;
+
             dragManager.OriginContainer.RemoveItemAt(dragManager.OriginIndex);
-            targetContainer.AddItemAt(targetIndex, originSlot.Item, originSlot.Quantity);
+            targetContainer.AddItemAt(targetIndex, draggedItem, draggedAmount);
         }
 
         dragManager.Clear();
