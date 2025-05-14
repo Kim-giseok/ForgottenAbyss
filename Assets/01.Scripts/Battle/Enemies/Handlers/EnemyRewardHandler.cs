@@ -6,8 +6,8 @@ public class EnemyRewardHandler : MonoBehaviour
     private EnemyRewardSO _rewardSO;
     public void Define(EnemyRewardSO newRewardSO) => _rewardSO = newRewardSO;
     
-    public int Gold => _rewardSO.gold;
-    public int Experience => _rewardSO.experience;
+    public int Gold => _rewardSO.Gold;
+    public int Experience => _rewardSO.Experience;
 
     public void DropMemoryItem()
     {

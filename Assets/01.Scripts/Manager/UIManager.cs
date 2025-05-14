@@ -75,10 +75,10 @@ public class UIManager : MonoBehaviour
             npcText.SetActive(false);
     }
 
-    public void OnTalk(NpcSentence sentenceObj, string sentence)
+    public void OnTalk(Transform parent, string sentence)
     {
         talkBox.Ondialogue(sentence);
-        talkBox.transform.position = sentenceObj.transform.position + new Vector3(2f, 2.6f, 0f);
+        talkBox.transform.position = parent.position + new Vector3(2f, 2.6f, 0f);
     }
 
     public void OffTalk()
