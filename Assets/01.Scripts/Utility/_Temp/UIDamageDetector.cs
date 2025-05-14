@@ -11,7 +11,7 @@ public class UIDamageDetector: MonoBehaviour, IDamagable
     }
     public void GetDamage(float damage)
     {
-        controller.GetDamage(damage);
+        controller.GetDamageByType(damage, EnemyStatusHandler.HitType.Normal);
 
         if (controller.resourceHandler.Get(EnemyStatType.Health).currValue <= 0)
         {
