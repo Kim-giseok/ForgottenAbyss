@@ -42,7 +42,7 @@ public class EnemyTableEditor : EditorWindow
         }
     }
     
-    [MenuItem("Tools/Enemy/StatTable")]
+    [MenuItem("Tools/EnemyStatTable")]
     public static void ShowWindow()
     {
         var wnd = GetWindow<EnemyTableEditor>();
@@ -126,7 +126,7 @@ public class EnemyTableEditor : EditorWindow
             }
         })
         {
-            text = "Create",
+            text = "Build",
             style =
             {
                 marginTop = 10
