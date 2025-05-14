@@ -131,39 +131,39 @@ public class EquipmentManager : MonoBehaviour
         return null;
     }
 
-    public void UpdateEquippedItems()
-    {
-        if (equippedArmors != null && equippedArmors.Any())
-        {
-            Debug.Log($"[EquipmentManager] UpdateEquippedItems() ½ÇÇà - ÀåÂø Á¤º¸ °»½Å Áß!");
+    //public void UpdateEquippedItems()
+    //{
+    //    if (equippedArmors != null && equippedArmors.Any())
+    //    {
+    //        Debug.Log($"[EquipmentManager] UpdateEquippedItems() ½ÇÇà - ÀåÂø Á¤º¸ °»½Å Áß!");
 
-            Dictionary<ArmorSlot, (ArmorSO armor, InventorySlot slot)> updatedEquippedArmors = new();
-            InventorySlot newEquippedMemorySlot = null;
-            MemoryPieceSO newEquippedMemoryPieceSo = null;
+    //        Dictionary<ArmorSlot, (ArmorSO armor, InventorySlotUI slot)> updatedEquippedArmors = new();
+    //        InventorySlotUI newEquippedMemorySlot = null;
+    //        MemoryPieceSO newEquippedMemoryPieceSo = null;
 
-            foreach (var slot in InventoryUIManager.Instance.slots)
-            {
-                if (slot.currentItem != null && slot.currentItem.itemType == ItemType.Equip && slot.currentItem is ArmorSO armor)
-                {
-                    updatedEquippedArmors[armor.slot] = (armor, slot);
-                    Debug.Log($"[EquipmentManager] ÀåÂø Á¤º¸ °»½Å - ½½·Ô: {armor.slot}, ÀåÂø Àåºñ: {armor.name}");
-                }
-                else if (slot.currentItem != null && slot.currentItem.itemType == ItemType.Memory && slot.currentItem is MemorySkillItem memorySkill)
-                {
-                    newEquippedMemoryPieceSo = SystemManager.Instance.dataManager.GetMemoryVisualSOById(memorySkill.memoryPieceId);
-                    newEquippedMemorySlot = slot;
-                    Debug.Log($"[EquipmentManager] ±â¾ï ¾ÆÀÌÅÛ ÀåÂø - {memorySkill.skillName}");
-                }
-            }
-            equippedArmors = updatedEquippedArmors;
-            equippedMemorySO = newEquippedMemoryPieceSo;
-            equippedMemorySlot = newEquippedMemorySlot;
-        }
-        else
-        {
-            Debug.Log($"[EquipmentManager] ÀåÂøµÈ ¾ÆÀÌÅÛ ¾øÀ½ ¡æ UpdateEquippedItems ½ÇÇà ¾È ÇÔ!");
-        }
-    }
+    //        foreach (var slot in InventoryUIManager.Instance.slots)
+    //        {
+    //            if (slot.currentItem != null && slot.currentItem.itemType == ItemType.Equip && slot.currentItem is ArmorSO armor)
+    //            {
+    //                updatedEquippedArmors[armor.slot] = (armor, slot);
+    //                Debug.Log($"[EquipmentManager] ÀåÂø Á¤º¸ °»½Å - ½½·Ô: {armor.slot}, ÀåÂø Àåºñ: {armor.name}");
+    //            }
+    //            else if (slot.currentItem != null && slot.currentItem.itemType == ItemType.Memory && slot.currentItem is MemorySkillItem memorySkill)
+    //            {
+    //                newEquippedMemoryPieceSo = SystemManager.Instance.dataManager.GetMemoryVisualSOById(memorySkill.memoryPieceId);
+    //                newEquippedMemorySlot = slot;
+    //                Debug.Log($"[EquipmentManager] ±â¾ï ¾ÆÀÌÅÛ ÀåÂø - {memorySkill.skillName}");
+    //            }
+    //        }
+    //        equippedArmors = updatedEquippedArmors;
+    //        equippedMemorySO = newEquippedMemoryPieceSo;
+    //        equippedMemorySlot = newEquippedMemorySlot;
+    //    }
+    //    else
+    //    {
+    //        Debug.Log($"[EquipmentManager] ÀåÂøµÈ ¾ÆÀÌÅÛ ¾øÀ½ ¡æ UpdateEquippedItems ½ÇÇà ¾È ÇÔ!");
+    //    }
+    //}
 
     public Dictionary<StatType, float> GetTotalArmorStats()
     {
