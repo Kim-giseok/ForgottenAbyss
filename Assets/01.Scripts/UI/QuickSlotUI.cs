@@ -42,8 +42,8 @@ public class QuickSlotUI : MonoBehaviour, IPointerClickHandler
             iconImage.enabled = true;
             amountText.text = slot.Quantity > 1 ? slot.Quantity.ToString() : "";
 
-            var dragHandler = itemUI.GetComponent<ItemDragHandler>();
-            dragHandler?.SetOrigin(container, index);
+            //var dragHandler = itemUI.GetComponent<ItemDragHandler>();
+            //dragHandler?.SetOrigin(container, index);
 
             itemUI?.SetItem(slot.Item);
             itemUI?.gameObject.SetActive(true);

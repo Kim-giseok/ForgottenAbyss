@@ -63,7 +63,7 @@ public class ItemUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         if (image != null) image.sprite = null;
         if (canvasGroup != null) canvasGroup.alpha = 0f;
 
-        gameObject.SetActive(false);
+        // gameObject.SetActive(false);
     }
 
     public void OnPointerEnter(PointerEventData eventData)

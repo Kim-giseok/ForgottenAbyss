@@ -28,6 +28,12 @@ public class DragItemPool : MonoBehaviour
 
     public GameObject Get()
     {
+        if (pool == null)
+        {
+            Debug.LogWarning("[DragItemPool] Lazy 초기화 수행");
+            Initialize(); // 여기서 초기화
+        }
+
         for (int i = 0; i < poolSize; i++)
         {
             int index = (nextIndex + i) % poolSize;
@@ -55,4 +61,19 @@ public class DragItemPool : MonoBehaviour
 
         obj.SetActive(false);
     }
+
+    public void Initialize()
+    {
+        if (pool != null) return; // 중복 방지
+
+        pool = new GameObject[poolSize];
+        for (int i = 0; i < poolSize; i++)
+        {
+            pool[i] = Instantiate(dragItemPrefab, transform);
+            pool[i].SetActive(false);
+        }
+
+        Debug.Log("[DragItemPool] Initialize 수동 호출 완료");
+    }
+
 }

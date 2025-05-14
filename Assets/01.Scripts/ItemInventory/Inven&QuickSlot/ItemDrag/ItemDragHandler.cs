@@ -9,11 +9,12 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     private GameObject dragIcon;
     private DragManager dragManager;
 
-    private IItemContainer originContainer;
-    private int originIndex;
+    //private IItemContainer originContainer;
+    //private int originIndex;
 
     private void Awake()
     {
+        // 임시 연결 나중에 수정
         if (dragCanvas == null)
         {
             dragCanvas = GameObject.Find("DragCanvas")?.GetComponent<RectTransform>();
@@ -33,11 +34,11 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         }
     }
 
-    public void SetOrigin(IItemContainer container, int index)
-    {
-        originContainer = container;
-        originIndex = index;
-    }
+    //public void SetOrigin(IItemContainer container, int index)
+    //{
+    //    originContainer = container;
+    //    originIndex = index;
+    //}
 
     public void Initialize(DragManager manager)
     {
@@ -48,34 +49,36 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     {
         if (dragManager == null || dragItemPool == null || dragCanvas == null)
         {
-            Debug.LogError("[ItemDragHandler] 필수 참조(dragManager / dragItemPool / dragCanvas)가 설정되지 않았습니다.");
+            Debug.LogError("[ItemDragHandler] 필수 참조가 누락되었습니다.");
             return;
         }
 
-        // InventorySlotUI 시도
+        // 드래그 시작 위치 슬롯 감지
         var invSlotUI = GetComponentInParent<InventorySlotUI>();
+        var quickSlotUI = GetComponentInParent<QuickSlotUI>();
+
         if (invSlotUI != null && !invSlotUI.IsEmpty)
         {
             dragManager.Set(invSlotUI.Slot.Item, invSlotUI.Container, invSlotUI.Index);
         }
+        else if (quickSlotUI != null && !quickSlotUI.IsEmpty)
+        {
+            dragManager.Set(quickSlotUI.Slot.Item, quickSlotUI.Container, quickSlotUI.Index);
+        }
         else
         {
-            // QuickSlotUI 시도
-            var quickSlotUI = GetComponentInParent<QuickSlotUI>();
-            if (quickSlotUI != null && !quickSlotUI.IsEmpty)
-            {
-                dragManager.Set(quickSlotUI.Slot.Item, quickSlotUI.Container, quickSlotUI.Index);
-            }
-            else
-            {
-                return; // 드래그할 수 있는 대상이 없음
-            }
+            Debug.LogWarning("[ItemDragHandler] 드래그 시작 위치에 유효한 슬롯이 없습니다.");
+            return;
         }
 
         // 드래그 아이콘 생성
         dragIcon = dragItemPool.Get();
         dragIcon.transform.SetParent(dragCanvas.transform, false);
         dragIcon.GetComponent<ItemUI>()?.SetItem(dragManager.Item);
+
+        // Raycast 막지 않도록 설정
+        var cg = dragIcon.GetComponent<CanvasGroup>();
+        if (cg != null) cg.blocksRaycasts = false;
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -88,25 +91,63 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     {
         dragItemPool.Return(dragIcon);
 
-        if (TryGetTargetSlot(eventData.pointerEnter, out var target, out int index))
+        if (!TryGetTargetSlot(eventData, out var targetContainer, out int targetIndex))
         {
-            if (dragManager.OriginContainer != target || dragManager.OriginIndex != index)
-            {
-                dragManager.OriginContainer.RemoveItemAt(dragManager.OriginIndex);
-                target.AddItemAt(index, dragManager.Item, 1);
-            }
+            Debug.LogWarning("[ItemDragHandler] 드롭 위치에 유효한 슬롯 없음");
+            dragManager.Clear();
+            return;
+        }
+
+        // 자기 슬롯이면 무시
+        if (dragManager.OriginContainer == targetContainer && dragManager.OriginIndex == targetIndex)
+        {
+            dragManager.Clear();
+            return;
+        }
+
+        var originSlot = dragManager.OriginContainer.GetSlot(dragManager.OriginIndex);
+        var targetSlot = targetContainer.GetSlot(targetIndex);
+
+        if (dragManager.OriginContainer == targetContainer)
+        {
+            // 같은 컨테이너 → 스왑
+            dragManager.OriginContainer.SwapItems(dragManager.OriginIndex, targetIndex);
+        }
+        else
+        {
+            // 다른 컨테이너 간 이동
+            dragManager.OriginContainer.RemoveItemAt(dragManager.OriginIndex);
+            targetContainer.AddItemAt(targetIndex, originSlot.Item, originSlot.Quantity);
         }
 
         dragManager.Clear();
     }
 
-    private bool TryGetTargetSlot(GameObject go, out IItemContainer container, out int index)
+    private bool TryGetTargetSlot(PointerEventData eventData, out IItemContainer container, out int index)
     {
-        var slotUI = go?.GetComponentInParent<InventorySlotUI>();
-        if (slotUI != null)
+        // 1차: pointerEnter 기준
+        if (TryExtractContainer(eventData.pointerEnter, out container, out index))
+            return true;
+
+        // 2차: hovered 리스트 기준 (더 정밀하게 감지)
+        foreach (var hovered in eventData.hovered)
         {
-            container = slotUI.Container;
-            index = slotUI.Index;
+            if (TryExtractContainer(hovered, out container, out index))
+                return true;
+        }
+
+        container = null;
+        index = -1;
+        return false;
+    }
+
+    private bool TryExtractContainer(GameObject go, out IItemContainer container, out int index)
+    {
+        var invSlotUI = go?.GetComponentInParent<InventorySlotUI>();
+        if (invSlotUI != null)
+        {
+            container = invSlotUI.Container;
+            index = invSlotUI.Index;
             return true;
         }
 
