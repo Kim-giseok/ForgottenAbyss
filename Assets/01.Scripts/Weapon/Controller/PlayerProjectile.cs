@@ -11,6 +11,7 @@ public class PlayerProjectile : MonoBehaviour
     private GameObject caster;
     private Rigidbody2D rb;
     private Vector3 startPosition;
+    private float attackIndex;
 
     private void Awake()
     {
@@ -44,20 +45,27 @@ public class PlayerProjectile : MonoBehaviour
             if (other.TryGetComponent<IDamagable>(out var damageable))
             {
                 var data = BasicAttackData.Create(
-                caster: caster,                      // ¹ß»ç ÁÖÃ¼ (ÇÃ·¹ÀÌ¾î)
-                target: other.gameObject,               // ¸ÂÀº ´ë»ó
-                comboMultiplier: comboMultiplier// Å¸¼ö¿¡ µû¸¥ °è¼ö
+                caster: caster,                      // ï¿½ß»ï¿½ ï¿½ï¿½Ã¼ (ï¿½Ã·ï¿½ï¿½Ì¾ï¿½)
+                target: other.gameObject,               // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
+                comboMultiplier: comboMultiplier// Å¸ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
                 );
 
                 var result = data.CalculateDamage();
 
-                if (other.GetComponent<EnemyController>() != null) {
+                if (other.TryGetComponent(out EnemyController enemyController)) {
                     
-                    damageable.GetDamage(result.damage);
+                    enemyController.GetDamageByType(result.damage, EnemyStatusHandler.HitType.Normal);
 
                     Vector3 textPosition = other.transform.position + Vector3.up * 1f;
                     DamageTextManager.Instance.ShowDamage(textPosition, (int)result.damage, result.isCrit);
+
                     GameManager.Instance.cameraShake.Shake(0.1f, 0.2f);
+
+                    if(attackIndex == 3)
+                    {
+                        Vector2 attackerPos = (Vector2)transform.position + Vector2.up * 0.5f;
+                        KnockbackUtil.ApplyKnockback(other.gameObject, attackerPos, 1.5f);
+                    }
                 }
 
                 if(other.GetComponent<LaberDamagerble>() != null)
@@ -70,16 +78,17 @@ public class PlayerProjectile : MonoBehaviour
         else if (other.CompareTag("Ground")) ReturnToPool();
     }
 
-    public void Setup(Vector3 direction, GameObject caster, float multiplier)
+    public void Setup(Vector3 direction, GameObject caster, float multiplier, float index)
     {
         this.caster = caster;
         comboMultiplier = multiplier;
         rb.velocity = direction.normalized * speed;
+        attackIndex = index;
     }
 
     private void ReturnToPool()
     {
-        // Ç® ¹ÝÈ¯
+        // Ç® ï¿½ï¿½È¯
         SystemManager.Instance.projectile.Release(gameObject);
     }
 }

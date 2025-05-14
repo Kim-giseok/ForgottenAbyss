@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -74,10 +75,10 @@ public class UIManager : MonoBehaviour
             npcText.SetActive(false);
     }
 
-    public void OnTalk(NpcSentence sentenceObj, string sentence)
+    public void OnTalk(Transform parent, string sentence)
     {
         talkBox.Ondialogue(sentence);
-        talkBox.transform.position = sentenceObj.transform.position + new Vector3(2f, 2.6f, 0f);
+        talkBox.transform.position = parent.position + new Vector3(2f, 2.6f, 0f);
     }
 
     public void OffTalk()
@@ -137,6 +138,24 @@ public class UIManager : MonoBehaviour
         DeathUI.alpha = 1f;
 
         yield return new WaitForSeconds(holdTime);
+    }
+
+    public void HIdeAll()
+    {
+        HideIngameUI();
+        HideGuideUI();
+        HideDeathUI();
+
+        OffGuidUI();
+        OffTalk();
+        HideTooltip();
+
+        inventoryUI.Close();
+        settingsMenu.CloseSettingsMenuUI();
+        statUI.OffStatUI();
+        passiveUI.OffPassiveUI();
+
+        Debug.Log("[UIManager] 모든 UI 숨김 완료");
     }
 
     public void ToggleStatUI()

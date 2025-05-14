@@ -17,6 +17,11 @@ public abstract class SkillExecutionSO : ScriptableObject
         DealDamageToTarget(target, castData);
     }
 
+    protected void PlaySound(string name)
+    {
+        SoundManager.Instance.Playsfx(name);
+    }
+
     protected SkillCastData PrepareCastData(GameObject caster, GameObject target, SkillData data)
     {
         return SkillCastData.Create(caster, target, data);

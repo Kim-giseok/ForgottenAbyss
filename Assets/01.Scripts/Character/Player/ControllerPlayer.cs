@@ -48,6 +48,9 @@ public class ControllerPlayer : MonoBehaviour
     public LayerMask groundLayer;
     public bool isOnLadder = false;
 
+    private float lastDirectionChangeTime = 0f;
+    private float directionChangeCooldown = 0.1f;
+
     private void Awake()
     {
         rigid = GetComponent<Rigidbody2D>();
@@ -264,7 +267,6 @@ public class ControllerPlayer : MonoBehaviour
     {
         AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
 
-        bool isLocomotion = stateInfo.IsTag("Locomotion");
         bool isAttack = stateInfo.IsTag("Attack");
         bool isMoving = Mathf.Abs(inputVec.x) > 0.01f;
 
@@ -273,19 +275,30 @@ public class ControllerPlayer : MonoBehaviour
             // ������ �� �������� �ٲ�
             isFacingRight = false;
             transform.localEulerAngles = new Vector3(0, 180, 0);
+            lastDirectionChangeTime = Time.time;
 
-            //if (isLocomotion && isMoving)
-            //    animator.SetTrigger("TurnTrigger");
+            canSkill = false; 
+            canAttack = false;
+            StartCoroutine(EnableSkillAfterDelay());
         }
         else if (inputVec.x > 0 && !isFacingRight && !isAttack)
         {
             // ���� �� ���������� �ٲ�
             isFacingRight = true;
             transform.localEulerAngles = new Vector3(0, 0, 0);
+            lastDirectionChangeTime = Time.time;
 
-            //if (isLocomotion && isMoving)
-            //    animator.SetTrigger("TurnTrigger");
+            canSkill = false;
+            canAttack = false;
+            StartCoroutine(EnableSkillAfterDelay());
         }
+    }
+
+    private IEnumerator EnableSkillAfterDelay()
+    {
+        yield return new WaitForSeconds(directionChangeCooldown);
+        canSkill = true;
+        canAttack = true;
     }
 
     public void OnCollisionEnter2D(Collision2D collision)
@@ -433,7 +446,7 @@ public class ControllerPlayer : MonoBehaviour
             {
                 Physics2D.IgnoreCollision(playerCollider, platformCollider, false);
             }
-            else if (rigid.velocity.y > 0.1f)
+            else if (rigid.velocity.y > 0f)
             {
                 Physics2D.IgnoreCollision(playerCollider, platformCollider, true);
             }

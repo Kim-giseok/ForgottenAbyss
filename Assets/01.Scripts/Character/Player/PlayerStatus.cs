@@ -179,7 +179,7 @@ public class PlayerStatus : CharacterStatus
         stats[StatType.EXP] = 0f; //초기 경험치
         stats[StatType.MaxEXP] = 100f; //레벨 업 경험치
         stats[StatType.GOLD] = 0f; //초기 골드
-        stats[StatType.SPEED] = 3.5f; //이동속도
+        stats[StatType.SPEED] = 3f; //이동속도
         stats[StatType.CRITICAL] = 20f; //치명타 확률
         stats[StatType.CRITICAL_DAMAGE] = 150f; //치명타 데미지
         stats[StatType.COOLDOWN_REDUCTION] = 0f; //스킬 쿨타임 감소
@@ -195,7 +195,7 @@ public class PlayerStatus : CharacterStatus
 
             // 레벨 업 스탯 증가량
             statIncreases[StatType.MaxHP] = 20f;         // HP 증가량
-            statIncreases[StatType.MaxMP] = 15f;        // MP 증가량
+            statIncreases[StatType.MaxMP] = 10f;        // MP 증가량
             statIncreases[StatType.ATK] = 1f;     // 공격력 증가량
             statIncreases[StatType.DEF] = 1f;     // 방어력 증가량
 

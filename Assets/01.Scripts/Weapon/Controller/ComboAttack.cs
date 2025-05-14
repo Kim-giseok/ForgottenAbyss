@@ -54,6 +54,7 @@ public class ComboAttack : MonoBehaviour
         animator.ResetTrigger("AttackTrigger");
         animator.SetTrigger("AttackTrigger");
         animator.SetInteger("AttackCombo", attackIndex);
+        SoundManager.Instance.PlaySFX(comboData.sound);
         UpdateComboAttackUI(attackIndex - 1);
     }
 
@@ -96,6 +97,7 @@ public class ComboAttack : MonoBehaviour
             UpdateComboAttackUI(attackIndex - 1);
             animator.Play(comboData.comboSteps[attackIndex - 1].animationName);
             comboBar.PlayEffect();
+            //SoundManager.Instance.PlaySFX(comboData.sound);
         }
         else
         {
@@ -280,9 +282,17 @@ public class ComboAttack : MonoBehaviour
 
                     Vector3 textPosition = enemy.transform.position + Vector3.up * 1f;
                     DamageTextManager.Instance.ShowDamage(textPosition, (int)result.damage, result.isCrit);
+
                     GameManager.Instance.cameraShake.Shake(0.2f, 0.4f);
-                    Vector2 attackerPos = (Vector2)transform.position + Vector2.up * 0.5f;
-                    KnockbackUtil.ApplyKnockback(target, attackerPos, 2f);
+
+                    float knockbackStrength = 0f;
+                    if (attackIndex >= 4) knockbackStrength = 3f + (attackIndex - 4) * 1f; // 4Ÿ = 3, 5Ÿ = 4, 6Ÿ = 5
+
+                    if (knockbackStrength > 0)
+                    {
+                        Vector2 attackerPos = (Vector2)transform.position + Vector2.up * 0.5f;
+                        KnockbackUtil.ApplyKnockback(target, attackerPos, knockbackStrength);
+                    }
                 }
 
                 var laber = target.GetComponentInChildren<LaberDamagerble>();

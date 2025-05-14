@@ -49,6 +49,7 @@ public class HitBox : MonoBehaviour // 1회 공격 당의 캐싱이 필요할 �
         return this;
     }
 
+    // 이펙트 연결이 될 수 있음
     public HitBox Fire()
     {
         gameObject.SetActive(true);

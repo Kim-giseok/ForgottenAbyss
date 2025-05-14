@@ -58,6 +58,11 @@ public class Player : MonoBehaviour, IDamagable
 
     public void GetDamage(float damage)
     {
+        SoundManager.Instance.Playsfx("HitPlayer");
+        // BoltsPool.Instance.CreateParticle(transform, "Hit2")
+            // .SetSize(0.15f).SetColor(Color.yellow).SetPosition(transform.position + new Vector3(Random.Range(-0.2f, 0.2f), 0.6f + Random.Range(-0.2f, 0.2f))).Play();
+
+        
         float def = playerstatus.stats[StatType.DEF];
         float damageReductionRate = def / (defenseFactor + def);
         float finalDamage = damage * (1f - damageReductionRate);

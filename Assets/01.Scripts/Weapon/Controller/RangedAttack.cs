@@ -1,6 +1,7 @@
 using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
+using static SummonSkillManager;
 
 public class RangedAttack : MonoBehaviour
 {
@@ -15,6 +16,7 @@ public class RangedAttack : MonoBehaviour
     private int attackIndex = 0;
     private bool canNextCombo = false;
     private bool inputCombo = false;
+    private bool isSkill = false;
 
     public bool IsAttacking { get; private set; } = false;
 
@@ -49,7 +51,6 @@ public class RangedAttack : MonoBehaviour
         animator.ResetTrigger("BowTrigger");
         animator.SetTrigger("BowTrigger");
         animator.SetInteger("BowCombo", attackIndex);
-
         UpdateRangedAttackUI(attackIndex-1);
     }
 
@@ -62,8 +63,12 @@ public class RangedAttack : MonoBehaviour
     public void OnRangedCheck(float bufferTime)
     {
         canNextCombo = true;
-        //¿©±â¿¡´Ù°¡ ÄÞº¸ ÀÔ·Â Å¸ÀÌ¸Ó ½ÇÇà
-        comboBar.StartCombo(bufferTime);
+
+        if(!isSkill)
+            comboBar.StartCombo(bufferTime);
+        else
+            isSkill = false;
+
         StartCoroutine(RangedInputBuffer(bufferTime));
     }
 
@@ -124,6 +129,8 @@ public class RangedAttack : MonoBehaviour
 
         for (int i = 0; i < step.projectileCount; i++)
         {
+            //SoundManager.Instance.PlaySFX(rangedData.sound);
+
             Vector3 direction = baseDirection;
 
             if (step.isSpread)
@@ -159,11 +166,13 @@ public class RangedAttack : MonoBehaviour
             yield return null;
         }
 
-        transform.position = targetPos; // ¸¶Áö¸· À§Ä¡ º¸Á¤
+        transform.position = targetPos; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ï¿½
     }
 
     void SpawnProjectile(Vector3 direction)
     {
+        SoundManager.Instance.Playsfx("BowAttack1");
+        
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         Quaternion rot = Quaternion.Euler(0, 0, angle);
 
@@ -177,7 +186,7 @@ public class RangedAttack : MonoBehaviour
             if (comboStepIndex >= 0 && comboStepIndex < rangedData.rangedSteps.Count)
             {
                 float multiplier = rangedData.rangedSteps[comboStepIndex].multiplier;
-                pp.Setup(direction, caster: this.gameObject, multiplier);
+                pp.Setup(direction, caster: this.gameObject, multiplier, attackIndex);
             }
             else
             {
@@ -231,7 +240,12 @@ public class RangedAttack : MonoBehaviour
     private IEnumerator RestartRangedComboAfterDelay(float delay)
     {
         yield return new WaitForSeconds(delay);
-        attackIndex = 1;
+
+        if (attackIndex >= maxCombo || attackIndex == 0)
+        {
+            attackIndex = 1; // maxCombo ÀÌ°Å³ª 0ÀÏ¶§ 1·Î ¸®¼Â
+        }
+
         IsAttacking = true;
         canNextCombo = true;
 
@@ -247,22 +261,29 @@ public class RangedAttack : MonoBehaviour
 
     public void AdvanceCombo()
     {
-        if (attackIndex < maxCombo)
-        {
-            inputCombo = true;
-            OnRangedCheck(1f);
-        }
-        else
-            EndRangedAttack();
+        inputCombo = true;
     }
 
     public void PlayComboEffect()
     {
+        isSkill = true;
+        IsAttacking = true;
         comboBar.PlayEffect();
+        StartCoroutine(InputTimer(0.5f));
     }
 
     public void PlayShotEffect()
     {
         shotAnimator.SetTrigger("ShotTrigger");
+    }
+
+    IEnumerator InputTimer(float time)
+    {
+        GameManager.Instance.player.controller.canAttack = false;
+
+        yield return new WaitForSeconds(time);
+
+        GameManager.Instance.player.controller.canAttack = true;
+        OnRangedCheck(0.3f);
     }
 }
