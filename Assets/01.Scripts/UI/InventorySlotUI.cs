@@ -91,16 +91,24 @@ public class InventorySlotUI : MonoBehaviour, IPointerClickHandler
     {
         if (eventData.button == PointerEventData.InputButton.Right && !IsEmpty)
         {
-            Debug.Log($"[InventorySlotUI] {slot.Item.itemName} 우클릭 → 사용 시도");
+            if (slot?.Item == null)
+            {
+                Debug.LogWarning("[InventorySlotUI] 우클릭했지만 slot.Item이 null입니다.");
+                return;
+            }
+
+            string itemName = slot.Item.itemName;
+
+            Debug.Log($"[InventorySlotUI] {itemName} 우클릭 → 사용 시도");
 
             if (SlotUtils.TryUseSlot(slot))
             {
-                Debug.Log($"[InventorySlotUI] {slot.Item.itemName} 사용됨");
+                Debug.Log($"[InventorySlotUI] {itemName} 사용됨");
                 UpdateUI();
             }
             else
             {
-                Debug.LogWarning($"[InventorySlotUI] {slot.Item.itemName} 사용 실패 (조건 불만족?)");
+                Debug.LogWarning($"[InventorySlotUI] {itemName} 사용 실패 (조건 불만족?)");
             }
         }
     }

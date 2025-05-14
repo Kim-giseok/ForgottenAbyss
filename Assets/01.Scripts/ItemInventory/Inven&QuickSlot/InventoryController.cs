@@ -44,10 +44,25 @@ public class InventoryController : MonoBehaviour, IItemContainer
             InitSlots();
             Debug.Log("[InventoryController] 슬롯 배열 강제 초기화");
         }
+
+        for (int i = 0; i < slots.Length; i++)
+        {
+            if (slots[i] == null)
+            {
+                slots[i] = new Slot();
+                Debug.Log($"[InventoryController] 슬롯 {i}이 null이라 새로 생성함");
+            }
+        }
     }
 
     public bool AddItem(Item item, int amount)
     {
+        if (item == null)
+        {
+            Debug.LogError("[InventoryController] AddItem()에 null 아이템 전달됨!");
+            return false;
+        }
+
         EnsureInitialized();
 
         Debug.Log($"[InventoryController] AddItem() 호출됨 on ID: {GetInstanceID()}");

@@ -56,8 +56,6 @@ public class InventoryUIManager : MonoBehaviour
 
     public void UpdateUI()
     {
-        Debug.Log("=== [InventoryUIManager] UpdateUI 시작 ===");
-
         if (inventoryController == null || slotUIs == null) return;
 
         for (int i = 0; i < slotUIs.Length; i++)
@@ -67,7 +65,7 @@ public class InventoryUIManager : MonoBehaviour
             if (i < inventoryController.SlotCount)
             {
                 var slot = inventoryController.GetSlot(i);
-                Debug.Log($"[UpdateUI] [{i}] 아이템: {slot?.Item?.itemName ?? "없음"}, 수량: {slot?.Quantity}, 해시: {slot?.GetHashCode()}");
+                // Debug.Log($"[UpdateUI] [{i}] 아이템: {slot?.Item?.itemName ?? "없음"}, 수량: {slot?.Quantity}, 해시: {slot?.GetHashCode()}");
 
                 slotUI.SetSlot(slot, i, inventoryController); // 슬롯 + 인덱스 + 컨테이너 전달
             }
