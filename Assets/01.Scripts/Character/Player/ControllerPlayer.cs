@@ -446,7 +446,7 @@ public class ControllerPlayer : MonoBehaviour
             {
                 Physics2D.IgnoreCollision(playerCollider, platformCollider, false);
             }
-            else if (rigid.velocity.y > 0.1f)
+            else if (rigid.velocity.y > 0f)
             {
                 Physics2D.IgnoreCollision(playerCollider, platformCollider, true);
             }

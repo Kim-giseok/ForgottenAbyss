@@ -110,7 +110,7 @@ public class SlideState : PlayerStateMachine
     {
         if (collision.gameObject.layer == LayerMask.NameToLayer("Wall"))
         {
-            player.ChangeState(PlayerState.Idle);
+            player.ChangeState(PlayerState.Jump);
         }
     }
 }
