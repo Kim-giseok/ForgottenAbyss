@@ -29,12 +29,14 @@ public class SwordSkill01ExecutionSO : SkillExecutionSO
         Vector2 center = caster.transform.position;
         Collider2D[] hits = GetEnemiesInRange(center, range, targetLayer);
 
+        PlaySound("AWP_Miss_Katana_01");
+
         foreach (var hit in hits)
         {
             Debug.Log($"Hit {hit.name}");
             GameManager.Instance.cameraShake.Shake(0.2f, 0.3f);
             DealDamageToTarget(hit.gameObject, castData);
-            //KnockbackUtil.ApplyKnockback(hit.gameObject, caster.transform.position, 1f);
+            KnockbackUtil.ApplyKnockback(hit.gameObject, caster.transform.position, 4f);
         }
 
         DebugDrawUtil.DrawCircle(center, range, Color.red);

@@ -24,6 +24,7 @@ public class BowSkill01ExecutionSO : SkillExecutionSO
 
     private IEnumerator ExecuteWithEffectDelay(GameObject caster, Vector2 origin, Vector2 direction, SkillCastData castData)
     {
+        PlaySound("BowShoot2");
         GameManager.Instance.cameraZoom.ZoomIn(0.5f);  
         yield return new WaitForSeconds(damageDelay);
         SkillController.Instance.rangedAttack.AdvanceCombo();

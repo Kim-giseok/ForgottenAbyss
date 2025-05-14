@@ -54,6 +54,7 @@ public class ComboAttack : MonoBehaviour
         animator.ResetTrigger("AttackTrigger");
         animator.SetTrigger("AttackTrigger");
         animator.SetInteger("AttackCombo", attackIndex);
+        SoundManager.Instance.PlaySFX(comboData.sound);
         UpdateComboAttackUI(attackIndex - 1);
     }
 
@@ -96,6 +97,7 @@ public class ComboAttack : MonoBehaviour
             UpdateComboAttackUI(attackIndex - 1);
             animator.Play(comboData.comboSteps[attackIndex - 1].animationName);
             comboBar.PlayEffect();
+            SoundManager.Instance.PlaySFX(comboData.sound);
         }
         else
         {

@@ -51,7 +51,6 @@ public class RangedAttack : MonoBehaviour
         animator.ResetTrigger("BowTrigger");
         animator.SetTrigger("BowTrigger");
         animator.SetInteger("BowCombo", attackIndex);
-
         UpdateRangedAttackUI(attackIndex-1);
     }
 
@@ -131,6 +130,8 @@ public class RangedAttack : MonoBehaviour
 
         for (int i = 0; i < step.projectileCount; i++)
         {
+            SoundManager.Instance.PlaySFX(rangedData.sound);
+
             Vector3 direction = baseDirection;
 
             if (step.isSpread)

@@ -38,6 +38,7 @@ public class BowSkill02ExecutionSO : SkillExecutionSO
 
     private IEnumerator PlayEffectWithDelay(SkillVisualSO visualSO, Transform spawnPoint, SkillData data, SkillCastData castData)
     {
+        PlaySound("BowShoot2");
         GameManager.Instance.cameraZoom.ZoomIn(0.5f);
         
         if (visualSO.effectDelay > 0f)

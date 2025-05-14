@@ -9,6 +9,8 @@ public class ComboAttackSO : ScriptableObject
     public string attackName;
     public string description;
     public Sprite icon;
+    public AudioClip sound;
+
     public List<ComboStep> comboSteps;
 
     public ComboAttackSO Clone()
@@ -19,6 +21,7 @@ public class ComboAttackSO : ScriptableObject
         clone.attackName = this.attackName;
         clone.description = this.description;
         clone.icon = this.icon;
+        clone.sound = this.sound;
 
         clone.comboSteps = new List<ComboStep>();
         foreach (var step in this.comboSteps)
