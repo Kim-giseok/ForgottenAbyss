@@ -104,16 +104,13 @@ public class QuickSlotUI : MonoBehaviour, IPointerClickHandler
         if (slot == null || slot.IsEmpty || remainingCooldown > 0f)
             return;
 
-        if (slot.Item.Use())
-        {
+        if (SlotUtils.TryUseSlot(slot))
             waitingToClear = true;
-        }
 
         remainingCooldown = cooldownTime;
         StartCoroutine(BlinkIcon());
 
-        int displayAmount = slot.Quantity - 1;
-        amountText.text = displayAmount > 1 ? displayAmount.ToString() : "";
+        amountText.text = slot.Quantity > 1 ? slot.Quantity.ToString() : "";
     }
 
     public void SetSelected(bool selected)

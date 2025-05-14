@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine.EventSystems;
 
-public class InventorySlotUI : MonoBehaviour
+public class InventorySlotUI : MonoBehaviour, IPointerClickHandler
 {
     [SerializeField] private Image iconImage;
     [SerializeField] private TextMeshProUGUI amountText;
@@ -14,14 +14,16 @@ public class InventorySlotUI : MonoBehaviour
     public IItemContainer Container => container;
     public int Index { get; private set; }
 
-    //public bool IsEmpty => slot == null || slot.IsEmpty;
     public bool IsEmpty => slot == null || slot.Item == null || slot.Quantity <= 0;
+
 
     private ISlot slot;
     private IItemContainer container;
 
     public void SetSlot(ISlot newSlot, int index, IItemContainer parent)
     {
+        Debug.Log($"[InventorySlotUI] SetSlot 호출됨 - Index: {index}, Item: {(newSlot?.Item == null ? "null" : newSlot.Item.itemName)}");
+
         slot = newSlot;
         Index = index;
         container = parent;
@@ -83,5 +85,23 @@ public class InventorySlotUI : MonoBehaviour
         };
 
         equippedOutline?.SetActive(equipped);
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if (eventData.button == PointerEventData.InputButton.Right && !IsEmpty)
+        {
+            Debug.Log($"[InventorySlotUI] {slot.Item.itemName} 우클릭 → 사용 시도");
+
+            if (SlotUtils.TryUseSlot(slot))
+            {
+                Debug.Log($"[InventorySlotUI] {slot.Item.itemName} 사용됨");
+                UpdateUI();
+            }
+            else
+            {
+                Debug.LogWarning($"[InventorySlotUI] {slot.Item.itemName} 사용 실패 (조건 불만족?)");
+            }
+        }
     }
 }

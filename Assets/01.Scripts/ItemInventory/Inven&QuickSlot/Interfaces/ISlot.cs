@@ -7,4 +7,5 @@ public interface ISlot
 
     bool IsEmpty { get; }
     bool CanStack(Item item);
+    bool Use();
 }
