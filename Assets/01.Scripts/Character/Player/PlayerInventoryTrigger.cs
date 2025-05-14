@@ -1,9 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerInventoryTrigger : MonoBehaviour
 {
+    [SerializeField] private InventoryController inventoryController;
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("FieldItem"))
@@ -16,9 +16,12 @@ public class PlayerInventoryTrigger : MonoBehaviour
             }
             
             var fieldItem = collision.GetComponent<FieldItem>();
-            if (fieldItem != null && Inventory.Instance.AddItem(fieldItem.GetItem()))
+            if (fieldItem != null)
             {
-                fieldItem.DestroyItem();
+                var item = fieldItem.GetItem();
+                bool added = inventoryController.AddItem(item, 1);
+                if (added)
+                    fieldItem.DestroyItem();
             }
         }
     }

@@ -15,20 +15,12 @@ public class PotionItem : ConsumableItem
         float current = player.GetStat(targetStat);
         float max = player.GetStat(GetMaxStatType(targetStat));
 
-        Debug.Log($"포션 사용 전: {targetStat}: {current}/{max}");
-
         if (current >= max) return false;
 
         float newValue = Mathf.Min(current + healAmount, max);
         player.SetStat(targetStat, newValue);
 
-        Debug.Log($"포션 사용 후: {targetStat}: {player.GetStat(targetStat)}");
-
-        currentAmount--;
-
-        Debug.Log($"[{itemName}] {targetStat} +{healAmount} (남은 수량: {currentAmount})");
-
-        return currentAmount <= 0; // 0 되면 제거
+        return true;
     }
 
     private StatType GetMaxStatType(StatType stat)

@@ -5,6 +5,7 @@ using UnityEngine.UI;
 public class UIManager : MonoBehaviour
 {
     public static UIManager Instance { get; private set; }
+    public DragManager DragManager { get; private set; }
 
     [Header("ScreenUI")]
     public InventoryUIManager inventoryUI;
@@ -37,6 +38,8 @@ public class UIManager : MonoBehaviour
 
         Instance = this;
         DontDestroyOnLoad(gameObject); // �� �Ѿ�� ����
+
+        DragManager = new DragManager();
     }
 
     public void ToggleInventory() => inventoryUI?.ToggleInventory();

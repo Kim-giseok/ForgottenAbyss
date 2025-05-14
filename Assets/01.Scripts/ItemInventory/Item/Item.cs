@@ -14,12 +14,11 @@ public class Item : ScriptableObject
     public string itemName;
     public Sprite itemIcon;
     public ItemType itemType;
+    public int maxStack = 99;
+    public bool isConsumable;
 
     [TextArea]
-    public string itemDescription;
-
-    [HideInInspector] public int currentAmount = 1; // 현재 수량
-    public int maxStack = 99; // 최대 스텍 수
+    public string itemDescription; 
 
     public virtual bool Use()
     {       
@@ -28,15 +27,11 @@ public class Item : ScriptableObject
 
     public override bool Equals(object obj)
     {
-        if (obj is Item other)
-        {
-            return this.itemName == other.itemName;
-        }
-        return false;
+        return ReferenceEquals(this, obj);
     }
 
     public override int GetHashCode()
     {
-        return itemName.GetHashCode();
+        return base.GetHashCode();
     }
 }

@@ -1,54 +1,38 @@
-using System.Linq;
-using UnityEditor.Rendering;
+using System;
 using UnityEngine;
 
-public class QuickSlotController : MonoBehaviour
+public class QuickSlotController : MonoBehaviour, IItemContainer
 {
-    public static QuickSlotController Instance {  get; private set; }
+    [SerializeField] private QuickSlotUI[] slotUIs;
+    [SerializeField] private int slotCount = 5;
 
-    [SerializeField] private QuickSlot[] quickSlots; // 퀵슬롯 슬롯들
-    private Item[] quickSlotItems;
-    public int SelectedIndex => selectedIndex;
-    private int selectedIndex = -1; // 선택된 슬롯 없음
+    private Slot[] slots;
+    public int SelectedIndex { get; private set; } = -1;
+
+    public event Action OnContainerChanged;
+    public event Action<Item> OnItemRemovedExternally;
+    public int SlotCount => slots.Length;
 
     private void Awake()
     {
-        Instance = this;
-        quickSlotItems = new Item[quickSlots.Length];
+        slots = new Slot[slotCount];
+        for (int i = 0; i < slotCount; i++)
+            slots[i] = new Slot();
 
-        for (int i = 0; i < quickSlots.Length; i++)
-        {
-            quickSlots[i].SetIndex(i); // 슬롯마다 인덱스 추가
-        }
+        for (int i = 0; i < slotUIs.Length; i++)
+            slotUIs[i].SetSlot(slots[i], i, this);
     }
 
-    void Update()
+    public void OnQuickSlotKeyPressed(int index)
     {
-        // 슬롯 변경
-        if (Input.GetKeyDown(KeyCode.Alpha1)) HandleSlotInput(0);
-        if (Input.GetKeyDown(KeyCode.Alpha2)) HandleSlotInput(1);
-        if (Input.GetKeyDown(KeyCode.Alpha3)) HandleSlotInput(2);
-        if (Input.GetKeyDown(KeyCode.Alpha4)) HandleSlotInput(3);
-        if (Input.GetKeyDown(KeyCode.Alpha5)) HandleSlotInput(4);
-    }
+        if (index < 0 || index >= slotUIs.Length) return;
 
-    private void HandleSlotInput(int index)
-    {
-        if (selectedIndex == index)
-        {
-            // 같은 슬롯을 다시 누르면 아이템 사용
-            quickSlots[index].UseItem();
-        }
+        if (SelectedIndex == index)
+            slotUIs[index].UseItem();
         else
-        {
-            SelectSlot(index); // 다른 슬롯을 누르면 선택만 바뀜
-        }
+            SelectSlot(index);
     }
 
-    public bool IsAlreadyAssigned(Item item)
-    {
-        return quickSlots.Any(slot => slot.HasItem(item));
-    }
 
     // 마우스 클릭할때 사용
     public void SelectSlotFromOutside(int index)
@@ -57,44 +41,102 @@ public class QuickSlotController : MonoBehaviour
     }
 
     // 슬롯 선택
-    void SelectSlot(int index)
+    private void SelectSlot(int index)
     {
-        selectedIndex = index;
+        SelectedIndex = index;
 
-        // 선택된 슬롯외에 나머지는 해제
-        for (int i = 0; i < quickSlots.Length; i++)
+        for (int i = 0; i < slotUIs.Length; i++)
         {
-            quickSlots[i].SetSelected(i == selectedIndex);
+            slotUIs[i].SetSelected(i == index);
         }
     }
 
-    public void SetItemToQuickSlot(int index, Item item)
+    public bool AddItem(Item item, int amount)
     {
-        if (index < 0 || index >= quickSlotItems.Length) return;
-
-        quickSlotItems[index] = item;
-        quickSlots[index].SetItem(item);
-    }
-
-    public void NotifyItemRemoved(Item removedItem)
-    {
-        foreach (var slot in quickSlots)
+        for (int i = 0; i < slots.Length; i++)
         {
-            if (slot.HasItem(removedItem))
+            if (slots[i].IsEmpty)
             {
-                slot.MarkToClearAfterCooldown();
+                slots[i].Set(item, amount);
+                slotUIs[i].SetSlot(slots[i], i, this);
+                OnContainerChanged?.Invoke();
+                return true;
             }
         }
+
+        Debug.LogWarning("[QuickSlotController] 슬롯이 모두 찼습니다.");
+        return false;
     }
 
-    public void RefreshSlotAmount(Item item)
+    public bool AddItemAt(int index, Item item, int amount)
     {
-        foreach (var slot in quickSlots)
+        if (index < 0 || index >= slots.Length) return false;
+
+        slots[index].Set(item, amount);
+        slotUIs[index].SetSlot(slots[index], index, this);
+        OnContainerChanged?.Invoke();
+        return true;
+    }
+
+    public bool RemoveItem(Item item, int amount)
+    {
+        for (int i = 0; i < slots.Length; i++)
         {
-            if (slot.HasItem(item))
+            if (slots[i].Item == item)
             {
-                slot.UpdateAmount(item.currentAmount);
+                slots[i].Clear();
+                slotUIs[i].Clear();
+                OnContainerChanged?.Invoke();
+                return true;
             }
         }
+
+        return false;
+    }
+
+    public bool RemoveItemAt(int index)
+    {
+        if (index < 0 || index >= slots.Length) return false;
+        slots[index].Clear();
+        OnContainerChanged?.Invoke();
+        return true;
+    }
+
+
+    public bool SwapItems(int indexA, int indexB)
+    {
+        if (indexA == indexB || indexA >= slots.Length || indexB >= slots.Length) return false;
+
+        (slots[indexA], slots[indexB]) = (slots[indexB], slots[indexA]);
+
+        slotUIs[indexA].SetSlot(slots[indexA], indexA, this);
+        slotUIs[indexB].SetSlot(slots[indexB], indexB, this);
+        OnContainerChanged?.Invoke();
+        return true;
+    }
+
+    public bool CanAccept(Item item)
+    {
+        return item.itemType == ItemType.Consumable;
+    }
+
+    public ISlot GetSlot(int index)
+    {
+        if (index < 0 || index >= slots.Length) return null;
+        return slots[index];
+    }
+
+    public void NotifyItemRemoved(Item item)
+    {
+        for (int i = 0; i < slots.Length; i++)
+        {
+            if (slots[i].Item == item)
+            {
+                slots[i].Clear();
+                slotUIs[i].Clear();
+            }
+        }
+
+        OnItemRemovedExternally?.Invoke(item);
     }
 }
