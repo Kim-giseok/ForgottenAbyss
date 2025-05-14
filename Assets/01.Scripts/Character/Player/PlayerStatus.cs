@@ -195,7 +195,7 @@ public class PlayerStatus : CharacterStatus
 
             // 레벨 업 스탯 증가량
             statIncreases[StatType.MaxHP] = 20f;         // HP 증가량
-            statIncreases[StatType.MaxMP] = 15f;        // MP 증가량
+            statIncreases[StatType.MaxMP] = 10f;        // MP 증가량
             statIncreases[StatType.ATK] = 1f;     // 공격력 증가량
             statIncreases[StatType.DEF] = 1f;     // 방어력 증가량
 
