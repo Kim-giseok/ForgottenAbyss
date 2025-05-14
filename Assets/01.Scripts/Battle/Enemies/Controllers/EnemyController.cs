@@ -115,31 +115,45 @@ public class EnemyController : EnemyBaseController, IDamagable
         machine.Start();
     }
 
-    private void OnHit(float damage)
+    private void OnHit(float damage, EnemyStatusHandler.HitType hitType = EnemyStatusHandler.HitType.Stun)
     {
         resourceHandler.Modify(EnemyStatType.Health, -damage);
         
-        BoltsPool.Instance.CreateParticle(transform, "Hit")
-            .SetSize(0.8f).SetColor(new Color(0, 0, 0, 0.2f)).SetPosition(transform.position + new Vector3(Random.Range(-0.2f, 0.2f), 0.6f + Random.Range(-0.2f, 0.2f))).Play();
-        BoltsPool.Instance.CreateParticle(transform, "Hit")
-            .SetSize(0.15f).SetColor(Color.yellow).SetPosition(transform.position + new Vector3(Random.Range(-0.2f, 0.2f), 0.6f + Random.Range(-0.2f, 0.2f))).Play();
+        if (hitType == EnemyStatusHandler.HitType.Normal)
+        {
+            BoltsPool.Instance.CreateParticle(transform, "Hit2")
+                .SetSize(0.8f).SetColor(new Color(0, 0, 0, 0.2f)).SetPosition(transform.position + new Vector3(Random.Range(-0.2f, 0.2f), 0.6f + Random.Range(-0.2f, 0.2f))).Play();
+            BoltsPool.Instance.CreateParticle(transform, "Hit3")
+                .SetSize(0.8f).SetColor(Color.yellow).SetPosition(transform.position + new Vector3(Random.Range(-0.2f, 0.2f), 0.6f + Random.Range(-0.2f, 0.2f))).Play();
+         
+            SoundManager.Instance.Playsfx("HitByBow2");
+        }
 
-        soundHandler.Play(EnemySoundType.Hit);
-    }
+        if (hitType == EnemyStatusHandler.HitType.Stun)
+        {
+            BoltsPool.Instance.CreateParticle(transform, "Hit")
+                .SetSize(0.8f).SetColor(new Color(0, 0, 0, 0.2f)).SetPosition(transform.position + new Vector3(Random.Range(-0.2f, 0.2f), 0.6f + Random.Range(-0.2f, 0.2f))).Play();
+            BoltsPool.Instance.CreateParticle(transform, "Hit")
+                .SetSize(0.15f).SetColor(Color.yellow).SetPosition(transform.position + new Vector3(Random.Range(-0.2f, 0.2f), 0.6f + Random.Range(-0.2f, 0.2f))).Play();
 
-    public void GetDamageByType(float damage, EnemyStatusHandler.HitType hitType = EnemyStatusHandler.HitType.Stun)
-    {
-        if (hitType != EnemyStatusHandler.HitType.Stun || isIgnoreHitAnim) { OnHit(damage); CheckDeath(); }
-        else { GetDamage(damage); }
-    }
-    
-    private void CheckDeath()
-    {
+            SoundManager.Instance.Playsfx("HitByMelee");
+        }
+        
         if (resourceHandler.Get(EnemyStatType.Health).currValue <= 0)
         {
             statusHandler.SetMode(EnmeyMode.Hit, true);
             machine.Notify();
         }
+    }
+
+    public void GetDamageByType(float damage, EnemyStatusHandler.HitType hitType = EnemyStatusHandler.HitType.Stun)
+    {
+        OnHit(damage, hitType);
+        if (isIgnoreHitAnim || hitType == EnemyStatusHandler.HitType.Normal) return;
+        
+        statusHandler.SetMode(EnmeyMode.Hit, true);
+        machine.Notify();
+        
     }
 
     // ReSharper disable Unity.PerformanceAnalysis
@@ -148,14 +162,14 @@ public class EnemyController : EnemyBaseController, IDamagable
         // 타격 받은 쪽으로 회전
         // Vector2 direction = (controller.agent.player.transform.position - controller.transform.position).normalized;
         // controller.Flip(direction.x > 0);
-        OnHit(damage);
-        
-        statusHandler.SetMode(EnmeyMode.Hit, true);
-        machine.Notify();
         
         // 방어력 개념도 구현하기
         // statusHandler.stamina -= 1;
         // if (statusHandler.stamina <= 0) { statusHandler.stamina = 3; }
+        
+        OnHit(damage);
+        statusHandler.SetMode(EnmeyMode.Hit, true);
+        machine.Notify();
     }
     
     // 리워드 표시, 리스폰 아리어에서 제거

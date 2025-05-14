@@ -40,6 +40,7 @@ public class Bolt: MonoBehaviour
 
         attr.trailRenderer.enabled = true;
         attr.trailRenderer.time = 0.2f;
+        attr.SetParticle(false);
         
         attr.isStarted = false;
         

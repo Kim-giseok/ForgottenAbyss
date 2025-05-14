@@ -60,6 +60,7 @@ public class EnemyTableEditor : EditorWindow
         root.style.flexDirection = FlexDirection.Column;
         root.style.paddingTop = 10;
         root.style.paddingLeft = 10;
+        root.style.alignItems = Align.Center;
 
         // 헤더
         var headerRow = new VisualElement { style = { flexDirection = FlexDirection.Row } };
@@ -129,7 +130,9 @@ public class EnemyTableEditor : EditorWindow
             text = "Build",
             style =
             {
-                marginTop = 10
+                marginTop = 14,
+                height = 28,
+                width = Length.Percent(96)
             }
         };
 
