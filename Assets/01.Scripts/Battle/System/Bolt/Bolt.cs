@@ -40,6 +40,7 @@ public class Bolt: MonoBehaviour
 
         attr.trailRenderer.enabled = true;
         attr.trailRenderer.time = 0.2f;
+        attr.SetParticle(false);
         
         attr.isStarted = false;
         
@@ -56,7 +57,8 @@ public class Bolt: MonoBehaviour
     protected virtual void OnTriggerEnter2D(Collider2D other)
     {
         // 그라운드, 플레이어, 에너미 와의 충돌이 아닌 경우 무시 필요(임시 해결) // 총알끼리 부딪힘
-        if (other.gameObject.layer == LayerMask.NameToLayer("Default") || other.gameObject.layer == gameObject.layer) return;
+        if(other.gameObject.layer != LayerMask.GetMask("Enemy") && other.gameObject.layer != LayerMask.GetMask("Player")) return;
+        if (other.gameObject.layer == gameObject.layer) return;
         // 레이어 자체는 모두 감지가 필요하므로 충돌 비교 레이어를 필드로 따로 둠
         if (attr.hitBox.ownerLayer == other.gameObject.layer) return;
        
@@ -65,6 +67,8 @@ public class Bolt: MonoBehaviour
             effect.Connect(attr);
             effect.Execute(other);
         }
+        
+        Debug.LogWarning(other.name);
 
         if (attr.effects.Count == 0) { BoltsPool.Instance.Disable(gameObject); }
     }

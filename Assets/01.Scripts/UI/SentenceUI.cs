@@ -12,7 +12,7 @@ public class SentenceUI : MonoBehaviour
     Coroutine typingCoroutine;
     public bool isTyping { get; private set; }
     public bool skipTyping { get; private set; }
-    public bool isFinished { get; private set; }
+    public bool isFinished { get; private set; } = true;
 
     private void Update()
     {
@@ -25,7 +25,6 @@ public class SentenceUI : MonoBehaviour
     public void Ondialogue(string sentence)
     {
         if (!gameObject.activeSelf) gameObject.SetActive(true);
-
         if (typingCoroutine != null) StopCoroutine(typingCoroutine);
 
         // 새로운 대사 시작 시 상태 초기화
@@ -34,6 +33,7 @@ public class SentenceUI : MonoBehaviour
         typingCoroutine = StartCoroutine(TypeSentence(sentence));
     }
 
+    // ReSharper disable Unity.PerformanceAnalysis
     IEnumerator TypeSentence(string sentence)
     {
         sentenceTxt.text = "";

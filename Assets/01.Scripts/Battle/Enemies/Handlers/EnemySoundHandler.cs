@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// resource 또는 SoundSO로 관리 필요
+// SoundSO로 모든 것을 관리하기 어려움
 public class EnemySoundHandler: MonoBehaviour
 {
     private EnemySoundSO _soundSO;
