@@ -98,6 +98,7 @@ public class QuickSlotController : MonoBehaviour, IItemContainer
     {
         if (index < 0 || index >= slots.Length) return false;
         slots[index].Clear();
+        slotUIs[index].Clear();
         OnContainerChanged?.Invoke();
         return true;
     }
