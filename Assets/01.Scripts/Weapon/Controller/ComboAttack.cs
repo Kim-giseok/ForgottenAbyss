@@ -97,7 +97,7 @@ public class ComboAttack : MonoBehaviour
             UpdateComboAttackUI(attackIndex - 1);
             animator.Play(comboData.comboSteps[attackIndex - 1].animationName);
             comboBar.PlayEffect();
-            SoundManager.Instance.PlaySFX(comboData.sound);
+            //SoundManager.Instance.PlaySFX(comboData.sound);
         }
         else
         {

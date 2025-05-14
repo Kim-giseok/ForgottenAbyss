@@ -129,7 +129,7 @@ public class RangedAttack : MonoBehaviour
 
         for (int i = 0; i < step.projectileCount; i++)
         {
-            SoundManager.Instance.PlaySFX(rangedData.sound);
+            //SoundManager.Instance.PlaySFX(rangedData.sound);
 
             Vector3 direction = baseDirection;
 
