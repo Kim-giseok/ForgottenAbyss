@@ -25,9 +25,9 @@ public class TempLetterBox : MonoBehaviour
     
     private bool isStartNarration;
     private bool isNarrationEnd;
-
-    public UnityEvent OnNarrationStarted;
-    public UnityEvent OnNarrationEnd;
+    
+    public GameObject agis;
+    public GameObject agisActor;
     
     [TextArea(2, 2)] public string[] narrations;
     
@@ -40,6 +40,8 @@ public class TempLetterBox : MonoBehaviour
 
     private void Start()
     {
+        UIManager.Instance.HideIngameUI();
+        
         letterBoxCoroutine = StartCoroutine(HandleWidth(true, () =>
         {
             if (narrations.Length != 0)
@@ -63,10 +65,7 @@ public class TempLetterBox : MonoBehaviour
                 isNarrationEnd = true;
                 narrationText.text = "";
                 StopCoroutine(letterBoxCoroutine);
-                letterBoxCoroutine = StartCoroutine(HandleWidth(false, () =>
-                {
-                    OnNarrationEnd?.Invoke();
-                }));
+                letterBoxCoroutine = StartCoroutine(HandleWidth(false, () => gameObject.SetActive(false)));
                 return;
             }
             
@@ -75,7 +74,14 @@ public class TempLetterBox : MonoBehaviour
             narrationCoroutine = StartCoroutine(Narration(currLine));
         }
     }
-    
+
+    private void OnDisable()
+    {
+        agis.SetActive(true);
+        Destroy(agisActor);
+        UIManager.Instance.ShowIngameUI();
+    }
+
     private IEnumerator Narration(int lineIndex)
     {
         skipLine = false;
