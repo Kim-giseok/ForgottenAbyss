@@ -129,10 +129,8 @@ public class EnemyController : EnemyBaseController, IDamagable
 
     public void GetDamageByType(float damage, EnemyStatusHandler.HitType hitType = EnemyStatusHandler.HitType.Stun)
     {
-        if (hitType != EnemyStatusHandler.HitType.Stun) { OnHit(damage); CheckDeath(); return; }
-        if (isIgnoreHitAnim) { OnHit(damage); }
+        if (hitType != EnemyStatusHandler.HitType.Stun || isIgnoreHitAnim) { OnHit(damage); CheckDeath(); }
         else { GetDamage(damage); }
-        CheckDeath();
     }
     
     private void CheckDeath()
