@@ -11,7 +11,7 @@ public class AirState : PlayerStateMachine
     public override void OnJump()
     {
         base.OnJump();
-        if (player.currentJumpCount < player.jumplimit)
+        if (player.CanJump)
             player.ChangeState(PlayerState.Jump);
     }
 }

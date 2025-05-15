@@ -30,7 +30,7 @@ public class IdleState : PlayerStateMachine
 
     public override void OnJump()
     {
-        if (player.currentJumpCount < player.jumplimit && player.isGround)
+        if (player.CanJump && player.isGround)
         {
             player.ChangeState(PlayerState.Jump);
         }

@@ -9,12 +9,17 @@ using UnityEngine.SocialPlatforms;
 public class ControllerPlayer : MonoBehaviour
 {
     public Vector2 inputVec;
-    private float speed; 
-    public float jumpPower; //점프력
+    private float speed;
+
+    [Header("DashParameter")]
     public float dashDistance; //점프 거리
     public float dashTime; //대쉬 시간
+
+    [Header("JumpParameter")]
+    public float jumpPower; //점프력
     public int jumplimit; //점프 횟수 제한
     public int currentJumpCount; //현재 점프 카운트
+    public bool CanJump => jumplimit > currentJumpCount;
     public LayerMask platformLayerMask; 
     public LayerMask invincibilityLayerMask; 
 
