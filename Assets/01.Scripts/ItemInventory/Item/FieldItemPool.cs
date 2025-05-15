@@ -52,6 +52,7 @@ public class FieldItemPool: SingletonLoadRemain<FieldItemPool>
         newMemoryItem.gameObject.SetActive(true);
         newMemoryItem.Spawn();
     }
+    
 
     public void CreateCoin(Vector2 position, int amount)
     {
@@ -68,5 +69,4 @@ public class FieldItemPool: SingletonLoadRemain<FieldItemPool>
         newCoin.gameObject.SetActive(true);
         newCoin.Spawn();
     }
-    
 }

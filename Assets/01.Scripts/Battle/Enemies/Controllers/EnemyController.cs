@@ -196,8 +196,10 @@ public class EnemyController : EnemyBaseController, IDamagable
         {
             SoundManager.Instance.Playsfx("DropItem");
             
+            // 한 코드로 정리하기
             rewardHandler.DropCoin();
             rewardHandler.DropMemoryItem();
+            rewardHandler.DropItem();
         }
     }
 

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable] 
-public class RewardItemInfo { public GameObject item; public int percent; }
+public class RewardItemInfo { public GameObject item; [Range(0, 100)] public int percent; }
 public enum RewardType { Experience, Gold }
 
 

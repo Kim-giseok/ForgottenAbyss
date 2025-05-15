@@ -14,6 +14,19 @@ public class EnemyRewardHandler : MonoBehaviour
         FieldItemPool.Instance.CreateMemoryItem(transform.position + (Vector3.up * 0.5f), gameObject.name.Replace("(Clone)", ""));
     }
 
+    public void DropItem()
+    {
+        int currPercent = Random.Range(0, 100);
+        
+        foreach (var item in _rewardSO.rewardItemInfos)
+        {
+            if (currPercent <= item.percent)
+            {
+                Instantiate(item.item, transform.position + (Vector3.up * 0.5f), Quaternion.identity);
+            }
+        }
+    }
+
     public void DropCoin()
     {
         if (Gold <= 0) return;
