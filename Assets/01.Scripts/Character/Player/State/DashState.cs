@@ -13,7 +13,7 @@ public class DashState : PlayerStateMachine
         playerSound.DashSound();
         player.animator.SetBool("IsDash", true);
         player.animator.SetTrigger("DashTrigger");
-        player.SetInvincibility(true);
+        player.SetInvincibility(player.dashTime + 0.5f);
 
         player.canAttack = false;
         player.canSkill = false;
@@ -57,14 +57,7 @@ public class DashState : PlayerStateMachine
 
         player.StartCoroutine(WaitForLandingToResetCollision());
         player.rigid.collisionDetectionMode = CollisionDetectionMode2D.Discrete;
-        player.StartCoroutine(DelayedInvincibilityOff(0.25f)); //대쉬 무적판정 조금 더 길게
         player.StartCoroutine(DashCooldown(0.5f));
-    }
-
-    private IEnumerator DelayedInvincibilityOff(float delay)
-    {
-        yield return new WaitForSeconds(delay);
-        player.SetInvincibility(false);
     }
 
     private IEnumerator WaitForLandingToResetCollision()

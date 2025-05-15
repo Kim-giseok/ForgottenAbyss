@@ -352,7 +352,16 @@ public class ControllerPlayer : MonoBehaviour
         }
     }
 
-    public void SetInvincibility(bool isInvincible)
+    public void SetInvincibility(float invintime) => StartCoroutine(DuringInvin(invintime));
+
+    IEnumerator DuringInvin(float invnitime)
+    {
+        SetInvincibility(true);
+        yield return new WaitForSeconds(invnitime);
+        SetInvincibility(false);
+    }
+
+    void SetInvincibility(bool isInvincible)
     {
         this.isInvincible = isInvincible;
 
