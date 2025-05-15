@@ -23,8 +23,9 @@ public enum StatType
 public class CharacterStatus : MonoBehaviour
 {
     public Dictionary<StatType, float> stats = new Dictionary<StatType, float>();
-    private Dictionary<StatType, float> equipmentBonuses = new Dictionary<StatType, float>();
-    private Dictionary<StatType, float> setBonusMultipliers = new Dictionary<StatType, float>();
+    public Dictionary<StatType, float> equipmentBonuses = new Dictionary<StatType, float>();
+    public Dictionary<StatType, float> setBonusMultipliers = new Dictionary<StatType, float>();
+    public HashSet<int> equippedArmorIDs = new HashSet<int>();
 
     public delegate void StatChangedHandler(StatType type, float newValue); // 스탯이 변경되면 발생하는 이벤트
     public event StatChangedHandler OnStatChanged;
@@ -45,14 +46,19 @@ public class CharacterStatus : MonoBehaviour
         }
     }
 
-    public void ApplyEquipmentBonus(StatType type, float bonusValue)
+    public void ApplyEquipmentBonus(StatType type, float bonusValue, int itemID)
     {
         if (!stats.ContainsKey(type)) return;
 
         if (!equipmentBonuses.ContainsKey(type))
             equipmentBonuses[type] = 0f;
 
-        equipmentBonuses[type] += bonusValue;
+        if (!equippedArmorIDs.Contains(itemID))
+        {
+            equippedArmorIDs.Add(itemID);
+            equipmentBonuses[type] += bonusValue;
+        }
+        
         stats[type] += bonusValue; // 장비 보너스 적용
 
         SetHP(type);
@@ -79,7 +85,7 @@ public class CharacterStatus : MonoBehaviour
         if (!stats.ContainsKey(type)) return;
 
         setBonusMultipliers[type] = 1 + multiplier;
-        stats[type] *= setBonusMultipliers[type];
+        stats[type] = Mathf.Round(stats[type] * setBonusMultipliers[type]);
 
         SetHP(type);
         OnStatChanged?.Invoke(type, stats[type]);
@@ -89,35 +95,42 @@ public class CharacterStatus : MonoBehaviour
     {
         if (!stats.ContainsKey(type)) return;
 
-        stats[type] /= setBonusMultipliers[type]; //저장된 배율을 사용하여 복구
+        stats[type] = Mathf.Round(stats[type] / setBonusMultipliers[type]); //저장된 배율을 사용하여 복구
         setBonusMultipliers.Remove(type);
 
         SetHP(type);
         OnStatChanged?.Invoke(type, stats[type]);
     }
 
-
     public float GetEquipmentBonus(StatType type)
     {
-        return equipmentBonuses.ContainsKey(type) ? equipmentBonuses[type] : 0f; // 저장된 장비 보너스 반환
+        if (!equipmentBonuses.ContainsKey(type)) return 0f;
+
+        float bonus = equipmentBonuses[type];
+
+        Debug.Log($"[DEBUG] {type} - 장비 보너스 저장된 값: {bonus}");
+
+        return bonus;
     }
 
     public float GetSetBonus(StatType type)
     {
-        return setBonusMultipliers.ContainsKey(type) ? setBonusMultipliers[type] : 0f; // 저장된 세트 옵션 보너스 반환
+        return setBonusMultipliers.ContainsKey(type) ? setBonusMultipliers[type] : 1.0f; // 저장된 세트 옵션 보너스 반환
     }
 
     public float GetBaseStat(StatType type)
     {
+
         if (!stats.ContainsKey(type)) return 0f;
 
         float totalValue = stats[type];
 
-        // 세트 옵션 제거하여 순수한 값 반환
         float setBonusMultiplier = setBonusMultipliers.ContainsKey(type) ? setBonusMultipliers[type] : 1.0f;
-        float baseValue = totalValue / setBonusMultiplier;
+        float equipmentBonus = GetEquipmentBonus(type);
+        float baseValue = Mathf.Round((totalValue - equipmentBonus) / setBonusMultiplier);
 
-        // 장비 보너스 제거하여 순수한 기본 스탯 반환
-        return baseValue - GetEquipmentBonus(type);
+        Debug.Log($"[DEBUG] {type} - Total: {totalValue}, Set Multiplier: {setBonusMultiplier}, Equip Bonus: {equipmentBonus}, Base: {baseValue}");
+
+        return baseValue;
     }
 }

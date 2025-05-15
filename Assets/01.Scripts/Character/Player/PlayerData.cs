@@ -10,6 +10,10 @@ public class PlayerData
     public int availableStatPoints;
     public List<InvestedStatData> investedStats = new List<InvestedStatData>();
 
+    public List<StatBonusData> equipmentBonuses = new List<StatBonusData>();
+    public List<StatMultiplierData> setBonusMultipliers = new List<StatMultiplierData>();
+    public List<int> equippedArmorIDs = new List<int>();
+
     [System.Serializable]
     public class StatData
     {
@@ -22,5 +26,20 @@ public class PlayerData
     {
         public int statType; // StatType enumÀÇ int °ª
         public int points;
+    }
+
+    [System.Serializable]
+    public class StatBonusData
+    {
+        public int statType;
+        public int itemID;
+        public float bonusValue;
+    }
+
+    [System.Serializable]
+    public class StatMultiplierData
+    {
+        public int statType;
+        public float multiplier;
     }
 }

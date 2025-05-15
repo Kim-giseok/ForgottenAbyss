@@ -187,7 +187,7 @@ public class EquipmentManager : MonoBehaviour
 
             float finalValue = StatBonusCalculator.ApplyBonuses(baseValue, bonuses);
 
-            playerStatus.ApplyEquipmentBonus(statType, finalValue - baseValue);
+            playerStatus.ApplyEquipmentBonus(statType, finalValue - baseValue, armor.armorId);
 
             Debug.Log($"[ApplyStatBonus] {statType}: +{finalValue}");
         }
