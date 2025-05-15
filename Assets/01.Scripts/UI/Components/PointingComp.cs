@@ -11,8 +11,7 @@ public class PointingComp : MonoBehaviour
 
     public void SetSize(Transform target)
     {
-        float worldScale = target.lossyScale.magnitude;
-        _rectTransform.sizeDelta = new Vector2(100, 100) * worldScale * 1.4f;
+        transform.localScale = target.localScale * 2.5f;
     }
 
     public void On(bool isOn)

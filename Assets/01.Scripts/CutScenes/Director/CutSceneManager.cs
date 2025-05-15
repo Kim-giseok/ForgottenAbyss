@@ -1,23 +1,19 @@
 using UnityEngine;
-using UnityEngine.Serialization;
+using UnityEngine.Rendering.Universal;
 
 public class CutSceneManager: SingletonLoadRemain<CutSceneManager>
 {
     public CutSceneCameraController CamController { get; private set; }
-    
-    public LetterBox LetterBox { get; private set; }
-    public PointingComp Pointing { get; private set; }
-    public ToolTipComp ToolTip { get; private set; }
 
+    public LetterBox LetterBox;
+    public PointingComp Pointing;
+    public ToolTipComp ToolTip;
+    public Light2D PointLight;
     
     protected override void Awake()
     {
         base.Awake();
         CamController = GetComponent<CutSceneCameraController>();
-        
-        LetterBox = GetComponentInChildren<LetterBox>(true);
-        Pointing = GetComponentInChildren<PointingComp>(true);
-        ToolTip = GetComponentInChildren<ToolTipComp>(true);
     }
     
     public void ShowText(Transform target, string sentnece)
