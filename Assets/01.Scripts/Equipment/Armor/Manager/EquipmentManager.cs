@@ -19,7 +19,7 @@ public class EquipmentManager : MonoBehaviour
     private MemoryPieceSO equippedMemorySO;
     private InventorySlotUI equippedMemorySlot;
 
-    private bool isSetBonusApplied = false;
+    public bool isSetBonusApplied = false;
 
     private IEnumerator Start()
     {
@@ -183,12 +183,13 @@ public class EquipmentManager : MonoBehaviour
             var bonuses = armor.statBonuses.Where(b => b.statType == statType).ToList();
             if (bonuses.Count == 0) continue;
 
-            playerStatus.stats.TryGetValue(statType, out float currentValue);
-            float modifiedValue = StatBonusCalculator.ApplyBonuses(currentValue, bonuses);
-            float finalValue = Mathf.Round(modifiedValue);
+            playerStatus.stats.TryGetValue(statType, out float baseValue);
 
-            playerStatus.SetStat(statType, finalValue);
-            Debug.Log($"[ApplyStatBonus] {statType}: {currentValue} → {finalValue}");
+            float finalValue = StatBonusCalculator.ApplyBonuses(baseValue, bonuses);
+
+            playerStatus.ApplyEquipmentBonus(statType, finalValue - baseValue);
+
+            Debug.Log($"[ApplyStatBonus] {statType}: +{finalValue}");
         }
     }
 
@@ -199,12 +200,13 @@ public class EquipmentManager : MonoBehaviour
             var bonuses = armor.statBonuses.Where(b => b.statType == statType).ToList();
             if (bonuses.Count == 0) continue;
 
-            playerStatus.stats.TryGetValue(statType, out float currentValue);
-            float restoredValue = StatBonusCalculator.RemoveBonuses(currentValue, bonuses); //현재 값 기준으로 복구
-            float finalValue = Mathf.Round(restoredValue);
+            playerStatus.stats.TryGetValue(statType, out float baseValue);
 
-            playerStatus.SetStat(statType, finalValue);
-            Debug.Log($"[RemoveStatBonus] {statType}: {currentValue} → {finalValue}");
+            float restoredValue = StatBonusCalculator.RemoveBonuses(baseValue, bonuses);
+
+            playerStatus.RemoveEquipmentBonus(statType, baseValue - restoredValue);
+
+            Debug.Log($"[RemoveStatBonus] {statType}: {baseValue} → {restoredValue}");
         }
     }
 
@@ -231,13 +233,9 @@ public class EquipmentManager : MonoBehaviour
             {
                 foreach (var bonus in bonusData.Bonuses)
                 {
-                    playerStatus.stats.TryGetValue(bonus.stat, out float currentStat);
-                    float finalStat = Mathf.Round(currentStat * (1 + bonus.multiplier)); // 현재 값 반영
+                    playerStatus.ApplySetBonus(bonus.stat, bonus.multiplier);
 
-                    playerStatus.SetStat(bonus.stat, finalStat);
-
-                    UIManager.Instance.statUI.equippedItemUI.SetBonusText
-                            ($"{bonusData.SetName} 세트", $"{bonusData.Description}");
+                    UIManager.Instance.statUI.equippedItemUI.SetBonusText($"{bonusData.SetName} 세트", $"{bonusData.Description}");
                 }
             }
  
@@ -258,11 +256,9 @@ public class EquipmentManager : MonoBehaviour
             {
                 foreach (var bonus in bonusData.Bonuses)
                 {
-                    playerStatus.stats.TryGetValue(bonus.stat, out float currentStat);
-                    float restoredStat = Mathf.Round(currentStat / (1 + bonus.multiplier)); // 세트 적용된 부분만 제거
+                    playerStatus.RemoveSetBonus(bonus.stat, bonus.multiplier);
 
-                    playerStatus.SetStat(bonus.stat, restoredStat);
-                    Debug.Log($"{setName} 세트 보너스 제거 → {bonus.stat}: {restoredStat}");
+                    Debug.Log($"{setName} 세트 보너스 제거 → {bonus.stat}");
                 }
             }
 

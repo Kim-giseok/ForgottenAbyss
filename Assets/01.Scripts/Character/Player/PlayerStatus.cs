@@ -325,8 +325,13 @@ public class PlayerStatus : CharacterStatus
 
             foreach (var statType in statIncreases.Keys)
             {
-                float newValue = stats[statType] + statIncreases[statType];
-                SetStat(statType, newValue); //변화한 스탯 반영
+                float baseStat = GetBaseStat(statType); 
+                float newValue = baseStat + statIncreases[statType];
+
+                float finalValue = (newValue + GetEquipmentBonus(statType)) * GetSetBonus(statType);
+
+                SetStat(statType, finalValue);
+
                 Debug.Log($"{statType} ����: +{statIncreases[statType]}");
             }
         }
@@ -370,9 +375,11 @@ public class PlayerStatus : CharacterStatus
         investedStatPoints[statType]++;
 
         // 패시브 스탯 증가량 반영
-        float newValue = stats[statType] + statPointIncrease[statType];
-        SetStat(statType, newValue);
+        float baseStat = GetBaseStat(statType);
+        float newValue = baseStat + statPointIncrease[statType];
 
+        float finalValue = (newValue + GetEquipmentBonus(statType)) * GetSetBonus(statType); // 장비 및 세트 보너스 반영
+        SetStat(statType, finalValue);
 
         if (statType == StatType.MaxHP)
         {
