@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5649161234879679641}
   - component: {fileID: 1968168315418312587}
   - component: {fileID: 5943405168788071568}
-  - component: {fileID: 8930624892128626797}
+  - component: {fileID: 4088405655955812143}
   m_Layer: 5
   m_Name: Slot
   m_TagString: Untagged
@@ -139,7 +139,7 @@ MonoBehaviour:
   m_EffectColor: {r: 0, g: 0, b: 0, a: 0.36862746}
   m_EffectDistance: {x: 5, y: -5}
   m_UseGraphicAlpha: 1
---- !u!114 &8930624892128626797
+--- !u!114 &4088405655955812143
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -148,14 +148,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 3097864597488671796}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42cfbf0c35ad7d34794f6d2ac93165ae, type: 3}
+  m_Script: {fileID: 11500000, guid: 124be2451824de3488c52196848cadf2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentItem: {fileID: 0}
-  iconImage: {fileID: 0}
-  mode: 0
+  iconImage: {fileID: 3556526932299099092}
   amountText: {fileID: 365231645902959755}
   equippedOutline: {fileID: 9091445401745881378}
+  itemUI: {fileID: 2536602189401715314, guid: 2153f5f57cfdeb64ab9cbb2a9e9ef981, type: 3}
 --- !u!1 &9091445401745881378
 GameObject:
   m_ObjectHideFlags: 0
@@ -360,3 +359,14 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 19592867291315256, guid: 2153f5f57cfdeb64ab9cbb2a9e9ef981, type: 3}
   m_PrefabInstance: {fileID: 2418813836079637563}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &3556526932299099092 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1209788488738639855, guid: 2153f5f57cfdeb64ab9cbb2a9e9ef981, type: 3}
+  m_PrefabInstance: {fileID: 2418813836079637563}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

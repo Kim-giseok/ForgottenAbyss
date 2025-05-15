@@ -6,6 +6,8 @@ using UnityEngine.UI;
 public class UIManager : MonoBehaviour
 {
     public static UIManager Instance { get; private set; }
+    public DragManager DragManager { get; private set; }
+    public DragItemPool dragItemPool;
 
     [Header("ScreenUI")]
     public InventoryUIManager inventoryUI;
@@ -30,6 +32,8 @@ public class UIManager : MonoBehaviour
 
     private void Awake()
     {
+        dragItemPool.Initialize();
+
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
@@ -37,7 +41,11 @@ public class UIManager : MonoBehaviour
         }
 
         Instance = this;
-        DontDestroyOnLoad(gameObject); // ï¿½ï¿½ ï¿½Ñ¾î°¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        DontDestroyOnLoad(gameObject);
+
+        DragManager = new DragManager();
+        Debug.Log("[UIManager] DragManager »ý¼ºµÊ");
+
     }
 
     public void ToggleInventory() => inventoryUI?.ToggleInventory();

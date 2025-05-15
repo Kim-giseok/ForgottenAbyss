@@ -1,46 +1,35 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using static UnityEditor.Progress;
 
 public class InventoryUIManager : MonoBehaviour
 {
-    public static InventoryUIManager Instance { get; private set; }
-
     public GameObject inventoryPanel;
     [SerializeField] private Button closeButton;
-
-    public List<InventorySlot> slots = new List<InventorySlot>();
+    [SerializeField] private InventorySlotUI[] slotUIs; // Slot UI 배열
+    [SerializeField] private InventoryController inventoryController;
 
     private void Awake()
     {
-        if (Instance == null) Instance = this;
-        else Destroy(gameObject);
+        Debug.Log($"[InventoryUIManager] 연결된 inventoryController: {inventoryController?.gameObject.name}");
 
         // 슬롯 자동 할당
-        slots = GetComponentsInChildren<InventorySlot>(true).ToList();
+        slotUIs = GetComponentsInChildren<InventorySlotUI>(true);
+
+        if (closeButton != null )
+            closeButton.onClick.AddListener(Close);
     }
 
     private void Start()
     {
-        inventoryPanel.SetActive(false); // 시작 시 꺼두기
-        if (closeButton != null)
-            closeButton.onClick.AddListener(Close);
+        inventoryPanel.SetActive(false);
 
-        // 이벤트 연결
-        StartCoroutine(WaitForInventoryReady());
-    }
-
-    private IEnumerator WaitForInventoryReady()
-    {
-        yield return new WaitUntil(() => Inventory.Instance != null);
-
-        Inventory.Instance.onItemChanged -= UpdateUI; // 중복방지
-        Inventory.Instance.onItemChanged += UpdateUI;
-
-        UpdateUI(); // 초기 상태 갱신
+        if (inventoryController != null)
+        {
+            inventoryController.OnContainerChanged -= UpdateUI;
+            inventoryController.OnContainerChanged += UpdateUI;
+            UpdateUI();
+        }
     }
 
     public void ToggleInventory()
@@ -67,51 +56,47 @@ public class InventoryUIManager : MonoBehaviour
 
     public void UpdateUI()
     {
-        if (Inventory.Instance == null) return;
+        if (inventoryController == null || slotUIs == null) return;
 
-        var items = Inventory.Instance.items;
-
-        for (int i = 0; i < slots.Count; i++)
+        for (int i = 0; i < slotUIs.Length; i++)
         {
-            if (i < items.Count && items[i] != null)
+            var slotUI = slotUIs[i];
+
+            if (i < inventoryController.SlotCount)
             {
-                slots[i].SetItem(items[i]);
+                var slot = inventoryController.GetSlot(i);
+                // Debug.Log($"[UpdateUI] [{i}] 아이템: {slot?.Item?.itemName ?? "없음"}, 수량: {slot?.Quantity}, 해시: {slot?.GetHashCode()}");
+
+                slotUI.SetSlot(slot, i, inventoryController); // 슬롯 + 인덱스 + 컨테이너 전달
             }
             else
             {
-                slots[i].ClearSlot();
-            }
-        }
-
-        foreach (var slot in slots)
-        {
-            slot.RefreshOutline();
-        }
-
-        Debug.Log($"[InventoryUIManager] UpdateUI 완료: {items.Count}개 아이템 표시됨");
-    }
-
-    public void CheckAndUnequipItem(Item newItem)
-    {
-        foreach (var slot in slots)
-        {
-            if (slot.currentItem == null) continue;
-            if (slot.currentItem.itemType != newItem.itemType) continue;
-
-            if (newItem.itemType == ItemType.Equip)
-            {
-                var armor = slot.currentItem as ArmorSO;
-                var newArmor = newItem as ArmorSO;
-
-                if (armor != null && newArmor != null && armor.slot == newArmor.slot)
-                {
-                    slot.RefreshOutline();
-                }
-            }
-            else
-            {
-                slot.RefreshOutline();
+                slotUI.Clear();
             }
         }
     }
+
+    //public void CheckAndUnequipItem(Item newItem)
+    //{
+    //    foreach (var slot in slots)
+    //    {
+    //        if (slot.currentItem == null) continue;
+    //        if (slot.currentItem.itemType != newItem.itemType) continue;
+
+    //        if (newItem.itemType == ItemType.Equip)
+    //        {
+    //            var armor = slot.currentItem as ArmorSO;
+    //            var newArmor = newItem as ArmorSO;
+
+    //            if (armor != null && newArmor != null && armor.slot == newArmor.slot)
+    //            {
+    //                slot.RefreshOutline();
+    //            }
+    //        }
+    //        else
+    //        {
+    //            slot.RefreshOutline();
+    //        }
+    //    }
+    //}
 }
