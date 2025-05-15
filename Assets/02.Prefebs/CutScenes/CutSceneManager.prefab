@@ -79,7 +79,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_UiScaleMode: 1
-  m_ReferencePixelsPerUnit: 100
+  m_ReferencePixelsPerUnit: 32
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
@@ -531,19 +531,23 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1593150731305267264, guid: 86cc674a600b647238956439bd5e34c2, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1593150731305267264, guid: 86cc674a600b647238956439bd5e34c2, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1593150731305267264, guid: 86cc674a600b647238956439bd5e34c2, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 1920
       objectReference: {fileID: 0}
     - target: {fileID: 1593150731305267264, guid: 86cc674a600b647238956439bd5e34c2, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 960
+      objectReference: {fileID: 0}
+    - target: {fileID: 1593150731305267264, guid: 86cc674a600b647238956439bd5e34c2, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 5128891422779286203, guid: 86cc674a600b647238956439bd5e34c2, type: 3}
       propertyPath: m_Pivot.x
@@ -631,35 +635,43 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5422088196501466670, guid: 86cc674a600b647238956439bd5e34c2, type: 3}
       propertyPath: maxWidth
-      value: 1920
+      value: 1080
       objectReference: {fileID: 0}
     - target: {fileID: 5422088196501466670, guid: 86cc674a600b647238956439bd5e34c2, type: 3}
       propertyPath: minWidth
-      value: 1080
+      value: 800
       objectReference: {fileID: 0}
     - target: {fileID: 6304028076224044108, guid: 86cc674a600b647238956439bd5e34c2, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6304028076224044108, guid: 86cc674a600b647238956439bd5e34c2, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6304028076224044108, guid: 86cc674a600b647238956439bd5e34c2, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 1920
       objectReference: {fileID: 0}
     - target: {fileID: 6304028076224044108, guid: 86cc674a600b647238956439bd5e34c2, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 960
       objectReference: {fileID: 0}
     - target: {fileID: 6304028076224044108, guid: 86cc674a600b647238956439bd5e34c2, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -1080
       objectReference: {fileID: 0}
     - target: {fileID: 7135816997765064562, guid: 86cc674a600b647238956439bd5e34c2, type: 3}
       propertyPath: m_Name
       value: LetterBox
+      objectReference: {fileID: 0}
+    - target: {fileID: 7135816997765064562, guid: 86cc674a600b647238956439bd5e34c2, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7856598480440280277, guid: 86cc674a600b647238956439bd5e34c2, type: 3}
+      propertyPath: m_Spacing
+      value: 1080
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
