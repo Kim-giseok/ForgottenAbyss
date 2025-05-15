@@ -19,7 +19,7 @@ public class EquipmentManager : MonoBehaviour
     private MemoryPieceSO equippedMemorySO;
     private InventorySlotUI equippedMemorySlot;
 
-    private bool isSetBonusApplied = false;
+    public bool isSetBonusApplied = false;
 
     private IEnumerator Start()
     {
@@ -79,43 +79,34 @@ public class EquipmentManager : MonoBehaviour
     {
         if (equippedArmors.TryGetValue(armor.slot, out var equippedArmor))
         {
-            if (equippedArmor.slot == slot)
-            {
-                UnequipArmor(armor.slot);
-                EquipArmor(armor);
-                Debug.Log($"[Test] 동일한 장비 재장착 → 해제됨: {armor.name}");
-                return;
-            }
-            else
-            {
-                UnequipArmor(armor.slot); // 기존 장비 해제
-            }
+            UnequipArmor(armor.slot); // 기존 장비 해제
+            Debug.Log($"[EquipmentManager] 기존 {equippedArmor.armor.name} 해제 후 {armor.name} 장착");
         }
 
         equippedArmors[armor.slot] = (armor, slot);
         ApplyStatBonus(armor);
+        RemoveSetBonus(); // 기존 보너스 제거 후
+        ApplySetBonus();
+
         OnEquipArmor?.Invoke(armor);
 
         string bonusLog = string.Join(", ", armor.statBonuses.Select(b => $"{b.statType} {b.bonusType} +{b.value}"));
         Debug.Log($"[Test] 장착 성공: {armor.name} → {armor.slot}, {bonusLog}");
-
-        RemoveSetBonus(); // 기존 보너스 제거 후
-        ApplySetBonus();
     }
 
     public void UnequipArmor(ArmorSlot slot)
     {
         if (equippedArmors.TryGetValue(slot, out var armor))
         {
+            RemoveSetBonus();
             RemoveStatBonus(armor.armor);
+
             equippedArmors.Remove(slot);
             OnUnequipArmor?.Invoke(armor.armor);
 
             string bonusLog = string.Join(", ", armor.armor.statBonuses.Select(b => $"{b.statType} {b.bonusType} -{b.value}"));
             Debug.Log($"[Test] 장착 해제: {armor.armor.name} → {armor.slot}, {bonusLog}");
         }
-        RemoveSetBonus();
-        ApplySetBonus();
     }
 
     public ArmorSO GetEquippedArmor(ArmorSlot slot)
@@ -183,6 +174,8 @@ public class EquipmentManager : MonoBehaviour
         return total;
     }
 
+    private Dictionary<StatType, float> baseStats = new Dictionary<StatType, float>();
+
     private void ApplyStatBonus(ArmorSO armor)
     {
         foreach (StatType statType in Enum.GetValues(typeof(StatType)))
@@ -191,10 +184,12 @@ public class EquipmentManager : MonoBehaviour
             if (bonuses.Count == 0) continue;
 
             playerStatus.stats.TryGetValue(statType, out float baseValue);
+
             float finalValue = StatBonusCalculator.ApplyBonuses(baseValue, bonuses);
 
-            playerStatus.SetStat(statType, finalValue);
-            Debug.Log($"[ApplyStatBonus] {statType}: {baseValue} → {finalValue}");
+            playerStatus.ApplyEquipmentBonus(statType, finalValue - baseValue, armor.armorId);
+
+            Debug.Log($"[ApplyStatBonus] {statType}: +{finalValue}");
         }
     }
 
@@ -205,11 +200,13 @@ public class EquipmentManager : MonoBehaviour
             var bonuses = armor.statBonuses.Where(b => b.statType == statType).ToList();
             if (bonuses.Count == 0) continue;
 
-            playerStatus.stats.TryGetValue(statType, out float currentValue);
-            float restoredValue = StatBonusCalculator.RemoveBonuses(currentValue, bonuses);
+            playerStatus.stats.TryGetValue(statType, out float baseValue);
 
-            playerStatus.SetStat(statType, restoredValue);
-            Debug.Log($"[RemoveStatBonus] {statType}: {currentValue} → {restoredValue}");
+            float restoredValue = StatBonusCalculator.RemoveBonuses(baseValue, bonuses);
+
+            playerStatus.RemoveEquipmentBonus(statType, baseValue - restoredValue);
+
+            Debug.Log($"[RemoveStatBonus] {statType}: {baseValue} → {restoredValue}");
         }
     }
 
@@ -227,7 +224,7 @@ public class EquipmentManager : MonoBehaviour
                 return; // 하나라도 세트가 다르면 보너스 미적용
         }
 
-        // 모든 조건을 만족하면 세트 보너스 적용
+
         if (!isSetBonusApplied)
         {
             isSetBonusApplied = true;
@@ -236,17 +233,22 @@ public class EquipmentManager : MonoBehaviour
             {
                 foreach (var bonus in bonusData.Bonuses)
                 {
+                    //playerStatus.ApplySetBonus(bonus.stat, bonus.multiplier);
+
                     playerStatus.stats.TryGetValue(bonus.stat, out float currentStat);
-                    float finalStat = currentStat * (1 + bonus.multiplier);
+                    //float finalStat = currentStat * (1 + bonus.multiplier);
+                    float finalStat;
 
-                    playerStatus.SetStat(bonus.stat, finalStat);
+                    if (bonus.stat == StatType.CRITICAL || bonus.stat == StatType.CRITICAL_DAMAGE) // 치명타 확률, 치명타 데미지
+                        finalStat = currentStat + bonus.multiplier; // 덧셈 방식
+                    else
+                        finalStat = currentStat * (1 + bonus.multiplier); // 곱셈 방식
 
-                    // UI 텍스트 적용
-                    UIManager.Instance.statUI.equippedItemUI.SetBonusText
-                        ($"{bonusData.SetName} 세트", $"{bonusData.Description}");
+                    UIManager.Instance.statUI.equippedItemUI.SetBonusText($"{bonusData.SetName} 세트", $"{bonusData.Description}");
                 }
             }
-            Debug.Log($"{setName} 세트 보너스 적용");
+ 
+            Debug.Log($"{setName} 세트 보너스 적용됨");
         }
     }
 
@@ -259,21 +261,25 @@ public class EquipmentManager : MonoBehaviour
             // 방어구의 세트 이름 체크
             string setName = equippedArmors.First().Value.armor.setName;
 
-            // 해당 세트 보너스 제거
             if (ArmorSetBonus.SetBonuses.TryGetValue(setName, out ArmorSetBonus bonusData))
             {
                 foreach (var bonus in bonusData.Bonuses)
                 {
+                    //playerStatus.RemoveSetBonus(bonus.stat, bonus.multiplier);
+
                     playerStatus.stats.TryGetValue(bonus.stat, out float currentStat);
-                    float restoredStat = currentStat / (1 + bonus.multiplier);
+                    //float restoredStat = currentStat / (1 + bonus.multiplier);
+                    float restoredStat;
 
-                    playerStatus.SetStat(bonus.stat, restoredStat);
+                    if (bonus.stat == StatType.CRITICAL || bonus.stat == StatType.CRITICAL_DAMAGE)
+                        restoredStat = currentStat - bonus.multiplier;
+                    else
+                        restoredStat = currentStat / (1 + bonus.multiplier); 
 
-                    Debug.Log($"{setName} 세트 보너스 제거");
+                    Debug.Log($"{setName} 세트 보너스 제거 → {bonus.stat}");
                 }
             }
 
-            // UI 텍스트 초기화
             UIManager.Instance.statUI.equippedItemUI.ResetBonusText();
         }
     }
@@ -436,7 +442,7 @@ public class EquipmentManager : MonoBehaviour
         public ArmorSlot slot;
         public int armorId;
     }
-
+            
     public bool IsEquipped(ArmorSO armor)
     {
         if (armor == null) return false;
