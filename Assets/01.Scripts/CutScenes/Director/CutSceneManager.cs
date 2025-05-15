@@ -30,12 +30,14 @@ public class CutSceneManager: SingletonLoadRemain<CutSceneManager>
         if (isCutsceneMode)
         {
             UIManager.Instance.HideIngameUI();
+            
             if(GameManager.Instance) GameManager.Instance.PausePlayer();
             Instance.LetterBox.ShowLetterBox(true);
         }
         else
         {
             UIManager.Instance.ShowIngameUI();
+            
             if(GameManager.Instance) GameManager.Instance.PausePlayer(false);
             Instance.LetterBox.ShowLetterBox(false);
         }
