@@ -34,14 +34,6 @@ public class JumpState : AirState
             player.ChangeState(PlayerState.Fall);
     }
 
-    public override void OnJump()
-    {
-        if (player.inputVec.y < 0)
-            player.ChangeState(PlayerState.Drop);
-        else
-            base.OnJump();
-    }
-
     public override void OnCollisionEnter(Collision2D collision)
     {
         base.OnCollisionEnter(collision);

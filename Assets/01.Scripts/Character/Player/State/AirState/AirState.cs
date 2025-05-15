@@ -18,7 +18,9 @@ public class AirState : PlayerStateMachine
     public override void OnJump()
     {
         base.OnJump();
-        if (player.CanJump)
+        if (player.inputVec.y < 0)
+            player.ChangeState(PlayerState.Drop);
+        else if (player.CanJump)
             player.ChangeState(PlayerState.Jump);
     }
 
