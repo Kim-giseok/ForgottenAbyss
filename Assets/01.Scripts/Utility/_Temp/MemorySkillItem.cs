@@ -21,17 +21,9 @@ public class MemorySkillItem: Item
         {
             BoltsPool.Instance.CreateSummon(GameManager.Instance.player.transform, skillName, isRide).Fire();
 
-            if (itemType == ItemType.Consumable)
-            {
-                currentAmount--;
-
-                return currentAmount <= 0;
-            }
-
-            else return true;
         }
 
-        return false;
+        return true;
     }
 
     private void UseRepeat()

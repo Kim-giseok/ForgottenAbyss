@@ -46,6 +46,11 @@ public class ShopUI : MonoBehaviour
             var firstTab = tabButtons[0];
             OnClickTab(firstTab.name, firstTab);
         }
+        else
+        {
+            Debug.LogWarning("[ShopUI] 탭 버튼이 없습니다. 기본 아이템 전체 표시");
+            ShowFilteredItems(currentFilterType);
+        }
     }
 
     private void InitializeShop()
@@ -61,6 +66,10 @@ public class ShopUI : MonoBehaviour
             currentFilterType = parsedType;
             ShowFilteredItems(currentFilterType);
             UpdateTabVisual(selectedButton);
+        }
+        else
+        {
+            Debug.LogError($"[ShopUI] '{typeStr}'은(는) 유효한 ItemType이 아닙니다.");
         }
     }
 
@@ -95,6 +104,12 @@ public class ShopUI : MonoBehaviour
 
     private void ShowFilteredItems(ItemType type)
     {
+        if (slotParent == null || slotPrefab == null)
+        {
+            Debug.LogError("[ShopUI] 슬롯 프리팹 또는 부모 오브젝트가 없습니다.");
+            return;
+        }
+
         // 기존 슬롯 숨김
         foreach (Transform child in slotParent)
         {
@@ -132,6 +147,12 @@ public class ShopUI : MonoBehaviour
     // 슬롯에서 호출됨
     public void OnSlotSelected(ShopItemData selectedData)
     {
+        if (selectedData == null || selectedData.item == null)
+        {
+            Debug.LogError("[ShopUI] 슬롯에서 전달된 데이터가 잘못되었습니다.");
+            return;
+        }
+
         detailPanel.Show(selectedData);
     }
 

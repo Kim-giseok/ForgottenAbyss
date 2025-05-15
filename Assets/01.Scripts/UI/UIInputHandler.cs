@@ -8,6 +8,8 @@ public class UIInputHandler : MonoBehaviour
 {
     private Dictionary<KeyCode, Action> keyActions;
 
+    [SerializeField] private QuickSlotController quickSlotController;
+
     private void Awake()
     {
         // Singleton을 바로 사용
@@ -16,8 +18,13 @@ public class UIInputHandler : MonoBehaviour
             { KeyCode.I, () => UIManager.Instance?.ToggleInventory() },
             { KeyCode.Escape, HandleEscapeKey },
             //{ KeyCode.Tab, () => UIManager.Instance?.SwapWeapons() }
-            { KeyCode.V, () => UIManager.Instance?.ToggleStatUI() },
-            { KeyCode.K, () => UIManager.Instance?.TogglePassiveUI() }
+            { KeyCode.V, () => UIManager.Instance?.OnStatUI() },
+            { KeyCode.K, () => UIManager.Instance?.OnPassiveUI() },
+            { KeyCode.Alpha1, () => quickSlotController.OnQuickSlotKeyPressed(0) },
+            { KeyCode.Alpha2, () => quickSlotController.OnQuickSlotKeyPressed(1) },
+            { KeyCode.Alpha3, () => quickSlotController.OnQuickSlotKeyPressed(2) },
+            { KeyCode.Alpha4, () => quickSlotController.OnQuickSlotKeyPressed(3) },
+            { KeyCode.Alpha5, () => quickSlotController.OnQuickSlotKeyPressed(4) }
         };
     }
 
