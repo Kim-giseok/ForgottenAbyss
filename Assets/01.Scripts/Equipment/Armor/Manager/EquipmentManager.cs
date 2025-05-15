@@ -98,8 +98,8 @@ public class EquipmentManager : MonoBehaviour
     {
         if (equippedArmors.TryGetValue(slot, out var armor))
         {
-            RemoveStatBonus(armor.armor);
             RemoveSetBonus();
+            RemoveStatBonus(armor.armor);
 
             equippedArmors.Remove(slot);
             OnUnequipArmor?.Invoke(armor.armor);
@@ -194,8 +194,6 @@ public class EquipmentManager : MonoBehaviour
 
     private void RemoveStatBonus(ArmorSO armor)
     {
-        RemoveSetBonus();
-
         foreach (StatType statType in Enum.GetValues(typeof(StatType)))
         {
             var bonuses = armor.statBonuses.Where(b => b.statType == statType).ToList();
@@ -233,17 +231,13 @@ public class EquipmentManager : MonoBehaviour
             {
                 foreach (var bonus in bonusData.Bonuses)
                 {
-                    if (!bonusData.baseValues.ContainsKey(bonus.stat))
-                    {
-                        bonusData.baseValues[bonus.stat] = playerStatus.stats[bonus.stat]; // 원래 값 저장
-                    }
+                    playerStatus.stats.TryGetValue(bonus.stat, out float currentStat);
+                    float finalStat = Mathf.Round(currentStat * (1 + bonus.multiplier)); // 현재 값 반영
 
-                    float finalStat = Mathf.Round(bonusData.baseValues[bonus.stat] * (1 + bonus.multiplier)); // 반올림 적용
                     playerStatus.SetStat(bonus.stat, finalStat);
 
                     UIManager.Instance.statUI.equippedItemUI.SetBonusText
-                        ($"{bonusData.SetName} 세트", $"{bonusData.Description}");
-
+                            ($"{bonusData.SetName} 세트", $"{bonusData.Description}");
                 }
             }
  
@@ -264,11 +258,11 @@ public class EquipmentManager : MonoBehaviour
             {
                 foreach (var bonus in bonusData.Bonuses)
                 {
-                    if (bonusData.baseValues.ContainsKey(bonus.stat))
-                    {
-                        playerStatus.SetStat(bonus.stat, bonusData.baseValues[bonus.stat]); // 기본 값으로 복구
-                    }
-                    Debug.Log($"{setName} 세트 보너스 제거");
+                    playerStatus.stats.TryGetValue(bonus.stat, out float currentStat);
+                    float restoredStat = Mathf.Round(currentStat / (1 + bonus.multiplier)); // 세트 적용된 부분만 제거
+
+                    playerStatus.SetStat(bonus.stat, restoredStat);
+                    Debug.Log($"{setName} 세트 보너스 제거 → {bonus.stat}: {restoredStat}");
                 }
             }
 
