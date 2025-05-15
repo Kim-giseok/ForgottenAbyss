@@ -1,7 +1,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum EnemyStatType { Health, Mana, Stamina, Attack, Speed, SightRange, AttackRange, BoundaryRange }
+public enum EnemyStatType
+{
+    Health = 0,
+    Mana = 1,
+    Stamina = 2,
+    Attack = 3,
+    Defense = 7,
+    Evasion = 6,
+    Speed = 4,
+    SightRange = 5,
+}
 
 [System.Serializable]
 public class EnemyStatInfo
