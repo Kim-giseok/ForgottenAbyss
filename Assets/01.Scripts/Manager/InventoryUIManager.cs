@@ -76,27 +76,27 @@ public class InventoryUIManager : MonoBehaviour
         }
     }
 
-    //public void CheckAndUnequipItem(Item newItem)
-    //{
-    //    foreach (var slot in slots)
-    //    {
-    //        if (slot.currentItem == null) continue;
-    //        if (slot.currentItem.itemType != newItem.itemType) continue;
+    public void CheckAndUnequipItem(Item newItem)
+    {
+        foreach (var slot in slotUIs)
+        {
+            if (slot.Slot.Item == null) continue;
+            if (slot.Slot.Item.itemType != newItem.itemType) continue;
 
-    //        if (newItem.itemType == ItemType.Equip)
-    //        {
-    //            var armor = slot.currentItem as ArmorSO;
-    //            var newArmor = newItem as ArmorSO;
+            if (newItem.itemType == ItemType.Equip)
+            {
+                var armor = slot.Slot.Item as ArmorSO;
+                var newArmor = newItem as ArmorSO;
 
-    //            if (armor != null && newArmor != null && armor.slot == newArmor.slot)
-    //            {
-    //                slot.RefreshOutline();
-    //            }
-    //        }
-    //        else
-    //        {
-    //            slot.RefreshOutline();
-    //        }
-    //    }
-    //}
+                if (armor != null && newArmor != null && armor.slot == newArmor.slot)
+                {
+                    slot.RefreshOutline();
+                }
+            }
+            else
+            {
+                slot.RefreshOutline();
+            }
+        }
+    }
 }

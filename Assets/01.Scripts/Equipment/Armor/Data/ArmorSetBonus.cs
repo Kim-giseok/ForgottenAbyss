@@ -15,6 +15,8 @@ public class ArmorSetBonus
         Bonuses = bonuses;
     }
 
+    public Dictionary<StatType, float> baseValues = new Dictionary<StatType, float>();
+
     public static readonly Dictionary<string, ArmorSetBonus> SetBonuses = new Dictionary<string, ArmorSetBonus>
     {
         { "무쇠", new ArmorSetBonus("무쇠", "최대 체력 +5%, 방어력 +5%", new List<(StatType, float)>

@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using Unity.VisualScripting;
 
 public class LoadingScene : MonoBehaviour
 {
@@ -15,7 +16,10 @@ public class LoadingScene : MonoBehaviour
         {
             UIManager.Instance.HIdeAll();
         }
-  
+
+        if (GameManager.Instance != null)
+            GameManager.Instance.isInputPossible = false;
+
         SceneLoader.Instance.fade.StartFadeIn();
         CleanUpDuplicateComponents();
         StartCoroutine(LoadAsync());
@@ -60,12 +64,13 @@ public class LoadingScene : MonoBehaviour
 
         SceneLoader.Instance.fade.StartFadeIn();
 
-        if (UIManager.Instance != null)
+        if (UIManager.Instance != null && GameManager.Instance != null)
         {
             if (targetScene != "Test_Title" && targetScene != "IntroScene")
             {
                 UIManager.Instance.ShowIngameUI();
                 UIManager.Instance.ShowGuideUI();
+                GameManager.Instance.isInputPossible = true;
             }
         }
     }

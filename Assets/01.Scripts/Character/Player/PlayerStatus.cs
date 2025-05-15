@@ -66,6 +66,29 @@ public class PlayerStatus : CharacterStatus
             });
         }
 
+        foreach (var pair in equipmentBonuses)
+        {
+            data.equipmentBonuses.Add(new PlayerData.StatBonusData
+            {
+                statType = (int)pair.Key,
+                bonusValue = pair.Value
+            });
+        }
+
+        foreach (var pair in setBonusMultipliers)
+        {
+            data.setBonusMultipliers.Add(new PlayerData.StatMultiplierData
+            {
+                statType = (int)pair.Key,
+                multiplier = pair.Value
+            });
+        }
+
+        foreach (var id in equippedArmorIDs)
+        {
+            data.equippedArmorIDs.Add(id);
+        }
+
         // DataSave 클래스를 사용하여 저장
         DataSave<PlayerData>.SaveData(data, PLAYER_DATA_FILE);
     }
@@ -95,6 +118,26 @@ public class PlayerStatus : CharacterStatus
                 {
                     investedStatPoints[type] = investedData.points;
                 }
+            }
+
+            equipmentBonuses.Clear();
+            foreach (var bonusData in data.equipmentBonuses)
+            {
+                StatType type = (StatType)bonusData.statType;
+                equipmentBonuses[type] = bonusData.bonusValue;
+            }
+
+            setBonusMultipliers.Clear();
+            foreach (var multiplierData in data.setBonusMultipliers)
+            {
+                StatType type = (StatType)multiplierData.statType;
+                setBonusMultipliers[type] = multiplierData.multiplier;
+            }
+
+            equippedArmorIDs.Clear();
+            foreach (var id in data.equippedArmorIDs)
+            {
+                equippedArmorIDs.Add(id);
             }
 
             // UI 업데이트
@@ -165,8 +208,12 @@ public class PlayerStatus : CharacterStatus
 
     private void Update()
     {
-       
+        if (Input.GetKeyDown(KeyCode.Alpha0))
+        {
+            GainExperience(100f);
+        }
     }
+
     private void InitializeStats()
     {
         stats[StatType.CurrentHP] = 100f; //현재 HP
@@ -325,8 +372,16 @@ public class PlayerStatus : CharacterStatus
 
             foreach (var statType in statIncreases.Keys)
             {
-                float newValue = stats[statType] + statIncreases[statType];
-                SetStat(statType, newValue); //변화한 스탯 반영
+                float baseStat = GetBaseStat(statType) + statIncreases[statType]; 
+                Debug.Log(baseStat);  
+
+                float finalValue = (baseStat + GetEquipmentBonus(statType)) * GetSetBonus(statType);
+
+                SetStat(statType, finalValue);
+                Debug.Log(finalValue);
+
+                SetHP(statType);
+
                 Debug.Log($"{statType} ����: +{statIncreases[statType]}");
             }
         }
@@ -370,16 +425,23 @@ public class PlayerStatus : CharacterStatus
         investedStatPoints[statType]++;
 
         // 패시브 스탯 증가량 반영
-        float newValue = stats[statType] + statPointIncrease[statType];
-        SetStat(statType, newValue);
+        float baseStat = GetBaseStat(statType);
+        Debug.Log(baseStat);
 
+        float newValue = baseStat + statPointIncrease[statType];
+        float finalValue = (newValue + GetEquipmentBonus(statType)) * GetSetBonus(statType);
 
-        if (statType == StatType.MaxHP)
-        {
-            float currentHP = stats[StatType.CurrentHP];
-            float increase = statPointIncrease[StatType.MaxHP];
-            SetStat(StatType.CurrentHP, currentHP + increase);
-        }
+        SetStat(statType, finalValue);
+        Debug.Log(finalValue);
+
+        SetHP(statType);
+
+        //if (statType == StatType.MaxHP)
+        //{
+        //    float currentHP = stats[StatType.CurrentHP];
+        //    float increase = statPointIncrease[StatType.MaxHP];
+        //    SetStat(StatType.CurrentHP, currentHP + increase);
+        //}
 
         // 이벤트 구독
         OnStatPointsChanged?.Invoke(availableStatPoints);
