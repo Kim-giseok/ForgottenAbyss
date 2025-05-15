@@ -28,5 +28,4 @@ public class AirState : PlayerStateMachine
         if (player.CanDash) // 빠른 낙하 중이 아닐 때만 대쉬 가능
             player.ChangeState(PlayerState.Dash);
     }
-
 }

@@ -82,6 +82,7 @@ public class ControllerPlayer : MonoBehaviour
         states.Add(PlayerState.Climb, new ClimbState(this));
         states.Add(PlayerState.Slide, new SlideState(this));
         states.Add(PlayerState.Fall, new FallState(this));
+        states.Add(PlayerState.Drop, new DropState(this));
 
         // �ʱ� ���� ����
         if (currentState == 0 || !states.ContainsKey(currentState))

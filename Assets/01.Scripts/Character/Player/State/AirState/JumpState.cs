@@ -6,8 +6,6 @@ public class JumpState : AirState
 {
     public JumpState(ControllerPlayer player) : base(player) { }
 
-    private bool isFastFalling = false;
-    private float fastFallSpeed = 15f;
     public override void Enter()
     {
         base.Enter();
@@ -31,10 +29,6 @@ public class JumpState : AirState
     public override void FixedUpdate()
     {
         base.FixedUpdate();
-        if (isFastFalling)
-        {
-            player.rigid.velocity = new Vector2(0, -fastFallSpeed);
-        }
 
         if (player.rigid.velocity.y < -player.rigid.gravityScale * Time.fixedDeltaTime)
             player.ChangeState(PlayerState.Fall);
@@ -43,7 +37,7 @@ public class JumpState : AirState
     public override void OnJump()
     {
         if (player.inputVec.y < 0)
-            ActivateFastFall();
+            player.ChangeState(PlayerState.Drop);
         else
             base.OnJump();
     }
@@ -55,22 +49,10 @@ public class JumpState : AirState
             player.ChangeState(PlayerState.Idle);
     }
 
-    private void ActivateFastFall()
-    {
-        if (!isFastFalling)
-        {
-            isFastFalling = true;
-
-            // 플레이어가 움직이지 않도록 수평 속도를 0으로 설정
-            player.rigid.velocity = new Vector2(0, -fastFallSpeed);
-        }
-    }
-
     public override void Exit()
     {
         base.Exit();
         player.animator.SetBool("IsJump", false);
-        isFastFalling = false; // 상태 종료 시 빠른 낙하 상태 초기화
         player.playerCollider.excludeLayers = 0;
     }
 }
