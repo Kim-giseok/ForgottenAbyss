@@ -38,6 +38,7 @@ public class LetterBox : MonoBehaviour
     public void ShowLetterBox(bool isShow)
     {
         if(letterBoxCoroutine != null) StopCoroutine(letterBoxCoroutine);
+        if(isShow) gameObject.SetActive(true);
         letterBoxCoroutine = StartCoroutine(HandleWidth(isShow));
     }
     
@@ -86,5 +87,6 @@ public class LetterBox : MonoBehaviour
         yield return new WaitForSeconds(1f);
 
         verticalLayoutGroup.spacing = currEndWith;
+        if(!isShow) gameObject.SetActive(false);
     }
 }
