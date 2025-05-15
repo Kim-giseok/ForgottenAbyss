@@ -14,6 +14,8 @@ public class ControllerPlayer : MonoBehaviour
     [Header("DashParameter")]
     public float dashDistance; //점프 거리
     public float dashTime; //대쉬 시간
+    public float dashCost = 10f;
+    public bool CanDash => status.stats[StatType.CurrentMP] >= dashCost && canDash && inputVec.x != 0;
 
     [Header("JumpParameter")]
     public float jumpPower; //점프력
@@ -168,15 +170,13 @@ public class ControllerPlayer : MonoBehaviour
         //CheckWall();
     }
     private void FixedUpdate()
-    {
-        
+    {        
         if (states.ContainsKey(currentState))
         {
             states[currentState].FixedUpdate();
         }
 
-        UpdateGroundCheck();
-      
+        UpdateGroundCheck();      
     }
 
     void OnMove(InputValue value)
@@ -330,42 +330,23 @@ public class ControllerPlayer : MonoBehaviour
 
     }
 
-    public void OnCollisionStay2D(Collision2D collision)
-    {
-        //if (collision.gameObject.layer == LayerMask.NameToLayer("Wall"))
-        //{
-        //    ChangeState(PlayerState.Slide);
-        //}
-    }
-
     public void OnCollisionExit2D(Collision2D collision)
-    {
-        
+    {        
         if (states.ContainsKey(currentState))
         {
             states[currentState].OnCollisionExit(collision);
-        }
-        
+        }        
     }
 
     public void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Climb") && inputVec.y > 0)
-        {
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Climb") && inputVec.y != 0)
             ChangeState(PlayerState.Climb);
-        }
-
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Climb") && inputVec.y < 0)
-        {
-            ChangeState(PlayerState.Climb);
-        }
 
         if (states.ContainsKey(currentState))
-        {
             states[currentState].OnTriggerStay(collision);
-        }
-
     }
+
     public void OnTriggerExit2D(Collider2D collision)
     {
         if (states.ContainsKey(currentState))

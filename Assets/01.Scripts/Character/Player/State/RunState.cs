@@ -10,6 +10,7 @@ public class RunState : PlayerStateMachine
     {
         player.animator.SetBool("IsRun", true);
     }
+
     public override void Exit()
     {
         player.animator.SetBool("IsRun", false);
@@ -58,11 +59,11 @@ public class RunState : PlayerStateMachine
             player.ChangeState(PlayerState.Jump);
         }
     }
+
     public override void OnDash()
     {
-        if (player.isGround && player.inputVec.x != 0)
-        {
+        base.OnDash();
+        if (player.CanDash)
             player.ChangeState(PlayerState.Dash);
-        }
     }
 }

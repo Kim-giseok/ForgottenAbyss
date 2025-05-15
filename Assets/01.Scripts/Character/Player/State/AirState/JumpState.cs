@@ -10,6 +10,7 @@ public class JumpState : AirState
     private float fastFallSpeed = 15f;
     public override void Enter()
     {
+        base.Enter();
         // 첫 점프인지 더블 점프인지 확인
         if (player.currentJumpCount == 0)
         {
@@ -18,14 +19,12 @@ public class JumpState : AirState
             player.isGround = false;
             player.currentJumpCount = 1;
             playerSound.JumpSound();
-
         }
         else
         {
             // 더블 점프 (또는 추가 점프)
             player.currentJumpCount++;
             playerSound.JumpSound();
-
         }
 
         // 공통 점프 로직
@@ -34,6 +33,7 @@ public class JumpState : AirState
 
         player.playerCollider.excludeLayers = player.platformLayerMask;
     }
+
     public override void FixedUpdate()
     {
         base.FixedUpdate();
@@ -54,15 +54,6 @@ public class JumpState : AirState
             return;
         }
         base.OnJump();
-    }
-
-    public override void OnDash()
-    {
-        if (!isFastFalling) // 빠른 낙하 중이 아닐 때만 대쉬 가능
-        {
-            player.animator.SetBool("IsJump", false);
-            player.ChangeState(PlayerState.Dash);
-        }
     }
 
     public override void OnCollisionEnter(Collision2D collision)
@@ -93,6 +84,8 @@ public class JumpState : AirState
 
     public override void Exit()
     {
+        base.Exit();
+        player.animator.SetBool("IsJump", false);
         isFastFalling = false; // 상태 종료 시 빠른 낙하 상태 초기화
         player.playerCollider.excludeLayers = 0;
     }
