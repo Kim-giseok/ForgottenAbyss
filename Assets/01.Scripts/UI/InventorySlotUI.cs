@@ -70,16 +70,8 @@ public class InventorySlotUI : MonoBehaviour, IPointerClickHandler
 
     public void RefreshOutline()
     {
-        if(slot.Item is ArmorSO armor)
-        {
-            if (IsEmpty || !SystemManager.Instance.equipmentManager.GetEquippedArmor(armor.slot))
-            {
-                equippedOutline?.SetActive(false);
-                return;
-            }
-        }
-  
-        var em = SystemManager.Instance?.equipmentManager;
+        var em = SystemManager.Instance.equipmentManager;
+
         bool equipped = slot.Item switch
         {
             ArmorSO armors => em.IsEquipped(armors),
@@ -87,14 +79,15 @@ public class InventorySlotUI : MonoBehaviour, IPointerClickHandler
             _ => false
         };
 
-        equippedOutline?.SetActive(equipped);
+        equippedOutline.SetActive(equipped);
     }
 
     public void OnPointerClick(PointerEventData eventData)
     {
         if (IsEmpty) return;
+        if (SystemManager.Instance == null) return;
 
-        var em = SystemManager.Instance.equipmentManager;
+        var sys = SystemManager.Instance;
 
         if (eventData.button == PointerEventData.InputButton.Right)
         {
@@ -111,6 +104,8 @@ public class InventorySlotUI : MonoBehaviour, IPointerClickHandler
 
                     Debug.Log($"[InventorySlotUI] {itemName} 우클릭 → 사용 시도");
 
+                    if (itemName == "기억의 파편") break;
+
                     if (SlotUtils.TryUseSlot(slot))
                     {
                         Debug.Log($"[InventorySlotUI] {itemName} 사용됨");
@@ -120,38 +115,44 @@ public class InventorySlotUI : MonoBehaviour, IPointerClickHandler
                     {
                         Debug.LogWarning($"[InventorySlotUI] {itemName} 사용 실패 (조건 불만족?)");
                     }
+
                     break;
+
                 case ItemType.Equip:
-                    if (em != null && slot.Item is ArmorSO armor)
+                    var armor = slot.Item as ArmorSO;
+
+                    if (sys.equipmentManager.GetEquippedArmorSlot(armor.slot) == this)
                     {
-                        var equippedSlot = em.GetEquippedArmorSlot(armor.slot);
-                        if (equippedSlot == this)
-                        {
-                            em.UnequipArmor(armor.slot); // 현재 장착 중인 경우 해제
-                            Debug.Log($"[InventorySlotUI] {armor.itemName} 장착 해제");
-                        }
-                        else
-                        {
-                            var currentlyEquipped = em.GetEquippedArmor(armor.slot);
+                        sys.equipmentManager.UnequipArmor(armor.slot);
+                    }
+                    else
+                    {
+                        sys.equipmentManager.EquipArmor(armor, this);
+                    }
+                   
+                    RefreshOutline();
+                    UpdateUI();
+                    UIManager.Instance.inventoryUI.CheckAndUnequipItem(armor);
 
-                            if (currentlyEquipped != null && currentlyEquipped.slot == armor.slot)
-                            {
-                                em.UnequipArmor(armor.slot); // 기존 장비 해제
-                                Debug.Log($"[InventorySlotUI] 기존 {currentlyEquipped.itemName} 해제 후 {armor.itemName} 장착");
-                            }
+                    break;
 
-                            em.EquipArmor(armor, this); // 새 장비 장착
-                            Debug.Log($"[InventorySlotUI] {armor.itemName} 장착됨");
-                        }
+                case ItemType.Memory:
+                    var memory = slot.Item as MemorySkillItem;
+                    var memoryData = sys.dataManager.GetMemoryPieceData(memory.memoryPieceId);
+                    var memorySO = sys.dataManager.GetMemoryVisualSO(memoryData.Name);
 
-                        RefreshOutline();
+                    UIManager.Instance.inventoryUI.CheckAndUnequipItem(memory);
+
+                    if (sys.equipmentManager.GetEquippedMemorySlot() == this)
+                    {
+                        sys.equipmentManager.UnequipMemoryPiece();
+                    }
+                    else
+                    {
+                        sys.equipmentManager.EquipMemoryPiece(memorySO, this);
                     }
                     break;
-                case ItemType.Memory:
-
-                    break;
-            }
-            
+            }          
         }
     }
 }
