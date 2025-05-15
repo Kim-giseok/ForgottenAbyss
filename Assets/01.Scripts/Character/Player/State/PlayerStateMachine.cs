@@ -11,7 +11,8 @@ public enum PlayerState
     Attack,
     Interaction,
     Climb,
-    Slide
+    Slide,
+    Fall
 }
 
 public abstract class PlayerStateMachine 

@@ -38,7 +38,7 @@ public class ControllerPlayer : MonoBehaviour
     PlayerSound playerSound;
 
     // FSM
-    private Dictionary<PlayerState, PlayerStateMachine> states = new Dictionary<PlayerState, PlayerStateMachine>();
+    private Dictionary<PlayerState, PlayerStateMachine> states = new ();
     public PlayerState currentState;
     public PlayerState previousState;
 
@@ -74,6 +74,7 @@ public class ControllerPlayer : MonoBehaviour
         states.Add(PlayerState.Interaction, new InteractionState(this));
         states.Add(PlayerState.Climb, new ClimbState(this));
         states.Add(PlayerState.Slide, new SlideState(this));
+        states.Add(PlayerState.Fall, new FallState(this));
 
         // �ʱ� ���� ����
         if (currentState == 0 || !states.ContainsKey(currentState))
@@ -434,26 +435,7 @@ public class ControllerPlayer : MonoBehaviour
             rigid.velocity = new Vector2(inputVec.x * speed, rigid.velocity.y);
         }
     }
-
-    public void IgnorePlatformCollision()
-    {
-        //Debug.Log($"Velocity Y: {rigid.velocity.y}, IgnoreCollision 적용: {rigid.velocity.y < 0}");
-        Collider2D[] platformColliders = Physics2D.OverlapCircleAll(transform.position, 10f, platformLayerMask);
-
-        foreach (Collider2D platformCollider in platformColliders) 
-        {
-            if (rigid.velocity.y < 0)
-            {
-                Physics2D.IgnoreCollision(playerCollider, platformCollider, false);
-            }
-            else if (rigid.velocity.y > 0f)
-            {
-                Physics2D.IgnoreCollision(playerCollider, platformCollider, true);
-            }
-        }
-    }
-
-   
+ 
     public IEnumerator InvincibleEffect()
     {
         while (isInvincible)

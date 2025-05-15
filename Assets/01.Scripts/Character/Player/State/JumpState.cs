@@ -32,6 +32,7 @@ public class JumpState : PlayerStateMachine
         player.rigid.velocity = new Vector2(player.rigid.velocity.x, 0); // y축 속도 초기화
         player.rigid.AddForce(Vector2.up * player.jumpPower, ForceMode2D.Impulse);
 
+        player.playerCollider.excludeLayers = player.platformLayerMask;
     }
     public override void FixedUpdate()
     {
@@ -44,7 +45,9 @@ public class JumpState : PlayerStateMachine
             player.rigid.velocity = new Vector2(player.inputVec.x * player.status.stats[StatType.SPEED], player.rigid.velocity.y);
         }
         player.UpdateDirection();
-        player.IgnorePlatformCollision();
+
+        if (player.rigid.velocity.y < -player.rigid.gravityScale * Time.fixedDeltaTime)
+            player.ChangeState(PlayerState.Fall);
     }
 
     public override void OnJump()
@@ -59,7 +62,6 @@ public class JumpState : PlayerStateMachine
         {
             // 현재 상태를 유지하면서 Enter() 메서드만 다시 호출
             Enter();
-
         }
     }
 
@@ -72,10 +74,6 @@ public class JumpState : PlayerStateMachine
         }
     }
 
-    public override void OnAttack()
-    {
-        //player.ChangeState(PlayerState.Attack);
-    }
     public override void OnCollisionEnter(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Ground"))
@@ -90,6 +88,7 @@ public class JumpState : PlayerStateMachine
             }
         }
     }
+
     private void ActivateFastFall()
     {
         if (!isFastFalling)
@@ -98,12 +97,12 @@ public class JumpState : PlayerStateMachine
                        
             // 플레이어가 움직이지 않도록 수평 속도를 0으로 설정
             player.rigid.velocity = new Vector2(0, -fastFallSpeed);
-                        
         }
     }
 
     public override void Exit()
     {
         isFastFalling = false; // 상태 종료 시 빠른 낙하 상태 초기화
+        player.playerCollider.excludeLayers = 0;
     }
 }

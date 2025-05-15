@@ -82,7 +82,6 @@ public class DashState : PlayerStateMachine
     private IEnumerator WaitForLandingToResetCollision()
     {
         yield return new WaitUntil(() => player.isGround);
-        player.IgnorePlatformCollision();
         Debug.Log("대쉬 종료 후 착지 시 충돌 복구됨!");
     }
 

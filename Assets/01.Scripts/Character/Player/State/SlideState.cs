@@ -106,11 +106,12 @@ public class SlideState : PlayerStateMachine
             player.ChangeState(PlayerState.Idle);
         }
     }
+
     public override void OnCollisionExit(Collision2D collision)
     {
         if (collision.gameObject.layer == LayerMask.NameToLayer("Wall"))
         {
-            player.ChangeState(PlayerState.Jump);
+            player.ChangeState(PlayerState.Idle);
         }
     }
 }

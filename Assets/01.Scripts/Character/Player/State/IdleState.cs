@@ -40,5 +40,4 @@ public class IdleState : PlayerStateMachine
     {
         player.ChangeState(PlayerState.Interaction);
     }
-
 }
