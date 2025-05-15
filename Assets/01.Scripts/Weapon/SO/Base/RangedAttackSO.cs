@@ -8,6 +8,7 @@ public class RangedAttackSO : ScriptableObject
     public string attackName;
     public string description;
     public Sprite icon;
+    public AudioClip sound;
 
     public List<RangedComboStep> rangedSteps = new();
 
@@ -19,6 +20,7 @@ public class RangedAttackSO : ScriptableObject
         clone.attackName = this.attackName;
         clone.description = this.description;
         clone.icon = this.icon;
+        clone.sound = this.sound;
 
         clone.rangedSteps = new List<RangedComboStep>();
         foreach (var step in this.rangedSteps)

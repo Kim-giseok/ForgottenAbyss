@@ -488,6 +488,7 @@ MonoBehaviour:
   isAlive: 1
   canAttack: 0
   canSkill: 0
+  canDash: 1
   rigid: {fileID: 0}
   animator: {fileID: 0}
   playerCollider: {fileID: 0}
@@ -500,7 +501,7 @@ MonoBehaviour:
   groundCheckRadius: 0.2
   groundLayer:
     serializedVersion: 2
-    m_Bits: 1152
+    m_Bits: 17536
   isOnLadder: 0
 --- !u!114 &7695836731054088730
 MonoBehaviour:
