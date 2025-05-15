@@ -237,7 +237,13 @@ public class EquipmentManager : MonoBehaviour
                 foreach (var bonus in bonusData.Bonuses)
                 {
                     playerStatus.stats.TryGetValue(bonus.stat, out float currentStat);
-                    float finalStat = currentStat * (1 + bonus.multiplier);
+                    //float finalStat = currentStat * (1 + bonus.multiplier);
+                    float finalStat;
+
+                    if (bonus.stat == StatType.CRITICAL || bonus.stat == StatType.CRITICAL_DAMAGE) // Ä¡¸íÅ¸ È®·ü, Ä¡¸íÅ¸ µ¥¹ÌÁö
+                        finalStat = currentStat + bonus.multiplier; // µ¡¼À ¹æ½Ä
+                    else
+                        finalStat = currentStat * (1 + bonus.multiplier); // °ö¼À ¹æ½Ä
 
                     playerStatus.SetStat(bonus.stat, finalStat);
 
@@ -265,7 +271,13 @@ public class EquipmentManager : MonoBehaviour
                 foreach (var bonus in bonusData.Bonuses)
                 {
                     playerStatus.stats.TryGetValue(bonus.stat, out float currentStat);
-                    float restoredStat = currentStat / (1 + bonus.multiplier);
+                    //float restoredStat = currentStat / (1 + bonus.multiplier);
+                    float restoredStat;
+
+                    if (bonus.stat == StatType.CRITICAL)
+                        restoredStat = currentStat - bonus.multiplier;
+                    else
+                        restoredStat = currentStat / (1 + bonus.multiplier); 
 
                     playerStatus.SetStat(bonus.stat, restoredStat);
 
@@ -436,7 +448,7 @@ public class EquipmentManager : MonoBehaviour
         public ArmorSlot slot;
         public int armorId;
     }
-
+            
     public bool IsEquipped(ArmorSO armor)
     {
         if (armor == null) return false;
