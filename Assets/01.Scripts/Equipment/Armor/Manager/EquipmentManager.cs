@@ -79,28 +79,19 @@ public class EquipmentManager : MonoBehaviour
     {
         if (equippedArmors.TryGetValue(armor.slot, out var equippedArmor))
         {
-            if (equippedArmor.slot == slot)
-            {
-                UnequipArmor(armor.slot);
-                EquipArmor(armor);
-                Debug.Log($"[Test] 동일한 장비 재장착 → 해제됨: {armor.name}");
-                return;
-            }
-            else
-            {
-                UnequipArmor(armor.slot); // 기존 장비 해제
-            }
+            UnequipArmor(armor.slot); // 기존 장비 해제
+            Debug.Log($"[EquipmentManager] 기존 {equippedArmor.armor.name} 해제 후 {armor.name} 장착");
         }
 
         equippedArmors[armor.slot] = (armor, slot);
         ApplyStatBonus(armor);
+        RemoveSetBonus(); // 기존 보너스 제거 후
+        ApplySetBonus();
+
         OnEquipArmor?.Invoke(armor);
 
         string bonusLog = string.Join(", ", armor.statBonuses.Select(b => $"{b.statType} {b.bonusType} +{b.value}"));
         Debug.Log($"[Test] 장착 성공: {armor.name} → {armor.slot}, {bonusLog}");
-
-        RemoveSetBonus(); // 기존 보너스 제거 후
-        ApplySetBonus();
     }
 
     public void UnequipArmor(ArmorSlot slot)
@@ -108,14 +99,14 @@ public class EquipmentManager : MonoBehaviour
         if (equippedArmors.TryGetValue(slot, out var armor))
         {
             RemoveStatBonus(armor.armor);
+            RemoveSetBonus();
+
             equippedArmors.Remove(slot);
             OnUnequipArmor?.Invoke(armor.armor);
 
             string bonusLog = string.Join(", ", armor.armor.statBonuses.Select(b => $"{b.statType} {b.bonusType} -{b.value}"));
             Debug.Log($"[Test] 장착 해제: {armor.armor.name} → {armor.slot}, {bonusLog}");
         }
-        RemoveSetBonus();
-        ApplySetBonus();
     }
 
     public ArmorSO GetEquippedArmor(ArmorSlot slot)
@@ -183,6 +174,8 @@ public class EquipmentManager : MonoBehaviour
         return total;
     }
 
+    private Dictionary<StatType, float> baseStats = new Dictionary<StatType, float>();
+
     private void ApplyStatBonus(ArmorSO armor)
     {
         foreach (StatType statType in Enum.GetValues(typeof(StatType)))
@@ -190,11 +183,12 @@ public class EquipmentManager : MonoBehaviour
             var bonuses = armor.statBonuses.Where(b => b.statType == statType).ToList();
             if (bonuses.Count == 0) continue;
 
-            playerStatus.stats.TryGetValue(statType, out float baseValue);
-            float finalValue = StatBonusCalculator.ApplyBonuses(baseValue, bonuses);
+            playerStatus.stats.TryGetValue(statType, out float currentValue);
+            float modifiedValue = StatBonusCalculator.ApplyBonuses(currentValue, bonuses);
+            float finalValue = Mathf.Round(modifiedValue);
 
             playerStatus.SetStat(statType, finalValue);
-            Debug.Log($"[ApplyStatBonus] {statType}: {baseValue} → {finalValue}");
+            Debug.Log($"[ApplyStatBonus] {statType}: {currentValue} → {finalValue}");
         }
     }
 
@@ -206,10 +200,11 @@ public class EquipmentManager : MonoBehaviour
             if (bonuses.Count == 0) continue;
 
             playerStatus.stats.TryGetValue(statType, out float currentValue);
-            float restoredValue = StatBonusCalculator.RemoveBonuses(currentValue, bonuses);
+            float restoredValue = StatBonusCalculator.RemoveBonuses(currentValue, bonuses); //현재 값 기준으로 복구
+            float finalValue = Mathf.Round(restoredValue);
 
-            playerStatus.SetStat(statType, restoredValue);
-            Debug.Log($"[RemoveStatBonus] {statType}: {currentValue} → {restoredValue}");
+            playerStatus.SetStat(statType, finalValue);
+            Debug.Log($"[RemoveStatBonus] {statType}: {currentValue} → {finalValue}");
         }
     }
 
@@ -227,7 +222,7 @@ public class EquipmentManager : MonoBehaviour
                 return; // 하나라도 세트가 다르면 보너스 미적용
         }
 
-        // 모든 조건을 만족하면 세트 보너스 적용
+
         if (!isSetBonusApplied)
         {
             isSetBonusApplied = true;
@@ -236,17 +231,21 @@ public class EquipmentManager : MonoBehaviour
             {
                 foreach (var bonus in bonusData.Bonuses)
                 {
-                    playerStatus.stats.TryGetValue(bonus.stat, out float currentStat);
-                    float finalStat = currentStat * (1 + bonus.multiplier);
+                    if (!bonusData.baseValues.ContainsKey(bonus.stat))
+                    {
+                        bonusData.baseValues[bonus.stat] = playerStatus.stats[bonus.stat]; // 원래 값 저장
+                    }
 
+                    float finalStat = Mathf.Round(bonusData.baseValues[bonus.stat] * (1 + bonus.multiplier)); // 반올림 적용
                     playerStatus.SetStat(bonus.stat, finalStat);
 
-                    // UI 텍스트 적용
                     UIManager.Instance.statUI.equippedItemUI.SetBonusText
                         ($"{bonusData.SetName} 세트", $"{bonusData.Description}");
+
                 }
             }
-            Debug.Log($"{setName} 세트 보너스 적용");
+ 
+            Debug.Log($"{setName} 세트 보너스 적용됨");
         }
     }
 
@@ -259,21 +258,18 @@ public class EquipmentManager : MonoBehaviour
             // 방어구의 세트 이름 체크
             string setName = equippedArmors.First().Value.armor.setName;
 
-            // 해당 세트 보너스 제거
             if (ArmorSetBonus.SetBonuses.TryGetValue(setName, out ArmorSetBonus bonusData))
             {
                 foreach (var bonus in bonusData.Bonuses)
                 {
-                    playerStatus.stats.TryGetValue(bonus.stat, out float currentStat);
-                    float restoredStat = currentStat / (1 + bonus.multiplier);
-
-                    playerStatus.SetStat(bonus.stat, restoredStat);
-
+                    if (baseStats.ContainsKey(bonus.stat))
+                    {
+                        playerStatus.SetStat(bonus.stat, bonusData.baseValues[bonus.stat]); // 기본 값으로 복구
+                    }
                     Debug.Log($"{setName} 세트 보너스 제거");
                 }
             }
 
-            // UI 텍스트 초기화
             UIManager.Instance.statUI.equippedItemUI.ResetBonusText();
         }
     }
