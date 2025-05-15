@@ -29,31 +29,40 @@ public class ArmorSetBonus
                 (StatType.DEF, 0.1f)
             })
         },
-        { "황금", new ArmorSetBonus("황금", "최대 체력 +10%, 공격력 +10%, 크리티컬 확률 +5%", new List<(StatType, float)>
-            {
-                (StatType.MaxHP, 0.1f),
-                (StatType.ATK, 0.1f),
-                (StatType.CRITICAL, 0.05f)
-            })
-        },
-        { "Ruby", new ArmorSetBonus("Ruby", "최대 체력 +10%, 방어력 +10%, 공격력 +20%, 크리티컬 확률 +10%", new List<(StatType, float)>
-            {
-                (StatType.MaxHP, 0.1f),
-                (StatType.DEF, 0.1f),
-                (StatType.ATK, 0.2f),
-                (StatType.CRITICAL, 0.1f)
-            })
-        },
-        { "다이아몬드", new ArmorSetBonus("다이아몬드", "모든 스탯 +20%", new List<(StatType, float)>
+        { "황금", new ArmorSetBonus("황금", "최대 체력 +20%, 방어력 +20%, 공격력 +10%", new List<(StatType, float)>
             {
                 (StatType.MaxHP, 0.2f),
-                (StatType.MaxMP, 0.2f),
                 (StatType.DEF, 0.2f),
-                (StatType.SPEED, 0.2f),
-                (StatType.ATK, 0.2f),             
-                (StatType.CRITICAL, 0.2f),
-                (StatType.CRITICAL_DAMAGE, 0.2f),
-                (StatType.COOLDOWN_REDUCTION, 0.2f)
+                (StatType.ATK, 0.1f)
+            })
+        },
+        //{ "Ruby", new ArmorSetBonus("Ruby", "최대 체력 +10%, 방어력 +10%, 공격력 +20%, 크리티컬 확률 +10%", new List<(StatType, float)>
+        //    {
+        //        (StatType.MaxHP, 0.1f),
+        //        (StatType.DEF, 0.1f),
+        //        (StatType.ATK, 0.2f),
+        //        (StatType.CRITICAL, 10f)
+        //    })
+        //},
+        { "다이아몬드", new ArmorSetBonus("다이아몬드", "최대 체력 +30%, 방어력 +30%, 공격력 +20%", new List<(StatType, float)>
+            {
+                (StatType.MaxHP, 0.3f),
+                (StatType.DEF, 0.3f),
+                (StatType.ATK, 0.2f)            
+                
+            })
+        },
+        { "광전사", new ArmorSetBonus("광전사", "최대 체력 -30%, 방어력 -30%, 공격력 +40%", new List<(StatType, float)>
+            {
+                (StatType.MaxHP, -0.3f),
+                (StatType.DEF, -0.3f),
+                (StatType.ATK, 0.4f)
+            })
+        },
+        { "암살자", new ArmorSetBonus("암살자", "크리티컬 확률 +30%, 크리티컬 데미지 30%", new List<(StatType, float)>
+            {
+                (StatType.CRITICAL, 30f),
+                (StatType.CRITICAL_DAMAGE, 30f),
             })
         }
     };

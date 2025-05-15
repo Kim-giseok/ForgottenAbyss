@@ -470,9 +470,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inputVec: {x: 0, y: 0}
-  jumpPower: 10
   dashDistance: 2
   dashTime: 0.25
+  dashCost: 10
+  jumpPower: 10
   jumplimit: 2
   currentJumpCount: 0
   platformLayerMask:
@@ -496,7 +497,6 @@ MonoBehaviour:
   interaction: {fileID: 0}
   status: {fileID: 0}
   currentState: 0
-  previousState: 0
   isFacingRight: 1
   groundCheckRadius: 0.2
   groundLayer:
