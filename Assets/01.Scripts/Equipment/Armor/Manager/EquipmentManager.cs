@@ -116,6 +116,9 @@ public class EquipmentManager : MonoBehaviour
         }
         RemoveSetBonus();
         ApplySetBonus();
+
+        var slotUI = GetEquippedArmorSlot(slot);
+        slotUI?.RefreshOutline();
     }
 
     public ArmorSO GetEquippedArmor(ArmorSlot slot)
