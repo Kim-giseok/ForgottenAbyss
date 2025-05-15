@@ -1,6 +1,6 @@
 using UnityEngine.Rendering.Universal;
 
-public class LightManager: SingletonLoadRemain<LightManager>
+public class LightManager: Singleton<LightManager>
 {
     public Light2D globalLight;
 }
