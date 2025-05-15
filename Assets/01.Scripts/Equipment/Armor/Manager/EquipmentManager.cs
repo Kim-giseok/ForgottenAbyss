@@ -194,6 +194,8 @@ public class EquipmentManager : MonoBehaviour
 
     private void RemoveStatBonus(ArmorSO armor)
     {
+        RemoveSetBonus();
+
         foreach (StatType statType in Enum.GetValues(typeof(StatType)))
         {
             var bonuses = armor.statBonuses.Where(b => b.statType == statType).ToList();
@@ -262,7 +264,7 @@ public class EquipmentManager : MonoBehaviour
             {
                 foreach (var bonus in bonusData.Bonuses)
                 {
-                    if (baseStats.ContainsKey(bonus.stat))
+                    if (bonusData.baseValues.ContainsKey(bonus.stat))
                     {
                         playerStatus.SetStat(bonus.stat, bonusData.baseValues[bonus.stat]); // 기본 값으로 복구
                     }
