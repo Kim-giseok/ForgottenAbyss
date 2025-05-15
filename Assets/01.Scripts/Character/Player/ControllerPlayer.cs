@@ -237,9 +237,7 @@ public class ControllerPlayer : MonoBehaviour
                 }
             }
         }
-    }
-
-    
+    }    
 
     void OnInteraction() //��ȣ �ۿ� Ű �Է�
     {
@@ -374,7 +372,6 @@ public class ControllerPlayer : MonoBehaviour
         {
             states[currentState].OnTriggerExit(collision);
         }
-
     }
 
     public void SetInvincibility(bool isInvincible)

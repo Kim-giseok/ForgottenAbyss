@@ -111,7 +111,4 @@ public class ClimbState : PlayerStateMachine
             player.ChangeState(PlayerState.Idle);
         }
     }
-
 }
-    
-
