@@ -43,6 +43,7 @@ public class ClimbState : PlayerStateMachine
         player.animator.SetBool("IsLadder", false);
         player.rigid.gravityScale = originalGravity;
 
+        player.rigid.velocity = Vector2.zero;
         player.playerCollider.excludeLayers = 0;
     }
 

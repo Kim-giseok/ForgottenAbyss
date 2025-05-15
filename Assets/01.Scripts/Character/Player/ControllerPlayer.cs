@@ -22,13 +22,14 @@ public class ControllerPlayer : MonoBehaviour
     public int jumplimit; //점프 횟수 제한
     public int currentJumpCount; //현재 점프 카운트
     public bool CanJump => jumplimit > currentJumpCount;
-    public LayerMask platformLayerMask; 
-    public LayerMask invincibilityLayerMask; 
+    public LayerMask platformLayerMask;
+    public LayerMask invincibilityLayerMask;
 
-    public bool isGround; 
-    public bool isDashing = false; 
-    public bool isAttacking = false; 
-    public bool isInvincible = false; 
+    [Header("")]
+    public bool isGround;
+    public bool isDashing = false;
+    public bool isAttacking = false;
+    public bool isInvincible = false;
     private bool dashBuffered = false;
     public bool isAlive = true;
     public bool canAttack = true;
@@ -45,9 +46,8 @@ public class ControllerPlayer : MonoBehaviour
     PlayerSound playerSound;
 
     // FSM
-    private Dictionary<PlayerState, PlayerStateMachine> states = new ();
+    private Dictionary<PlayerState, PlayerStateMachine> states = new();
     public PlayerState currentState;
-    public PlayerState previousState;
 
     public bool isFacingRight = true;
 
@@ -73,7 +73,7 @@ public class ControllerPlayer : MonoBehaviour
 
     private void InitStateMachine()
     {
-        
+
         states.Add(PlayerState.Idle, new IdleState(this));
         states.Add(PlayerState.Run, new RunState(this));
         states.Add(PlayerState.Jump, new JumpState(this));
@@ -110,18 +110,15 @@ public class ControllerPlayer : MonoBehaviour
     {
         if (!isAlive) return;
 
-        previousState = currentState;
-
-       
         if (states.ContainsKey(currentState))
         {
             states[currentState].Exit();
         }
 
-        
+
         currentState = newState;
 
-        
+
         if (states.ContainsKey(currentState))
         {
             states[currentState].Enter();
@@ -130,7 +127,7 @@ public class ControllerPlayer : MonoBehaviour
 
     private void Update()
     {
-        
+
         if (states.ContainsKey(currentState))
         {
             states[currentState].Update();
@@ -138,7 +135,7 @@ public class ControllerPlayer : MonoBehaviour
 
         AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
 
-        if (!isGround &&  rigid.velocity.y < 0)
+        if (!isGround && rigid.velocity.y < 0)
         {
             if (!stateInfo.IsTag("Attack") && !stateInfo.IsTag("Ladder") && !stateInfo.IsTag("WallSlide") && !stateInfo.IsTag("Dash"))
             {
@@ -170,13 +167,13 @@ public class ControllerPlayer : MonoBehaviour
         //CheckWall();
     }
     private void FixedUpdate()
-    {        
+    {
         if (states.ContainsKey(currentState))
         {
             states[currentState].FixedUpdate();
         }
 
-        UpdateGroundCheck();      
+        UpdateGroundCheck();
     }
 
     void OnMove(InputValue value)
@@ -190,7 +187,7 @@ public class ControllerPlayer : MonoBehaviour
         }
     }
 
-   
+
     void OnJump(InputValue value)
     {
         if (!isAlive) return;
@@ -237,12 +234,12 @@ public class ControllerPlayer : MonoBehaviour
                 }
             }
         }
-    }    
+    }
 
     void OnInteraction() //��ȣ �ۿ� Ű �Է�
     {
         if (!isAlive) return;
-       
+
         if (states.ContainsKey(currentState))
         {
             states[currentState].OnInteraction();
@@ -266,7 +263,7 @@ public class ControllerPlayer : MonoBehaviour
         Debug.Log("Z: �ٸ������ ��ȯ");
     }
 
-    
+
     public void UpdateDirection() //���� ��ȯ
     {
         AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
@@ -281,7 +278,7 @@ public class ControllerPlayer : MonoBehaviour
             transform.localEulerAngles = new Vector3(0, 180, 0);
             lastDirectionChangeTime = Time.time;
 
-            canSkill = false; 
+            canSkill = false;
             canAttack = false;
             StartCoroutine(EnableSkillAfterDelay());
         }
@@ -307,7 +304,7 @@ public class ControllerPlayer : MonoBehaviour
 
     public void OnCollisionEnter2D(Collision2D collision)
     {
-       
+
         if (states.ContainsKey(currentState))
         {
             states[currentState].OnCollisionEnter(collision);
@@ -321,7 +318,7 @@ public class ControllerPlayer : MonoBehaviour
             currentJumpCount = 0;
             rigid.velocity = Vector3.zero;
         }
-       
+
         if (collision.gameObject.layer == LayerMask.NameToLayer("Wall"))
         {
             Debug.Log("1");
@@ -331,11 +328,11 @@ public class ControllerPlayer : MonoBehaviour
     }
 
     public void OnCollisionExit2D(Collision2D collision)
-    {        
+    {
         if (states.ContainsKey(currentState))
         {
             states[currentState].OnCollisionExit(collision);
-        }        
+        }
     }
 
     public void OnTriggerStay2D(Collider2D collision)
@@ -368,7 +365,7 @@ public class ControllerPlayer : MonoBehaviour
 
             foreach (Collider2D Collider in Colliders) //�ݶ��̴� ����
             {
-                if (Collider != null )
+                if (Collider != null)
                 {
                     Physics2D.IgnoreCollision(playerCollider, Collider, true);
                 }
@@ -378,7 +375,7 @@ public class ControllerPlayer : MonoBehaviour
         {
             spriteRenderer.color = new Color(1f, 1f, 1f, 1f);
             ResetIgnoredCollision(); //무적 판정 종료
-        }   
+        }
     }
 
     public void ResetIgnoredCollision()
@@ -406,26 +403,26 @@ public class ControllerPlayer : MonoBehaviour
         BoltsPool.Instance.CreateMelee(transform, 10);
 
         yield return new WaitForSeconds(0.1f);
-              
+
         isAttacking = false;
         animator.SetBool("IsAttacking", false);
         BoltsPool.Instance.DestroyMelee(transform);
 
-        
+
         if (inputVec.x != 0)
         {
             animator.SetBool("IsRun", true);
             rigid.velocity = new Vector2(inputVec.x * speed, rigid.velocity.y);
         }
     }
- 
+
     public IEnumerator InvincibleEffect()
     {
         while (isInvincible)
         {
             spriteRenderer.color = new Color(1f, 1f, 1f, 0.3f);
             yield return null;
-        }  
+        }
     }
 
     private void OnDrawGizmos()

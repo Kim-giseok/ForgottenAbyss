@@ -8,14 +8,11 @@ public class IdleState : PlayerStateMachine
 
     public override void Enter()
     {
-        //player.IgnorePlatformCollision();
+        base.Enter();
         player.animator.SetBool("IsRun", false);
         player.animator.SetBool("IsJump", false);
 
-        if(player.previousState == PlayerState.Climb)
-            player.rigid.velocity = Vector2.zero;
-        else
-            player.rigid.velocity = new Vector2(0, player.rigid.velocity.y);
+        player.rigid.velocity = new Vector2(0, player.rigid.velocity.y);
 
         SkillController.Instance.ResetAttack();
     }
@@ -32,6 +29,7 @@ public class IdleState : PlayerStateMachine
 
     public override void OnJump()
     {
+        base.OnJump();
         if (player.CanJump && player.isGround)
         {
             player.ChangeState(PlayerState.Jump);
@@ -40,6 +38,7 @@ public class IdleState : PlayerStateMachine
 
     public override void OnInteraction()
     {
+        base.OnInteraction();
         player.ChangeState(PlayerState.Interaction);
     }
 }
