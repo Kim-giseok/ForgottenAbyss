@@ -135,10 +135,6 @@ public class PlayerStatus : CharacterStatus
             }
 
             equippedArmorIDs.Clear();
-            foreach (var id in data.equippedArmorIDs)
-            {
-                equippedArmorIDs.Add(id);
-            }
 
             // UI 업데이트
             OnStatPointsChanged?.Invoke(availableStatPoints);
@@ -380,8 +376,6 @@ public class PlayerStatus : CharacterStatus
                 SetStat(statType, finalValue);
                 Debug.Log(finalValue);
 
-                SetHP(statType);
-
                 Debug.Log($"{statType} ����: +{statIncreases[statType]}");
             }
         }
@@ -397,51 +391,23 @@ public class PlayerStatus : CharacterStatus
 
     public bool InvestStatPoint(StatType statType)
     {
+        if (!stats.ContainsKey(statType) || availableStatPoints <= 0) return false;
 
-        bool isInvestable = false;
-        foreach (StatType type in investableStats)
-        {
-            if (type == statType)
-            {
-                isInvestable = true;
-                break;
-            }
-        }
-
-
-        if (availableStatPoints <= 0)
-        {
-            return false;
-        }
-
-
-        if (investedStatPoints[statType] >= maxStatInvestment[statType])
-        {
-            return false;
-        }
+        if (investedStatPoints[statType] >= maxStatInvestment[statType]) return false;
 
         // 패시브 스탯 투자 시
         availableStatPoints--;
         investedStatPoints[statType]++;
 
-        // 패시브 스탯 증가량 반영
-        float baseStat = GetBaseStat(statType);
+        float baseStat = GetBaseStat(statType) + statPointIncrease[statType];
+        float equipmentBonus = GetEquipmentBonus(statType);
+        float setBonusMultiplier = GetSetBonus(statType);
         Debug.Log(baseStat);
 
-        float newValue = baseStat + statPointIncrease[statType];
-        float finalValue = (newValue + GetEquipmentBonus(statType)) * GetSetBonus(statType);
+        float finalValue = (baseStat + equipmentBonus) * setBonusMultiplier;
 
         SetStat(statType, finalValue);
         Debug.Log(finalValue);
-
-        SetHP(statType);
-
-        //if (statType == StatType.MaxHP)
-        //{
-        //    float currentHP = stats[StatType.CurrentHP];
-        //    float increase = statPointIncrease[StatType.MaxHP];
-        //    SetStat(StatType.CurrentHP, currentHP + increase);
-        //}
 
         // 이벤트 구독
         OnStatPointsChanged?.Invoke(availableStatPoints);

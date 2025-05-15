@@ -85,7 +85,15 @@ public class CharacterStatus : MonoBehaviour
         if (!stats.ContainsKey(type)) return;
 
         setBonusMultipliers[type] = 1 + multiplier;
-        stats[type] = Mathf.Round(stats[type] * setBonusMultipliers[type]);
+
+        if (type == StatType.CRITICAL || type == StatType.CRITICAL_DAMAGE)
+        {
+            stats[type] = stats[type] + multiplier;
+        }
+        else
+        {
+            stats[type] = stats[type] * setBonusMultipliers[type];
+        }
 
         SetHP(type);
         OnStatChanged?.Invoke(type, stats[type]);
@@ -95,7 +103,15 @@ public class CharacterStatus : MonoBehaviour
     {
         if (!stats.ContainsKey(type)) return;
 
-        stats[type] = Mathf.Round(stats[type] / setBonusMultipliers[type]); //저장된 배율을 사용하여 복구
+        if (type == StatType.CRITICAL || type == StatType.CRITICAL_DAMAGE)
+        {
+            stats[type] = stats[type] - multiplier;
+        }
+        else
+        {
+            stats[type] = stats[type] / setBonusMultipliers[type];
+        }
+
         setBonusMultipliers.Remove(type);
 
         SetHP(type);
@@ -127,7 +143,7 @@ public class CharacterStatus : MonoBehaviour
 
         float setBonusMultiplier = setBonusMultipliers.ContainsKey(type) ? setBonusMultipliers[type] : 1.0f;
         float equipmentBonus = GetEquipmentBonus(type);
-        float baseValue = Mathf.Round((totalValue - equipmentBonus) / setBonusMultiplier);
+        float baseValue = (totalValue - equipmentBonus) / setBonusMultiplier;
 
         Debug.Log($"[DEBUG] {type} - Total: {totalValue}, Set Multiplier: {setBonusMultiplier}, Equip Bonus: {equipmentBonus}, Base: {baseValue}");
 
