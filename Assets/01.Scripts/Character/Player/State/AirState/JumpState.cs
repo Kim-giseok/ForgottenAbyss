@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class JumpState : PlayerStateMachine
+public class JumpState : AirState
 {
     public JumpState(ControllerPlayer player) : base(player) { }
 
@@ -57,12 +57,7 @@ public class JumpState : PlayerStateMachine
             ActivateFastFall();
             return;
         }
-        // 추가 점프가 가능하면 다시 자기 자신의 Enter() 호출
-        if (player.currentJumpCount < player.jumplimit)
-        {
-            // 현재 상태를 유지하면서 Enter() 메서드만 다시 호출
-            Enter();
-        }
+        base.OnJump();
     }
 
     public override void OnDash()
