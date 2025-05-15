@@ -11,18 +11,19 @@ public class EnemyRewardHandler : MonoBehaviour
 
     public void DropMemoryItem()
     {
-        FieldItemPool.Instance.CreateMemoryItem(transform.position + (Vector3.up * 0.5f), gameObject.name.Replace("(Clone)", ""));
+        FieldItemPool.Instance.CreateItem(typeof(MemorySkillItem).ToString(), transform.position + (Vector3.up * 0.5f), _rewardSO.memorySkillItem.itemName);
     }
 
     public void DropItem()
     {
         int currPercent = Random.Range(0, 100);
         
-        foreach (var item in _rewardSO.rewardItemInfos)
+        foreach (var itemInfo in _rewardSO.rewardItemInfos)
         {
-            if (currPercent <= item.percent)
+            if (currPercent <= itemInfo.percent)
             {
-                Instantiate(item.item, transform.position + (Vector3.up * 0.5f), Quaternion.identity);
+                var currType = itemInfo.item.GetType();
+                FieldItemPool.Instance.CreateItem(currType.ToString(), transform.position + (Vector3.up * 0.5f), itemInfo.item.itemName);
             }
         }
     }

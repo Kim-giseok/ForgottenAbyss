@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+using System;using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -12,45 +12,51 @@ public class FieldItemPool: SingletonLoadRemain<FieldItemPool>
     private readonly List<FieldGoldItem> _currCoins = new();
 
     public FieldItem memoryItem;
-    public Dictionary<string, MemorySkillItem> MemoryItemList { get; private set; } = new();
+    private Dictionary<string , Dictionary<string, Item>> ItemList { get; set; } = new();
     private readonly List<FieldItem> _currMemoryItems = new();
     
     protected override void OnSceneLoaded(Scene scene, LoadSceneMode mode) {}
 
     protected override void Init()
     {
-        Addressables.LoadAssetsAsync<MemorySkillItem>("MemoryItem", null).Completed += (handle) =>
+        Addressables.LoadAssetsAsync<Item>("Item", null).Completed += (handle) =>
         {
-            foreach (var memoryItemSO in handle.Result)
-            { 
-                MemoryItemList.Add(memoryItemSO.name, memoryItemSO);
+            foreach (var itemSO in handle.Result)
+            {
+                var currType = itemSO.GetType();
+                if (!ItemList.TryGetValue(currType.ToString(), out var dict))
+                {
+                    dict = new Dictionary<string, Item>();
+                    ItemList[currType.ToString()] = dict;
+                }
+                dict[itemSO.itemName] = itemSO;
             }
         };
     }
 
-    public void CreateMemoryItem(Vector2 position, string itemName)
+    public void CreateItem(string currType, Vector2 position, string itemName)
     {
-        var newMemoryItem = _currMemoryItems.Find(item => !item.gameObject.activeSelf);
-        if (!newMemoryItem)
+        var newFieldItem = _currMemoryItems.Find(item => !item.gameObject.activeSelf);
+        if (!newFieldItem)
         {
-            newMemoryItem = Instantiate(memoryItem, transform).GetComponent<FieldItem>();
-            _currMemoryItems.Add(newMemoryItem);
+            newFieldItem = Instantiate(memoryItem, transform).GetComponent<FieldItem>();
+            _currMemoryItems.Add(newFieldItem);
         }
-
-        if (MemoryItemList.TryGetValue(itemName, out var currSkillItem))
+        
+        if (ItemList[currType].TryGetValue(itemName, out var currItemSO))
         {
-            newMemoryItem.Define(currSkillItem);
+            newFieldItem.Define(currItemSO);
         }
         else
         {
-            newMemoryItem.gameObject.SetActive(false);
-            Debug.LogWarning("cannot find memory skill item SO");
+            newFieldItem.gameObject.SetActive(false);
+            Debug.LogWarning("cannot find item SO");
         }
         
-        newMemoryItem.transform.position = position;
+        newFieldItem.transform.position = position;
 
-        newMemoryItem.gameObject.SetActive(true);
-        newMemoryItem.Spawn();
+        newFieldItem.gameObject.SetActive(true);
+        newFieldItem.Spawn();
     }
     
 

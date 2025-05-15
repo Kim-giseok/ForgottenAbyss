@@ -17,6 +17,7 @@ public class FieldItem : MonoBehaviour
     public void Define(Item newItem)
     {
         item = newItem;
+        Debug.LogWarning(item.itemIcon);
         _renderers.Add(transform.GetChild(0).GetComponent<SpriteRenderer>());
         _renderers.Add(transform.GetChild(0).GetChild(0).GetComponent<SpriteRenderer>());
         _renderers.ForEach(spriteRenderer => spriteRenderer.sprite = item.itemIcon);
