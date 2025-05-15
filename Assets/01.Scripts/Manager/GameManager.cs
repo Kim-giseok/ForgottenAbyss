@@ -14,7 +14,6 @@ public class GameManager : SingletonLoadRemain<GameManager>
     public PlayerStatus pStatus;
     public CameraShake cameraShake;
     public CameraZoom cameraZoom;
-    public bool isInputPossible = true;
 
     protected override void Init()
     {
