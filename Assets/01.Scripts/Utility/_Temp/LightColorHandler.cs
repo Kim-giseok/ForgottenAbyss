@@ -3,9 +3,9 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
-public class LightHandler: MonoBehaviour
+public class LightColorHandler: MonoBehaviour
 {
-    public static LightHandler Instance { get; private set; }
+    public static LightColorHandler Instance { get; private set; }
     
     private Light2D _light;
     

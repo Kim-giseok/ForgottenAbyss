@@ -26,12 +26,11 @@ public class CueMachine
     public void Next()
     {
         if (IsFinish) return;
-        if (_scenario.Count <= 0)
+        _scenario.Dequeue()?.Invoke();
+        if (_scenario.Count == 0)
         { 
             IsFinish = true;
             OnFinish?.Invoke();
-            return;
         }
-        _scenario.Dequeue()?.Invoke();
     }
 }

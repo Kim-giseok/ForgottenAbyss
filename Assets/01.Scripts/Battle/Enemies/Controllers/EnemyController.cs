@@ -2,14 +2,20 @@ using System;
 using System.Collections;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 public class EnemyController : EnemyBaseController, IDamagable
 {
     public bool isBaked = false;
+    
     // status로 관리해야할까?
     public bool isIgnoreHitAnim;
     public Enemy enemyName;
+    
+    [SerializeField] private int level = 1;
+    public int Level => !level.Equals(EnemyLevelSystem.CurrLevel) ? level : EnemyLevelSystem.CurrLevel;
+    
     
     public EnemyResourceHandler resourceHandler { get; private set; }
     public EnemyStatusHandler statusHandler { get; private set; }

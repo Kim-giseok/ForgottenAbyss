@@ -4,8 +4,14 @@ using UnityEngine;
 
 public class EnemyResourceHandler: MonoBehaviour
 {
+    private EnemyController _controller;
     private EnemyStatSO _statSO;
     private readonly Dictionary<EnemyStatType, EnemyStat> _stats = new();
+
+    private void Awake()
+    {
+        _controller = GetComponent<EnemyController>();
+    }
     
     public void Define(EnemyStatSO newStatSO)
     {
@@ -13,15 +19,16 @@ public class EnemyResourceHandler: MonoBehaviour
 
         _statSO = newStatSO;
         
-        foreach (EnemyStatInfo statInfo in _statSO.stats)
+        foreach (var statInfo in _statSO.stats)
         {
+            var newValue = statInfo.value + statInfo.value * (_controller.Level * 0.1f);
             if (_stats.TryGetValue(statInfo.statType, out var existStat))
             {
-                existStat.Set(statInfo.value);
+                existStat.Set(newValue);
             }
             else
             {
-                _stats[statInfo.statType] = new EnemyStat(statInfo.statType, statInfo.value);
+                _stats[statInfo.statType] = new EnemyStat(statInfo.statType, newValue);
 
             }
         }
