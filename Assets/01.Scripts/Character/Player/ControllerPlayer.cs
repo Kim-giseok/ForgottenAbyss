@@ -9,19 +9,27 @@ using UnityEngine.SocialPlatforms;
 public class ControllerPlayer : MonoBehaviour
 {
     public Vector2 inputVec;
-    private float speed; 
-    public float jumpPower; //점프력
+    private float speed;
+
+    [Header("DashParameter")]
     public float dashDistance; //점프 거리
     public float dashTime; //대쉬 시간
+    public float dashCost = 10f;
+    public bool CanDash => status.stats[StatType.CurrentMP] >= dashCost && canDash && inputVec.x != 0;
+
+    [Header("JumpParameter")]
+    public float jumpPower; //점프력
     public int jumplimit; //점프 횟수 제한
     public int currentJumpCount; //현재 점프 카운트
-    public LayerMask platformLayerMask; 
-    public LayerMask invincibilityLayerMask; 
+    public bool CanJump => jumplimit > currentJumpCount;
+    public LayerMask platformLayerMask;
+    public LayerMask invincibilityLayerMask;
 
-    public bool isGround; 
-    public bool isDashing = false; 
-    public bool isAttacking = false; 
-    public bool isInvincible = false; 
+    [Header("")]
+    public bool isGround;
+    public bool isDashing = false;
+    public bool isAttacking = false;
+    public bool isInvincible = false;
     private bool dashBuffered = false;
     public bool isAlive = true;
     public bool canAttack = true;
@@ -38,9 +46,8 @@ public class ControllerPlayer : MonoBehaviour
     PlayerSound playerSound;
 
     // FSM
-    private Dictionary<PlayerState, PlayerStateMachine> states = new Dictionary<PlayerState, PlayerStateMachine>();
+    private Dictionary<PlayerState, PlayerStateMachine> states = new();
     public PlayerState currentState;
-    public PlayerState previousState;
 
     public bool isFacingRight = true;
 
@@ -66,7 +73,7 @@ public class ControllerPlayer : MonoBehaviour
 
     private void InitStateMachine()
     {
-        
+
         states.Add(PlayerState.Idle, new IdleState(this));
         states.Add(PlayerState.Run, new RunState(this));
         states.Add(PlayerState.Jump, new JumpState(this));
@@ -74,6 +81,8 @@ public class ControllerPlayer : MonoBehaviour
         states.Add(PlayerState.Interaction, new InteractionState(this));
         states.Add(PlayerState.Climb, new ClimbState(this));
         states.Add(PlayerState.Slide, new SlideState(this));
+        states.Add(PlayerState.Fall, new FallState(this));
+        states.Add(PlayerState.Drop, new DropState(this));
 
         // �ʱ� ���� ����
         if (currentState == 0 || !states.ContainsKey(currentState))
@@ -102,18 +111,15 @@ public class ControllerPlayer : MonoBehaviour
     {
         if (!isAlive) return;
 
-        previousState = currentState;
-
-       
         if (states.ContainsKey(currentState))
         {
             states[currentState].Exit();
         }
 
-        
+
         currentState = newState;
 
-        
+
         if (states.ContainsKey(currentState))
         {
             states[currentState].Enter();
@@ -122,7 +128,7 @@ public class ControllerPlayer : MonoBehaviour
 
     private void Update()
     {
-        
+
         if (states.ContainsKey(currentState))
         {
             states[currentState].Update();
@@ -130,7 +136,7 @@ public class ControllerPlayer : MonoBehaviour
 
         AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
 
-        if (!isGround &&  rigid.velocity.y < 0)
+        if (!isGround && rigid.velocity.y < 0)
         {
             if (!stateInfo.IsTag("Attack") && !stateInfo.IsTag("Ladder") && !stateInfo.IsTag("WallSlide") && !stateInfo.IsTag("Dash"))
             {
@@ -163,14 +169,12 @@ public class ControllerPlayer : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        
         if (states.ContainsKey(currentState))
         {
             states[currentState].FixedUpdate();
         }
 
         UpdateGroundCheck();
-      
     }
 
     void OnMove(InputValue value)
@@ -184,7 +188,7 @@ public class ControllerPlayer : MonoBehaviour
         }
     }
 
-   
+
     void OnJump(InputValue value)
     {
         if (!isAlive) return;
@@ -233,12 +237,10 @@ public class ControllerPlayer : MonoBehaviour
         }
     }
 
-    
-
     void OnInteraction() //��ȣ �ۿ� Ű �Է�
     {
         if (!isAlive) return;
-       
+
         if (states.ContainsKey(currentState))
         {
             states[currentState].OnInteraction();
@@ -262,7 +264,7 @@ public class ControllerPlayer : MonoBehaviour
         Debug.Log("Z: �ٸ������ ��ȯ");
     }
 
-    
+
     public void UpdateDirection() //���� ��ȯ
     {
         AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
@@ -277,7 +279,7 @@ public class ControllerPlayer : MonoBehaviour
             transform.localEulerAngles = new Vector3(0, 180, 0);
             lastDirectionChangeTime = Time.time;
 
-            canSkill = false; 
+            canSkill = false;
             canAttack = false;
             StartCoroutine(EnableSkillAfterDelay());
         }
@@ -303,7 +305,7 @@ public class ControllerPlayer : MonoBehaviour
 
     public void OnCollisionEnter2D(Collision2D collision)
     {
-       
+
         if (states.ContainsKey(currentState))
         {
             states[currentState].OnCollisionEnter(collision);
@@ -317,7 +319,7 @@ public class ControllerPlayer : MonoBehaviour
             currentJumpCount = 0;
             rigid.velocity = Vector3.zero;
         }
-       
+
         if (collision.gameObject.layer == LayerMask.NameToLayer("Wall"))
         {
             Debug.Log("1");
@@ -326,52 +328,41 @@ public class ControllerPlayer : MonoBehaviour
 
     }
 
-    public void OnCollisionStay2D(Collision2D collision)
-    {
-        //if (collision.gameObject.layer == LayerMask.NameToLayer("Wall"))
-        //{
-        //    ChangeState(PlayerState.Slide);
-        //}
-    }
-
     public void OnCollisionExit2D(Collision2D collision)
     {
-        
         if (states.ContainsKey(currentState))
         {
             states[currentState].OnCollisionExit(collision);
         }
-        
     }
 
     public void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Climb") && inputVec.y > 0)
-        {
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Climb") && inputVec.y != 0)
             ChangeState(PlayerState.Climb);
-        }
-
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Climb") && inputVec.y < 0)
-        {
-            ChangeState(PlayerState.Climb);
-        }
 
         if (states.ContainsKey(currentState))
-        {
             states[currentState].OnTriggerStay(collision);
-        }
-
     }
+
     public void OnTriggerExit2D(Collider2D collision)
     {
         if (states.ContainsKey(currentState))
         {
             states[currentState].OnTriggerExit(collision);
         }
-
     }
 
-    public void SetInvincibility(bool isInvincible)
+    public void SetInvincibility(float invintime) => StartCoroutine(DuringInvin(invintime));
+
+    IEnumerator DuringInvin(float invnitime)
+    {
+        SetInvincibility(true);
+        yield return new WaitForSeconds(invnitime);
+        SetInvincibility(false);
+    }
+
+    void SetInvincibility(bool isInvincible)
     {
         this.isInvincible = isInvincible;
 
@@ -384,7 +375,7 @@ public class ControllerPlayer : MonoBehaviour
 
             foreach (Collider2D Collider in Colliders) //�ݶ��̴� ����
             {
-                if (Collider != null )
+                if (Collider != null)
                 {
                     Physics2D.IgnoreCollision(playerCollider, Collider, true);
                 }
@@ -394,7 +385,7 @@ public class ControllerPlayer : MonoBehaviour
         {
             spriteRenderer.color = new Color(1f, 1f, 1f, 1f);
             ResetIgnoredCollision(); //무적 판정 종료
-        }   
+        }
     }
 
     public void ResetIgnoredCollision()
@@ -422,12 +413,12 @@ public class ControllerPlayer : MonoBehaviour
         BoltsPool.Instance.CreateMelee(transform, 10);
 
         yield return new WaitForSeconds(0.1f);
-              
+
         isAttacking = false;
         animator.SetBool("IsAttacking", false);
         BoltsPool.Instance.DestroyMelee(transform);
 
-        
+
         if (inputVec.x != 0)
         {
             animator.SetBool("IsRun", true);
@@ -435,32 +426,13 @@ public class ControllerPlayer : MonoBehaviour
         }
     }
 
-    public void IgnorePlatformCollision()
-    {
-        //Debug.Log($"Velocity Y: {rigid.velocity.y}, IgnoreCollision 적용: {rigid.velocity.y < 0}");
-        Collider2D[] platformColliders = Physics2D.OverlapCircleAll(transform.position, 10f, platformLayerMask);
-
-        foreach (Collider2D platformCollider in platformColliders) 
-        {
-            if (rigid.velocity.y < 0)
-            {
-                Physics2D.IgnoreCollision(playerCollider, platformCollider, false);
-            }
-            else if (rigid.velocity.y > 0f)
-            {
-                Physics2D.IgnoreCollision(playerCollider, platformCollider, true);
-            }
-        }
-    }
-
-   
     public IEnumerator InvincibleEffect()
     {
         while (isInvincible)
         {
             spriteRenderer.color = new Color(1f, 1f, 1f, 0.3f);
             yield return null;
-        }  
+        }
     }
 
     private void OnDrawGizmos()

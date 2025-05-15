@@ -233,7 +233,16 @@ public class EquipmentManager : MonoBehaviour
             {
                 foreach (var bonus in bonusData.Bonuses)
                 {
-                    playerStatus.ApplySetBonus(bonus.stat, bonus.multiplier);
+                    //playerStatus.ApplySetBonus(bonus.stat, bonus.multiplier);
+
+                    playerStatus.stats.TryGetValue(bonus.stat, out float currentStat);
+                    //float finalStat = currentStat * (1 + bonus.multiplier);
+                    float finalStat;
+
+                    if (bonus.stat == StatType.CRITICAL || bonus.stat == StatType.CRITICAL_DAMAGE) // 치명타 확률, 치명타 데미지
+                        finalStat = currentStat + bonus.multiplier; // 덧셈 방식
+                    else
+                        finalStat = currentStat * (1 + bonus.multiplier); // 곱셈 방식
 
                     UIManager.Instance.statUI.equippedItemUI.SetBonusText($"{bonusData.SetName} 세트", $"{bonusData.Description}");
                 }
@@ -256,7 +265,16 @@ public class EquipmentManager : MonoBehaviour
             {
                 foreach (var bonus in bonusData.Bonuses)
                 {
-                    playerStatus.RemoveSetBonus(bonus.stat, bonus.multiplier);
+                    //playerStatus.RemoveSetBonus(bonus.stat, bonus.multiplier);
+
+                    playerStatus.stats.TryGetValue(bonus.stat, out float currentStat);
+                    //float restoredStat = currentStat / (1 + bonus.multiplier);
+                    float restoredStat;
+
+                    if (bonus.stat == StatType.CRITICAL || bonus.stat == StatType.CRITICAL_DAMAGE)
+                        restoredStat = currentStat - bonus.multiplier;
+                    else
+                        restoredStat = currentStat / (1 + bonus.multiplier); 
 
                     Debug.Log($"{setName} 세트 보너스 제거 → {bonus.stat}");
                 }
@@ -424,7 +442,7 @@ public class EquipmentManager : MonoBehaviour
         public ArmorSlot slot;
         public int armorId;
     }
-
+            
     public bool IsEquipped(ArmorSO armor)
     {
         if (armor == null) return false;

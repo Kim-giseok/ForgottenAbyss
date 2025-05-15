@@ -16,9 +16,10 @@ MonoBehaviour:
   itemName: "\uD669\uAE08 \uAC11\uC637"
   itemIcon: {fileID: -1935334860, guid: 14b217cd54e39f04883c5c75a1fa39ca, type: 3}
   itemType: 0
-  itemDescription: "\uCD5C\uB300\uCCB4\uB825 +50, \uBC29\uC5B4\uB825 +30%"
-  currentAmount: 1
   maxStack: 99
+  isConsumable: 0
+  itemDescription: "[\uD669\uAE08] \uCD5C\uB300\uCCB4\uB825 +50, \uBC29\uC5B4\uB825
+    +30%"
   armorId: 409
   slot: 1
   setName: "\uD669\uAE08"
@@ -27,5 +28,5 @@ MonoBehaviour:
     value: 50
     bonusType: 0
   - statType: 5
-    value: 20
+    value: 30
     bonusType: 1
