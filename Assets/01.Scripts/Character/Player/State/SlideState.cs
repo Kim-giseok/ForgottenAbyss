@@ -9,18 +9,16 @@ public class SlideState : PlayerStateMachine
     public SlideState(ControllerPlayer player) : base(player) { }
 
     public float originalGravity;
-    public float originaljumpPower;
     public float wallCheckDistance = 0.5f;
 
     public override void Enter()
     {
+        base.Enter();
         Debug.Log("Slide");
 
         player.animator.SetBool("IsWall", true);
 
         originalGravity = player.rigid.gravityScale;
-
-        originaljumpPower = player.jumpPower;
 
         player.rigid.velocity = new Vector2(0, player.rigid.velocity.y);
 
@@ -35,11 +33,11 @@ public class SlideState : PlayerStateMachine
         //    player.ChangeState(PlayerState.Idle);
         //    return;
         //}
-
     }
 
     public override void Update()
     {
+        base.Update();
         Vector2 headPosition = new Vector2(player.transform.position.x,
             player.transform.position.y + player.playerCollider.bounds.extents.y);
 
@@ -49,34 +47,25 @@ public class SlideState : PlayerStateMachine
 
         RaycastHit2D hit = Physics2D.Raycast(headPosition, Direction, wallCheckDistance, 1 << LayerMask.NameToLayer("Wall"));
 
-        //if(hit.collider != null)
-        //{
-        //    Debug.Log("슬라이딩");
-        //}
         if (hit.collider == null)
         {
-            if (player.inputVec.x == 0)
-            {
-                player.ChangeState(PlayerState.Idle);
-            }
-            else
-            {
-                player.ChangeState(PlayerState.Run);
-            }
+            player.ChangeState(PlayerState.Idle);
             return;
         }
     }
 
     public override void Exit()
     {
+        base.Exit();
         player.animator.SetBool("IsWall", false);
         player.rigid.gravityScale = originalGravity;
-        player.jumpPower = originaljumpPower;
     }
 
     public override void OnJump()
     {
-        player.ChangeState(PlayerState.Jump);
+        base.OnJump();
+        if (player.CanJump)
+            player.ChangeState(PlayerState.Jump);
         Debug.Log("Space");
     }
 
@@ -87,7 +76,7 @@ public class SlideState : PlayerStateMachine
     //        player.transform.position.y + player.playerCollider.bounds.extents.y);
 
     //    Vector2 Direction = player.transform.right;
-        
+
     //    Debug.DrawRay(headPosition - new Vector2(0, 0.1f), Direction * wallCheckDistance, Color.red);
 
     //    RaycastHit2D hit = Physics2D.Raycast(origin, direction, wallCheckDistance, LayerMask.NameToLayer("Wall"));
@@ -101,17 +90,15 @@ public class SlideState : PlayerStateMachine
 
     public override void OnCollisionEnter(Collision2D collision)
     {
-        if(collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
-        {
+        base.OnCollisionEnter(collision);
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
             player.ChangeState(PlayerState.Idle);
-        }
     }
 
     public override void OnCollisionExit(Collision2D collision)
     {
+        base.OnCollisionExit(collision);
         if (collision.gameObject.layer == LayerMask.NameToLayer("Wall"))
-        {
             player.ChangeState(PlayerState.Idle);
-        }
     }
 }

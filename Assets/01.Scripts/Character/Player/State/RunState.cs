@@ -8,16 +8,19 @@ public class RunState : PlayerStateMachine
     public RunState(ControllerPlayer player) : base(player) { }
     public override void Enter()
     {
+        base.Enter();
         player.animator.SetBool("IsRun", true);
     }
 
     public override void Exit()
     {
+        base.Exit();
         player.animator.SetBool("IsRun", false);
     }
 
     public override void Update()
     {
+        base.Update();
         AnimatorStateInfo stateInfo = player.animator.GetCurrentAnimatorStateInfo(0);
 
         if (!stateInfo.IsTag("Attack") && player.inputVec.x == 0)
@@ -28,6 +31,7 @@ public class RunState : PlayerStateMachine
 
     public override void FixedUpdate()
     {
+        base.FixedUpdate();
         float currentSpeed = player.status.stats[StatType.SPEED];
 
         AnimatorStateInfo stateInfo = player.animator.GetCurrentAnimatorStateInfo(0);
@@ -43,21 +47,11 @@ public class RunState : PlayerStateMachine
             player.ChangeState(PlayerState.Fall);
     }
 
-    //public override void OnMove(Vector2 inputVec)
-    //{
-    //    AnimatorStateInfo stateInfo = player.animator.GetCurrentAnimatorStateInfo(0);
-
-    //    if (inputVec.x == 0 && !stateInfo.IsTag("Attack"))
-    //    {
-    //        player.ChangeState(PlayerState.Idle);
-    //    }
-    //}
     public override void OnJump()
     {
+        base.OnJump();
         if (player.CanJump && player.isGround)
-        {
             player.ChangeState(PlayerState.Jump);
-        }
     }
 
     public override void OnDash()

@@ -17,15 +17,9 @@ public class JumpState : AirState
             // 첫 번째 점프
             player.animator.SetBool("IsJump", true);
             player.isGround = false;
-            player.currentJumpCount = 1;
-            playerSound.JumpSound();
         }
-        else
-        {
-            // 더블 점프 (또는 추가 점프)
-            player.currentJumpCount++;
-            playerSound.JumpSound();
-        }
+        player.currentJumpCount++;
+        playerSound.JumpSound();
 
         // 공통 점프 로직
         player.rigid.velocity = new Vector2(player.rigid.velocity.x, 0); // y축 속도 초기화
@@ -49,26 +43,16 @@ public class JumpState : AirState
     public override void OnJump()
     {
         if (player.inputVec.y < 0)
-        {
             ActivateFastFall();
-            return;
-        }
-        base.OnJump();
+        else
+            base.OnJump();
     }
 
     public override void OnCollisionEnter(Collision2D collision)
     {
+        base.OnCollisionEnter(collision);
         if (collision.gameObject.CompareTag("Ground"))
-        {
-            if (player.inputVec.x != 0)
-            {
-                player.ChangeState(PlayerState.Run);
-            }
-            else
-            {
-                player.ChangeState(PlayerState.Idle);
-            }
-        }
+            player.ChangeState(PlayerState.Idle);
     }
 
     private void ActivateFastFall()
@@ -76,7 +60,7 @@ public class JumpState : AirState
         if (!isFastFalling)
         {
             isFastFalling = true;
-                       
+
             // 플레이어가 움직이지 않도록 수평 속도를 0으로 설정
             player.rigid.velocity = new Vector2(0, -fastFallSpeed);
         }
