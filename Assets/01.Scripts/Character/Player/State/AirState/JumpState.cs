@@ -36,13 +36,10 @@ public class JumpState : AirState
     }
     public override void FixedUpdate()
     {
+        base.FixedUpdate();
         if (isFastFalling)
         {
             player.rigid.velocity = new Vector2(0, -fastFallSpeed);
-        }
-        else
-        {
-            player.rigid.velocity = new Vector2(player.inputVec.x * player.status.stats[StatType.SPEED], player.rigid.velocity.y);
         }
         player.UpdateDirection();
 
