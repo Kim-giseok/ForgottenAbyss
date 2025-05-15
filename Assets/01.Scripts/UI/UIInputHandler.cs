@@ -30,14 +30,11 @@ public class UIInputHandler : MonoBehaviour
 
     private void Update()
     {
-        if (GameManager.Instance.isInputPossible)
+        foreach (var entry in keyActions)
         {
-            foreach (var entry in keyActions)
+            if (Input.GetKeyDown(entry.Key))
             {
-                if (Input.GetKeyDown(entry.Key))
-                {
-                    entry.Value?.Invoke();
-                }
+                entry.Value?.Invoke();
             }
         }
     }

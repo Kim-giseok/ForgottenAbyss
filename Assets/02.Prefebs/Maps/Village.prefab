@@ -3871,19 +3871,7 @@ MonoBehaviour:
     \uB9C8\uC8FC\uD558\uB294 \uC77C\uC774\uC57C. \uC900\uBE44\uB294 \uB418\uC5C8\uB098?"
   displayEndEvents:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1536459385783876334, guid: fc2f9e15b1bc64ab5bd01c470f510edc, type: 3}
-        m_TargetAssemblyTypeName: SceneMediator, Assembly-CSharp
-        m_MethodName: SetCutSceneMode
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &452882852566652620
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3912,18 +3900,6 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1536459385783876334, guid: fc2f9e15b1bc64ab5bd01c470f510edc, type: 3}
-        m_TargetAssemblyTypeName: SceneMediator, Assembly-CSharp
-        m_MethodName: SetCutSceneMode
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
         m_CallState: 2
   unactivatedEvent:
     m_PersistentCalls:
@@ -8265,9 +8241,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2200350032846286578, guid: 48de69252ef3ce94f9f97f5961a0241c, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4605273709569782057}
-    - targetCorrespondingSourceObject: {fileID: 2200350032846286578, guid: 48de69252ef3ce94f9f97f5961a0241c, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2322712547619864736}
   m_SourcePrefab: {fileID: 100100000, guid: 48de69252ef3ce94f9f97f5961a0241c, type: 3}
 --- !u!95 &791263999335083736 stripped
 Animator:
@@ -8319,39 +8292,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-  unactivatedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  isLoop: 0
-  waitTime: 0
---- !u!114 &2322712547619864736
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5637289032125631535}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc8cc23607f355545b64ad8dfc0dd081, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sentences:
-  - "\uC7A0\uAE50"
-  - "\uAE30\uC5B5\uC744 \uB418\uCC3E\uAE30 \uC704\uD574\uC11C\uB294 \uB9CC\uBC18\uC758
-    \uC900\uBE44\uB97C \uD574\uC57C\uD560 \uAC70\uC57C"
-  - "\uC0C1\uC810\uC5D0\uB294 \uC7A5\uBE44,\uBB3C\uC57D \uB4F1 \uD544\uC694\uD55C
-    \uBB3C\uD488\uB4E4\uC774 \uC788\uC9C0"
-  - "\uC6B0\uCE21 \uC0C1\uB2E8\uC758 \uC2A4\uD06C\uB864\uC744 \uB204\uB974\uBA74
-    \uAC00\uC774\uB4DC\uB97C \uBCFC \uC218 \uC788\uC744\uAC70\uC57C"
-  - "\uB808\uBCA8\uC5C5\uC744 \uD558\uBA74 \uC2A4\uD0EF \uD3EC\uC778\uD2B8\uB85C
-    \uD328\uC2DC\uBE0C \uC2A4\uD0AC\uC5D0 \uD22C\uC790\uD574 \uAC15\uD574\uC9C8 \uC218
-    \uC788\uB124"
-  - "\uBB34\uAE30\uC0C1\uC790\uC5D0\uC11C \uBB34\uAE30\uB97C \uAC00\uC838\uAC00\uB294
-    \uAC83\uB3C4 \uC78A\uC9C0\uB9D0\uAC8C"
-  displayEndEvents:
-    m_PersistentCalls:
-      m_Calls:
       - m_Target: {fileID: 4263429615369525729}
         m_TargetAssemblyTypeName: LaberBase, Assembly-CSharp
         m_MethodName: DisSwitchMachine
@@ -8362,8 +8302,13 @@ MonoBehaviour:
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 0
+          m_BoolArgument: 1
         m_CallState: 2
+  unactivatedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  isLoop: 0
+  waitTime: 0
 --- !u!4 &6308823142591816523 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 522394515444416918, guid: 48de69252ef3ce94f9f97f5961a0241c, type: 3}
