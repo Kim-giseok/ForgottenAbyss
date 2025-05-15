@@ -41,7 +41,6 @@ public class JumpState : AirState
         {
             player.rigid.velocity = new Vector2(0, -fastFallSpeed);
         }
-        player.UpdateDirection();
 
         if (player.rigid.velocity.y < -player.rigid.gravityScale * Time.fixedDeltaTime)
             player.ChangeState(PlayerState.Fall);
