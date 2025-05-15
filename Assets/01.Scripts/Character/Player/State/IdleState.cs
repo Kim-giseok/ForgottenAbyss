@@ -20,12 +20,14 @@ public class IdleState : PlayerStateMachine
         SkillController.Instance.ResetAttack();
     }
 
-    public override void OnMove(Vector2 inputVec)
+    public override void FixedUpdate()
     {
-        if (inputVec.x != 0)
-        {
+        base.FixedUpdate();
+
+        if (player.rigid.velocity.y < -player.rigid.gravityScale * Time.fixedDeltaTime)
+            player.ChangeState(PlayerState.Fall);
+        else if (player.inputVec.x != 0)
             player.ChangeState(PlayerState.Run);
-        }
     }
 
     public override void OnJump()

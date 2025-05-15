@@ -37,6 +37,9 @@ public class RunState : PlayerStateMachine
 
         player.rigid.velocity = new Vector2(player.inputVec.x * currentSpeed, player.rigid.velocity.y);
         player.UpdateDirection();
+
+        if (player.rigid.velocity.y < -player.rigid.gravityScale * Time.fixedDeltaTime)
+            player.ChangeState(PlayerState.Fall);
     }
 
     //public override void OnMove(Vector2 inputVec)
