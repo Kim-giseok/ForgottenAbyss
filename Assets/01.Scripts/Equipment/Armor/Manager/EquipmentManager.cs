@@ -274,7 +274,7 @@ public class EquipmentManager : MonoBehaviour
                     //float restoredStat = currentStat / (1 + bonus.multiplier);
                     float restoredStat;
 
-                    if (bonus.stat == StatType.CRITICAL)
+                    if (bonus.stat == StatType.CRITICAL || bonus.stat == StatType.CRITICAL_DAMAGE)
                         restoredStat = currentStat - bonus.multiplier;
                     else
                         restoredStat = currentStat / (1 + bonus.multiplier); 
