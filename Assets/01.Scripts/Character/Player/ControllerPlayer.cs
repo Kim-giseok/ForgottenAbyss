@@ -136,21 +136,21 @@ public class ControllerPlayer : MonoBehaviour
 
         AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
 
-        if (!isGround && rigid.velocity.y < 0)
-        {
-            if (!stateInfo.IsTag("Attack") && !stateInfo.IsTag("Ladder") && !stateInfo.IsTag("WallSlide") && !stateInfo.IsTag("Dash"))
-            {
-                if (!animator.GetBool("IsFall"))
-                {
-                    animator.SetTrigger("FallTrigger");
-                    animator.SetBool("IsFall", true);
-                }
-            }
-        }
-        else
-        {
-            animator.SetBool("IsFall", false);
-        }
+        //if (!isGround && rigid.velocity.y < 0)
+        //{
+        //    if (!stateInfo.IsTag("Attack") && !stateInfo.IsTag("Ladder") && !stateInfo.IsTag("WallSlide") && !stateInfo.IsTag("Dash"))
+        //    {
+        //        if (!animator.GetBool("IsFall"))
+        //        {
+        //            animator.SetTrigger("FallTrigger");
+        //            animator.SetBool("IsFall", true);
+        //        }
+        //    }
+        //}
+        //else
+        //{
+        //    animator.SetBool("IsFall", false);
+        //}
 
         if (dashBuffered)
         {
@@ -455,5 +455,29 @@ public class ControllerPlayer : MonoBehaviour
             ChangeState(PlayerState.Idle);
         else
             ChangeState(PlayerState.Run);
+    }
+
+    public void UpdateDashValues(WeaponType weaponType)
+    {
+        if (weaponType == WeaponType.Sword)
+        {
+            dashDistance = 4f;
+            dashTime = 0.25f;
+            dashCost = 10f;
+        }
+        else if (weaponType == WeaponType.Bow)
+        {
+            dashDistance = 2f;
+            dashTime = 0.25f;
+            dashCost = 5f;
+        }
+        else
+        {
+            dashDistance = 2f; // 기본값
+            dashTime = 0.25f;
+            dashCost = 10f;
+        }
+
+        Debug.Log($"[대쉬 설정] {weaponType} 장착 - 거리: {dashDistance}, 시간: {dashTime}, 비용: {dashCost}");
     }
 }

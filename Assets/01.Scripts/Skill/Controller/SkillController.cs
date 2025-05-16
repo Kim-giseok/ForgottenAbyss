@@ -171,6 +171,13 @@ public class SkillController : Singleton<SkillController>
                isSkillPlaying;
     }
 
+    public bool IsAttack()
+    {
+        return (comboAttack != null && comboAttack.IsAttacking) ||
+               (rangedAttack != null && rangedAttack.IsAttacking) ||
+               isSkillPlaying;
+    }
+
     IEnumerator UseSkillRoutine(SkillInstance instance)
     {
         isSkillPlaying = true;

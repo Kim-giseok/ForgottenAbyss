@@ -53,6 +53,16 @@ public class PlayerStatus : CharacterStatus
             });
         }
 
+        // 베이스 스탯 저장
+        foreach (var pair in baseStats)
+        {
+            data.baseStats.Add(new PlayerData.StatData 
+            {
+                statType = (int)pair.Key, 
+                value = pair.Value 
+            });
+        }
+
         // 스탯 포인트 저장
         data.availableStatPoints = availableStatPoints;
 
@@ -107,6 +117,13 @@ public class PlayerStatus : CharacterStatus
                 SetStat(type, statData.value);
             }
 
+            // 베이스 스탯 설정
+            foreach (var baseStatData in data.baseStats)
+            {
+                StatType type = (StatType)baseStatData.statType;
+                baseStats[type] = baseStatData.value;
+            }
+
             // 스탯 포인트 설정
             availableStatPoints = data.availableStatPoints;
 
@@ -135,10 +152,6 @@ public class PlayerStatus : CharacterStatus
             }
 
             equippedArmorIDs.Clear();
-            foreach (var id in data.equippedArmorIDs)
-            {
-                equippedArmorIDs.Add(id);
-            }
 
             // UI 업데이트
             OnStatPointsChanged?.Invoke(availableStatPoints);
@@ -196,14 +209,14 @@ public class PlayerStatus : CharacterStatus
         LoadPlayerData();
     }
 
-    private void OnEnable()
-    {
-        OnStatChanged += (type, value) =>
-        {
-            if (type == StatType.CurrentHP)
-                Debug.Log($"HP �����: {value}");
-        };
-    }
+    //private void OnEnable()
+    //{
+    //    OnStatChanged += (type, value) =>
+    //    {
+    //        if (type == StatType.CurrentHP)
+    //            Debug.Log($"HP �����: {value}");
+    //    };
+    //}
 
 
     private void Update()
@@ -227,9 +240,11 @@ public class PlayerStatus : CharacterStatus
         stats[StatType.MaxEXP] = 100f; //레벨 업 경험치
         stats[StatType.GOLD] = 0f; //초기 골드
         stats[StatType.SPEED] = 3f; //이동속도
-        stats[StatType.CRITICAL] = 20f; //치명타 확률
-        stats[StatType.CRITICAL_DAMAGE] = 150f; //치명타 데미지
+        stats[StatType.CRITICAL] = 5f; //치명타 확률
+        stats[StatType.CRITICAL_DAMAGE] = 110f; //치명타 데미지
         stats[StatType.COOLDOWN_REDUCTION] = 0f; //스킬 쿨타임 감소
+
+        baseStats = new Dictionary<StatType, float>(stats);
     }
 
 
@@ -260,6 +275,8 @@ public class PlayerStatus : CharacterStatus
         }
 
         int currentLevel = (int)stats[StatType.LEVEL];
+
+        baseStats[StatType.MaxEXP] = expRequiredForLevel[currentLevel];
         stats[StatType.MaxEXP] = expRequiredForLevel[currentLevel];
     }
 
@@ -331,10 +348,13 @@ public class PlayerStatus : CharacterStatus
 
     private void LevelUp()
     {
+        int newExp = (int)stats[StatType.LEVEL];
         int newLevel = (int)stats[StatType.LEVEL] + 1;
 
-        SetStat(StatType.EXP, stats[StatType.EXP] - expRequiredForLevel[(int)stats[StatType.LEVEL]]);
+        baseStats[StatType.EXP] = stats[StatType.EXP] - expRequiredForLevel[newExp];
+        SetStat(StatType.EXP, stats[StatType.EXP] - expRequiredForLevel[newExp]);
 
+        baseStats[StatType.LEVEL] = newLevel;
         SetStat(StatType.LEVEL, newLevel);
 
 
@@ -372,18 +392,10 @@ public class PlayerStatus : CharacterStatus
 
             foreach (var statType in statIncreases.Keys)
             {
-                float baseStat = GetBaseStat(statType) + statIncreases[statType]; 
-                Debug.Log(baseStat);  
-
-                float finalValue = (baseStat + GetEquipmentBonus(statType)) * GetSetBonus(statType);
-
-                SetStat(statType, finalValue);
-                Debug.Log(finalValue);
-
-                SetHP(statType);
-
-                Debug.Log($"{statType} ����: +{statIncreases[statType]}");
+                baseStats[statType] += statIncreases[statType];
+                SetStat(statType, baseStats[statType]);
             }
+            SystemManager.Instance.equipmentManager.RecalculateStats();
         }
     }
 
@@ -397,57 +409,25 @@ public class PlayerStatus : CharacterStatus
 
     public bool InvestStatPoint(StatType statType)
     {
+        if (!stats.ContainsKey(statType) || availableStatPoints <= 0) return false;
 
-        bool isInvestable = false;
-        foreach (StatType type in investableStats)
-        {
-            if (type == statType)
-            {
-                isInvestable = true;
-                break;
-            }
-        }
-
-
-        if (availableStatPoints <= 0)
-        {
-            return false;
-        }
-
-
-        if (investedStatPoints[statType] >= maxStatInvestment[statType])
-        {
-            return false;
-        }
+        if (investedStatPoints[statType] >= maxStatInvestment[statType]) return false;
 
         // 패시브 스탯 투자 시
         availableStatPoints--;
         investedStatPoints[statType]++;
 
-        // 패시브 스탯 증가량 반영
-        float baseStat = GetBaseStat(statType);
-        Debug.Log(baseStat);
+        baseStats[statType] += statPointIncrease[statType];
+        SetStat(statType, baseStats[statType]);
+        Debug.Log(baseStats[statType]);
 
-        float newValue = baseStat + statPointIncrease[statType];
-        float finalValue = (newValue + GetEquipmentBonus(statType)) * GetSetBonus(statType);
-
-        SetStat(statType, finalValue);
-        Debug.Log(finalValue);
-
-        SetHP(statType);
-
-        //if (statType == StatType.MaxHP)
-        //{
-        //    float currentHP = stats[StatType.CurrentHP];
-        //    float increase = statPointIncrease[StatType.MaxHP];
-        //    SetStat(StatType.CurrentHP, currentHP + increase);
-        //}
+        SystemManager.Instance.equipmentManager.RecalculateStats();
 
         // 이벤트 구독
         OnStatPointsChanged?.Invoke(availableStatPoints);
 
-        Debug.Log($"{statType}�� ���� ����Ʈ�� �����߽��ϴ�. ({statType}: +{statPointIncrease[statType]}, �� ����: {investedStatPoints[statType]}/{maxStatInvestment[statType]})");
-        Debug.Log($"���� ���� ����Ʈ: {availableStatPoints}");
+        Debug.Log($"{statType} 스탯 포인트가 투자되었습니다. ({statType}: +{statPointIncrease[statType]}, 현재 투자: {investedStatPoints[statType]}/{maxStatInvestment[statType]})");
+        Debug.Log($"남은 스탯 포인트: {availableStatPoints}");
 
         return true;
     }
@@ -457,7 +437,6 @@ public class PlayerStatus : CharacterStatus
     {
         int totalPoints = 0;
 
-
         foreach (StatType statType in investableStats)
         {
             if (investedStatPoints.ContainsKey(statType))
@@ -466,15 +445,12 @@ public class PlayerStatus : CharacterStatus
                 int pointsInvested = investedStatPoints[statType];
                 totalPoints += pointsInvested;
 
-
                 float originalValue = stats[statType] - (pointsInvested * statPointIncrease[statType]);
                 SetStat(statType, originalValue);
-
 
                 investedStatPoints[statType] = 0;
             }
         }
-
 
         if (investedStatPoints.ContainsKey(StatType.MaxHP))
         {
@@ -482,10 +458,8 @@ public class PlayerStatus : CharacterStatus
             SetStat(StatType.CurrentHP, stats[StatType.MaxHP] * currentHPRatio);
         }
 
-
         availableStatPoints += totalPoints;
         OnStatPointsChanged?.Invoke(availableStatPoints);
-
     }
 
     // 패시브 스탯 포인트 획득
@@ -524,5 +498,4 @@ public class PlayerStatus : CharacterStatus
         stats.TryGetValue(statType, out float value);
         return value;
     }
-
 }

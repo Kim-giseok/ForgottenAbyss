@@ -269,6 +269,8 @@ public class WeaponManager : MonoBehaviour
         else
             Debug.LogWarning($"경로에 무기 SO 없음: {nextWeaponPath}");
 
+
+        GameManager.Instance.player.controller.UpdateDashValues(currentWeaponData.Type);
         swapper.SwapWeapons();
         skillController.UpdateBasicIcon();
         skillController.ResetAttack();

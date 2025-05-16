@@ -23,6 +23,7 @@ public enum StatType
 public class CharacterStatus : MonoBehaviour
 {
     public Dictionary<StatType, float> stats = new Dictionary<StatType, float>();
+    public Dictionary<StatType, float> baseStats = new Dictionary<StatType, float>();
     public Dictionary<StatType, float> equipmentBonuses = new Dictionary<StatType, float>();
     public Dictionary<StatType, float> setBonusMultipliers = new Dictionary<StatType, float>();
     public HashSet<int> equippedArmorIDs = new HashSet<int>();
@@ -85,7 +86,15 @@ public class CharacterStatus : MonoBehaviour
         if (!stats.ContainsKey(type)) return;
 
         setBonusMultipliers[type] = 1 + multiplier;
-        stats[type] = Mathf.Round(stats[type] * setBonusMultipliers[type]);
+
+        if (type == StatType.CRITICAL || type == StatType.CRITICAL_DAMAGE || type == StatType.COOLDOWN_REDUCTION)
+        {
+            stats[type] = stats[type] + multiplier;
+        }
+        else
+        {
+            stats[type] = stats[type] * setBonusMultipliers[type];
+        }
 
         SetHP(type);
         OnStatChanged?.Invoke(type, stats[type]);
@@ -93,9 +102,17 @@ public class CharacterStatus : MonoBehaviour
 
     public void RemoveSetBonus(StatType type, float multiplier)
     {
-        if (!stats.ContainsKey(type)) return;
+        if (!stats.ContainsKey(type) || !setBonusMultipliers.ContainsKey(type)) return;
 
-        stats[type] = Mathf.Round(stats[type] / setBonusMultipliers[type]); //저장된 배율을 사용하여 복구
+        if (type == StatType.CRITICAL || type == StatType.CRITICAL_DAMAGE || type == StatType.COOLDOWN_REDUCTION)
+        {
+            stats[type] = stats[type] - multiplier;
+        }
+        else
+        {
+            stats[type] = stats[type] / setBonusMultipliers[type];
+        }
+
         setBonusMultipliers.Remove(type);
 
         SetHP(type);
@@ -127,10 +144,20 @@ public class CharacterStatus : MonoBehaviour
 
         float setBonusMultiplier = setBonusMultipliers.ContainsKey(type) ? setBonusMultipliers[type] : 1.0f;
         float equipmentBonus = GetEquipmentBonus(type);
-        float baseValue = Mathf.Round((totalValue - equipmentBonus) / setBonusMultiplier);
+        float baseValue = (totalValue - equipmentBonus) / setBonusMultiplier;
 
         Debug.Log($"[DEBUG] {type} - Total: {totalValue}, Set Multiplier: {setBonusMultiplier}, Equip Bonus: {equipmentBonus}, Base: {baseValue}");
 
         return baseValue;
+    }
+
+    public void ResetStats()
+    {
+        stats = new Dictionary<StatType, float>(baseStats);
+        equipmentBonuses.Clear();
+        setBonusMultipliers.Clear();
+        equippedArmorIDs.Clear();
+
+        Debug.Log("[ResetStats] 플레이어 스탯 초기화 완료");
     }
 }

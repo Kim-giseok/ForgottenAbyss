@@ -54,7 +54,6 @@ public class ComboAttack : MonoBehaviour
         animator.ResetTrigger("AttackTrigger");
         animator.SetTrigger("AttackTrigger");
         animator.SetInteger("AttackCombo", attackIndex);
-        SoundManager.Instance.PlaySFX(comboData.sound);
         UpdateComboAttackUI(attackIndex - 1);
     }
 
@@ -65,6 +64,11 @@ public class ComboAttack : MonoBehaviour
 
         comboBar.StartCombo(bufferTime);
         StartCoroutine(ComboInputBuffer(bufferTime));
+    }
+
+    void onPlaySound()
+    {
+        //SoundManager.Instance.Playsfx($"SwordAttack{attackIndex}");
     }
 
     IEnumerator ComboInputBuffer(float time)
@@ -89,20 +93,36 @@ public class ComboAttack : MonoBehaviour
 
     void OnComboNext()
     {
-        if (inputCombo && attackIndex < maxCombo)
+        if (GameManager.Instance.player.controller == null) return;
+
+        if (inputCombo)
         {
-            inputCombo = false;
-            attackIndex++;
-            animator.SetInteger("AttackCombo", attackIndex);
-            UpdateComboAttackUI(attackIndex - 1);
-            animator.Play(comboData.comboSteps[attackIndex - 1].animationName);
-            comboBar.PlayEffect();
-            //SoundManager.Instance.PlaySFX(comboData.sound);
+            if (!GameManager.Instance.player.controller.isGround && attackIndex >= 3)
+            {
+                inputCombo = false;
+                attackIndex = 1;
+                animator.SetInteger("AttackCombo", attackIndex);
+                animator.Play(comboData.comboSteps[attackIndex - 1].animationName);
+                comboBar.PlayEffect();
+                return;
+            }
+
+            if (attackIndex < maxCombo)
+            {
+                inputCombo = false;
+                attackIndex++;
+                animator.SetInteger("AttackCombo", attackIndex);
+                UpdateComboAttackUI(attackIndex - 1);
+                animator.Play(comboData.comboSteps[attackIndex - 1].animationName);
+                comboBar.PlayEffect();
+            }
+            else if (attackIndex >= maxCombo)
+            {
+                EndComboAttack();
+            }
         }
         else
-        {
             EndComboAttack();
-        }
     }
 
     public void EndComboAttack()
@@ -120,8 +140,8 @@ public class ComboAttack : MonoBehaviour
         }
         else
         {
-            attackIndex = 0;
-            animator.SetInteger("AttackCombo", 0);
+            attackIndex = 1;
+            animator.SetInteger("AttackCombo", 1);
             animator.Play("Idle");
 
             if (SystemManager.Instance.weaponManager.GetCurrentWeaponData().Type == WeaponType.Sword)
@@ -153,12 +173,14 @@ public class ComboAttack : MonoBehaviour
 
     void OnMoveForward(float distance)
     {
+        if(!GameManager.Instance.player.controller.isGround) return;
+
         StartCoroutine(MoveForwardCoroutine(distance));
     }
 
     IEnumerator MoveForwardCoroutine(float distance)
     {
-        float moveTime = 0.1f; // 이동 시간 (0.1초 추천)
+        float moveTime = 0.1f; // 이동 시간
         float elapsed = 0f;
         Vector3 startPos = transform.position;
         Vector3 targetPos = transform.position + (transform.right * distance);
@@ -242,7 +264,7 @@ public class ComboAttack : MonoBehaviour
             yield return null;
         }
 
-        transform.position = endPos;
+        transform.position = Vector3.Lerp(transform.position, endPos, Time.deltaTime * 10f);
     }
 
     void OnAttackHit()

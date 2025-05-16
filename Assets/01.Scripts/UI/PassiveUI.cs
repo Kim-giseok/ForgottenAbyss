@@ -89,6 +89,7 @@ public class PassiveUI : MonoBehaviour
         }
 
         float currenAtk = _playerStatus.GetStat(StatType.ATK);
+        _playerStatus.baseStats[StatType.ATK] += 1;
         _playerStatus.SetStat(StatType.ATK, currenAtk + 1);
         Debug.Log($"공격력 증가: {_playerStatus.GetStat(StatType.ATK)}");
         _playerStatus.AddStatPoints(-1);
@@ -110,6 +111,7 @@ public class PassiveUI : MonoBehaviour
         }
 
         float currentCrt = _playerStatus.GetStat(StatType.CRITICAL);
+        _playerStatus.baseStats[StatType.CRITICAL] += 3;
         _playerStatus.SetStat(StatType.CRITICAL, currentCrt + 3);
         _playerStatus.AddStatPoints(-1);
 
@@ -130,6 +132,7 @@ public class PassiveUI : MonoBehaviour
         }
 
         float currentHp = _playerStatus.GetStat(StatType.MaxHP);
+        _playerStatus.baseStats[StatType.MaxHP] += 10;
         _playerStatus.SetStat(StatType.MaxHP, currentHp + 10);
         _playerStatus.AddStatPoints(-1);
 
@@ -150,6 +153,7 @@ public class PassiveUI : MonoBehaviour
         }
 
         float currentDef = _playerStatus.GetStat(StatType.DEF);
+        _playerStatus.baseStats[StatType.DEF] += 2;
         _playerStatus.SetStat(StatType.DEF, currentDef + 2);
         _playerStatus.AddStatPoints(-1);
 
@@ -170,6 +174,7 @@ public class PassiveUI : MonoBehaviour
         }
 
         float currentSpd = _playerStatus.GetStat(StatType.SPEED);
+        _playerStatus.baseStats[StatType.SPEED] += 0.2f;
         _playerStatus.SetStat(StatType.SPEED, currentSpd + 0.2f);
         _playerStatus.AddStatPoints(-1);
 
@@ -190,7 +195,10 @@ public class PassiveUI : MonoBehaviour
         }
 
         float currentCdw = _playerStatus.GetStat(StatType.COOLDOWN_REDUCTION);
+
+        _playerStatus.baseStats[StatType.COOLDOWN_REDUCTION] += 2f;
         _playerStatus.SetStat(StatType.COOLDOWN_REDUCTION, currentCdw + 2f);
+
         _playerStatus.AddStatPoints(-1);
 
         if (speedLevel >= maxSpeedLevel)

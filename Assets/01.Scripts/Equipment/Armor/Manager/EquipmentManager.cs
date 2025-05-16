@@ -12,6 +12,7 @@ public class EquipmentManager : MonoBehaviour
 
     public event Action<ArmorSO> OnEquipArmor;
     public event Action<ArmorSO> OnUnequipArmor;
+    public event Action OnArmorChanged;
 
     public event Action<MemoryPieceSO> OnEquipMemory;
     public event Action<MemoryPieceSO> OnUnequipMemory;
@@ -20,6 +21,16 @@ public class EquipmentManager : MonoBehaviour
     private InventorySlotUI equippedMemorySlot;
 
     public bool isSetBonusApplied = false;
+
+    private void Awake()
+    {
+        Initialize();
+    }
+
+    public void Initialize()
+    {
+        OnArmorChanged += RecalculateStats; 
+    }
 
     private IEnumerator Start()
     {
@@ -84,11 +95,9 @@ public class EquipmentManager : MonoBehaviour
         }
 
         equippedArmors[armor.slot] = (armor, slot);
-        ApplyStatBonus(armor);
-        RemoveSetBonus(); // 기존 보너스 제거 후
-        ApplySetBonus();
 
         OnEquipArmor?.Invoke(armor);
+        OnArmorChanged?.Invoke();
 
         string bonusLog = string.Join(", ", armor.statBonuses.Select(b => $"{b.statType} {b.bonusType} +{b.value}"));
         Debug.Log($"[Test] 장착 성공: {armor.name} → {armor.slot}, {bonusLog}");
@@ -102,11 +111,28 @@ public class EquipmentManager : MonoBehaviour
             RemoveStatBonus(armor.armor);
 
             equippedArmors.Remove(slot);
+
             OnUnequipArmor?.Invoke(armor.armor);
+            OnArmorChanged?.Invoke();
 
             string bonusLog = string.Join(", ", armor.armor.statBonuses.Select(b => $"{b.statType} {b.bonusType} -{b.value}"));
             Debug.Log($"[Test] 장착 해제: {armor.armor.name} → {armor.slot}, {bonusLog}");
         }
+    }
+
+    public void RecalculateStats()
+    {
+        playerStatus.ResetStats();
+
+        foreach (var armor in equippedArmors.OrderBy(pair => (int)pair.Key))
+        {
+            ApplyStatBonus(armor.Value.armor);
+        }
+
+        RemoveSetBonus();
+        ApplySetBonus();
+
+        Debug.Log($"[RecalculateStats] 모든 장착 방어구 기준으로 스탯 재계산 완료");
     }
 
     public ArmorSO GetEquippedArmor(ArmorSlot slot)
@@ -121,40 +147,6 @@ public class EquipmentManager : MonoBehaviour
             return data.slot;
         return null;
     }
-
-    //public void UpdateEquippedItems()
-    //{
-    //    if (equippedArmors != null && equippedArmors.Any())
-    //    {
-    //        Debug.Log($"[EquipmentManager] UpdateEquippedItems() 실행 - 장착 정보 갱신 중!");
-
-    //        Dictionary<ArmorSlot, (ArmorSO armor, InventorySlotUI slot)> updatedEquippedArmors = new();
-    //        InventorySlotUI newEquippedMemorySlot = null;
-    //        MemoryPieceSO newEquippedMemoryPieceSo = null;
-
-    //        foreach (var slot in InventoryUIManager.Instance.slots)
-    //        {
-    //            if (slot.currentItem != null && slot.currentItem.itemType == ItemType.Equip && slot.currentItem is ArmorSO armor)
-    //            {
-    //                updatedEquippedArmors[armor.slot] = (armor, slot);
-    //                Debug.Log($"[EquipmentManager] 장착 정보 갱신 - 슬롯: {armor.slot}, 장착 장비: {armor.name}");
-    //            }
-    //            else if (slot.currentItem != null && slot.currentItem.itemType == ItemType.Memory && slot.currentItem is MemorySkillItem memorySkill)
-    //            {
-    //                newEquippedMemoryPieceSo = SystemManager.Instance.dataManager.GetMemoryVisualSOById(memorySkill.memoryPieceId);
-    //                newEquippedMemorySlot = slot;
-    //                Debug.Log($"[EquipmentManager] 기억 아이템 장착 - {memorySkill.skillName}");
-    //            }
-    //        }
-    //        equippedArmors = updatedEquippedArmors;
-    //        equippedMemorySO = newEquippedMemoryPieceSo;
-    //        equippedMemorySlot = newEquippedMemorySlot;
-    //    }
-    //    else
-    //    {
-    //        Debug.Log($"[EquipmentManager] 장착된 아이템 없음 → UpdateEquippedItems 실행 안 함!");
-    //    }
-    //}
 
     public Dictionary<StatType, float> GetTotalArmorStats()
     {
@@ -174,7 +166,18 @@ public class EquipmentManager : MonoBehaviour
         return total;
     }
 
-    private Dictionary<StatType, float> baseStats = new Dictionary<StatType, float>();
+    private float GetCurrentBaseStat(StatType statType)
+    {
+        float baseStat = playerStatus.GetBaseStat(statType);
+
+        foreach (var armor in equippedArmors.Values)
+        {
+            var bonuses = armor.armor.statBonuses.Where(b => b.statType == statType).ToList();
+            baseStat = StatBonusCalculator.ApplyBonuses(baseStat, bonuses);
+        }
+
+        return baseStat;
+    }
 
     private void ApplyStatBonus(ArmorSO armor)
     {
@@ -233,16 +236,7 @@ public class EquipmentManager : MonoBehaviour
             {
                 foreach (var bonus in bonusData.Bonuses)
                 {
-                    //playerStatus.ApplySetBonus(bonus.stat, bonus.multiplier);
-
-                    playerStatus.stats.TryGetValue(bonus.stat, out float currentStat);
-                    //float finalStat = currentStat * (1 + bonus.multiplier);
-                    float finalStat;
-
-                    if (bonus.stat == StatType.CRITICAL || bonus.stat == StatType.CRITICAL_DAMAGE || bonus.stat == StatType.COOLDOWN_REDUCTION) // 치명타 확률, 치명타 데미지, 쿨타임 감소
-                        finalStat = currentStat + bonus.multiplier; // 덧셈 방식
-                    else
-                        finalStat = currentStat * (1 + bonus.multiplier); // 곱셈 방식
+                    playerStatus.ApplySetBonus(bonus.stat, bonus.multiplier);
 
                     UIManager.Instance.statUI.equippedItemUI.SetBonusText($"{bonusData.SetName} 세트", $"{bonusData.Description}");
                 }
@@ -265,16 +259,7 @@ public class EquipmentManager : MonoBehaviour
             {
                 foreach (var bonus in bonusData.Bonuses)
                 {
-                    //playerStatus.RemoveSetBonus(bonus.stat, bonus.multiplier);
-
-                    playerStatus.stats.TryGetValue(bonus.stat, out float currentStat);
-                    //float restoredStat = currentStat / (1 + bonus.multiplier);
-                    float restoredStat;
-
-                    if (bonus.stat == StatType.CRITICAL || bonus.stat == StatType.CRITICAL_DAMAGE || bonus.stat == StatType.COOLDOWN_REDUCTION)
-                        restoredStat = currentStat - bonus.multiplier;
-                    else
-                        restoredStat = currentStat / (1 + bonus.multiplier); 
+                    playerStatus.RemoveSetBonus(bonus.stat, bonus.multiplier);
 
                     Debug.Log($"{setName} 세트 보너스 제거 → {bonus.stat}");
                 }

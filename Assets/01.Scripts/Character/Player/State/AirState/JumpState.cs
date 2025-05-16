@@ -10,7 +10,7 @@ public class JumpState : AirState
     {
         base.Enter();
         // 첫 점프인지 더블 점프인지 확인
-        if (player.currentJumpCount == 0)
+        if (player.currentJumpCount < 2)
         {
             // 첫 번째 점프
             player.animator.SetBool("IsJump", true);
@@ -30,7 +30,9 @@ public class JumpState : AirState
     {
         base.FixedUpdate();
 
-        if (player.rigid.velocity.y < -player.rigid.gravityScale * Time.fixedDeltaTime)
+        AnimatorStateInfo stateInfo = player.animator.GetCurrentAnimatorStateInfo(0);
+
+        if (player.rigid.velocity.y < -player.rigid.gravityScale * Time.fixedDeltaTime && !stateInfo.IsTag("Attack"))
             player.ChangeState(PlayerState.Fall);
     }
 
