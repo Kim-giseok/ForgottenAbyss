@@ -30,47 +30,41 @@ public class IntroBattleScene: CutScene
    
                 // 초기 로드 시간 문제로 인해 중복 코드 발생
                 CutSceneManager.Instance.SubCams.Init();
+                SubCams.Focus(playerActor.transform);
                 SetCutSceneMode(true);
-                SetSentence("여긴... 어디지? 아무것도 기억나지 않아.");
+                SetSentence("아무것도 기억나지 않아..");
             }),
-            Do(() =>
-            {
-                SetSentence("이름도, 이 곳에 온 이유도 아무것도 ...");
-            }),
+            Do(() => { SetSentence("이름도, 이 곳에 온 이유도 아무것도 ..."); }),
             Do(async () =>
             {
+                SubCams.SetNoise(1, 1f);
                 SubCams.Focus(npc.transform);
+                SubCams.Zoom(true, 0.4f, 4.4f);
                 
                 npc.Define(new SequenceNode(new Test1Node(true), new IdleNode(0)));
                 nightBone.Define(new SequenceNode(new Test1Node(false), new ChargingNode(0)));
                 await UniTask.WaitUntil(() => npc.IsEnd && nightBone.IsEnd);
                 
                 SetSentence("이런.. 젠장!", npc.transform);
-                
-                // SetSentence("또 한 명이 눈을 떴군. 너도... 그들 중 하나인가 보군", npc.transform);
-                // await UniTask.Delay(3000);
-                // SetSentence("돌아가고 싶다면, 우두머리들… 그들의 힘을 흡수해. 그리고 기억을 되찾아", npc.transform);
-                // await UniTask.Delay(3000);
-                // SetSentence("기억을 되찾는 건 곧 너의 정체를 마주하는 일이야. 준비는 되었나?", npc.transform);
             }),
             Do(async () =>
             { 
+                SubCams.SetNoise(0);
                 SubCams.Focus(playerActor.transform);
                 await UniTask.Delay(1000);
                 
-                playerActor.animHandler.Play("Dash");
-                // BoltsPool.Instance.CreateParticle(playerActor.transform, "HolyAcua")
-                //     .SetPosition(playerActor.transform.position).SetSize(1f).SetColor(new Color(255, 255, 255, 0.1f)).Play();
-                
                 playerActor.animHandler.SetSpeed(2);
+                playerActor.animHandler.Play("Dash");
+                playerActor.Rigidbody.drag = 10;
+                playerActor.Rigidbody.AddForce(new Vector2(30, 0), ForceMode2D.Impulse);
                 SoundManager.Instance.Playsfx("AgisSpell");
-                
-                await UniTask.Delay(400);
+                await UniTask.Delay(300);
                 
                 playerActor.transform.position = nightBone.transform.position + Vector3.left * 1f;
 
-                playerActor.animHandler.Play("Idle");
                 playerActor.animHandler.SetSpeed(1);
+                playerActor.animHandler.Play("Idle");
+                playerActor.Rigidbody.velocity = Vector2.zero;
 
                 SetCurrInputKey(KeyCode.A);
                 CutSceneManager.Instance.LetterBox.ShowNarration("기본 공격을 통해 6연타 콤보 공격이 가능합니다.");
@@ -83,7 +77,6 @@ public class IntroBattleScene: CutScene
             Do(() => ComboAttackAction("SwordAttack_5")),
             Do(async () =>
             {
-                playerActor.Rigidbody.drag = 10;
                 playerActor.Rigidbody.AddForce(new Vector2(10f, 0), ForceMode2D.Impulse);
 
                 ComboAttackAction("SwordAttack_6");
@@ -101,7 +94,6 @@ public class IntroBattleScene: CutScene
                 SoundManager.Instance.Playsfx("DropItem");
                 nightBoneItem.gameObject.SetActive(true);
                 nightBoneItem.transform.position = nightBone.transform.position + Vector3.up * 1f;
-                // nightBoneItem.Spawn();
                 
                 nightBone.gameObject.SetActive(false);
 
@@ -132,8 +124,6 @@ public class IntroBattleScene: CutScene
                 // 메서드로 한번 빼기
                 CutSceneManager.Instance.UIPointingComp.gameObject.SetActive(true);
                 CutSceneManager.Instance.UIPointingComp.anchoredPosition = new Vector2(-247.4f, 136.73f);
-                
-
             }),
             Do(() =>
             {
@@ -167,6 +157,7 @@ public class IntroBattleScene: CutScene
                     .SetSize(0.15f).SetColor(Color.yellow).SetPosition(archer.transform.position + new Vector3(Random.Range(-0.2f, 0.2f), 0.6f + Random.Range(-0.2f, 0.2f))).Play();
                 SoundManager.Instance.Playsfx("HitByMelee");
                 
+                SubCams.Shake(2, 2, 0.2f);
                 archer.animHandler.Play("Hit");
                 await UniTask.Delay(250);
                 playerActor.transform.position = archer.transform.position + Vector3.up * 0.15f;
@@ -189,17 +180,17 @@ public class IntroBattleScene: CutScene
                 LightManager.Instance.FadeIn(1);
                 await UniTask.Delay(500);
                 
-                SetSentence("도움을 줘서 고마워요. 그런데... 방금 그 그림자 같은 힘, 대체 어디서 배운 거죠?", npcOrigin.transform);
+                SetSentence("고마워요. 그런데... 방금 그 그림자 같은 힘, 대체 어떤 거죠?", npcOrigin.transform);
                 await UniTask.Delay(4000);
                 
                 SubCams.Focus(playerActor.transform);
-                SetSentence("기억이 흐릿해요… 그런데, 방금 전 이 장면이 낯설지 않게 느껴졌어요.", playerActor.transform);
+                SetSentence("떠오르지 않아요.. 그런데, 방금 전 이 장면이 낯설지 않게 느껴졌어요.", playerActor.transform);
                 
                 await UniTask.Delay(3000);
                 SubCams.Focus(npcOrigin.transform);
-                SetSentence("이 곳은 그림자들의 침공으로부터 마지막으로 남은 거점이에요.", npcOrigin.transform);
+                SetSentence("이 곳은 그림자의 침공으로부터 마지막으로 남은 거점이에요.", npcOrigin.transform);
                 await UniTask.Delay(3000);
-                SetSentence("어쩌면… 그림자 속에서, 잃어버린 기억도 되찾을 수 있을지 몰라요.", npcOrigin.transform);
+                SetSentence("어쩌면... 그림자 속에서, 잃어버린 기억도 찾을 수 있을지 몰라요.", npcOrigin.transform);
             }),
             Do(() =>
             {
@@ -212,9 +203,10 @@ public class IntroBattleScene: CutScene
             })
         };
     }
-    
-    protected void ComboAttackAction(string animationName)
+
+    private void ComboAttackAction(string animationName)
     {
+        SubCams.Shake(2, 2, 0.2f);
         playerActor.animHandler.Play(animationName);
                 
         BoltsPool.Instance.CreateParticle(transform, "Hit")

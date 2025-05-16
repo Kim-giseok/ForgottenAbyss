@@ -657,6 +657,7 @@ GameObject:
   - component: {fileID: 1030253647707502237}
   - component: {fileID: 5122554527823342997}
   - component: {fileID: 7478573264321301025}
+  - component: {fileID: 8659836754419483965}
   m_Layer: 0
   m_Name: cm
   m_TagString: Untagged
@@ -734,6 +735,23 @@ MonoBehaviour:
   m_MaximumFOV: 60
   m_MinimumOrthoSize: 1
   m_MaximumOrthoSize: 5000
+--- !u!114 &8659836754419483965
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3716332961485669247}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68bb026fafb42b14791938953eaace77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_NoiseProfile: {fileID: 11400000, guid: 6164cecc0c53d14429d1b3ebe096c671, type: 2}
+  m_PivotOffset: {x: 0, y: 0, z: 0}
+  m_AmplitudeGain: 0
+  m_FrequencyGain: 0
+  mNoiseOffsets: {x: -546.34973, y: -488.8352, z: -252.27441}
 --- !u!1 &4663996927152701556
 GameObject:
   m_ObjectHideFlags: 0
@@ -1601,6 +1619,7 @@ GameObject:
   - component: {fileID: 2024311674932164572}
   - component: {fileID: 8186917713978670028}
   - component: {fileID: 2118834453096984399}
+  - component: {fileID: 4971651941578128330}
   m_Layer: 0
   m_Name: cm
   m_TagString: Untagged
@@ -1678,3 +1697,20 @@ MonoBehaviour:
   m_MaximumFOV: 60
   m_MinimumOrthoSize: 1
   m_MaximumOrthoSize: 5000
+--- !u!114 &4971651941578128330
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8707217387768299846}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68bb026fafb42b14791938953eaace77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_NoiseProfile: {fileID: 11400000, guid: 6164cecc0c53d14429d1b3ebe096c671, type: 2}
+  m_PivotOffset: {x: 0, y: 0, z: 0}
+  m_AmplitudeGain: 0
+  m_FrequencyGain: 0
+  mNoiseOffsets: {x: 994.1316, y: -740.2108, z: 939.161}
