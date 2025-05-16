@@ -91,10 +91,10 @@ public class EnemyController : EnemyBaseController, IDamagable
             machine.Start();
         }
 
-        // try { MapSpawnManager.Instance.SpawnedMap.monsterManager.AddList(this); }
-        // catch { Debug.Log("there is no MapspawnManager"); }
+        try { MapSpawnManager.Instance.SpawnedMap.monsterManager.AddList(this); }
+        catch { Debug.Log("there is no MapspawnManager"); }
     }
-    
+
     public void SetConfig(string newEnemyName)
     {
         resourceHandler.Define(EnemiesLoader.Get<EnemyStatSO>(newEnemyName));
