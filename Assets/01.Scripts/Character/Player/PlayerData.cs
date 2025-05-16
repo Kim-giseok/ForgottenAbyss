@@ -7,6 +7,7 @@ public class PlayerData
 {
     // 기본 스탯 (직렬화를 위해 Dictionary 대신 List 사용)
     public List<StatData> stats = new List<StatData>();
+    public List<StatData> baseStats = new List<StatData>();
     public int availableStatPoints;
     public List<InvestedStatData> investedStats = new List<InvestedStatData>();
 

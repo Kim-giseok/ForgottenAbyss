@@ -23,23 +23,7 @@ public enum StatType
 public class CharacterStatus : MonoBehaviour
 {
     public Dictionary<StatType, float> stats = new Dictionary<StatType, float>();
-    public Dictionary<StatType, float> baseStats = new Dictionary<StatType, float>
-    {
-        { StatType.MaxHP, 100f },
-        { StatType.CurrentHP, 100f },
-        { StatType.MaxMP, 100f },
-        { StatType.CurrentMP, 100f },
-        { StatType.ATK, 10f },
-        { StatType.DEF, 10f },
-        { StatType.LEVEL, 1f },
-        { StatType.EXP, 0f },
-        { StatType.MaxEXP, 100f },
-        { StatType.GOLD, 0f },
-        { StatType.SPEED, 3f },
-        { StatType.CRITICAL, 5f },
-        { StatType.CRITICAL_DAMAGE, 110f },
-        { StatType.COOLDOWN_REDUCTION, 0f }
-    };
+    public Dictionary<StatType, float> baseStats = new Dictionary<StatType, float>();
     public Dictionary<StatType, float> equipmentBonuses = new Dictionary<StatType, float>();
     public Dictionary<StatType, float> setBonusMultipliers = new Dictionary<StatType, float>();
     public HashSet<int> equippedArmorIDs = new HashSet<int>();

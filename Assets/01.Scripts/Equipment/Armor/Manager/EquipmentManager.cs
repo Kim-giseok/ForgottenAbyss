@@ -124,9 +124,9 @@ public class EquipmentManager : MonoBehaviour
     {
         playerStatus.ResetStats();
 
-        foreach (var armor in equippedArmors.Values)
+        foreach (var armor in equippedArmors.OrderBy(pair => (int)pair.Key))
         {
-            ApplyStatBonus(armor.armor);
+            ApplyStatBonus(armor.Value.armor);
         }
 
         RemoveSetBonus();

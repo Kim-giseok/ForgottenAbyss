@@ -53,6 +53,16 @@ public class PlayerStatus : CharacterStatus
             });
         }
 
+        // 베이스 스탯 저장
+        foreach (var pair in baseStats)
+        {
+            data.baseStats.Add(new PlayerData.StatData 
+            {
+                statType = (int)pair.Key, 
+                value = pair.Value 
+            });
+        }
+
         // 스탯 포인트 저장
         data.availableStatPoints = availableStatPoints;
 
@@ -105,6 +115,13 @@ public class PlayerStatus : CharacterStatus
             {
                 StatType type = (StatType)statData.statType;
                 SetStat(type, statData.value);
+            }
+
+            // 베이스 스탯 설정
+            foreach (var baseStatData in data.baseStats)
+            {
+                StatType type = (StatType)baseStatData.statType;
+                baseStats[type] = baseStatData.value;
             }
 
             // 스탯 포인트 설정
@@ -226,6 +243,8 @@ public class PlayerStatus : CharacterStatus
         stats[StatType.CRITICAL] = 5f; //치명타 확률
         stats[StatType.CRITICAL_DAMAGE] = 110f; //치명타 데미지
         stats[StatType.COOLDOWN_REDUCTION] = 0f; //스킬 쿨타임 감소
+
+        baseStats = new Dictionary<StatType, float>(stats);
     }
 
 
