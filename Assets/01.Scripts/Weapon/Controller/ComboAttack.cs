@@ -54,7 +54,6 @@ public class ComboAttack : MonoBehaviour
         animator.ResetTrigger("AttackTrigger");
         animator.SetTrigger("AttackTrigger");
         animator.SetInteger("AttackCombo", attackIndex);
-        SoundManager.Instance.PlaySFX(comboData.sound);
         UpdateComboAttackUI(attackIndex - 1);
     }
 
@@ -65,6 +64,11 @@ public class ComboAttack : MonoBehaviour
 
         comboBar.StartCombo(bufferTime);
         StartCoroutine(ComboInputBuffer(bufferTime));
+    }
+
+    void onPlaySound()
+    {
+        //SoundManager.Instance.Playsfx($"SwordAttack{attackIndex}");
     }
 
     IEnumerator ComboInputBuffer(float time)
@@ -136,8 +140,8 @@ public class ComboAttack : MonoBehaviour
         }
         else
         {
-            attackIndex = 0;
-            animator.SetInteger("AttackCombo", 0);
+            attackIndex = 1;
+            animator.SetInteger("AttackCombo", 1);
             animator.Play("Idle");
 
             if (SystemManager.Instance.weaponManager.GetCurrentWeaponData().Type == WeaponType.Sword)
@@ -265,13 +269,11 @@ public class ComboAttack : MonoBehaviour
 
     void OnAttackHit()
     {
-        if (comboData == null || attackIndex < 0 || attackIndex > comboData.comboSteps.Count)
+        if (comboData == null || attackIndex <= 0 || attackIndex > comboData.comboSteps.Count)
         {
             Debug.LogWarning("잘못된 attackIndex 또는 comboData 없음");
             return;
         }
-
-        if (attackIndex == 0) attackIndex = 1;
 
         float multiplier = comboData.comboSteps[attackIndex - 1].damageMultiplier;
 

@@ -129,8 +129,6 @@ public class RangedAttack : MonoBehaviour
 
         for (int i = 0; i < step.projectileCount; i++)
         {
-            //SoundManager.Instance.PlaySFX(rangedData.sound);
-
             Vector3 direction = baseDirection;
 
             if (step.isSpread)
@@ -229,8 +227,8 @@ public class RangedAttack : MonoBehaviour
         }
         else
         {
-            attackIndex = 0;
-            animator.SetInteger("BowCombo", 0);
+            attackIndex = 1;
+            animator.SetInteger("BowCombo", 1);
             animator.Play("Idle");
 
             if(SystemManager.Instance.weaponManager.GetCurrentWeaponData().Type == WeaponType.Bow)
@@ -242,9 +240,9 @@ public class RangedAttack : MonoBehaviour
     {
         yield return new WaitForSeconds(delay);
 
-        if (attackIndex >= maxCombo || attackIndex == 0)
+        if (attackIndex >= maxCombo)
         {
-            attackIndex = 1; // maxCombo 이거나 0일때 1로 리셋
+            attackIndex = 1; // maxCombo 일때 1로 리셋
         }
 
         IsAttacking = true;
