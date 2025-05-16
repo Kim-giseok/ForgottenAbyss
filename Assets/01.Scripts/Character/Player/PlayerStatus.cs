@@ -209,14 +209,14 @@ public class PlayerStatus : CharacterStatus
         LoadPlayerData();
     }
 
-    private void OnEnable()
-    {
-        OnStatChanged += (type, value) =>
-        {
-            if (type == StatType.CurrentHP)
-                Debug.Log($"HP �����: {value}");
-        };
-    }
+    //private void OnEnable()
+    //{
+    //    OnStatChanged += (type, value) =>
+    //    {
+    //        if (type == StatType.CurrentHP)
+    //            Debug.Log($"HP �����: {value}");
+    //    };
+    //}
 
 
     private void Update()
