@@ -14,24 +14,22 @@ public class SubCameraInteract: MonoBehaviour
     private CinemachineConfiner2D confiner2D;
     private CinemachineConfiner2D virCam1Confiner2D;
     private CinemachineConfiner2D virCam2Confiner2D;
-
-
-    private void Awake()
-    {
-        cameraBrain = FindObjectOfType<CinemachineBrain>();
-        
-        confiner2D = MapSpawnManager.Instance.virtualCamera.GetComponent<CinemachineConfiner2D>();
-        virCam1Confiner2D = virCam1.GetComponent<CinemachineConfiner2D>();
-        virCam2Confiner2D = virCam2.GetComponent<CinemachineConfiner2D>();
-    }
+    
 
     private void Start()
     {
         activeCam = virCam1;
     }
 
+    // error: awake에서 실행할 경우, 타이틀 씬 등에서 문제 발생
     public void Init()
     {
+        cameraBrain = FindObjectOfType<CinemachineBrain>();
+        
+        confiner2D = MapSpawnManager.Instance.virtualCamera.GetComponent<CinemachineConfiner2D>();
+        virCam1Confiner2D = virCam1.GetComponent<CinemachineConfiner2D>();
+        virCam2Confiner2D = virCam2.GetComponent<CinemachineConfiner2D>();
+        
         virCam1Confiner2D.m_BoundingShape2D = confiner2D?.m_BoundingShape2D;
         virCam2Confiner2D.m_BoundingShape2D = confiner2D?.m_BoundingShape2D;
     }
