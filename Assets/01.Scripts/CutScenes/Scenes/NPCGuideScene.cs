@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class NPCNoticeCutScene: CutScene
+public class NPCGuideScene: CutScene
 {
     public Transform weaponBox;
     public Transform shop;

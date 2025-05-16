@@ -1,0 +1,4 @@
+public class IntroBattleScene: CutScene
+{
+    
+}
