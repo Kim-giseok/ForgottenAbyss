@@ -12,6 +12,7 @@ public class EquipmentManager : MonoBehaviour
 
     public event Action<ArmorSO> OnEquipArmor;
     public event Action<ArmorSO> OnUnequipArmor;
+    public event Action OnArmorChanged;
 
     public event Action<MemoryPieceSO> OnEquipMemory;
     public event Action<MemoryPieceSO> OnUnequipMemory;
@@ -20,6 +21,16 @@ public class EquipmentManager : MonoBehaviour
     private InventorySlotUI equippedMemorySlot;
 
     public bool isSetBonusApplied = false;
+
+    private void Awake()
+    {
+        Initialize();
+    }
+
+    public void Initialize()
+    {
+        OnArmorChanged += RecalculateStats; 
+    }
 
     private IEnumerator Start()
     {
@@ -84,11 +95,9 @@ public class EquipmentManager : MonoBehaviour
         }
 
         equippedArmors[armor.slot] = (armor, slot);
-        ApplyStatBonus(armor);
-        RemoveSetBonus(); // 기존 보너스 제거 후
-        ApplySetBonus();
 
         OnEquipArmor?.Invoke(armor);
+        OnArmorChanged?.Invoke();
 
         string bonusLog = string.Join(", ", armor.statBonuses.Select(b => $"{b.statType} {b.bonusType} +{b.value}"));
         Debug.Log($"[Test] 장착 성공: {armor.name} → {armor.slot}, {bonusLog}");
@@ -102,11 +111,28 @@ public class EquipmentManager : MonoBehaviour
             RemoveStatBonus(armor.armor);
 
             equippedArmors.Remove(slot);
+
             OnUnequipArmor?.Invoke(armor.armor);
+            OnArmorChanged?.Invoke();
 
             string bonusLog = string.Join(", ", armor.armor.statBonuses.Select(b => $"{b.statType} {b.bonusType} -{b.value}"));
             Debug.Log($"[Test] 장착 해제: {armor.armor.name} → {armor.slot}, {bonusLog}");
         }
+    }
+
+    public void RecalculateStats()
+    {
+        playerStatus.ResetStats();
+
+        foreach (var armor in equippedArmors.Values)
+        {
+            ApplyStatBonus(armor.armor);
+        }
+
+        RemoveSetBonus();
+        ApplySetBonus();
+
+        Debug.Log($"[RecalculateStats] 모든 장착 방어구 기준으로 스탯 재계산 완료");
     }
 
     public ArmorSO GetEquippedArmor(ArmorSlot slot)
@@ -174,7 +200,18 @@ public class EquipmentManager : MonoBehaviour
         return total;
     }
 
-    private Dictionary<StatType, float> baseStats = new Dictionary<StatType, float>();
+    private float GetCurrentBaseStat(StatType statType)
+    {
+        float baseStat = playerStatus.GetBaseStat(statType);
+
+        foreach (var armor in equippedArmors.Values)
+        {
+            var bonuses = armor.armor.statBonuses.Where(b => b.statType == statType).ToList();
+            baseStat = StatBonusCalculator.ApplyBonuses(baseStat, bonuses);
+        }
+
+        return baseStat;
+    }
 
     private void ApplyStatBonus(ArmorSO armor)
     {
