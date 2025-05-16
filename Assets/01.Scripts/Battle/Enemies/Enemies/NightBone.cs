@@ -45,7 +45,7 @@ public class ChargingNode : Node
     public override void Start()
     {
         controller.animHandler.Play("Charging");
-        controller.soundHandler.Play(EnemySoundType.Casting);
+        SoundManager.Instance.Playsfx("ElectronicCast");
     }
 
     public override void Update()

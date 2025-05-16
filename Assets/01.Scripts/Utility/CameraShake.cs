@@ -29,10 +29,11 @@ public class CameraShake : MonoBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        virtualCamera = FindObjectOfType<CinemachineVirtualCamera>();
+        virtualCamera = MapSpawnManager.Instance.virtualCamera;
+
         if (virtualCamera == null)
         {
-            Debug.LogWarning("CameraShake: »õ ¾À¿¡¼­ VirtualCamera¸¦ Ã£Áö ¸øÇß½À´Ï´Ù.");
+            Debug.LogWarning("CameraShake: ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ VirtualCameraï¿½ï¿½ Ã£ï¿½ï¿½ ï¿½ï¿½ï¿½ß½ï¿½ï¿½Ï´ï¿½.");
             return;
         }
 
@@ -57,7 +58,7 @@ public class CameraShake : MonoBehaviour
                 Destroy(listener);
             }
 
-            Debug.LogWarning("[CameraShake] Áßº¹ AudioListener°¡ °¨ÁöµÇ¾î Á¦°ÅµÇ¾ú½À´Ï´Ù.");
+            Debug.LogWarning("[CameraShake] ï¿½ßºï¿½ AudioListenerï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ç¾ï¿½ ï¿½ï¿½ï¿½ÅµÇ¾ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.");
         }
     }
 
@@ -66,7 +67,7 @@ public class CameraShake : MonoBehaviour
         noise = virtualCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
         if (noise == null)
         {
-            Debug.LogWarning("CameraShake: VirtualCamera¿¡ Perlin Noise ÄÄÆ÷³ÍÆ®°¡ ¾ø½À´Ï´Ù!");
+            Debug.LogWarning("CameraShake: VirtualCameraï¿½ï¿½ Perlin Noise ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½!");
         }
     }
 
@@ -74,7 +75,7 @@ public class CameraShake : MonoBehaviour
     {
         if (noise == null)
         {
-            Debug.LogWarning("CameraShake: noise ÄÄÆ÷³ÍÆ®°¡ nullÀÔ´Ï´Ù.");
+            Debug.LogWarning("CameraShake: noise ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ nullï¿½Ô´Ï´ï¿½.");
             return;
         }
 

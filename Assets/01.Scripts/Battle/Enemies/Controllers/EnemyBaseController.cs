@@ -53,13 +53,14 @@ public class EnemyBaseController: MonoBehaviour
     }
 
     // character controller //
+    // notice: 플립 개념이 거꾸로 되어있다.
     public void Flip(bool isFlip)
     {
         transform.rotation = Quaternion.Euler(0, isFlip ? 0 : 180, 0);
     }
     public void LookTarget()
     {
-        Flip(agent.GetDirection().x > 0);
+        if(agent) { Flip(agent.GetDirection().x > 0); }
     }
 
 }

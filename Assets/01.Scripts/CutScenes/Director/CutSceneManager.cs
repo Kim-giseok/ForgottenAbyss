@@ -1,19 +1,29 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
+using UnityEngine.Serialization;
 
-public class CutSceneManager: SingletonLoadRemain<CutSceneManager>
+public class CutSceneManager: MonoBehaviour
 {
-    public CutSceneCameraController CamController { get; private set; }
+    public static CutSceneManager Instance { get; private set; }
+    
+    public SubCameraInteract SubCams;
 
     public LetterBox LetterBox;
+    public TextMeshProUGUI NarrationText;
+
+    public GameObject UIPool;
+    public RectTransform UIPointingComp;
+    
     public PointingComp Pointing;
     public ToolTipComp ToolTip;
     public Light2D PointLight;
-    
-    protected override void Awake()
+
+    private void Awake()
     {
-        base.Awake();
-        CamController = GetComponent<CutSceneCameraController>();
+        if(Instance) Destroy(Instance);
+        Instance = this;
+        DontDestroyOnLoad(this);
     }
     
     public void ShowText(Transform target, string sentnece)

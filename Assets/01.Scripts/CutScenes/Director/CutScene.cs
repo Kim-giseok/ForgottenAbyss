@@ -1,21 +1,44 @@
 using System;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.Serialization;
 
 public abstract class CutScene: MonoBehaviour
 {
-    public CutSceneCameraController Cam => CutSceneManager.Instance.CamController;
+    public SubCameraInteract SubCams => CutSceneManager.Instance.SubCams;
     
-    protected Action[] Actions;
+    protected Func<UniTask>[] Actions;
+    
     protected Action OnFinish;
+    public UnityEvent OnFinishUnityEvent;
 
     private CueMachine CueMachine { get; set; }
+    
+    public Func<UniTask> Do(Action action)
+    {
+        return () =>
+        {
+            action.Invoke();
+            return UniTask.CompletedTask;
+        };
+    }
+
+    public Func<UniTask> Do(Func<UniTask> asyncFunc)
+    {
+        return asyncFunc.Invoke;
+    }
 
     protected virtual void Init() { }
 
     private void Awake()
     {
         OnFinish += () => gameObject.SetActive(false);
-        CueMachine = new CueMachine { OnFinish = OnFinish };
+        CueMachine = new CueMachine
+        {
+            OnFinish = OnFinish,
+            OnFinishUnityEvent = OnFinishUnityEvent
+        };
         Init();
     }
 
@@ -29,17 +52,23 @@ public abstract class CutScene: MonoBehaviour
     private void Update()
     {
         if (!CueMachine.IsPlaying) return;
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && !CueMachine.isCutSceneStarted)
         {
             // if (!UIManager.Instance.talkBox.isFinished) return;
             UIManager.Instance.OffTalk();
             CueMachine.Next();
         }
     }
+    
 
     protected void SetSentence(string texts, Transform newTransform = null)
     {
         CutSceneManager.Instance.ShowText(!newTransform ? GameManager.Instance.player.transform : newTransform, texts);
+    }
+
+    protected void ClearSentence()
+    {
+        UIManager.Instance.OffTalk();
     }
     
     protected void SetCutSceneMode(bool isCutsceneMode) => CutSceneManager.Instance.SetCutSceneMode(isCutsceneMode);
