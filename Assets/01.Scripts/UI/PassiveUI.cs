@@ -190,7 +190,7 @@ public class PassiveUI : MonoBehaviour
         }
 
         float currentCdw = _playerStatus.GetStat(StatType.COOLDOWN_REDUCTION);
-        _playerStatus.SetStat(StatType.COOLDOWN_REDUCTION, currentCdw + 5f);
+        _playerStatus.SetStat(StatType.COOLDOWN_REDUCTION, currentCdw + 2f);
         _playerStatus.AddStatPoints(-1);
 
         if (speedLevel >= maxSpeedLevel)
@@ -199,7 +199,7 @@ public class PassiveUI : MonoBehaviour
         }
 
         coolDownLevel++;
-        coolDownText.text = $"스킬 쿨타임 감소\n5%\n Lv {coolDownLevel}/{maxCoolDownLevel}";
+        coolDownText.text = $"스킬 쿨타임 감소\n2%\n Lv {coolDownLevel}/{maxCoolDownLevel}";
     }
        
 }

@@ -239,7 +239,7 @@ public class EquipmentManager : MonoBehaviour
                     //float finalStat = currentStat * (1 + bonus.multiplier);
                     float finalStat;
 
-                    if (bonus.stat == StatType.CRITICAL || bonus.stat == StatType.CRITICAL_DAMAGE) // 치명타 확률, 치명타 데미지
+                    if (bonus.stat == StatType.CRITICAL || bonus.stat == StatType.CRITICAL_DAMAGE || bonus.stat == StatType.COOLDOWN_REDUCTION) // 치명타 확률, 치명타 데미지, 쿨타임 감소
                         finalStat = currentStat + bonus.multiplier; // 덧셈 방식
                     else
                         finalStat = currentStat * (1 + bonus.multiplier); // 곱셈 방식
@@ -271,7 +271,7 @@ public class EquipmentManager : MonoBehaviour
                     //float restoredStat = currentStat / (1 + bonus.multiplier);
                     float restoredStat;
 
-                    if (bonus.stat == StatType.CRITICAL || bonus.stat == StatType.CRITICAL_DAMAGE)
+                    if (bonus.stat == StatType.CRITICAL || bonus.stat == StatType.CRITICAL_DAMAGE || bonus.stat == StatType.COOLDOWN_REDUCTION)
                         restoredStat = currentStat - bonus.multiplier;
                     else
                         restoredStat = currentStat / (1 + bonus.multiplier); 

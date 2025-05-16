@@ -18,8 +18,8 @@ public class UIInputHandler : MonoBehaviour
             { KeyCode.I, () => UIManager.Instance?.ToggleInventory() },
             { KeyCode.Escape, HandleEscapeKey },
             //{ KeyCode.Tab, () => UIManager.Instance?.SwapWeapons() }
-            { KeyCode.V, () => UIManager.Instance?.OnStatUI() },
-            { KeyCode.K, () => UIManager.Instance?.OnPassiveUI() },
+            { KeyCode.V, () => UIManager.Instance?.ToggleStatUI() },
+            { KeyCode.K, () => UIManager.Instance?.TogglePassiveUI() },
             { KeyCode.Alpha1, () => quickSlotController.OnQuickSlotKeyPressed(0) },
             { KeyCode.Alpha2, () => quickSlotController.OnQuickSlotKeyPressed(1) },
             { KeyCode.Alpha3, () => quickSlotController.OnQuickSlotKeyPressed(2) },
@@ -30,14 +30,11 @@ public class UIInputHandler : MonoBehaviour
 
     private void Update()
     {
-        if (GameManager.Instance.isInputPossible)
+        foreach (var entry in keyActions)
         {
-            foreach (var entry in keyActions)
+            if (Input.GetKeyDown(entry.Key))
             {
-                if (Input.GetKeyDown(entry.Key))
-                {
-                    entry.Value?.Invoke();
-                }
+                entry.Value?.Invoke();
             }
         }
     }

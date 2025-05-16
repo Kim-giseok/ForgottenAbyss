@@ -68,8 +68,8 @@ public class ItemUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (item != null)
-            UIManager.Instance.ShowTooltip(item, Input.mousePosition);
+        //if (item != null)
+        //    UIManager.Instance.ShowTooltip(item, Input.mousePosition);
     }
 
     public void OnPointerExit(PointerEventData eventData)
