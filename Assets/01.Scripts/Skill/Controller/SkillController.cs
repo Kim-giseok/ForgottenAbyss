@@ -78,15 +78,9 @@ public class SkillController : Singleton<SkillController>
 
     void OnAttack(InputValue value)
     {
-        if(GameManager.Instance.player.controller.canAttack == false) return;
-
         if (Time.time - lastAttackTime < attackCooldown) return;
 
         lastAttackTime = Time.time;
-
-        Debug.Log(lastAttackTime);
-
-        if (!IsExecutable() && !IsBufferable()) return;
 
         if (!SystemManager.Instance.weaponManager.IsWeaponEquipped())
         {
@@ -94,17 +88,18 @@ public class SkillController : Singleton<SkillController>
             return;
         }
 
-        if (IsTurning())
+        if (!IsExecutable() || !GameManager.Instance.player.controller.canAttack || IsTurning())
         {
+            Debug.Log("A: 공격 불가 또는 방향 전환 중 - 공격 입력 버퍼링");
             SystemManager.Instance.actionBufferUtil.BufferAction(
                 "NormalAttack",
-                () => IsExecutable(),
+                () => IsExecutable() && GameManager.Instance.player.controller.canAttack,
                 () => StartCoroutine(DelayedCombatExecution()));
+
+            return;
         }
         else
-        {
             combatSkill.Execute();
-        }
 
         Debug.Log("A: 기본 공격");
     }
