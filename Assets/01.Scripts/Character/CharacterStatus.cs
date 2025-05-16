@@ -87,7 +87,7 @@ public class CharacterStatus : MonoBehaviour
 
         setBonusMultipliers[type] = 1 + multiplier;
 
-        if (type == StatType.CRITICAL || type == StatType.CRITICAL_DAMAGE)
+        if (type == StatType.CRITICAL || type == StatType.CRITICAL_DAMAGE || type == StatType.COOLDOWN_REDUCTION)
         {
             stats[type] = stats[type] + multiplier;
         }
@@ -104,7 +104,7 @@ public class CharacterStatus : MonoBehaviour
     {
         if (!stats.ContainsKey(type) || !setBonusMultipliers.ContainsKey(type)) return;
 
-        if (type == StatType.CRITICAL || type == StatType.CRITICAL_DAMAGE)
+        if (type == StatType.CRITICAL || type == StatType.CRITICAL_DAMAGE || type == StatType.COOLDOWN_REDUCTION)
         {
             stats[type] = stats[type] - multiplier;
         }
