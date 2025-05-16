@@ -61,10 +61,16 @@ public class ArmorSetBonus
                 (StatType.ATK, 0.4f)
             })
         },
-        { "암살자", new ArmorSetBonus("암살자", "크리티컬 확률 +30%, 크리티컬 데미지 30%", new List<(StatType, float)>
+        { "암살자", new ArmorSetBonus("암살자", "크리티컬 확률 +30%, 크리티컬 데미지 +30%", new List<(StatType, float)>
             {
                 (StatType.CRITICAL, 30f),
                 (StatType.CRITICAL_DAMAGE, 30f),
+            })
+        },
+        { "질풍", new ArmorSetBonus("질풍", "스킬 쿨타임 감소 20%, 이동속도 +20%", new List<(StatType, float)>
+            {
+                (StatType.COOLDOWN_REDUCTION, 20f),
+                (StatType.SPEED, 0.2f),
             })
         }
     };
