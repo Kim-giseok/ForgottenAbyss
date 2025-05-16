@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour, IDamagable
 {
@@ -14,7 +15,7 @@ public class Player : MonoBehaviour, IDamagable
     public bool isDead = false;
 
     [SerializeField] private float defenseFactor = 100f;
-    [SerializeField] private float hpRegenRate = 2f;
+    [SerializeField] private float hpRegenRate = 10f;
     [SerializeField] private float mpRegenRate = 5f;
     [SerializeField] private float speed;
 
@@ -53,7 +54,11 @@ public class Player : MonoBehaviour, IDamagable
         }
 #endif
 
-        RegenerateStats();
+        if (playerstatus.stats[StatType.CurrentHP] < playerstatus.stats[StatType.MaxHP] ||
+        playerstatus.stats[StatType.CurrentMP] < playerstatus.stats[StatType.MaxMP])
+        {
+            RegenerateStats();
+        }
     }
 
     public void GetDamage(float damage)
@@ -150,16 +155,22 @@ public class Player : MonoBehaviour, IDamagable
     {
         float dt = Time.deltaTime;
 
-        //float currentHP = playerstatus.stats[StatType.CurrentHP];
-        //float maxHP = playerstatus.stats[StatType.MaxHP];
-
         float currentMP = playerstatus.stats[StatType.CurrentMP];
         float maxMP = playerstatus.stats[StatType.MaxMP];
 
-        //currentHP = Mathf.Min(currentHP + hpRegenRate * dt, maxHP);
         currentMP = Mathf.Min(currentMP + mpRegenRate * dt, maxMP);
 
-        //playerstatus.SetStat(StatType.CurrentHP, currentHP);
         playerstatus.SetStat(StatType.CurrentMP, currentMP);
+
+        // 마을에서는 체력 자동 회복
+        if (SceneManager.GetActiveScene().name == "Village")
+        {
+            float currentHP = playerstatus.stats[StatType.CurrentHP];
+            float maxHP = playerstatus.stats[StatType.MaxHP];
+
+            currentHP = Mathf.Min(currentHP + hpRegenRate * dt, maxHP);
+
+            playerstatus.SetStat(StatType.CurrentHP, currentHP);
+        }
     }
 }
