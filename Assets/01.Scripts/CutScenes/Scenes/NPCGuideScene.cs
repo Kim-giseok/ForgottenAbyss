@@ -28,11 +28,11 @@ public class NPCGuideScene: CutScene
             }),
             Do(() =>
             {
-                SetSentence("기억을 되찾기 위해서는 만반의 준비를 해야할 거야");
+                SetSentence("기억을 되찾기 위해서는 만반의 준비를 해야할 거에요.");
             }),
             Do(() =>
             {
-                SetSentence("상점에는 장비,물약 등 필요한 물품들이 있지");
+                SetSentence("상점에는 장비,물약 등 필요한 물품들이 있어요.");
                 SubCams.Focus(shop);
                 Pointing(shop);
                 SetPointingLight(shop);
@@ -42,10 +42,10 @@ public class NPCGuideScene: CutScene
                 SubCams.Reset();
                 ResetPointer();
                 ResetPointingLight();
-                SetSentence("우측 상단의 스크롤을 누르면 가이드를 볼 수 있을거야");
+                SetSentence("우측 상단의 스크롤을 누르면 가이드를 볼 수 있어요.");
                 // Pointing(menuButton);
             }),
-            Do(() => SetSentence("레벨업을 하면 스탯 포인트로 패시브 스킬에 투자해 강해질 수 있네")),
+            Do(() => SetSentence("레벨업을 하면 스탯 포인트로 패시브 스킬에 투자해 강해질 수 있어요.")),
             Do(() =>
             {
                 UIManager.Instance.TogglePassiveUI();
@@ -56,7 +56,7 @@ public class NPCGuideScene: CutScene
                 ResetToolTip();
                 UIManager.Instance.TogglePassiveUI();  
                 // Cam.Focus(weaponBox);
-                SetSentence("무기상자에서 무기를 가져가는 것도 잊지말게");
+                SetSentence("무기상자에서 무기를 가져가는 것도 잊지 않도록.");
                 
                 SubCams.Focus(weaponBox);
                 Pointing(weaponBox);

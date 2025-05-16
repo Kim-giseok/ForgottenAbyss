@@ -166,20 +166,28 @@ public class IntroBattleScene: CutScene
             
             Do(async () =>
             {   
-                LightManager.Instance.FadeIn(1);
-                await UniTask.Delay(500);
-                
                 // noticedestroy 방식으로하면 다시 재생이 안되므로 disable로 하기
                 Destroy(npc.gameObject);
                 npcOrigin.SetActive(true);
                 playerActor.transform.position = npc.transform.position + Vector3.left;
                 
-                SetSentence("도와줘서 고맙네, 방금 사용한 그림자 능력은 무엇이지?", npcOrigin.transform);
+                LightManager.Instance.FadeIn(1);
+                await UniTask.Delay(500);
+                
+                SetSentence("도움을 줘서 고마워요. 그런데... 방금 그 그림자 같은 힘, 대체 어디서 배운 거죠?", npcOrigin.transform);
                 await UniTask.Delay(3000);
-                SetSentence("기억이 나지 않아요. 여기는 어디인가요?", playerActor.transform);
+                SetSentence("기억이 흐릿해요… 그런데, 방금 전 이 장면이 낯설지 않게 느껴졌어요.", playerActor.transform);
+                await UniTask.Delay(3000);
+                SetSentence("이 곳은 그림자들의 침공으로부터 마지막으로 남은 거점이에요.", npcOrigin.transform);
+                await UniTask.Delay(3000);
+                SetSentence("어쩌면… 그림자 속에서, 잃어버린 기억도 되찾을 수 있을지 몰라요.", npcOrigin.transform);
             }),
             Do(() =>
             {
+                GameManager.Instance.player.transform.position = playerActor.transform.position;
+                GameManager.Instance.player.gameObject.SetActive(true);
+                
+                SubCams.Reset();
                 ClearSentence();
                 SetCutSceneMode(false);   
             })
