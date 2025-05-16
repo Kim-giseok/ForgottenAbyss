@@ -9,6 +9,8 @@ public class MapSpawnManager : Singleton<MapSpawnManager>
     [SerializeField] FLAGKEY stageClearedFlag;
     [SerializeField] private Map[] maps;
     [SerializeField] CinemachineConfiner2D confiner2D;
+    public CinemachineVirtualCamera virtualCamera { get; private set; }
+    
     int mapIdx = 0;
     public Map SpawnedMap { get; private set; }
 
@@ -24,7 +26,7 @@ public class MapSpawnManager : Singleton<MapSpawnManager>
 
     private void Start()
     {
-        CinemachineVirtualCamera virtualCamera = confiner2D.GetComponent<CinemachineVirtualCamera>();
+        virtualCamera = confiner2D.GetComponent<CinemachineVirtualCamera>();
         virtualCamera.Follow = GameManager.Instance.player.transform;
 
         SpawnBackground();

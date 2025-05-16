@@ -3,6 +3,8 @@ using UnityEngine.AddressableAssets;
 
 public class ManagerLoader: MonoBehaviour
 {
+    public static bool isLoaded = false;
+    
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     public static void Load()
     {
@@ -13,5 +15,7 @@ public class ManagerLoader: MonoBehaviour
                 Instantiate(prefab);
             }
         };
+        
+        isLoaded = true;
     }
 }

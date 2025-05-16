@@ -34,33 +34,6 @@ public class LetterBox : MonoBehaviour
         verticalLayoutGroup = GetComponent<VerticalLayoutGroup>();
         canvasGroup = GetComponent<CanvasGroup>();
     }
-
-    public void ShowLetterBox(bool isShow)
-    {
-        if(letterBoxCoroutine != null) StopCoroutine(letterBoxCoroutine);
-        if(isShow) gameObject.SetActive(true);
-        letterBoxCoroutine = StartCoroutine(HandleWidth(isShow));
-    }
-    
-    // private IEnumerator Narration(int lineIndex)
-    // {
-    //     skipLine = false;
-    //     narrationText.text = "";
-    //     
-    //     string line = narrations[lineIndex];
-    //
-    //     foreach (char c in line)
-    //     {
-    //         if (skipLine) { narrationText.text = line; break; }
-    //         
-    //         audioSource.PlayOneShot(audioSource.clip);
-    //         narrationText.text += c;
-    //         yield return new WaitForSeconds(0.1f);
-    //     }
-    //     
-    //     skipLine = true;
-    // }
-    
     
     private IEnumerator HandleWidth(bool isShow)
     {
@@ -88,5 +61,43 @@ public class LetterBox : MonoBehaviour
 
         verticalLayoutGroup.spacing = currEndWith;
         if(!isShow) gameObject.SetActive(false);
+    }
+
+    public void ShowLetterBox(bool isShow)
+    {
+        if(letterBoxCoroutine != null) StopCoroutine(letterBoxCoroutine);
+        if(isShow) gameObject.SetActive(true);
+        letterBoxCoroutine = StartCoroutine(HandleWidth(isShow));
+    }
+    
+    private IEnumerator Narration(string text)
+    {
+        if(!narrationText.gameObject.activeSelf) { narrationText.gameObject.SetActive(true); }
+        
+        skipLine = false;
+        narrationText.text = "";
+    
+        foreach (char c in text)
+        {
+            if (skipLine) { narrationText.text = text; break; }
+            
+            SoundManager.Instance.Playsfx("Tick");
+            narrationText.text += c;
+            yield return new WaitForSeconds(0.05f);
+        }
+        
+        skipLine = true;
+    }
+
+    public void ShowNarration(string text)
+    {
+        if(narrationCoroutine != null) StopCoroutine(narrationCoroutine);
+        narrationCoroutine = StartCoroutine(Narration(text));
+    }
+
+    public void HideNarration()
+    {
+        if(narrationCoroutine != null) StopCoroutine(narrationCoroutine);
+        narrationText.gameObject.SetActive(false);
     }
 }
