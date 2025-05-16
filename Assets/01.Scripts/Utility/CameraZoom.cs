@@ -38,7 +38,7 @@ public class CameraZoom : MonoBehaviour
     {
         StopAllCoroutines();
 
-        virtualCam = FindObjectOfType<CinemachineVirtualCamera>();
+        virtualCam = MapSpawnManager.Instance.virtualCamera;
         if (virtualCam == null)
         {
             Debug.Log("CameraZoom: �� ���� ����� ī�޶� ���� (������)");

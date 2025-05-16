@@ -6,8 +6,11 @@ using UnityEngine;
 public class CueMachine
 {
     private readonly Queue<Func<UniTask>> _scenario = new();
+
+    public bool isCutSceneStarted = false;
     public bool IsPlaying { get; private set; }
     private bool IsFinish { get; set; }
+    
     
     public Action OnFinish;
     
@@ -24,14 +27,18 @@ public class CueMachine
         }
     }
 
-    public void Next()
+    // ReSharper disable once AsyncVoidMethod
+    public async void Next()
     {
         if (IsFinish) return;
-        _scenario.Dequeue()?.Invoke();
-        if (_scenario.Count == 0)
-        { 
-            IsFinish = true;
-            OnFinish?.Invoke();
-        }
+        
+        var cut = _scenario.Dequeue();
+        isCutSceneStarted = true;
+        await cut.Invoke();
+        isCutSceneStarted = false;
+
+        if (_scenario.Count != 0) return;
+        IsFinish = true;
+        OnFinish?.Invoke();
     }
 }

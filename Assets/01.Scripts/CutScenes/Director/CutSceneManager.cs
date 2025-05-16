@@ -1,20 +1,16 @@
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
+using UnityEngine.Serialization;
 
 public class CutSceneManager: SingletonLoadRemain<CutSceneManager>
 {
-    public CutSceneCameraController CamController { get; private set; }
+    public SubCameraInteract SubCams;
 
     public LetterBox LetterBox;
     public PointingComp Pointing;
     public ToolTipComp ToolTip;
     public Light2D PointLight;
     
-    protected override void Awake()
-    {
-        base.Awake();
-        CamController = GetComponent<CutSceneCameraController>();
-    }
     
     public void ShowText(Transform target, string sentnece)
     {

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public abstract class CutScene: MonoBehaviour
 {
-    public CutSceneCameraController Cam => CutSceneManager.Instance.CamController;
+    public SubCameraInteract SubCams => CutSceneManager.Instance.SubCams;
     
     protected Func<UniTask>[] Actions;
     protected Action OnFinish;
@@ -39,18 +39,20 @@ public abstract class CutScene: MonoBehaviour
         CueMachine.Define(Actions);
         CueMachine.Start();
         CueMachine.Next();
+        CutSceneManager.Instance.SubCams.Init();
     }
 
     private void Update()
     {
         if (!CueMachine.IsPlaying) return;
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && !CueMachine.isCutSceneStarted)
         {
             // if (!UIManager.Instance.talkBox.isFinished) return;
             UIManager.Instance.OffTalk();
             CueMachine.Next();
         }
     }
+    
 
     protected void SetSentence(string texts, Transform newTransform = null)
     {
