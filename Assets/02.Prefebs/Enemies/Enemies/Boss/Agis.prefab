@@ -185,7 +185,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: -49182872, guid: 1908d3c106ea84c25a6b8c4b5aaf7572, type: 3}
   m_Color: {r: 1, g: 0, b: 0.75977707, a: 1}
   m_FlipX: 0
@@ -260,7 +260,7 @@ CapsuleCollider2D:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 17536
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2
@@ -307,6 +307,7 @@ MonoBehaviour:
   isBaked: 1
   isIgnoreHitAnim: 1
   enemyName: 1
+  level: 1
 --- !u!114 &1963007142685713099
 MonoBehaviour:
   m_ObjectHideFlags: 0
