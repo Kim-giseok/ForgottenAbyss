@@ -2,15 +2,23 @@ using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.Serialization;
 
-public class CutSceneManager: SingletonLoadRemain<CutSceneManager>
+public class CutSceneManager: MonoBehaviour
 {
+    public static CutSceneManager Instance { get; private set; }
+    
     public SubCameraInteract SubCams;
 
     public LetterBox LetterBox;
     public PointingComp Pointing;
     public ToolTipComp ToolTip;
     public Light2D PointLight;
-    
+
+    private void Awake()
+    {
+        if(Instance) Destroy(Instance);
+        Instance = this;
+        DontDestroyOnLoad(this);
+    }
     
     public void ShowText(Transform target, string sentnece)
     {
