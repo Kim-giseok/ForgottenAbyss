@@ -7,6 +7,8 @@ public class IntroBattleScene: CutScene
     public ActorController npc;
     public ActorController nightBone;
     public ActorController archer;
+
+    public GameObject npcOrigin;
     
     public FieldItemDropAnimator nightBoneItem;
     public RectTransform nightBoneItemComp;
@@ -163,6 +165,10 @@ public class IntroBattleScene: CutScene
             {   
                 GameManager.Instance.player.gameObject.SetActive(true);
 
+                // noticedestroy 방식으로하면 다시 재생이 안되므로 disable로 하기
+                Destroy(npc.gameObject);
+                npcOrigin.SetActive(true);
+                
                 SubCams.Reset();
                 SetCutSceneMode(false);
                 ClearSentence();
