@@ -456,4 +456,28 @@ public class ControllerPlayer : MonoBehaviour
         else
             ChangeState(PlayerState.Run);
     }
+
+    public void UpdateDashValues(WeaponType weaponType)
+    {
+        if (weaponType == WeaponType.Sword)
+        {
+            dashDistance = 4f;
+            dashTime = 0.25f;
+            dashCost = 10f;
+        }
+        else if (weaponType == WeaponType.Bow)
+        {
+            dashDistance = 2f;
+            dashTime = 0.25f;
+            dashCost = 5f;
+        }
+        else
+        {
+            dashDistance = 2f; // 기본값
+            dashTime = 0.25f;
+            dashCost = 10f;
+        }
+
+        Debug.Log($"[대쉬 설정] {weaponType} 장착 - 거리: {dashDistance}, 시간: {dashTime}, 비용: {dashCost}");
+    }
 }
