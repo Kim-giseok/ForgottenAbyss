@@ -232,7 +232,7 @@ public class RangedAttack : MonoBehaviour
             animator.Play("Idle");
 
             if(SystemManager.Instance.weaponManager.GetCurrentWeaponData().Type == WeaponType.Bow)
-                UpdateRangedAttackUI(attackIndex);
+                UpdateRangedAttackUI(attackIndex-1);
         }
     }
 
