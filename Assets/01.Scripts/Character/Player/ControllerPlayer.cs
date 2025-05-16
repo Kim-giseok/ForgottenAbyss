@@ -136,21 +136,21 @@ public class ControllerPlayer : MonoBehaviour
 
         AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
 
-        if (!isGround && rigid.velocity.y < 0)
-        {
-            if (!stateInfo.IsTag("Attack") && !stateInfo.IsTag("Ladder") && !stateInfo.IsTag("WallSlide") && !stateInfo.IsTag("Dash"))
-            {
-                if (!animator.GetBool("IsFall"))
-                {
-                    animator.SetTrigger("FallTrigger");
-                    animator.SetBool("IsFall", true);
-                }
-            }
-        }
-        else
-        {
-            animator.SetBool("IsFall", false);
-        }
+        //if (!isGround && rigid.velocity.y < 0)
+        //{
+        //    if (!stateInfo.IsTag("Attack") && !stateInfo.IsTag("Ladder") && !stateInfo.IsTag("WallSlide") && !stateInfo.IsTag("Dash"))
+        //    {
+        //        if (!animator.GetBool("IsFall"))
+        //        {
+        //            animator.SetTrigger("FallTrigger");
+        //            animator.SetBool("IsFall", true);
+        //        }
+        //    }
+        //}
+        //else
+        //{
+        //    animator.SetBool("IsFall", false);
+        //}
 
         if (dashBuffered)
         {

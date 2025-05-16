@@ -89,20 +89,36 @@ public class ComboAttack : MonoBehaviour
 
     void OnComboNext()
     {
-        if (inputCombo && attackIndex < maxCombo)
+        if (GameManager.Instance.player.controller == null) return;
+
+        if (inputCombo)
         {
-            inputCombo = false;
-            attackIndex++;
-            animator.SetInteger("AttackCombo", attackIndex);
-            UpdateComboAttackUI(attackIndex - 1);
-            animator.Play(comboData.comboSteps[attackIndex - 1].animationName);
-            comboBar.PlayEffect();
-            //SoundManager.Instance.PlaySFX(comboData.sound);
+            if (!GameManager.Instance.player.controller.isGround && attackIndex >= 3)
+            {
+                inputCombo = false;
+                attackIndex = 1;
+                animator.SetInteger("AttackCombo", attackIndex);
+                animator.Play(comboData.comboSteps[attackIndex - 1].animationName);
+                comboBar.PlayEffect();
+                return;
+            }
+
+            if (attackIndex < maxCombo)
+            {
+                inputCombo = false;
+                attackIndex++;
+                animator.SetInteger("AttackCombo", attackIndex);
+                UpdateComboAttackUI(attackIndex - 1);
+                animator.Play(comboData.comboSteps[attackIndex - 1].animationName);
+                comboBar.PlayEffect();
+            }
+            else if (attackIndex >= maxCombo)
+            {
+                EndComboAttack();
+            }
         }
         else
-        {
             EndComboAttack();
-        }
     }
 
     public void EndComboAttack()
