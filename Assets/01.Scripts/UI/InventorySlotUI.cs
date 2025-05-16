@@ -151,6 +151,10 @@ public class InventorySlotUI : MonoBehaviour, IPointerClickHandler
                     {
                         sys.equipmentManager.EquipMemoryPiece(memorySO, this);
                     }
+
+                    RefreshOutline();
+                    UpdateUI();
+                    UIManager.Instance.inventoryUI.CheckAndUnequipItem(memory);
                     break;
             }          
         }
