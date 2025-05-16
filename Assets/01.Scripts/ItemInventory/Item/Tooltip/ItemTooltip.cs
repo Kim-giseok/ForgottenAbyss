@@ -23,16 +23,21 @@ public class ItemTooltip : MonoBehaviour
             Debug.LogError("[Tooltip] Canvas RectTransform을 찾을 수 없습니다.");
     }
 
-
-    public void Show(ITooltipData data, Vector2 screenPos)
+    public void SetData(ITooltipData data)
     {
-        if (data == null || canvasRect == null) return;
-
         nameText.text = data.GetTitle();
         descText.text = data.GetDescription();
         iconImage.sprite = data.GetIcon();
+    }
+
+    public void Show(Vector2 screenPos)
+    {
+        if (canvasRect == null) return;
 
         tooltipPanel.SetActive(true);
+
+        tooltipRect.pivot = new Vector2(0f, 1f);
+        tooltipRect.position = screenPos;
     }
 
     public void Hide()
