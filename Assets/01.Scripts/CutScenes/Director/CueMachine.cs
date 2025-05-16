@@ -1,18 +1,23 @@
 using System;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class CueMachine
 {
-    private readonly Queue<Action> _scenario = new();
+    private readonly Queue<Func<UniTask>> _scenario = new();
+
+    public bool isCutSceneStarted = false;
     public bool IsPlaying { get; private set; }
     private bool IsFinish { get; set; }
     
     public Action OnFinish;
+    public UnityEvent OnFinishUnityEvent;
     
     public void Start() => IsPlaying = true;
     
-    public void Define(params Action[] actions)
+    public void Define(params Func<UniTask>[] actions)
     {
         IsFinish = false;
         _scenario.Clear();
@@ -23,14 +28,20 @@ public class CueMachine
         }
     }
 
-    public void Next()
+    // ReSharper disable once AsyncVoidMethod
+    public async void Next()
     {
         if (IsFinish) return;
-        _scenario.Dequeue()?.Invoke();
-        if (_scenario.Count == 0)
-        { 
-            IsFinish = true;
-            OnFinish?.Invoke();
-        }
+        
+        var cut = _scenario.Dequeue();
+        isCutSceneStarted = true;
+        await cut.Invoke();
+        isCutSceneStarted = false;
+
+        if (_scenario.Count != 0) return;
+        IsFinish = true;
+        
+        OnFinish?.Invoke();
+        OnFinishUnityEvent?.Invoke();
     }
 }

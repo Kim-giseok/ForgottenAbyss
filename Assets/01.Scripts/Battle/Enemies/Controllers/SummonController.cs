@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
 
 // feat: 플레이어 인풋 연결
+// pController 가 액터가 없는 경우 확인 필요
 public class SummonController: EnemyBaseController
 {
     // 발사 직전 캡처링 형태로 정보 등록
@@ -83,7 +84,7 @@ public class SummonController: EnemyBaseController
         // 플레이어 비/활성화가 잠시 필요 - agent 쪽에서 인식 처리만 잘되면 됨
         cRenderer.enabled = false;
         // 서먼 스킬을 사용하는 동안은 무적 처리
-        pController.isInvincible = true; 
+        if(pController) { pController.isInvincible = true; } 
     }
     
     public void Define(SummonSkillManager.Skill skillName)
@@ -103,7 +104,7 @@ public class SummonController: EnemyBaseController
         isCasterAttached = false;
         cRigidbody.velocity = Vector2.zero;
         cRenderer.enabled = true;
-        if(isPlayerCaster) { pController.isInvincible = false; }
+        if(isPlayerCaster && !pController) { pController.isInvincible = false; }
     }
 
     private void Start()
@@ -144,6 +145,6 @@ public class SummonController: EnemyBaseController
         cRigidbody.velocity = Vector2.zero;
         cRenderer.enabled = true;
         Collider.isTrigger = false;
-        if(isPlayerCaster) { pController.isInvincible = false; }
+        if(isPlayerCaster && !pController) { pController.isInvincible = false; }
     }
 }

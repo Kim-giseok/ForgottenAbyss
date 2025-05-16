@@ -4,7 +4,6 @@ using UnityEngine;
 public class SummonSkillManager
 {
     public enum Skill { DashAttack, ComboDashAttack, Agis, AgisRain, Heal, ArcherArrow, MudWave, MudEye, MoonFlyingSummonAttack }
-    public enum Animation { AgisSpawn }
     
     public enum EnemySkill {}
     
