@@ -159,19 +159,29 @@ public class IntroBattleScene: CutScene
                 playerActor.transform.position = archer.transform.position + Vector3.up * 0.15f;
                 playerActor.animHandler.Play("Idle");
                 Destroy(archer.gameObject);
+
+                await UniTask.Delay(250);
+                LightManager.Instance.FadeOut(1);
             }),
             
-            Do(() =>
+            Do(async () =>
             {   
-                GameManager.Instance.player.gameObject.SetActive(true);
-
+                LightManager.Instance.FadeIn(1);
+                await UniTask.Delay(500);
+                
                 // noticedestroy 방식으로하면 다시 재생이 안되므로 disable로 하기
                 Destroy(npc.gameObject);
                 npcOrigin.SetActive(true);
+                playerActor.transform.position = npc.transform.position + Vector3.left;
                 
-                SubCams.Reset();
-                SetCutSceneMode(false);
+                SetSentence("도와줘서 고맙네, 방금 사용한 그림자 능력은 무엇이지?", npcOrigin.transform);
+                await UniTask.Delay(3000);
+                SetSentence("기억이 나지 않아요. 여기는 어디인가요?", playerActor.transform);
+            }),
+            Do(() =>
+            {
                 ClearSentence();
+                SetCutSceneMode(false);   
             })
         };
     }
