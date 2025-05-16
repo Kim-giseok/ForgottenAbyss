@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine.EventSystems;
 
-public class InventorySlotUI : MonoBehaviour, IPointerClickHandler
+public class InventorySlotUI : MonoBehaviour, IPointerClickHandler, ITooltipDataProvider, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField] private Image iconImage;
     [SerializeField] private TextMeshProUGUI amountText;
@@ -158,5 +158,23 @@ public class InventorySlotUI : MonoBehaviour, IPointerClickHandler
                     break;
             }          
         }
+    }
+
+    public ITooltipData GetTooltipData()
+    {
+        if (IsEmpty) return null;
+        return new ItemTooltipData(slot.Item);
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        var tooltipData = GetTooltipData();
+        if (tooltipData != null)
+            UIManager.Instance.ShowTooltip(tooltipData, Input.mousePosition);
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        UIManager.Instance.HideTooltip();
     }
 }

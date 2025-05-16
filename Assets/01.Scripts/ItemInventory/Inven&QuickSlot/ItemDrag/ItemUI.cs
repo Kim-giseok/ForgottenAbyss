@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class ItemUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class ItemUI : MonoBehaviour
 {
     public Item item; // 아이템 데이터
     private Image image;
@@ -64,17 +64,6 @@ public class ItemUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         if (canvasGroup != null) canvasGroup.alpha = 0f;
 
         // gameObject.SetActive(false);
-    }
-
-    public void OnPointerEnter(PointerEventData eventData)
-    {
-        //if (item != null)
-        //    UIManager.Instance.ShowTooltip(item, Input.mousePosition);
-    }
-
-    public void OnPointerExit(PointerEventData eventData)
-    {
-        UIManager.Instance.HideTooltip();
     }
 }
 
