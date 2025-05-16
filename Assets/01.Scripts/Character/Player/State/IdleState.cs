@@ -21,7 +21,9 @@ public class IdleState : PlayerStateMachine
     {
         base.FixedUpdate();
 
-        if (player.rigid.velocity.y < -player.rigid.gravityScale * Time.fixedDeltaTime)
+        AnimatorStateInfo stateInfo = player.animator.GetCurrentAnimatorStateInfo(0);
+
+        if (player.rigid.velocity.y < -player.rigid.gravityScale * Time.fixedDeltaTime && !stateInfo.IsTag("Attack"))
             player.ChangeState(PlayerState.Fall);
         else if (player.inputVec.x != 0)
             player.ChangeState(PlayerState.Run);

@@ -30,7 +30,9 @@ public class JumpState : AirState
     {
         base.FixedUpdate();
 
-        if (player.rigid.velocity.y < -player.rigid.gravityScale * Time.fixedDeltaTime)
+        AnimatorStateInfo stateInfo = player.animator.GetCurrentAnimatorStateInfo(0);
+
+        if (player.rigid.velocity.y < -player.rigid.gravityScale * Time.fixedDeltaTime && !stateInfo.IsTag("Attack"))
             player.ChangeState(PlayerState.Fall);
     }
 

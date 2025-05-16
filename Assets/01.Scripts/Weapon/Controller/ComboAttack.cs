@@ -242,7 +242,7 @@ public class ComboAttack : MonoBehaviour
             yield return null;
         }
 
-        transform.position = endPos;
+        transform.position = Vector3.Lerp(transform.position, endPos, Time.deltaTime * 10f);
     }
 
     void OnAttackHit()
