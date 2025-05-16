@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class CueMachine
 {
-    private readonly Queue<Action> _scenario = new();
+    private readonly Queue<Func<UniTask>> _scenario = new();
     public bool IsPlaying { get; private set; }
     private bool IsFinish { get; set; }
     
@@ -12,7 +13,7 @@ public class CueMachine
     
     public void Start() => IsPlaying = true;
     
-    public void Define(params Action[] actions)
+    public void Define(params Func<UniTask>[] actions)
     {
         IsFinish = false;
         _scenario.Clear();

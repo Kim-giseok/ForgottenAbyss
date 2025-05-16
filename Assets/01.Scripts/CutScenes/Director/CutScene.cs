@@ -1,14 +1,29 @@
 using System;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public abstract class CutScene: MonoBehaviour
 {
     public CutSceneCameraController Cam => CutSceneManager.Instance.CamController;
     
-    protected Action[] Actions;
+    protected Func<UniTask>[] Actions;
     protected Action OnFinish;
 
     private CueMachine CueMachine { get; set; }
+    
+    public Func<UniTask> Do(Action action)
+    {
+        return () =>
+        {
+            action.Invoke();
+            return UniTask.CompletedTask;
+        };
+    }
+
+    public Func<UniTask> Do(Func<UniTask> asyncFunc)
+    {
+        return asyncFunc.Invoke;
+    }
 
     protected virtual void Init() { }
 
