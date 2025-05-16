@@ -8,6 +8,8 @@ public class InventoryUIManager : MonoBehaviour
     [SerializeField] private Button closeButton;
     [SerializeField] private InventorySlotUI[] slotUIs; // Slot UI 배열
     [SerializeField] private InventoryController inventoryController;
+    public InventoryController InventoryController => inventoryController; // 읽기전용
+
 
     private void Awake()
     {
