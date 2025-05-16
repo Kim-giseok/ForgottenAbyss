@@ -19,13 +19,15 @@ public class IntroBattleScene: CutScene
         {
             Do(async () =>
             {
+                // 빌리지에서 바로 시작할 경우 문제 발생
                 GameManager.Instance.PausePlayer();
                 await UniTask.Delay(1000);
                 
                 GameManager.Instance.player.gameObject.SetActive(false);
                 playerActor.transform.position = GameManager.Instance.player.transform.position;
                 playerActor.gameObject.SetActive(true);
-                
+                SetToolTip(new Vector3(0, 340, 0), "아무 키를 눌러 다음으로 진행해주세요.");
+   
                 // 초기 로드 시간 문제로 인해 중복 코드 발생
                 CutSceneManager.Instance.SubCams.Init();
                 SetCutSceneMode(true);
@@ -71,8 +73,8 @@ public class IntroBattleScene: CutScene
                 playerActor.animHandler.SetSpeed(1);
 
                 SetCurrInputKey(KeyCode.A);
-                CutSceneManager.Instance.LetterBox.ShowNarration("A키를 눌러 콤보 공격이 가능합니다.");
-                SetToolTip(new Vector3(0, 340, 0), "아무 키를 눌러 다음으로 진행해주세요.");
+                CutSceneManager.Instance.LetterBox.ShowNarration("기본 공격을 통해 6연타 콤보 공격이 가능합니다.");
+                SetToolTip(new Vector3(0, 340, 0), "A 키를 눌러 다음으로 진행해주세요.");
             }),
             Do(() => ComboAttackAction("SwordAttack_1")),
             Do(() => ComboAttackAction("SwordAttack_2")),
@@ -119,7 +121,7 @@ public class IntroBattleScene: CutScene
                 Destroy(nightBoneItem.gameObject);
                 
                 UIManager.Instance.ShowIngameUI();
-                UIManager.Instance.ToggleInventory();
+                // UIManager.Instance.ToggleInventory();
                 
                 playerActor.animHandler.Play("Idle");
                 
@@ -137,7 +139,9 @@ public class IntroBattleScene: CutScene
             {
                 SetToolTip(new Vector3(0, 340, 0), "1번 키를 눌러 메모리 스킬을 사용해주세요.");
                 SetCurrInputKey(KeyCode.Alpha1);
-                UIManager.Instance.ToggleInventory();
+                
+                // UIManager.Instance.ToggleInventory();
+                
                 nightBoneItemComp.anchoredPosition = new Vector2(-220.6f, -481.6f);
                 CutSceneManager.Instance.UIPointingComp.anchoredPosition = new Vector2(-237f, -472.5f);
             }),
@@ -171,6 +175,8 @@ public class IntroBattleScene: CutScene
 
                 await UniTask.Delay(250);
                 LightManager.Instance.FadeOut(1);
+                await UniTask.Delay(3000);
+                // CueMachine.Next();
             }),
             
             Do(async () =>
@@ -179,13 +185,12 @@ public class IntroBattleScene: CutScene
                 Destroy(npc.gameObject);
                 npcOrigin.SetActive(true);
                 playerActor.transform.position = npc.transform.position + Vector3.left;
-                
+                SubCams.Focus(npcOrigin.transform);
                 LightManager.Instance.FadeIn(1);
                 await UniTask.Delay(500);
                 
-                SubCams.Focus(npcOrigin.transform);
                 SetSentence("도움을 줘서 고마워요. 그런데... 방금 그 그림자 같은 힘, 대체 어디서 배운 거죠?", npcOrigin.transform);
-                await UniTask.Delay(3000);
+                await UniTask.Delay(4000);
                 
                 SubCams.Focus(playerActor.transform);
                 SetSentence("기억이 흐릿해요… 그런데, 방금 전 이 장면이 낯설지 않게 느껴졌어요.", playerActor.transform);
@@ -207,8 +212,7 @@ public class IntroBattleScene: CutScene
             })
         };
     }
-
-
+    
     protected void ComboAttackAction(string animationName)
     {
         playerActor.animHandler.Play(animationName);

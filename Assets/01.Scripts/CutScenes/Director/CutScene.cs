@@ -17,7 +17,7 @@ public abstract class CutScene: MonoBehaviour
     public void SetCurrInputKey(KeyCode newInputKey) => _currInputKey = newInputKey;
     private bool isKeyPressed => _currInputKey == KeyCode.None ? Input.anyKeyDown : Input.GetKeyDown(_currInputKey);
 
-    private CueMachine CueMachine { get; set; }
+    protected CueMachine CueMachine { get; set; }
     
     public Func<UniTask> Do(Action action)
     {
