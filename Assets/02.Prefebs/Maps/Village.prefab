@@ -7976,9 +7976,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7497637913887331557, guid: 39e8f8f91a86848afb761704ff22939f, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6425684810418127435}
-    - targetCorrespondingSourceObject: {fileID: 7497637913887331557, guid: 39e8f8f91a86848afb761704ff22939f, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 8064208469722949424}
   m_SourcePrefab: {fileID: 100100000, guid: 39e8f8f91a86848afb761704ff22939f, type: 3}
 --- !u!4 &5010856433712281281 stripped
 Transform:
@@ -8013,52 +8010,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11d2ff27d8784de29c39c26286485a15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &8064208469722949424
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9017731309406743777}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a67d4f204c408d5488315ded38324935, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  inputVec: {x: 0, y: 0}
-  dashDistance: 0
-  dashTime: 0
-  dashCost: 10
-  jumpPower: 0
-  jumplimit: 0
-  currentJumpCount: 0
-  platformLayerMask:
-    serializedVersion: 2
-    m_Bits: 0
-  invincibilityLayerMask:
-    serializedVersion: 2
-    m_Bits: 0
-  isGround: 0
-  isDashing: 0
-  isAttacking: 0
-  isInvincible: 0
-  isAlive: 1
-  canAttack: 1
-  canSkill: 1
-  canDash: 1
-  rigid: {fileID: 0}
-  animator: {fileID: 0}
-  playerCollider: {fileID: 0}
-  spriteRenderer: {fileID: 0}
-  interaction: {fileID: 0}
-  status: {fileID: 0}
-  currentState: 0
-  isFacingRight: 1
-  groundCheckRadius: 0.2
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 0
-  isOnLadder: 0
 --- !u!1001 &1947604902945199737
 PrefabInstance:
   m_ObjectHideFlags: 0
