@@ -54,7 +54,7 @@ public class UIManager : MonoBehaviour
     public void SwapWeapons() => weaponSwapper?.SwapWeapons();
     public void OnStatUI() => statUI?.OnStatusUI();
     public void OnPassiveUI() => passiveUI?.OnPassiveUI();
-    public void ShowTooltip(Item item, Vector3 position) => tooltip?.Show(item, position);
+    public void ShowTooltip(ITooltipData data, Vector3 position) => tooltip?.Show(data, position);
     public void HideTooltip() => tooltip?.Hide();
 
     public void HideTooltipNextFrame()
@@ -163,7 +163,7 @@ public class UIManager : MonoBehaviour
         statUI.OffStatUI();
         passiveUI.OffPassiveUI();
 
-        Debug.Log("[UIManager] 모든 UI 숨김 완료");
+        Debug.Log("[UIManager] 모든 UI ?��? ?�료");
     }
 
     public void ToggleStatUI()
