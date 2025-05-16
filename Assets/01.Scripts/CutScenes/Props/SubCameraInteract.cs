@@ -38,7 +38,7 @@ public class SubCameraInteract: MonoBehaviour
     
     private void SetUp()
     {
-        cameraBrain.m_DefaultBlend.m_Time = 0.8f;
+        cameraBrain.m_DefaultBlend.m_Time = 0.6f;
 
         activeCam.Follow = null;
         activeCam.LookAt = null;

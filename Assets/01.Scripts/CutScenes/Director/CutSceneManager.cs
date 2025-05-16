@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.Serialization;
@@ -9,6 +10,11 @@ public class CutSceneManager: MonoBehaviour
     public SubCameraInteract SubCams;
 
     public LetterBox LetterBox;
+    public TextMeshProUGUI NarrationText;
+
+    public GameObject UIPool;
+    public RectTransform UIPointingComp;
+    
     public PointingComp Pointing;
     public ToolTipComp ToolTip;
     public Light2D PointLight;
