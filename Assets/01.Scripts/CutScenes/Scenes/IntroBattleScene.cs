@@ -69,7 +69,8 @@ public class IntroBattleScene: CutScene
 
                 playerActor.animHandler.Play("Idle");
                 playerActor.animHandler.SetSpeed(1);
-                
+
+                SetCurrInputKey(KeyCode.A);
                 CutSceneManager.Instance.LetterBox.ShowNarration("A키를 눌러 콤보 공격이 가능합니다.");
                 SetToolTip(new Vector3(0, 340, 0), "아무 키를 눌러 다음으로 진행해주세요.");
             }),
@@ -102,12 +103,15 @@ public class IntroBattleScene: CutScene
                 
                 nightBone.gameObject.SetActive(false);
 
-                SetToolTip(new Vector3(0, 340, 0), "아무 키를 눌러 다음으로 진행해주세요.");
+                SetCurrInputKey(KeyCode.I);
+                SetToolTip(new Vector3(0, 340, 0), "I키를 눌러 인벤토리를 열어주세요.");
                 CutSceneManager.Instance.LetterBox.ShowNarration("메모리 스킬 아이템은 퀵슬롯에 등록하여 사용하실 수 있습니다.");
                 SetPointingLight(nightBoneItem.transform);
             }),
             Do(() =>
             {
+                SetToolTip(new Vector3(0, 340, 0), "I키를 눌러 인벤토리를 닫아주세요.");
+
                 CutSceneManager.Instance.LetterBox.HideNarration();
 
                 ResetPointingLight();
@@ -126,16 +130,21 @@ public class IntroBattleScene: CutScene
                 // 메서드로 한번 빼기
                 CutSceneManager.Instance.UIPointingComp.gameObject.SetActive(true);
                 CutSceneManager.Instance.UIPointingComp.anchoredPosition = new Vector2(-247.4f, 136.73f);
+                
 
             }),
             Do(() =>
             {
+                SetToolTip(new Vector3(0, 340, 0), "1번 키를 눌러 메모리 스킬을 사용해주세요.");
+                SetCurrInputKey(KeyCode.Alpha1);
                 UIManager.Instance.ToggleInventory();
                 nightBoneItemComp.anchoredPosition = new Vector2(-220.6f, -481.6f);
                 CutSceneManager.Instance.UIPointingComp.anchoredPosition = new Vector2(-237f, -472.5f);
             }),
             Do(async () =>
             {
+                SetCurrInputKey(KeyCode.None);
+
                 ResetToolTip();
                 UIManager.Instance.HideIngameUI();
                 CutSceneManager.Instance.UIPointingComp.gameObject.SetActive(false);

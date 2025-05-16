@@ -13,6 +13,10 @@ public abstract class CutScene: MonoBehaviour
     protected Action OnFinish;
     public UnityEvent OnFinishUnityEvent;
 
+    private KeyCode _currInputKey = KeyCode.None;
+    public void SetCurrInputKey(KeyCode newInputKey) => _currInputKey = newInputKey;
+    private bool isKeyPressed => _currInputKey == KeyCode.None ? Input.anyKeyDown : Input.GetKeyDown(_currInputKey);
+
     private CueMachine CueMachine { get; set; }
     
     public Func<UniTask> Do(Action action)
@@ -52,12 +56,10 @@ public abstract class CutScene: MonoBehaviour
     private void Update()
     {
         if (!CueMachine.IsPlaying) return;
-        if (Input.GetMouseButtonDown(0) && !CueMachine.isCutSceneStarted)
-        {
-            // if (!UIManager.Instance.talkBox.isFinished) return;
-            UIManager.Instance.OffTalk();
-            CueMachine.Next();
-        }
+        
+        if (!isKeyPressed || CueMachine.isCutSceneStarted) return;
+        UIManager.Instance.OffTalk();
+        CueMachine.Next();
     }
     
 
