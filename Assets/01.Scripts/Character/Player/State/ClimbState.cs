@@ -33,7 +33,7 @@ public class ClimbState : PlayerStateMachine
     {
         base.FixedUpdate();
         // Y축 입력에 따라 상하 이동
-        player.rigid.velocity = new Vector2(0, player.inputVec.y * climbSpeed);
+        player.rigid.velocity = new Vector2(player.inputVec.x * 0.5f, player.inputVec.y) * climbSpeed;
     }
 
     public override void Exit()
