@@ -4,7 +4,7 @@ public class PlayerInventoryTrigger : MonoBehaviour
 {
     [SerializeField] private InventoryController inventoryController;
 
-    private void Awake()
+    private void Start()
     {
         if (inventoryController == null)
         {

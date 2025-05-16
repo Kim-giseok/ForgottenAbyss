@@ -54,7 +54,13 @@ public class UIManager : MonoBehaviour
     public void SwapWeapons() => weaponSwapper?.SwapWeapons();
     public void OnStatUI() => statUI?.OnStatusUI();
     public void OnPassiveUI() => passiveUI?.OnPassiveUI();
-    public void ShowTooltip(ITooltipData data, Vector3 position) => tooltip?.Show(data, position);
+    public void ShowTooltip(ITooltipData data, Vector3 position)
+    {
+        if (tooltip == null) return;
+
+        tooltip.SetData(data);
+        tooltip.Show((Vector2)position);
+    }
     public void HideTooltip() => tooltip?.Hide();
 
     public void HideTooltipNextFrame()
