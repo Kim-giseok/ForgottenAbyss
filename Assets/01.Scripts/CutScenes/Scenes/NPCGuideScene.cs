@@ -20,6 +20,8 @@ public class NPCGuideScene: CutScene
         {
             Do(() =>
             {
+                CutSceneManager.Instance.SubCams.Init();
+                
                 GameManager.Instance.PausePlayer();
                 SetSentence("잠깐!");
                 GameManager.Instance.cameraShake.Shake(0.2f, 1f);

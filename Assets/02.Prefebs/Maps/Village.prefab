@@ -7702,6 +7702,38 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5642877689612767702, guid: 2cbf6a9ab79343745b0a8e36d979f394, type: 3}
+      propertyPath: activatedEvent.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5642877689612767702, guid: 2cbf6a9ab79343745b0a8e36d979f394, type: 3}
+      propertyPath: activatedEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5642877689612767702, guid: 2cbf6a9ab79343745b0a8e36d979f394, type: 3}
+      propertyPath: activatedEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 7721726696516483068}
+    - target: {fileID: 5642877689612767702, guid: 2cbf6a9ab79343745b0a8e36d979f394, type: 3}
+      propertyPath: activatedEvent.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5642877689612767702, guid: 2cbf6a9ab79343745b0a8e36d979f394, type: 3}
+      propertyPath: activatedEvent.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: SetActive
+      objectReference: {fileID: 0}
+    - target: {fileID: 5642877689612767702, guid: 2cbf6a9ab79343745b0a8e36d979f394, type: 3}
+      propertyPath: activatedEvent.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: UnityEngine.GameObject, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 5642877689612767702, guid: 2cbf6a9ab79343745b0a8e36d979f394, type: 3}
+      propertyPath: activatedEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_BoolArgument
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5642877689612767702, guid: 2cbf6a9ab79343745b0a8e36d979f394, type: 3}
+      propertyPath: activatedEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -8658,6 +8690,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9c39adf8b5a4275a051a32a4824a33d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OnFinishUnityEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1104470009564506240}
+        m_TargetAssemblyTypeName: LaberBase, Assembly-CSharp
+        m_MethodName: SwitchMachine
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  npc: {fileID: 6308823142591816523}
 --- !u!1001 &7696015437915638428
 PrefabInstance:
   m_ObjectHideFlags: 0

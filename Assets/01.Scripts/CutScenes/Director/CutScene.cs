@@ -1,13 +1,17 @@
 using System;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.Serialization;
 
 public abstract class CutScene: MonoBehaviour
 {
     public SubCameraInteract SubCams => CutSceneManager.Instance.SubCams;
     
     protected Func<UniTask>[] Actions;
+    
     protected Action OnFinish;
+    public UnityEvent OnFinishUnityEvent;
 
     private CueMachine CueMachine { get; set; }
     
@@ -30,7 +34,11 @@ public abstract class CutScene: MonoBehaviour
     private void Awake()
     {
         OnFinish += () => gameObject.SetActive(false);
-        CueMachine = new CueMachine { OnFinish = OnFinish };
+        CueMachine = new CueMachine
+        {
+            OnFinish = OnFinish,
+            OnFinishUnityEvent = OnFinishUnityEvent
+        };
         Init();
     }
 
@@ -39,7 +47,6 @@ public abstract class CutScene: MonoBehaviour
         CueMachine.Define(Actions);
         CueMachine.Start();
         CueMachine.Next();
-        CutSceneManager.Instance.SubCams.Init();
     }
 
     private void Update()
@@ -57,6 +64,11 @@ public abstract class CutScene: MonoBehaviour
     protected void SetSentence(string texts, Transform newTransform = null)
     {
         CutSceneManager.Instance.ShowText(!newTransform ? GameManager.Instance.player.transform : newTransform, texts);
+    }
+
+    protected void ClearSentence()
+    {
+        UIManager.Instance.OffTalk();
     }
     
     protected void SetCutSceneMode(bool isCutsceneMode) => CutSceneManager.Instance.SetCutSceneMode(isCutsceneMode);

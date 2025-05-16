@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class CueMachine
 {
@@ -11,8 +12,8 @@ public class CueMachine
     public bool IsPlaying { get; private set; }
     private bool IsFinish { get; set; }
     
-    
     public Action OnFinish;
+    public UnityEvent OnFinishUnityEvent;
     
     public void Start() => IsPlaying = true;
     
@@ -39,6 +40,8 @@ public class CueMachine
 
         if (_scenario.Count != 0) return;
         IsFinish = true;
+        
         OnFinish?.Invoke();
+        OnFinishUnityEvent?.Invoke();
     }
 }

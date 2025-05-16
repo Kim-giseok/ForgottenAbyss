@@ -32,8 +32,8 @@ public class SubCameraInteract: MonoBehaviour
 
     public void Init()
     {
-        virCam1Confiner2D.m_BoundingShape2D = confiner2D.m_BoundingShape2D;
-        virCam2Confiner2D.m_BoundingShape2D = confiner2D.m_BoundingShape2D;
+        virCam1Confiner2D.m_BoundingShape2D = confiner2D?.m_BoundingShape2D;
+        virCam2Confiner2D.m_BoundingShape2D = confiner2D?.m_BoundingShape2D;
     }
     
     private void SetUp()
@@ -47,7 +47,7 @@ public class SubCameraInteract: MonoBehaviour
 
     public void Reset()
     {
-        cameraBrain.m_DefaultBlend.m_Time = 0.0f;
+        // cameraBrain.m_DefaultBlend.m_Time = 0.0f;
         
         virCam1.Priority = 0;
         virCam2.Priority = 0;
