@@ -137,7 +137,6 @@ public class RangedAttack : MonoBehaviour
             {
                 float angle = step.spreadAngle * (i - (step.projectileCount - 1) / 2f);
                 direction = Quaternion.Euler(0, 0, angle) * baseDirection;
-                onKnockBack(0.2f);
             }
 
             shotAnimator.SetTrigger("ShotTrigger");
@@ -149,6 +148,8 @@ public class RangedAttack : MonoBehaviour
 
     void onKnockBack(float distance)
     {
+        if (!GameManager.Instance.player.controller.isGround) return;
+
         StartCoroutine(MoveKnockBackCoroutine(distance));
     }
 

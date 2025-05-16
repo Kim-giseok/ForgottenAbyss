@@ -169,12 +169,14 @@ public class ComboAttack : MonoBehaviour
 
     void OnMoveForward(float distance)
     {
+        if(!GameManager.Instance.player.controller.isGround) return;
+
         StartCoroutine(MoveForwardCoroutine(distance));
     }
 
     IEnumerator MoveForwardCoroutine(float distance)
     {
-        float moveTime = 0.1f; // 이동 시간 (0.1초 추천)
+        float moveTime = 0.1f; // 이동 시간
         float elapsed = 0f;
         Vector3 startPos = transform.position;
         Vector3 targetPos = transform.position + (transform.right * distance);
@@ -263,11 +265,13 @@ public class ComboAttack : MonoBehaviour
 
     void OnAttackHit()
     {
-        if (comboData == null || attackIndex <= 0 || attackIndex > comboData.comboSteps.Count)
+        if (comboData == null || attackIndex < 0 || attackIndex > comboData.comboSteps.Count)
         {
             Debug.LogWarning("잘못된 attackIndex 또는 comboData 없음");
             return;
         }
+
+        if (attackIndex == 0) attackIndex = 1;
 
         float multiplier = comboData.comboSteps[attackIndex - 1].damageMultiplier;
 

@@ -37,7 +37,7 @@ public class RunState : PlayerStateMachine
         AnimatorStateInfo stateInfo = player.animator.GetCurrentAnimatorStateInfo(0);
         if (stateInfo.IsTag("Attack"))
         {
-            currentSpeed *= 0.2f;
+            currentSpeed *= 0f;
         }
 
         player.rigid.velocity = new Vector2(player.inputVec.x * currentSpeed, player.rigid.velocity.y);
