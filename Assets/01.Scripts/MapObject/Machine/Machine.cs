@@ -21,7 +21,8 @@ public class Machine : MonoBehaviour
     {
         rootLaber = rootlaber;
         if (isActivated) return;
-        machineAnim.SetFloat("Active", 1);
+        if (machineAnim != null)
+            machineAnim.SetFloat("Active", 1);
         isActivated = true;
 
         ActionAfterAnimation(activatedEvent.Invoke);
@@ -32,7 +33,8 @@ public class Machine : MonoBehaviour
     public virtual void UnActive()
     {
         if (!isActivated) return;
-        machineAnim.SetFloat("Active", -1);
+        if (machineAnim != null)
+            machineAnim.SetFloat("Active", -1);
         isActivated = false;
 
         ActionAfterAnimation(unactivatedEvent.Invoke);
@@ -46,8 +48,11 @@ public class Machine : MonoBehaviour
 
     IEnumerator WaitAniTime(Action action, float additionalWaitTime = 0f)
     {
-        yield return null;
-        yield return new WaitForSeconds(machineAnim.GetCurrentAnimatorStateInfo(0).length);
+        if (machineAnim != null)
+        {
+            yield return null;
+            yield return new WaitForSeconds(machineAnim.GetCurrentAnimatorStateInfo(0).length);
+        }
 
         yield return new WaitForSeconds(additionalWaitTime);
 
