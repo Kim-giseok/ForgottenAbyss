@@ -183,12 +183,8 @@ public class EnemyController : EnemyBaseController, IDamagable
     // ReSharper disable Unity.PerformanceAnalysis
     public void Die()
     {
-        gameObject.SetActive(false);
-        try { MapSpawnManager.Instance.SpawnedMap.monsterManager.RemoveEnemy(this); }
-        catch { gameObject.SetActive(false); }
-
-        DamageTextManager.Instance.ShowExperience(rewardHandler.Experience);
         // 경험치 추가
+        DamageTextManager.Instance.ShowExperience(rewardHandler.Experience);
         GameManager.Instance.player.playerstatus.GainExperience(rewardHandler.Experience);
         
         // 피봇 변경으로 인한 위치 조정
@@ -199,6 +195,10 @@ public class EnemyController : EnemyBaseController, IDamagable
             rewardHandler.DropCoin();
             rewardHandler.DropMemoryItem();
         }
+        
+        gameObject.SetActive(false);
+        try { MapSpawnManager.Instance.SpawnedMap.monsterManager.RemoveEnemy(this); }
+        catch { gameObject.SetActive(false); }
     }
 
     private void OnDisable()

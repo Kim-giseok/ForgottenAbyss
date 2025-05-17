@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Cinemachine;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
@@ -14,6 +15,11 @@ public class SubCameraInteract: MonoBehaviour
     private CinemachineBasicMultiChannelPerlin virCam1Noise;
     private CinemachineBasicMultiChannelPerlin virCam2Noise;
     
+    public enum NoiseType { Base, Held }
+    public NoiseSettings defaultNoise;
+    public NoiseSettings handHeldNoise;
+    private Dictionary<int, NoiseSettings> noiseProfiles;
+
     public CinemachineVirtualCamera ActiveCam { get; private set; }
     
     private CinemachineConfiner2D confiner2D;
@@ -22,13 +28,17 @@ public class SubCameraInteract: MonoBehaviour
     
     private Tween currentZoomTween;
     private readonly float defaultFOV = 5f;
-    private float zoomedFOV = 3f;
-    private float zoomDuration = 0.5f;
 
     private void Awake()
     {
         virCam1Noise = virCam1.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
         virCam2Noise = virCam2.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+        
+        noiseProfiles = new Dictionary<int, NoiseSettings>
+        {
+            { (int)NoiseType.Base, defaultNoise },
+            { (int)NoiseType.Held, handHeldNoise }
+        };
     }
 
     private void Start()
@@ -84,6 +94,16 @@ public class SubCameraInteract: MonoBehaviour
         ActiveCam = nextCam;
     }
     
+    public void Focus(Player target)
+    {
+        Focus(target.transform);
+    }
+    
+    public void Focus(GameObject target)
+    {
+        Focus(target.transform);
+    }
+    
     public void Focus(Transform target)
     {
         SetUp();
@@ -94,6 +114,12 @@ public class SubCameraInteract: MonoBehaviour
         nextCam.Priority = 12;
 
         ActiveCam = nextCam;
+    }
+    
+    public void SetNoiseProfile(NoiseType newNoiseType)
+    {
+        virCam1Noise.m_NoiseProfile = noiseProfiles[(int)newNoiseType];
+        virCam2Noise.m_NoiseProfile = noiseProfiles[(int)newNoiseType];
     }
 
     public void SetNoise(float amplitudeGain, float frequencyGain)

@@ -33,13 +33,13 @@ public class NPCGuideScene: CutScene
             Do(() =>
             {
                 SetSentence("상점에는 장비,물약 등 필요한 물품들이 있어요.");
-                SubCams.Focus(shop);
+                Camera.Focus(shop);
                 Pointing(shop);
                 SetPointingLight(shop);
             }),
             Do(() =>
             {   
-                SubCams.Reset();
+                Camera.Reset();
                 ResetPointer();
                 ResetPointingLight();
                 SetSentence("우측 상단의 스크롤을 누르면 가이드를 볼 수 있어요.");
@@ -58,7 +58,7 @@ public class NPCGuideScene: CutScene
                 // Cam.Focus(weaponBox);
                 SetSentence("무기상자에서 무기를 가져가는 것도 잊지 않도록.");
                 
-                SubCams.Focus(weaponBox);
+                Camera.Focus(weaponBox);
                 Pointing(weaponBox);
                 SetPointingLight(weaponBox);
             
@@ -66,7 +66,7 @@ public class NPCGuideScene: CutScene
             // notice: 마지막 씬에서 비활성화가 되도록 되어있음(disable을 통한 리셋으로 해두는 방식도 좋을 듯)
             Do(() =>
             {
-                SubCams.Reset();
+                Camera.Reset();
                 ResetPointer();
                 ResetPointingLight();
                 GameManager.Instance.PausePlayer(false);

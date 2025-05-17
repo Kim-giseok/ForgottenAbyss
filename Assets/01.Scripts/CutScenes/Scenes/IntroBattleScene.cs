@@ -30,17 +30,17 @@ public class IntroBattleScene: CutScene
                 SetToolTip(new Vector3(0, 340, 0), "아무 키를 눌러 다음으로 진행해주세요.");
    
                 // 초기 로드 시간 문제로 인해 중복 코드 발생
-                SubCams.Init();
-                SubCams.Focus(player.transform);
+                Camera.Init();
+                Camera.Focus(player.transform);
                 SetCutSceneMode(true);
                 SetSentence("아무것도 기억나지 않아...");
             }),
             Do(() => { SetSentence("이름도, 이 곳에 온 이유도 아무것도 ..."); }),
             Do(async () =>
             {
-                SubCams.SetNoise(1, 1f);
-                SubCams.Focus(npc.transform);
-                SubCams.Zoom(true, 0.4f, 4.4f);
+                Camera.SetNoise(1, 1f);
+                Camera.Focus(npc.transform);
+                Camera.Zoom(true, 0.4f, 4.4f);
 
                 npc.Define(new SequenceNode(new Test1Node(true), new IdleNode(0)));
                 nightBone.Define(new SequenceNode(new Test1Node(false), new ChargingNode(0)));
@@ -50,8 +50,8 @@ public class IntroBattleScene: CutScene
             }),
             Do(async () =>
             { 
-                SubCams.SetNoise(0);
-                SubCams.Focus(player.transform);
+                Camera.SetNoise(0);
+                Camera.Focus(player.transform);
                 await UniTask.Delay(1000);
                 
                 player.Anim.SetSpeed(2);
@@ -160,7 +160,7 @@ public class IntroBattleScene: CutScene
                 BoltsPool.Particle(transform, "Hit").SetSize(0.15f).SetColor(Color.yellow).SetPosition(archer.transform.position + new Vector3(Random.Range(-0.2f, 0.2f), 0.6f + Random.Range(-0.2f, 0.2f))).Play();
                 Sound.Playsfx("HitByMelee");
                 
-                SubCams.Shake(2, 2, 0.2f);
+                Camera.Shake(2, 2, 0.2f);
                 archer.Anim.Play("Hit");
                 await UniTask.Delay(250);
                 player.transform.position = archer.transform.position + Vector3.up * 0.15f;
@@ -185,18 +185,18 @@ public class IntroBattleScene: CutScene
                 Destroy(npc.gameObject);
                 npcOrigin.SetActive(true);
                 player.transform.position = npc.transform.position + Vector3.left;
-                SubCams.Focus(npcOrigin.transform);
+                Camera.Focus(npcOrigin.transform);
                 Light.FadeIn(1);
                 await UniTask.Delay(500);
                 
                 SetSentence("고마워요. 그런데... 방금 그 그림자의 힘, 대체 어떤 거죠?", npcOrigin.transform);
                 await UniTask.Delay(4000);
                 
-                SubCams.Focus(player.transform);
+                Camera.Focus(player.transform);
                 SetSentence("떠오르지 않아요.. 단지, 갑자기 이 장면이 낯설지 않게 느껴졌어요.", player.transform);
                 
                 await UniTask.Delay(3000);
-                SubCams.Focus(npcOrigin.transform);
+                Camera.Focus(npcOrigin.transform);
                 SetSentence("이 곳은 그림자의 침공으로부터 마지막으로 남은 거점이에요.", npcOrigin.transform);
                 await UniTask.Delay(3000);
                 SetSentence("어쩌면... 그림자 속에서, 잃어버린 기억도 찾을 수 있을지 몰라요.", npcOrigin.transform);
@@ -206,7 +206,7 @@ public class IntroBattleScene: CutScene
                 Player.transform.position = player.transform.position;
                 Player.gameObject.SetActive(true);
                 
-                SubCams.Reset();
+                Camera.Reset();
                 ClearSentence();
                 SetCutSceneMode(false);   
             })
@@ -215,7 +215,7 @@ public class IntroBattleScene: CutScene
 
     private void ComboAttackAction(string animationName)
     {
-        SubCams.Shake(2, 2, 0.2f);
+        Camera.Shake(2, 2, 0.2f);
         player.Anim.Play(animationName);
                 
         BoltsPool.Instance.Particle(transform, "Hit").SetSize(0.8f).SetColor(new Color(0, 0, 0, 0.2f)).SetPosition(nightBone.transform.position + new Vector3(Random.Range(-0.2f, 0.2f), 0.6f + Random.Range(-0.2f, 0.2f))).Play();
