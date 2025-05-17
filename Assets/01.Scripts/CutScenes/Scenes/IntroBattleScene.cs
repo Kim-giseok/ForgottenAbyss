@@ -57,7 +57,7 @@ public class IntroBattleScene: CutScene
                 player.Anim.SetSpeed(2);
                 player.Anim.Play("Dash");
                 player.Rigid.drag = 10;
-                player.Rigid.AddForce(new Vector2(30, 0), ForceMode2D.Impulse);
+                player.Rigid.AddForce(new Vector2(20, 0), ForceMode2D.Impulse);
                 Sound.Playsfx("AgisSpell");
                 await UniTask.Delay(300);
                 
@@ -67,7 +67,7 @@ public class IntroBattleScene: CutScene
                 player.Anim.Play("Idle");
                 player.Rigid.velocity = Vector2.zero;
                 
-                Sound.PlayBGM("IntroBattle");
+                Sound.PlayBGM("Intro1");
 
                 SetCurrInputKey(KeyCode.A);
                 SetNarration("기본 공격을 통해 6연타 콤보 공격이 가능합니다.");
