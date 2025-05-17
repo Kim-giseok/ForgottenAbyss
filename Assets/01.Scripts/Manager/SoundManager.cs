@@ -110,6 +110,11 @@ public class SoundManager : SingletonLoadRemain<SoundManager>
     {
         bgmSource.Stop();
     }
+
+    public void StopSFX()
+    {
+        sfxSource.Stop();
+    }
     
     public void FadeOutBGM(float duration = 1f)
     {

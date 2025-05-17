@@ -5,8 +5,8 @@ using UnityEngine.Rendering.Universal;
 public class LightManager: SingletonLoadRemain<LightManager>
 {
     public Light2D globalLight;
-    public void FadeIn(float duration) => StartCoroutine(FadeLight(globalLight.intensity, 1f, duration));
-    public void FadeOut(float duration) => StartCoroutine(FadeLight(globalLight.intensity, 0f, duration));
+    public void FadeIn(float duration, float newIntensity = 1) => StartCoroutine(FadeLight(globalLight.intensity, newIntensity, duration));
+    public void FadeOut(float duration, float newIntensity = 0) => StartCoroutine(FadeLight(globalLight.intensity, newIntensity, duration));
 
     private IEnumerator FadeLight(float from, float to, float duration)
     {
