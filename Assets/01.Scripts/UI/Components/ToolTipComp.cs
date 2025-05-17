@@ -9,6 +9,8 @@ public class ToolTipComp: MonoBehaviour
     private CanvasGroup _canvasGroup;
     private TextMeshProUGUI _textUI;
     
+    public bool isActive { get; private set; } = false;
+    
     private void Awake()
     {
         _rectTransform = GetComponent<RectTransform>();
@@ -18,7 +20,14 @@ public class ToolTipComp: MonoBehaviour
     
     private void OnDisable()
     {
+        isActive = false;
         _textUI.text = "";
+    }
+    
+    public void Shake(float duration = 0.3f, float strength = 30f, int vibrato = 20)
+    {
+        SoundManager.Instance.Playsfx("Wrong");
+        _rectTransform.DOShakeAnchorPos(duration, new Vector2(strength, 0f), vibrato, randomness: 90, snapping: false, fadeOut: true);
     }
 
     public void On(bool isOn)
@@ -28,6 +37,7 @@ public class ToolTipComp: MonoBehaviour
 
     public void Set(Vector3 currPos, string currText)
     {
+        isActive = true;
         gameObject.SetActive(true);
         
         // RectTransformUtility.ScreenPointToLocalPointInRectangle()

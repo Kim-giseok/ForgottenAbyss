@@ -50,7 +50,7 @@ public class SummonController: EnemyBaseController
 
     public SummonController Fire()
     {
-        machine.Start();
+        Machine.Start();
         return this;
     }
 
@@ -90,13 +90,13 @@ public class SummonController: EnemyBaseController
     public void Define(SummonSkillManager.Skill skillName)
     {
         var (enemy, node) = SummonSkillManager.skills[(int)skillName];
-        animHandler.SetController(EnemiesAnimator.animators[enemy.ToString()]);
+        Anim.SetController(EnemiesAnimator.animators[enemy.ToString()]);
 
         // bug: 한번 실행 후 마지막 start가 진행되는 것으로 보임
         // notice: 머신도 제거되는 지 체크 후 이벤트 제거 필요
         // notice: 오브젝트 풀링으로 인해 비활성화가 나을 수도 있음 - 적용하기
-        machine.OnLooped += () => Destroy(gameObject);
-        machine.Define(node);
+        Machine.OnLooped += () => Destroy(gameObject);
+        Machine.Define(node);
     }
 
     public void CancelAttached()
@@ -109,7 +109,7 @@ public class SummonController: EnemyBaseController
 
     private void Start()
     {
-        Renderer.material.SetFloat("_YValue", 0);
+        Render.material.SetFloat("_YValue", 0);
         StartCoroutine(PlaySpawnAnimation(3f));
     }
 
@@ -118,9 +118,9 @@ public class SummonController: EnemyBaseController
         float currentYValue = 0f;
         while (currentYValue < 1f)
         {
-            currentYValue = Renderer.material.GetFloat("_YValue");
+            currentYValue = Render.material.GetFloat("_YValue");
             float newYValue = Mathf.MoveTowards(currentYValue, 1f, Time.deltaTime * speed);
-            Renderer.material.SetFloat("_YValue", newYValue);
+            Render.material.SetFloat("_YValue", newYValue);
             yield return null;
         }
         
@@ -130,7 +130,7 @@ public class SummonController: EnemyBaseController
     
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.A)) { machine.currNode.OnPressed(); } // 임시 등록
+        if (Input.GetKeyDown(KeyCode.A)) { Machine.currNode.OnPressed(); } // 임시 등록
 
         if (isCasterAttached)
         {

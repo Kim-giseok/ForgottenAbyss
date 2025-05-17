@@ -87,8 +87,8 @@ public class EnemyController : EnemyBaseController, IDamagable
             // 빌드 타임에서는 비효율적인 액션일 수 있음
             SetConfig(enemyName.ToString()); 
             // 에러처리 필요
-            machine.Define(EnemiesBT.Get(enemyName)); // 각 개체별 생성되는 방식
-            machine.Start();
+            Machine.Define(EnemiesBT.Get(enemyName)); // 각 개체별 생성되는 방식
+            Machine.Start();
         }
 
         try { MapSpawnManager.Instance.SpawnedMap.monsterManager.AddList(this); }
@@ -103,7 +103,7 @@ public class EnemyController : EnemyBaseController, IDamagable
         rewardHandler.Define(EnemiesLoader.Get<EnemyRewardSO>(newEnemyName));
         
         // 미리 등록 되면 등록할 필요 없는 요소들
-        animHandler.SetController(EnemiesAnimator.animators[newEnemyName]);
+        Anim.SetController(EnemiesAnimator.animators[newEnemyName]);
         
         var info = EnemiesLoader.EnemiesInfoSO.EnemyViewInfos.Find(info => info.enemyName == enemyName.ToString());
         if (info == null) return;
@@ -117,8 +117,8 @@ public class EnemyController : EnemyBaseController, IDamagable
     {
         enemyName = newEnemyName;
         SetConfig(newEnemyName.ToString());
-        machine.Define(EnemiesBT.Get(enemyName));
-        machine.Start();
+        Machine.Define(EnemiesBT.Get(enemyName));
+        Machine.Start();
     }
 
     private void OnHit(float damage, EnemyStatusHandler.HitType hitType = EnemyStatusHandler.HitType.Stun)
@@ -127,9 +127,9 @@ public class EnemyController : EnemyBaseController, IDamagable
         
         if (hitType == EnemyStatusHandler.HitType.Normal)
         {
-            BoltsPool.Instance.CreateParticle(transform, "Hit2")
+            BoltsPool.Instance.Particle(transform, "Hit2")
                 .SetSize(0.8f).SetColor(new Color(0, 0, 0, 0.2f)).SetPosition(transform.position + new Vector3(Random.Range(-0.2f, 0.2f), 0.6f + Random.Range(-0.2f, 0.2f))).Play();
-            BoltsPool.Instance.CreateParticle(transform, "Hit3")
+            BoltsPool.Instance.Particle(transform, "Hit3")
                 .SetSize(0.8f).SetColor(Color.yellow).SetPosition(transform.position + new Vector3(Random.Range(-0.2f, 0.2f), 0.6f + Random.Range(-0.2f, 0.2f))).Play();
          
             SoundManager.Instance.Playsfx("HitByBow2");
@@ -137,9 +137,9 @@ public class EnemyController : EnemyBaseController, IDamagable
 
         if (hitType == EnemyStatusHandler.HitType.Stun)
         {
-            BoltsPool.Instance.CreateParticle(transform, "Hit")
+            BoltsPool.Instance.Particle(transform, "Hit")
                 .SetSize(0.8f).SetColor(new Color(0, 0, 0, 0.2f)).SetPosition(transform.position + new Vector3(Random.Range(-0.2f, 0.2f), 0.6f + Random.Range(-0.2f, 0.2f))).Play();
-            BoltsPool.Instance.CreateParticle(transform, "Hit")
+            BoltsPool.Instance.Particle(transform, "Hit")
                 .SetSize(0.15f).SetColor(Color.yellow).SetPosition(transform.position + new Vector3(Random.Range(-0.2f, 0.2f), 0.6f + Random.Range(-0.2f, 0.2f))).Play();
 
             SoundManager.Instance.Playsfx("HitByMelee");
@@ -148,7 +148,7 @@ public class EnemyController : EnemyBaseController, IDamagable
         if (resourceHandler.Get(EnemyStatType.Health).currValue <= 0)
         {
             statusHandler.SetMode(EnmeyMode.Hit, true);
-            machine.Notify();
+            Machine.Notify();
         }
     }
 
@@ -158,7 +158,7 @@ public class EnemyController : EnemyBaseController, IDamagable
         if (isIgnoreHitAnim || hitType == EnemyStatusHandler.HitType.Normal) return;
         
         statusHandler.SetMode(EnmeyMode.Hit, true);
-        machine.Notify();
+        Machine.Notify();
         
     }
 
@@ -176,7 +176,7 @@ public class EnemyController : EnemyBaseController, IDamagable
         
         OnHit(damage);
         statusHandler.SetMode(EnmeyMode.Hit, true);
-        machine.Notify();
+        Machine.Notify();
     }
     
     // 리워드 표시, 리스폰 아리어에서 제거
@@ -206,6 +206,6 @@ public class EnemyController : EnemyBaseController, IDamagable
         // Die 이후 초기화
         statusHandler.SetMode(EnmeyMode.Hit, false);
         Collider.enabled = true;
-        Rigidbody.isKinematic = false;
+        Rigid.isKinematic = false;
     }
 }

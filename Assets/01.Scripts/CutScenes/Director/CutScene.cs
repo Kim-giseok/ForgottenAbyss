@@ -1,12 +1,18 @@
 using System;
 using Cysharp.Threading.Tasks;
+using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
 
 public abstract class CutScene: MonoBehaviour
 {
-    public SubCameraInteract SubCams => CutSceneManager.Instance.SubCams;
+    protected static SubCameraInteract SubCams => CutSceneManager.Instance.SubCams;
+    protected static SoundManager Sound => SoundManager.Instance;
+    protected static UIManager UI => UIManager.Instance;
+    protected static BoltsPool BoltsPool => BoltsPool.Instance;
+    protected static LightManager Light => LightManager.Instance;
+    protected static Player Player => GameManager.Instance.player;
     
     protected Func<UniTask>[] Actions;
     
@@ -56,6 +62,15 @@ public abstract class CutScene: MonoBehaviour
     private void Update()
     {
         if (!CueMachine.IsPlaying) return;
+        
+        var currKeyPressed = Input.anyKeyDown;
+        
+        // notice: 코드 정리 필요
+        if (currKeyPressed != isKeyPressed && CutSceneManager.Instance.ToolTip.isActive)
+        {
+            CutSceneManager.Instance.ToolTip.Shake(0.2f, 20f, 30);
+            return;
+        } 
         
         if (!isKeyPressed || CueMachine.isCutSceneStarted) return;
         UIManager.Instance.OffTalk();
@@ -113,6 +128,16 @@ public abstract class CutScene: MonoBehaviour
         CutSceneManager.Instance.ToolTip.Set(newPos, text);
     }
 
+    protected void SetNarration(string newNarration = "")
+    {
+        if (newNarration == null)
+        {
+            CutSceneManager.Instance.LetterBox.HideNarration();
+        }
+        CutSceneManager.Instance.LetterBox.ShowNarration(newNarration);
+    }
+
+    // 셋 툴팁 오버로드로 정리하기
     protected void ResetToolTip()
     {
         CutSceneManager.Instance.ToolTip.gameObject.SetActive(false);

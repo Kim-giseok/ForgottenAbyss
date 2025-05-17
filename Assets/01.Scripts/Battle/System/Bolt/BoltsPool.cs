@@ -114,7 +114,7 @@ public class BoltsPool : MonoBehaviour // 단위 미사일
     }
 
     // ReSharper disable Unity.PerformanceAnalysis
-    public BoltBuilder CreateParticle(Transform parent, string animName)
+    public BoltBuilder Particle(Transform parent, string animName)
     {
         BoltBuilder bolt = currBolts.Find(bolt => !bolt.gameObject.activeSelf);
 
