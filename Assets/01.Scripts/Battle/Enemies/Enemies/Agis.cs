@@ -169,7 +169,7 @@ public class AgisMoveNode : Node
                     // 방사 공격
                     int bulletCount = 9;
                     float angleStep = 360f / bulletCount;
-                    float radius = 32f;
+                    float radius = 42f;
 
                     for (int i = 0; i < bulletCount; i++)
                     {

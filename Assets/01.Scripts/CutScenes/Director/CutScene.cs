@@ -8,6 +8,7 @@ using UnityEngine.Serialization;
 public abstract class CutScene: MonoBehaviour
 {
     protected static SubCameraInteract Camera => CutSceneManager.Instance.SubCams;
+    protected static LetterBox LetterBox => CutSceneManager.Instance.LetterBox;
     protected static SoundManager Sound => SoundManager.Instance;
     protected static UIManager UI => UIManager.Instance;
     protected static BoltsPool BoltsPool => BoltsPool.Instance;

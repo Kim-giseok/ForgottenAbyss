@@ -100,4 +100,9 @@ public class LetterBox : MonoBehaviour
         if(narrationCoroutine != null) StopCoroutine(narrationCoroutine);
         narrationText.gameObject.SetActive(false);
     }
+
+    public void SetNarrationColor(Color newColor)
+    {
+        narrationText.color = newColor;
+    }
 }

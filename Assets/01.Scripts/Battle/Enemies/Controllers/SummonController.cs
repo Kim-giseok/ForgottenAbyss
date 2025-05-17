@@ -97,6 +97,14 @@ public class SummonController: EnemyBaseController
         // notice: 오브젝트 풀링으로 인해 비활성화가 나을 수도 있음 - 적용하기
         Machine.OnLooped += () => Destroy(gameObject);
         Machine.Define(node);
+        
+        // notice: 사이즈 자동 지정 기능
+        var info = EnemiesLoader.EnemiesInfoSO.EnemyViewInfos.Find(info => info.enemyName == enemy.ToString());
+        if (info == null) return;
+        
+        transform.localScale = new Vector2(info.ratio, info.ratio);
+        Collider.size = info.size;
+        Collider.offset = new Vector2(0, info.size.y / 2);
     }
 
     public void CancelAttached()
