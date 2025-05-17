@@ -52,12 +52,18 @@ public class SubCameraInteract: MonoBehaviour
         cameraBrain = FindObjectOfType<CinemachineBrain>();
         
         confiner2D = MapSpawnManager.Instance.virtualCamera.GetComponent<CinemachineConfiner2D>();
+        
         virCam1Confiner2D = virCam1.GetComponent<CinemachineConfiner2D>();
         virCam2Confiner2D = virCam2.GetComponent<CinemachineConfiner2D>();
         
         virCam1Confiner2D.m_BoundingShape2D = confiner2D?.m_BoundingShape2D;
         virCam2Confiner2D.m_BoundingShape2D = confiner2D?.m_BoundingShape2D;
-        
+    }
+
+    public void DisConnect()
+    {
+        virCam1Confiner2D.enabled = false;
+        virCam2Confiner2D.enabled = false;
     }
     
     private void SetUp()

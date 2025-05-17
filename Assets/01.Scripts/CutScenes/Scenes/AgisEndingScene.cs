@@ -25,9 +25,10 @@ public class AgisEndingScene: CutScene
             Do(async () =>
             {
                 // 카메라 콜라이더로 인한 중앙 맞지 않는 부분에 대한 고민 필요
-                Player.transform.position = new Vector2(-3, -1);
+                // Player.transform.position = new Vector2(-3, -1);
                 
                 Camera.Init();
+                Camera.DisConnect();
                 
                 SetCutSceneMode(true);
                 Player.controller.rigid.velocity = Vector2.zero;
