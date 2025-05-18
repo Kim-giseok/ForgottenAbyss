@@ -28,7 +28,8 @@ public class IntroBattleScene: CutScene
    
                 // 초기 로드 시간 문제로 인해 중복 코드 발생
                 Camera.Init();
-                SetCutSceneMode(true);
+                UI.HideIngameUI();
+                LetterBox.SetLetterBox(true);
                 SetSentence("아무것도 기억나지 않아...");
             }),
             Do(() => { SetSentence("이름도, 이 곳에 온 이유도 아무것도 ..."); }),
@@ -122,8 +123,8 @@ public class IntroBattleScene: CutScene
                 Sound.Playsfx("GetItem");
                 Destroy(item.gameObject);
                 
-                UIManager.Instance.ShowIngameUI();
-                // UIManager.Instance.ToggleInventory();
+                UI.ShowIngameUI();
+                LetterBox.SetLetterBox(false);
                 
                 itemUI.SetParent(CutSceneManager.Instance.UIPool.transform);
                 itemUI.anchoredPosition = new Vector2(-230.9f, 127.26f);
@@ -149,6 +150,7 @@ public class IntroBattleScene: CutScene
 
                 ResetToolTip();
                 UI.HideIngameUI();
+                LetterBox.SetLetterBox(true);
                 // 방식 정리하기
                 CutSceneManager.Instance.UIPointingComp.gameObject.SetActive(false);
                 

@@ -63,7 +63,7 @@ public class LetterBox : MonoBehaviour
         if(!isShow) gameObject.SetActive(false);
     }
 
-    public void ShowLetterBox(bool isShow)
+    public void SetLetterBox(bool isShow)
     {
         if(letterBoxCoroutine != null) StopCoroutine(letterBoxCoroutine);
         if(isShow) gameObject.SetActive(true);

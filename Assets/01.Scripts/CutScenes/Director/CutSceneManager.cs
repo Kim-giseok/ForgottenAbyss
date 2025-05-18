@@ -37,16 +37,12 @@ public class CutSceneManager: MonoBehaviour
         if (isCutsceneMode)
         {
             UIManager.Instance.HideIngameUI();
-            
-            if(GameManager.Instance) GameManager.Instance.PausePlayer();
-            Instance.LetterBox.ShowLetterBox(true);
+            Instance.LetterBox.SetLetterBox(true);
         }
         else
         {
             UIManager.Instance.ShowIngameUI();
-            
-            if(GameManager.Instance) GameManager.Instance.PausePlayer(false);
-            Instance.LetterBox.ShowLetterBox(false);
+            Instance.LetterBox.SetLetterBox(false);
         }
     }
 }
