@@ -1832,6 +1832,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ed47ba49385e21645ac5b5c62afb620e, type: 3}
+--- !u!212 &2069487459 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 6048227883838887976, guid: 6dc31ed564c18ca4b9568794c27595d7, type: 3}
+  m_PrefabInstance: {fileID: 1354557273}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6543074232615325182
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1880,6 +1885,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7870513129479308155, guid: 94b86cdd5e0114a7e8bf2b4fbb199313, type: 3}
+      propertyPath: ShapeModule.m_SpriteRenderer
+      value: 
+      objectReference: {fileID: 2069487459}
     - target: {fileID: 8443205562392036769, guid: 94b86cdd5e0114a7e8bf2b4fbb199313, type: 3}
       propertyPath: m_Name
       value: BossEndScene

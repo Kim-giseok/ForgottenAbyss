@@ -32,7 +32,8 @@ public class AgisEndingScene: CutScene
                 SetCutSceneMode(true);
                 Player.controller.rigid.velocity = Vector2.zero;
                 Player.controller.rigid.isKinematic = true;
-                
+                await UniTask.Delay(500);
+
                 bossAppearEffect.SetActive(true);
                 bossAppearEffect.transform.position = Player.controller.transform.position + Vector3.down * 1.5f;
                 
@@ -41,7 +42,7 @@ public class AgisEndingScene: CutScene
                 Sound.Playsfx("AgisApearance");
                 Camera.SetNoiseProfile(SubCameraInteract.NoiseType.Held);
                 Camera.SetNoise(2f, 2f);
-                Player.animator.Play($"ActorHitLoop");
+                Player.animator.Play($"Act_Hit_Loop");
                 Camera.Focus(Player.transform);
                 await UniTask.Delay(5000);
                 bossAppearEffect.SetActive(false);
@@ -50,10 +51,10 @@ public class AgisEndingScene: CutScene
                 
                 Camera.SetNoiseProfile(SubCameraInteract.NoiseType.Base);
                 Camera.Shake(4, 4, 0.2f);
-                Player.animator.Play($"ActorHit");
+                Player.animator.Play($"Act_Hit");
                 
                 absorptionParticle.SetActive(true);
-                absorptionParticle.transform.position = Player.transform.position + Vector3.up * 0.8f;
+                absorptionParticle.transform.position = Player.transform.position + Vector3.up;
                 
                 Light.globalLight.intensity = 4f;
                 Light.globalLight.color = Color.red;
@@ -105,7 +106,7 @@ public class AgisEndingScene: CutScene
             {
                 
                 LetterBox.SetNarrationColor(Color.red);
-                SetNarration("아지스의 음성: 그림자여, 이미 우리는 하나의 약속된 운명을 함께할 것이다..");
+                SetNarration("아지스의 음성 - 그림자여, 이미 우리는 하나의 약속된 운명을 함께할 것이다..");
             }),
             Do(() =>
             {
