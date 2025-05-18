@@ -7,13 +7,13 @@ using UnityEngine.Serialization;
 
 public abstract class CutScene: MonoBehaviour
 {
-    protected static SubCameraInteract Camera => CutSceneManager.Instance.SubCams;
-    protected static LetterBox LetterBox => CutSceneManager.Instance.LetterBox;
-    protected static SoundManager Sound => SoundManager.Instance;
-    protected static UIManager UI => UIManager.Instance;
-    protected static BoltsPool BoltsPool => BoltsPool.Instance;
-    protected static LightManager Light => LightManager.Instance;
-    protected static Player Player => GameManager.Instance.player;
+    protected SubCameraInteract Camera => CutSceneManager.Instance.SubCams;
+    protected LetterBox LetterBox => CutSceneManager.Instance.LetterBox;
+    protected SoundManager Sound => SoundManager.Instance;
+    protected UIManager UI => UIManager.Instance;
+    protected BoltsPool BoltsPool => BoltsPool.Instance;
+    protected LightManager Light => LightManager.Instance;
+    protected Player Player => GameManager.Instance.player;
     
     protected Func<UniTask>[] Actions;
     
