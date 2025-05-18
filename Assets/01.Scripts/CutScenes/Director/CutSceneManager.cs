@@ -2,6 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.Serialization;
+using UnityEngine.UI;
 
 public class CutSceneManager: MonoBehaviour
 {
@@ -19,6 +20,9 @@ public class CutSceneManager: MonoBehaviour
     public PointingComp Pointing;
     public ToolTipComp ToolTip;
     public Light2D PointLight;
+
+    public FadeScreen FadeScreen;
+    public Image GrayScreen;
 
     private void Awake()
     {

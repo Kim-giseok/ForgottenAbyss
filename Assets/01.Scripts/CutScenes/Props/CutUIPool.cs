@@ -2,10 +2,10 @@ using UnityEngine;
 
 public class CutUIPool: MonoBehaviour
 {
-    public void Add(GameObject newUIComp)
+    public void Add(RectTransform newUIComp)
     {
         newUIComp.transform.SetParent(transform);
-        newUIComp.transform.position = Vector3.zero;
+        newUIComp.anchoredPosition = Vector3.zero;
     }
 
     public void Delete()
