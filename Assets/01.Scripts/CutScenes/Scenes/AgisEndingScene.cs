@@ -16,7 +16,6 @@ public class AgisEndingScene: CutScene
 
 
     public Material shinyMat;
-    private Material playerMat = Player.GetComponent<Material>();
     
     protected override void Init()
     {

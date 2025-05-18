@@ -6,6 +6,7 @@ using UnityEngine.Serialization;
 public class CutSceneManager: MonoBehaviour
 {
     public static CutSceneManager Instance { get; private set; }
+    public static bool isCutSceneMode;
     
     public SubCameraInteract SubCams;
 

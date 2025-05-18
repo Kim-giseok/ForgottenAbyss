@@ -4,7 +4,6 @@ using UnityEngine.Serialization;
 
 public class IntroBattleScene: CutScene
 {
-    [FormerlySerializedAs("playerActor")] public ActorController player;
     public ActorController npc;
     public ActorController nightBone;
     public ActorController archer;
@@ -22,16 +21,13 @@ public class IntroBattleScene: CutScene
             {
                 // 빌리지에서 바로 시작할 경우 문제 발생
                 GameManager.Instance.PausePlayer();
+                
                 await UniTask.Delay(1000);
                 
-                Player.gameObject.SetActive(false);
-                player.transform.position = Player.transform.position;
-                player.gameObject.SetActive(true);
                 SetToolTip(new Vector3(0, 340, 0), "아무 키를 눌러 다음으로 진행해주세요.");
    
                 // 초기 로드 시간 문제로 인해 중복 코드 발생
                 Camera.Init();
-                Camera.Focus(player.transform);
                 SetCutSceneMode(true);
                 SetSentence("아무것도 기억나지 않아...");
             }),
@@ -41,53 +37,65 @@ public class IntroBattleScene: CutScene
                 Camera.SetNoise(1, 1f);
                 Camera.Focus(npc.transform);
                 Camera.Zoom(true, 0.4f, 4.4f);
+                
+                npc.Anim.Play("Run");
+                npc.Rigid.velocity = new Vector2(-4, 0);
+                
+                nightBone.Anim.Play("Run");
+                nightBone.Rigid.velocity = new Vector2(-4, 0);
+                
+                await UniTask.Delay(1800);
+                
+                npc.Rigid.velocity = Vector2.zero;
+                nightBone.Rigid.velocity = Vector2.zero;
 
-                npc.Define(new SequenceNode(new Test1Node(true), new IdleNode(0)));
-                nightBone.Define(new SequenceNode(new Test1Node(false), new ChargingNode(0)));
-                await UniTask.WaitUntil(() => npc.IsEnd && nightBone.IsEnd);
+                npc.transform.rotation = Quaternion.Euler(0, 0, 0);
+                npc.Anim.Play("Idle");
+                nightBone.Anim.Play("Charging");
+                Sound.Playsfx("ElectronicCast");
                 
                 SetSentence("이런.. 젠장!", npc.transform);
             }),
             Do(async () =>
             { 
                 Camera.SetNoise(0);
-                Camera.Focus(player.transform);
+                Camera.Focus(Player);
                 await UniTask.Delay(1000);
-                
-                player.Anim.SetSpeed(2);
-                player.Anim.Play("Dash");
-                player.Rigid.drag = 10;
-                player.Rigid.AddForce(new Vector2(20, 0), ForceMode2D.Impulse);
+
+                Player.animator.speed = 2;
+                Player.animator.Play("Act_Dash");
+                Player.controller.rigid.drag = 9;
+                Player.controller.rigid.AddForce(new Vector2(20, 0), ForceMode2D.Impulse);
                 Sound.Playsfx("AgisSpell");
                 await UniTask.Delay(300);
                 
-                player.transform.position = nightBone.transform.position + Vector3.left * 1f;
+                Player.transform.position = nightBone.transform.position + Vector3.left * 1f;
 
-                player.Anim.SetSpeed(1);
-                player.Anim.Play("Idle");
-                player.Rigid.velocity = Vector2.zero;
+                Player.animator.speed = 1;
+                Player.animator.Play("Act_Idle");
+                Player.controller.rigid.velocity = Vector2.zero;
                 
                 Sound.PlayBGM("Intro1");
 
                 SetCurrInputKey(KeyCode.A);
-                SetNarration("기본 공격을 통해 6연타 콤보 공격이 가능합니다.");
+                SetNarration("기본 공격을 통해 6연타 콤보 공격이 가능합니다.\n(본 게임에서는 플레이어 상단 콤보 게이지가 끊기지 않아야 합니다.)");
                 SetToolTip(new Vector3(0, 340, 0), "A 키를 눌러 다음으로 진행해주세요.");
+
+                nightBone.Rigid.drag = 10;
             }),
-            Do(() => ComboAttackAction("SwordAttack_1")),
-            Do(() => ComboAttackAction("SwordAttack_2")),
-            Do(() => ComboAttackAction("SwordAttack_3")),
-            Do(() => ComboAttackAction("SwordAttack_4")),
-            Do(() => ComboAttackAction("SwordAttack_5")),
+            Do(() => ComboAttackAction("Act_SwordAttack_1")),
+            Do(() => ComboAttackAction("Act_SwordAttack_2")),
+            Do(() => ComboAttackAction("Act_SwordAttack_3")),
+            Do(() => ComboAttackAction("Act_SwordAttack_4")),
+            Do(() => ComboAttackAction("Act_SwordAttack_5")),
             Do(async () =>
             {
-                player.Rigid.AddForce(new Vector2(10f, 0), ForceMode2D.Impulse);
-
+                nightBone.Rigid.AddForce(new Vector2(13, 0), ForceMode2D.Impulse);
                 ComboAttackAction("SwordAttack_6");
                 await UniTask.Delay(400);
 
-                player.Rigid.velocity = Vector2.zero;
-                player.Rigid.drag = 0;
-
+                Player.controller.rigid.velocity = Vector2.zero;
+                Player.controller.rigid.drag = 0;
 
                 SetNarration();
                 ResetToolTip();
@@ -116,8 +124,6 @@ public class IntroBattleScene: CutScene
                 
                 UIManager.Instance.ShowIngameUI();
                 // UIManager.Instance.ToggleInventory();
-                
-                player.Anim.Play("Idle");
                 
                 itemUI.SetParent(CutSceneManager.Instance.UIPool.transform);
                 itemUI.anchoredPosition = new Vector2(-230.9f, 127.26f);
@@ -148,11 +154,15 @@ public class IntroBattleScene: CutScene
                 
                 Destroy(itemUI.gameObject);
                 
+                Player.controller.playerCollider.isTrigger = true;
+                Player.controller.rigid.gravityScale = 0;
+                
+                Player.controller.rigid.gravityScale = 0f;
                 Sound.Playsfx("AgisSpell");
-                player.Rigid.AddForce(new Vector2(2, 1) * 4f, ForceMode2D.Impulse);
-                player.Anim.Play("Dash");
+                Player.controller.rigid.AddForce(new Vector2(2, 1) * 4f, ForceMode2D.Impulse);
+                Player.animator.Play("Dash");
                 await UniTask.Delay(300);
-                BoltsPool.Instance.CreateSummon(player.transform, SummonSkillManager.Skill.DashAttack, true).Fire();
+                BoltsPool.Instance.CreateSummon(Player.transform, SummonSkillManager.Skill.DashAttack, true).Fire();
                 await UniTask.Delay(400);
 
                 // Hit 매소드로 한번 묶기
@@ -163,8 +173,8 @@ public class IntroBattleScene: CutScene
                 Camera.Shake(2, 2, 0.2f);
                 archer.Anim.Play("Hit");
                 await UniTask.Delay(250);
-                player.transform.position = archer.transform.position + Vector3.up * 0.15f;
-                player.Anim.Play("Idle");
+                Player.transform.position = archer.transform.position + Vector3.up * 0.15f;
+                Player.animator.Play("Idle");
                 Destroy(archer.gameObject);
 
                 Sound.FadeOutBGM(3);
@@ -184,7 +194,7 @@ public class IntroBattleScene: CutScene
                 
                 Destroy(npc.gameObject);
                 npcOrigin.SetActive(true);
-                player.transform.position = npc.transform.position + Vector3.left;
+                Player.transform.position = npc.transform.position + Vector3.left;
                 Camera.Focus(npcOrigin.transform);
                 Light.FadeIn(1);
                 await UniTask.Delay(500);
@@ -192,8 +202,8 @@ public class IntroBattleScene: CutScene
                 SetSentence("고마워요. 그런데... 방금 그 그림자의 힘, 대체 어떤 거죠?", npcOrigin.transform);
                 await UniTask.Delay(4000);
                 
-                Camera.Focus(player.transform);
-                SetSentence("떠오르지 않아요.. 단지, 갑자기 이 장면이 낯설지 않게 느껴졌어요.", player.transform);
+                Camera.Focus(Player.transform);
+                SetSentence("떠오르지 않아요.. 단지, 갑자기 이 장면이 낯설지 않게 느껴졌어요.", Player.transform);
                 
                 await UniTask.Delay(3000);
                 Camera.Focus(npcOrigin.transform);
@@ -203,7 +213,7 @@ public class IntroBattleScene: CutScene
             }),
             Do(() =>
             {
-                Player.transform.position = player.transform.position;
+                Player.transform.position = Player.transform.position;
                 Player.gameObject.SetActive(true);
                 
                 Camera.Reset();
@@ -215,13 +225,16 @@ public class IntroBattleScene: CutScene
 
     private void ComboAttackAction(string animationName)
     {
+        Player.transform.position = nightBone.transform.position + Vector3.left * 1f;
         Camera.Shake(2, 2, 0.2f);
-        player.Anim.Play(animationName);
+        Player.animator.Play(animationName);
                 
         BoltsPool.Instance.Particle(transform, "Hit").SetSize(0.8f).SetColor(new Color(0, 0, 0, 0.2f)).SetPosition(nightBone.transform.position + new Vector3(Random.Range(-0.2f, 0.2f), 0.6f + Random.Range(-0.2f, 0.2f))).Play();
         BoltsPool.Instance.Particle(transform, "Hit").SetSize(0.15f).SetColor(Color.yellow).SetPosition(nightBone.transform.position + new Vector3(Random.Range(-0.2f, 0.2f), 0.6f + Random.Range(-0.2f, 0.2f))).Play();
         SoundManager.Instance.Playsfx("HitByMelee");
                 
         nightBone.Anim.Play("Hit");
+        nightBone.Rigid.AddForce(new Vector2(2, 0) * 2f, ForceMode2D.Impulse);
+
     }
 }
