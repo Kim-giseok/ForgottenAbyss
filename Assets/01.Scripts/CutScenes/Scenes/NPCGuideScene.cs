@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class NPCGuideScene: CutScene
 {
+    public Transform npc;
     public Transform weaponBox;
     public Transform shop;
 
@@ -21,18 +22,19 @@ public class NPCGuideScene: CutScene
             Do(() =>
             {
                 CutSceneManager.Instance.SubCams.Init();
+                Camera.Focus(npc);
                 
                 GameManager.Instance.PausePlayer();
-                SetSentence("잠깐!");
-                GameManager.Instance.cameraShake.Shake(0.2f, 1f);
+                SetSentence("잠깐!", npc);
+                Camera.Shake(2f, 2f, 0.2f);
             }),
             Do(() =>
             {
-                SetSentence("기억을 되찾기 위해서는 만반의 준비를 해야할 거에요.");
+                SetSentence("기억을 되찾기 위해서는 만반의 준비를 해야할 거에요.", npc);
             }),
             Do(() =>
             {
-                SetSentence("상점에는 장비,물약 등 필요한 물품들이 있어요.");
+                SetSentence("상점에는 장비,물약 등 필요한 물품들이 있어요.", npc);
                 Camera.Focus(shop);
                 Pointing(shop);
                 SetPointingLight(shop);
@@ -42,10 +44,10 @@ public class NPCGuideScene: CutScene
                 Camera.Reset();
                 ResetPointer();
                 ResetPointingLight();
-                SetSentence("우측 상단의 스크롤을 누르면 가이드를 볼 수 있어요.");
+                SetSentence("우측 상단의 스크롤을 누르면 가이드를 볼 수 있어요.", npc);
                 // Pointing(menuButton);
             }),
-            Do(() => SetSentence("레벨업을 하면 스탯 포인트로 패시브 스킬에 투자해 강해질 수 있어요.")),
+            Do(() => SetSentence("레벨업을 하면 스탯 포인트로 패시브 스킬에 투자해 강해질 수 있어요.", npc)),
             Do(() =>
             {
                 UIManager.Instance.TogglePassiveUI();
@@ -56,7 +58,7 @@ public class NPCGuideScene: CutScene
                 ResetToolTip();
                 UIManager.Instance.TogglePassiveUI();  
                 // Cam.Focus(weaponBox);
-                SetSentence("무기상자에서 무기를 가져가는 것도 잊지 않도록.");
+                SetSentence("무기상자에서 무기를 가져가는 것도 잊지 않도록.", npc);
                 
                 Camera.Focus(weaponBox);
                 Pointing(weaponBox);

@@ -3,6 +3,7 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class TempLetterBox : MonoBehaviour
@@ -19,8 +20,8 @@ public class TempLetterBox : MonoBehaviour
     private bool skipLine;
     private int currLine;
 
-    public float maxWidth;
-    public float minWidth;
+    [FormerlySerializedAs("maxWidth")] public float maxHieght;
+    [FormerlySerializedAs("minWidth")] public float minHeight;
     public float duration;
     
     private bool isStartNarration;
@@ -106,8 +107,8 @@ public class TempLetterBox : MonoBehaviour
     {
         float currTime = 0f;
         
-        float currStartWith = isShow ? maxWidth : minWidth;
-        float currEndWith = isShow ? minWidth : maxWidth;
+        float currStartWith = isShow ? maxHieght : minHeight;
+        float currEndWith = isShow ? minHeight : maxHieght;
         
         float currStartAlpha = isShow ? 0f : 1f;
         float currEndAlpha = isShow ? 1f : 0f;
