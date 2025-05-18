@@ -83,7 +83,7 @@ public class LetterBox : MonoBehaviour
             
             SoundManager.Instance.Playsfx("Tick");
             narrationText.text += c;
-            yield return new WaitForSeconds(0.05f);
+            yield return new WaitForSeconds(0.035f);
         }
         
         skipLine = true;

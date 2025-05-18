@@ -23,9 +23,7 @@ public class IntroBattleScene: CutScene
                 GameManager.Instance.PausePlayer();
                 
                 await UniTask.Delay(1000);
-                
                 SetToolTip(new Vector3(0, 340, 0), "아무 키를 눌러 다음으로 진행해주세요.");
-   
                 // 초기 로드 시간 문제로 인해 중복 코드 발생
                 Camera.Init();
                 UI.HideIngameUI();
@@ -41,28 +39,31 @@ public class IntroBattleScene: CutScene
                 
                 npc.Anim.Play("Run");
                 npc.Rigid.velocity = new Vector2(-4, 0);
-                
                 nightBone.Anim.Play("Run");
                 nightBone.Rigid.velocity = new Vector2(-4, 0);
-                
                 await UniTask.Delay(1800);
                 
                 npc.Rigid.velocity = Vector2.zero;
                 nightBone.Rigid.velocity = Vector2.zero;
-
                 npc.transform.rotation = Quaternion.Euler(0, 0, 0);
                 npc.Anim.Play("Idle");
+                
                 nightBone.Anim.Play("Charging");
                 Sound.Playsfx("ElectronicCast");
-                
                 SetSentence("이런.. 젠장!", npc.transform);
+            }),
+            Do(() =>
+            {
+                Camera.SetNoise(0);
+                Camera.Focus(Player);
+                
+                SetCurrInputKey(KeyCode.LeftShift);
+                SetNarration("대시를 통해서 빠른 이동 및 적의 공격을 회피할 수 있습니다.");
+                SetToolTip(new Vector3(0, 340, 0), "왼쪽 Shift를 눌러 이동해주세요.");
             }),
             Do(async () =>
             { 
-                Camera.SetNoise(0);
-                Camera.Focus(Player);
-                await UniTask.Delay(1000);
-
+                
                 Player.animator.speed = 2;
                 Player.animator.Play("Act_Dash");
                 Player.controller.rigid.drag = 9;
@@ -159,7 +160,6 @@ public class IntroBattleScene: CutScene
                 Player.controller.playerCollider.isTrigger = true;
                 Player.controller.rigid.gravityScale = 0;
                 
-                Player.controller.rigid.gravityScale = 0f;
                 Sound.Playsfx("AgisSpell");
                 Player.controller.rigid.AddForce(new Vector2(2, 1) * 4f, ForceMode2D.Impulse);
                 Player.animator.Play("Dash");
@@ -196,7 +196,7 @@ public class IntroBattleScene: CutScene
                 
                 Destroy(npc.gameObject);
                 npcOrigin.SetActive(true);
-                Player.transform.position = npc.transform.position + Vector3.left;
+                Player.transform.position = npcOrigin.transform.position + Vector3.left * 3f;
                 Camera.Focus(npcOrigin.transform);
                 Light.FadeIn(1);
                 await UniTask.Delay(500);
@@ -220,7 +220,12 @@ public class IntroBattleScene: CutScene
                 
                 Camera.Reset();
                 ClearSentence();
-                SetCutSceneMode(false);   
+                SetCutSceneMode(false);
+                GameManager.Instance.PausePlayer(false);
+                
+                // 리셋의 형태로 만들기
+                Player.controller.playerCollider.isTrigger = false;
+                Player.controller.rigid.gravityScale = 2;
             })
         };
     }
