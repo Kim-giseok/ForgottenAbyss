@@ -11,6 +11,7 @@ public abstract class CutScene: MonoBehaviour
     protected LetterBox LetterBox => CutSceneManager.Instance.LetterBox;
     protected SoundManager Sound => SoundManager.Instance;
     protected UIManager UI => UIManager.Instance;
+    protected CutUIPool UIPool => CutSceneManager.Instance.UIPool;
     protected BoltsPool BoltsPool => BoltsPool.Instance;
     protected LightManager Light => LightManager.Instance;
     protected Player Player => GameManager.Instance.player;

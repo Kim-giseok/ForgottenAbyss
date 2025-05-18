@@ -13,7 +13,7 @@ public class CutSceneManager: MonoBehaviour
     public LetterBox LetterBox;
     public TextMeshProUGUI NarrationText;
 
-    public GameObject UIPool;
+    public CutUIPool UIPool;
     public RectTransform UIPointingComp;
     
     public PointingComp Pointing;

@@ -41,7 +41,10 @@ public class SoundManager : SingletonLoadRemain<SoundManager>
     [SerializeField] AudioClip[] sfxList;
     private Dictionary<string, AudioClip> addressSfxList = new();
 
-    protected override void OnSceneLoaded(Scene scene, LoadSceneMode mode) { }
+    protected override void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name == "Stage1") { PlayBGM("Combat1"); }
+    }
 
     protected override void Init()
     {
