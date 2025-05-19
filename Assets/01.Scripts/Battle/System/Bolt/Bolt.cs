@@ -4,13 +4,13 @@ public class Bolt: MonoBehaviour
 {
     private BoltBuilder attr;
     private HitBox hitBox;
-    private Collider collider;
+    private Collider2D collider;
 
     private void Awake()
     {
         attr = GetComponent<BoltBuilder>();
         hitBox = GetComponent<HitBox>();
-        collider = GetComponent<Collider>();
+        collider = GetComponent<Collider2D>();
         
     }
 
