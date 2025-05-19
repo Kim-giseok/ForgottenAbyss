@@ -5,7 +5,7 @@ public class RangeMultiAttackNode : Node
 {
     public override void Start()
     {
-        controller.animHandler.Play("Attack");
+        controller.Anim.Play("Attack");
         if (controller is EnemyController) { controller.LookTarget(); }
     }
     
@@ -23,7 +23,7 @@ public class RangeMultiAttackNode : Node
                         .SetSize(1f)
                         .SetDamage(10)
                         .SetSpeed(30)
-                        .SetDegree(controller.agent.GetDegree() + currDegree)
+                        .SetDegree(controller.Agent.GetDegree() + currDegree)
                         .SetDuration(0.6f)
                         .Fire();
                 }
@@ -59,7 +59,7 @@ public class PlayRollingAnimation : Node
 {
     public override void Start()
     {
-        controller.animHandler.Play("Rolling");
+        controller.Anim.Play("Rolling");
     }
 
     public override void OnAnimated(AnimationStatus status, AnimatorStateInfo animInfo)

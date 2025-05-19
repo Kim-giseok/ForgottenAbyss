@@ -45,7 +45,7 @@ public class ComboAttack : MonoBehaviour
     {
         if (comboData == null)
         {
-            Debug.LogWarning("comboData°¡ ¼³Á¤µÇÁö ¾Ê¾Ò½À´Ï´Ù. ¹«±â°¡ Á¦´ë·Î ÀåÂøµÇ¾ú´ÂÁö È®ÀÎÇÏ¼¼¿ä.");
+            Debug.LogWarning("comboDataï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¾Ò½ï¿½ï¿½Ï´ï¿½. ï¿½ï¿½ï¿½â°¡ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ç¾ï¿½ï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½ï¿½Ï¼ï¿½ï¿½ï¿½.");
             return;
         }
 
@@ -180,7 +180,7 @@ public class ComboAttack : MonoBehaviour
             animator.SetInteger("AttackCombo", 1);
             animator.Play("Idle");
 
-            if (SystemManager.Instance.weaponManager.GetCurrentWeaponData().Type == WeaponType.Sword)
+            if (SystemManager.Instance.weaponManager.GetCurrentWeaponData()?.Type == WeaponType.Sword)
                 UpdateComboAttackUI(attackIndex-1);
         }
     }
@@ -217,7 +217,7 @@ public class ComboAttack : MonoBehaviour
 
     IEnumerator MoveForwardCoroutine(float distance)
     {
-        float moveTime = 0.1f; // ÀÌµ¿ ½Ã°£
+        float moveTime = 0.1f; // ï¿½Ìµï¿½ ï¿½Ã°ï¿½
         float elapsed = 0f;
         Vector3 startPos = transform.position;
         Vector3 targetPos = transform.position + (transform.right * distance);
@@ -229,7 +229,7 @@ public class ComboAttack : MonoBehaviour
             yield return null;
         }
 
-        transform.position = targetPos; // ¸¶Áö¸· À§Ä¡ º¸Á¤
+        transform.position = targetPos; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ï¿½
     }
 
     void OnJumpSmash(string data)
@@ -245,19 +245,19 @@ public class ComboAttack : MonoBehaviour
     {
         Vector3 startPos = transform.position;
 
-        // Á¡ÇÁ ¹æÇâ (´ë°¢¼± À§)
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ (ï¿½ë°¢ï¿½ï¿½ ï¿½ï¿½)
         Vector3 jumpDir = (transform.right + Vector3.up*0.5f).normalized;
         Vector3 peakPos = startPos + jumpDir * height;
 
         Vector3 horizontalDir = transform.right;
-        Vector3 endPos = startPos + horizontalDir * height; // ¼öÆò ÀÌµ¿ Æ÷ÇÔ
+        Vector3 endPos = startPos + horizontalDir * height; // ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½ ï¿½ï¿½ï¿½ï¿½
 
         float halfDuration = duration / 2f;
         float elapsed = 0f;
 
-        LayerMask wallMask = LayerMask.GetMask("Wall", "Ground"); // Ãæµ¹ °¨ÁöÇÒ ·¹ÀÌ¾î ¼³Á¤
+        LayerMask wallMask = LayerMask.GetMask("Wall", "Ground"); // ï¿½æµ¹ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½ï¿½ï¿½
 
-        // »ó½Â
+        // ï¿½ï¿½ï¿½
         while (elapsed < halfDuration)
         {
             elapsed += Time.deltaTime;
@@ -267,19 +267,19 @@ public class ComboAttack : MonoBehaviour
             Vector3 nextPos = Vector3.Lerp(startPos, peakPos, easeT);
             Vector3 moveDir = nextPos - transform.position;
 
-            // º® Ã¼Å©
+            // ï¿½ï¿½ Ã¼Å©
             RaycastHit2D hit = Physics2D.Raycast(transform.position, moveDir.normalized, moveDir.magnitude, wallMask);
             if (hit.collider != null)
             {
                 transform.position = hit.point;
-                yield break; // Á¡ÇÁ Áß´Ü
+                yield break; // ï¿½ï¿½ï¿½ï¿½ ï¿½ß´ï¿½
             }
 
             transform.position = nextPos;
             yield return null;
         }
 
-        // ÇÏ°­
+        // ï¿½Ï°ï¿½
         elapsed = 0f;
         while (elapsed < halfDuration)
         {
@@ -294,7 +294,7 @@ public class ComboAttack : MonoBehaviour
             if (hit.collider != null)
             {
                 transform.position = hit.point;
-                yield break; // Á¡ÇÁ Áß´Ü
+                yield break; // ï¿½ï¿½ï¿½ï¿½ ï¿½ß´ï¿½
             }
 
             transform.position = nextPos;
@@ -308,7 +308,7 @@ public class ComboAttack : MonoBehaviour
     {
         if (comboData == null || attackIndex <= 0 || attackIndex > comboData.comboSteps.Count)
         {
-            Debug.LogWarning("Àß¸øµÈ attackIndex ¶Ç´Â comboData ¾øÀ½");
+            Debug.LogWarning("ï¿½ß¸ï¿½ï¿½ï¿½ attackIndex ï¿½Ç´ï¿½ comboData ï¿½ï¿½ï¿½ï¿½");
             return;
         }
 
@@ -318,7 +318,7 @@ public class ComboAttack : MonoBehaviour
 
         if (targets == null || targets.Count == 0)
         {
-            Debug.Log("Å¸°ÙÀÌ ¾ø½À´Ï´Ù.");
+            Debug.Log("Å¸ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.");
             return;
         }
 
@@ -357,7 +357,7 @@ public class ComboAttack : MonoBehaviour
                 var laber = target.GetComponentInChildren<LaberDamagerble>();
                 if (laber != null)
                 {
-                    Debug.Log("·¹¹ö Å¸°Ý!");
+                    Debug.Log("ï¿½ï¿½ï¿½ï¿½ Å¸ï¿½ï¿½!");
                     laber.GetDamage(result.damage);
                 }
             }
@@ -395,7 +395,7 @@ public class ComboAttack : MonoBehaviour
         }
         else
         {
-            // 3~6Å¸: °üÅë °ø°Ý
+            // 3~6Å¸: ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             DebugDrawUtil.DrawCircle(origin, radius, Color.red, 0.5f);
             return hits.Select(hit => hit.gameObject).ToList();
         }

@@ -37,7 +37,7 @@ public class EnemyDetectHandler : MonoBehaviour
         if (isWalkable != IsWalkable())
         {
             isWalkable = currIsWalkable;
-            controller.machine.Notify();
+            controller.Machine.Notify();
         }
 
         // 즉각적인 해결책으로 이용될 수 없음
@@ -45,7 +45,7 @@ public class EnemyDetectHandler : MonoBehaviour
         if (isWall != currIsWall)
         {
             isWall = currIsWall;
-            controller.machine.Notify();
+            controller.Machine.Notify();
         }
 
 
@@ -53,7 +53,7 @@ public class EnemyDetectHandler : MonoBehaviour
         if (isGrounded != currIsGrounded)
         {
             isGrounded = currIsGrounded;
-            controller.machine.Notify();
+            controller.Machine.Notify();
 
             // rigidbody.gravityScale = isGrounded ? 0 : gravityScale; // 공중에 있을 때만 중력 개념 적용 - 이동이 멈추면 가속도 붙음
         }

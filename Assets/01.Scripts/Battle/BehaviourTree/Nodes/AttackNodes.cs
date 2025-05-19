@@ -9,7 +9,7 @@ public class MeleeAttack : Node
     public override void Start()
     {
         controller.LookTarget();
-        controller.animHandler.Play("Attack");
+        controller.Anim.Play("Attack");
     }
 
     public override void OnAnimatedEvent(bool isFire)
@@ -21,7 +21,7 @@ public class MeleeAttack : Node
             BoltsPool.Instance.CreateMelee(controller.transform, controller.combatHandler.power).Fire();
 
             // NightBone만 실행되어야하여 전략패턴으로 빼야함
-            BoltsPool.Instance.CreateParticle(controller.transform, "Slash")
+            BoltsPool.Instance.Particle(controller.transform, "Slash")
                 .SetSize(2.5f).SetPosition(controller.transform.position + new Vector3(Random.Range(-0.2f, 0.2f), 0.6f + Random.Range(-0.2f, 0.2f))).Play();
 
         }
@@ -48,7 +48,7 @@ public class RangeAttackNode : Node
 {
     public override void Start()
     {
-        controller.animHandler.Play("Attack");
+        controller.Anim.Play("Attack");
         controller.LookTarget();
     }
     
@@ -57,7 +57,7 @@ public class RangeAttackNode : Node
         // 콜백으로 공격 방식 추상화
         if (isFire)
         {
-            BoltsPool.Instance.Create(controller.transform, Bolts.Type.Linear).SetDamage(10).SetDirection(controller.agent.GetDirection()).Fire();
+            BoltsPool.Instance.Create(controller.transform, Bolts.Type.Linear).SetDamage(10).SetDirection(controller.Agent.GetDirection()).Fire();
         }
     }
     
