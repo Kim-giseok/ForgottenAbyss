@@ -162,6 +162,7 @@ public class WeaponManager : MonoBehaviour
         }
 
         SystemManager.Instance.skillManager.SetCurrentWeaponSkills(selectedWeapon.currentWeaponId);
+        GameManager.Instance.player.controller.UpdateDashValues(currentWeaponData.Type);
     }
 
     public void EquipMemoryPiece(MemoryPieceSO memorySO)
@@ -268,8 +269,6 @@ public class WeaponManager : MonoBehaviour
         else
             Debug.LogWarning($"경로에 무기 SO 없음: {nextWeaponPath}");
 
-
-        GameManager.Instance.player.controller.UpdateDashValues(currentWeaponData.Type);
         swapper.SwapWeapons();
         skillController.UpdateBasicIcon();
         skillController.ResetAttack();

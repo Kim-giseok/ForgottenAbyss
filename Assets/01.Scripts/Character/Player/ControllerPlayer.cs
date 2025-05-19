@@ -57,6 +57,7 @@ public class ControllerPlayer : MonoBehaviour
 
     private float lastDirectionChangeTime = 0f;
     private float directionChangeCooldown = 0.1f;
+    public float dashCoolTime = 0f;
 
     private void Awake()
     {
@@ -478,18 +479,21 @@ public class ControllerPlayer : MonoBehaviour
             dashDistance = 3f;
             dashTime = 0.25f;
             dashCost = 10f;
+            dashCoolTime = 0.5f;
         }
         else if (weaponType == WeaponType.Bow)
         {
-            dashDistance = 1.75f;
-            dashTime = 0.25f;
+            dashDistance = 1.5f;
+            dashTime = 0.175f;
             dashCost = 5f;
+            dashCoolTime = 0.25f;
         }
         else
         {
             dashDistance = 2f; // 기본값
             dashTime = 0.25f;
             dashCost = 10f;
+            dashCoolTime = 0.5f;
         }
 
         Debug.Log($"[대쉬 설정] {weaponType} 장착 - 거리: {dashDistance}, 시간: {dashTime}, 비용: {dashCost}");

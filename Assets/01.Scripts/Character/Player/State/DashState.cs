@@ -57,7 +57,7 @@ public class DashState : PlayerStateMachine
 
         //player.StartCoroutine(WaitForLandingToResetCollision());
         player.rigid.collisionDetectionMode = CollisionDetectionMode2D.Discrete;
-        player.StartCoroutine(DashCooldown(0.5f));
+        player.StartCoroutine(DashCooldown(player.dashCoolTime));
     }
 
     private IEnumerator WaitForLandingToResetCollision()
