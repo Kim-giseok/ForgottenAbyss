@@ -35,23 +35,14 @@ public class ItemTooltip : MonoBehaviour
         if (canvasRect == null) return;
 
         tooltipPanel.SetActive(true);
+        LayoutRebuilder.ForceRebuildLayoutImmediate(tooltipRect);
 
-        Vector2 offset = new Vector2(100f, -180f);
+        Vector2 tooltipSize = tooltipRect.rect.size;
+
+        tooltipRect.pivot = new Vector2(0f, 1f);
+
+        Vector2 offset = new Vector2(12f, -12f);
         Vector2 desiredScreenPos = screenPos + offset;
-        Vector2 tooltipSize = tooltipRect.sizeDelta;
-
-        bool shouldFlipVertically = desiredScreenPos.y - tooltipSize.y < 0;
-
-        if (shouldFlipVertically)
-        {
-            tooltipRect.pivot = new Vector2(0f, 0f);
-            offset.y = 20f;
-            desiredScreenPos = screenPos + offset;
-        }
-        else
-        {
-            tooltipRect.pivot = new Vector2(0f, 1f);
-        }
 
         float clampedX = Mathf.Clamp(desiredScreenPos.x, 0f, Screen.width - tooltipSize.x);
         float clampedY = Mathf.Clamp(desiredScreenPos.y, tooltipSize.y, Screen.height);

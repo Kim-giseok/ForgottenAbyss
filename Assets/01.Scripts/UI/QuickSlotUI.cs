@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class QuickSlotUI : MonoBehaviour, IPointerClickHandler
+public class QuickSlotUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField] private Image iconImage;
     [SerializeField] private TextMeshProUGUI amountText;
@@ -127,5 +127,18 @@ public class QuickSlotUI : MonoBehaviour, IPointerClickHandler
             iconImage.enabled = true;
             yield return new WaitForSeconds(0.1f);
         }
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        if (IsEmpty) return;
+
+        var tooltipData = new ItemTooltipData(slot.Item);
+        UIManager.Instance.ShowTooltip(tooltipData, Input.mousePosition);
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        UIManager.Instance.HideTooltip();
     }
 }
