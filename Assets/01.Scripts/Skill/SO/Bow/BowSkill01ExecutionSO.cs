@@ -18,7 +18,7 @@ public class BowSkill01ExecutionSO : SkillExecutionSO
         Vector2 origin = (Vector2)caster.transform.position + Vector2.up * 0.5f + direction * 2f;
 
         SkillController.Instance.isBowAttack = true;
-        SkillController.Instance.rangedAttack.PlayComboEffect();
+        //SkillController.Instance.rangedAttack.PlayComboEffect();
         SystemManager.Instance.coroutinRunner.RunCoroutine(ExecuteWithEffectDelay(caster, origin, direction, castData));
     }
 

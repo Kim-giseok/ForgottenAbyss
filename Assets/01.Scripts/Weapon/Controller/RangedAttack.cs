@@ -308,7 +308,7 @@ public class RangedAttack : MonoBehaviour
 
     public void AdvanceCombo()
     {
-        inputCombo = true;
+        //inputCombo = true;
     }
 
     public void PlayComboEffect()
