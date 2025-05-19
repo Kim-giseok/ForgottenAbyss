@@ -3,10 +3,15 @@ using UnityEngine;
 public class Bolt: MonoBehaviour
 {
     private BoltBuilder attr;
+    private HitBox hitBox;
+    private Collider collider;
 
     private void Awake()
     {
         attr = GetComponent<BoltBuilder>();
+        hitBox = GetComponent<HitBox>();
+        collider = GetComponent<Collider>();
+        
     }
 
     protected void Update()
@@ -41,6 +46,9 @@ public class Bolt: MonoBehaviour
         attr.trailRenderer.enabled = true;
         attr.trailRenderer.time = 0.2f;
         attr.SetParticle(false);
+        
+        hitBox.enabled = true;
+        collider.enabled = true;
         
         attr.isStarted = false;
         
