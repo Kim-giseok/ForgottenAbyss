@@ -145,7 +145,7 @@ public class ComboAttack : MonoBehaviour
             animator.Play("Idle");
 
             if (SystemManager.Instance.weaponManager.GetCurrentWeaponData().Type == WeaponType.Sword)
-                UpdateComboAttackUI(attackIndex);
+                UpdateComboAttackUI(attackIndex-1);
         }
     }
 

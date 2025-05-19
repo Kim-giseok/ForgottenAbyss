@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Runtime.Serialization.Formatters;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -25,6 +26,8 @@ public class WeaponManager : MonoBehaviour
     private SkillInstance memorySkillInstance;
 
     private DataManager dataManager;
+
+    private const string WEAPON_DATA_FILE = "WeaponSaveData.json";
 
     private void OnEnable()
     {
@@ -67,10 +70,6 @@ public class WeaponManager : MonoBehaviour
         {
             ClearWeaponSaveData();
         }
-        //if (Input.GetKeyDown(KeyCode.Alpha0))
-        //{
-        //    Debug_EquipTestMemoryPiece(); // 기억 조각 장착
-        //}
 #endif
     }
 
@@ -304,65 +303,61 @@ public class WeaponManager : MonoBehaviour
             memoryPieceId = currentMemorySO != null ? currentMemorySO.currentMemoryPieceId : -1
         };
 
-        string json = JsonUtility.ToJson(saveData);
-        PlayerPrefs.SetString("WeaponSaveData", json);
-        PlayerPrefs.Save();
+        DataSave<WeaponSaveData>.SaveData(saveData, WEAPON_DATA_FILE);
 
         Debug.Log("[Save] 무기 및 기억 조각 상태 저장 완료");
     }
 
     public void LoadWeaponState()
     {
-        string json = PlayerPrefs.GetString("WeaponSaveData", null);
-        if (string.IsNullOrEmpty(json)) return;
+        WeaponSaveData saveData = DataSave<WeaponSaveData>.LoadData(WEAPON_DATA_FILE);
 
-        WeaponSaveData saveData = JsonUtility.FromJson<WeaponSaveData>(json);
-
-        if (saveData.weaponId != -1)
+        if (saveData != null)
         {
-            WeaponDataSO weaponSO = dataManager.weaponSOList.Find(w => w.currentWeaponId == saveData.weaponId);
-            if (weaponSO != null)
+            if (saveData.weaponId != -1)
             {
-                EquipWeapon(weaponSO);
-                Debug.Log("[Load] 무기 로드");
-
-                if (swapper == null)
-                    swapper = FindObjectOfType<WeaponSwapper>();
-
-                var swordSO = dataManager.weaponSOList.Find(w =>
-                                      dataManager.GetWeaponData(w.currentWeaponId).Type == WeaponType.Sword);
-
-                var bowSO = dataManager.weaponSOList.Find(w =>
-                                   dataManager.GetWeaponData(w.currentWeaponId).Type == WeaponType.Bow);
-
-
-                if (swordSO != null && bowSO != null)
+                WeaponDataSO weaponSO = dataManager.weaponSOList.Find(w => w.currentWeaponId == saveData.weaponId);
+                if (weaponSO != null)
                 {
-                    if (currentWeaponSO == swordSO)
-                        swapper.SetWeaponIcons(swordSO.weaponIcon, bowSO.weaponIcon);
+                    EquipWeapon(weaponSO);
+                    Debug.Log("[Load] 무기 로드");
+
+                    // Swapper 및 아이콘 설정 
+                    if (swapper == null)
+                        swapper = FindObjectOfType<WeaponSwapper>();
+
+                    var swordSO = dataManager.weaponSOList.Find(w =>
+                                          dataManager.GetWeaponData(w.currentWeaponId).Type == WeaponType.Sword);
+
+                    var bowSO = dataManager.weaponSOList.Find(w =>
+                                       dataManager.GetWeaponData(w.currentWeaponId).Type == WeaponType.Bow);
+
+                    if (swordSO != null && bowSO != null)
+                    {
+                        if (currentWeaponSO == swordSO)
+                            swapper.SetWeaponIcons(swordSO.weaponIcon, bowSO.weaponIcon);
+                        else
+                            swapper.SetWeaponIcons(bowSO.weaponIcon, swordSO.weaponIcon);
+
+                        Debug.Log($"[SetIcon] 무기 스왑 아이콘 설정 완료 (현재 장착: {currentWeaponSO.name})");
+                    }
                     else
-                        swapper.SetWeaponIcons(bowSO.weaponIcon, swordSO.weaponIcon);
-
-                    Debug.Log($"[SetIcon] 무기 스왑 아이콘 설정 완료 (현재 장착: {currentWeaponSO.name})");
-                }
-                else
-                {
-                    Debug.LogWarning("[SetIcon] 무기 타입 기반으로 아이콘 설정 실패 - Sword 또는 Bow SO 없음");
+                        Debug.LogWarning("[SetIcon] 무기 타입 기반으로 아이콘 설정 실패 - Sword 또는 Bow SO 없음");
                 }
             }
-        }
 
-        if (saveData.memoryPieceId != -1)
-        {
-            MemoryPieceSO memorySO = dataManager.memoryVisualSOList.Find(m => m.currentMemoryPieceId == saveData.memoryPieceId);
-            if (memorySO != null)
+            if (saveData.memoryPieceId != -1)
             {
-                EquipMemoryPiece(memorySO);
-                Debug.Log("[Load] 기억 조각 로드");
+                MemoryPieceSO memorySO = dataManager.memoryVisualSOList.Find(m => m.currentMemoryPieceId == saveData.memoryPieceId);
+                if (memorySO != null)
+                {
+                    EquipMemoryPiece(memorySO);
+                    Debug.Log("[Load] 기억 조각 로드");
+                }
             }
-        }
 
-        Debug.Log("[Load] 무기 및 기억 조각 상태 로드 완료");
+            Debug.Log("[Load] 무기 및 기억 조각 상태 로드 완료");
+        }
     }
 
     public void UnequipWeapon()
@@ -396,15 +391,22 @@ public class WeaponManager : MonoBehaviour
     //    Debug.Log("[Clear] 기억 조각 장착 해제 완료");
     //}
 
-
     public void ClearWeaponSaveData()
     {
-        PlayerPrefs.DeleteKey("WeaponSaveData");
-        PlayerPrefs.Save();
+        string path = Path.Combine(Application.persistentDataPath, WEAPON_DATA_FILE);
+
+        if (File.Exists(path))
+        {
+            File.Delete(path);
+            Debug.Log("[Clear] 무기 및 기억 조각 저장 데이터 초기화 완료");
+        }
+        else
+        {
+            Debug.LogWarning("[Clear] 초기화 실패 - 파일 없음");
+        }
 
         UnequipWeapon();
         UnequipMemoryPiece();
-        Debug.Log("[Clear] 무기 및 기억 조각 저장 데이터 초기화 완료");
     }
 
 #if UNITY_EDITOR

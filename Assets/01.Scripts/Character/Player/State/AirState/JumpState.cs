@@ -32,6 +32,9 @@ public class JumpState : AirState
 
         AnimatorStateInfo stateInfo = player.animator.GetCurrentAnimatorStateInfo(0);
 
+        if (stateInfo.IsTag("Attack"))
+            player.playerCollider.excludeLayers = 0;
+
         if (player.rigid.velocity.y < -player.rigid.gravityScale * Time.fixedDeltaTime && !stateInfo.IsTag("Attack"))
             player.ChangeState(PlayerState.Fall);
     }

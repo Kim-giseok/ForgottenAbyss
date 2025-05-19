@@ -43,7 +43,9 @@ public class RunState : PlayerStateMachine
         player.rigid.velocity = new Vector2(player.inputVec.x * currentSpeed, player.rigid.velocity.y);
         player.UpdateDirection();
 
-        if (player.rigid.velocity.y < -player.rigid.gravityScale * Time.fixedDeltaTime && !stateInfo.IsTag("Attack"))
+        float fallThreshold = -player.rigid.gravityScale * Time.fixedDeltaTime * 50f;
+
+        if (player.rigid.velocity.y < fallThreshold && !stateInfo.IsTag("Attack"))
             player.ChangeState(PlayerState.Fall);
     }
 

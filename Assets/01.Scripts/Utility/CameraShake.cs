@@ -29,17 +29,23 @@ public class CameraShake : MonoBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        virtualCamera = MapSpawnManager.Instance.virtualCamera;
-
-        if (virtualCamera == null)
-        {
-            Debug.LogWarning("CameraShake: �� ������ VirtualCamera�� ã�� ���߽��ϴ�.");
-            return;
-        }
+        StartCoroutine(WaitForCamera());
 
         SetupNoiseComponent();
 
         RemoveExtraAudioListeners();
+    }
+
+    private IEnumerator WaitForCamera()
+    {
+        yield return new WaitForSeconds(0.1f); // 짧은 시간 기다린 후 다시 시도
+
+        virtualCamera = MapSpawnManager.Instance?.virtualCamera;
+
+        if (virtualCamera == null)
+        {
+            Debug.LogWarning("CameraShake: VirtualCamera를 찾을 수 없습니다.");
+        }
     }
 
     private void RemoveExtraAudioListeners()
