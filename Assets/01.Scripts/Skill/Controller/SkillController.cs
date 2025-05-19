@@ -22,9 +22,6 @@ public class SkillController : Singleton<SkillController>
     public bool isSkillPlaying = false;
     public bool isBowAttack = false;
 
-    private float lastAttackTime = 0f;
-    private float attackCooldown = 0.2f;
-
     private void Start()
     {
         Initialized();
@@ -78,9 +75,10 @@ public class SkillController : Singleton<SkillController>
 
     void OnAttack(InputValue value)
     {
-        if (Time.time - lastAttackTime < attackCooldown) return;
+        AnimatorStateInfo stateInfo = GameManager.Instance.player.animator.GetCurrentAnimatorStateInfo(0);
+        bool isInAttackState = stateInfo.IsTag("Attack") && stateInfo.normalizedTime < 0.2f;
 
-        lastAttackTime = Time.time;
+        if (isInAttackState) return;
 
         if (!SystemManager.Instance.weaponManager.IsWeaponEquipped())
         {
@@ -93,7 +91,7 @@ public class SkillController : Singleton<SkillController>
             Debug.Log("A: 공격 불가 또는 방향 전환 중 - 공격 입력 버퍼링");
             SystemManager.Instance.actionBufferUtil.BufferAction(
                 "NormalAttack",
-                () => IsExecutable() && GameManager.Instance.player.controller.canAttack,
+                () => IsExecutable() && GameManager.Instance.player.controller.canAttack && !isInAttackState,
                 () => StartCoroutine(DelayedCombatExecution()));
 
             return;
