@@ -22,9 +22,6 @@ public class SkillController : Singleton<SkillController>
     public bool isSkillPlaying = false;
     public bool isBowAttack = false;
 
-    private float lastAttackTime = 0f;
-    private float attackCooldown = 0.2f;
-
     private void Start()
     {
         Initialized();
@@ -78,9 +75,10 @@ public class SkillController : Singleton<SkillController>
 
     void OnAttack(InputValue value)
     {
-        if (Time.time - lastAttackTime < attackCooldown) return;
+        AnimatorStateInfo stateInfo = GameManager.Instance.player.animator.GetCurrentAnimatorStateInfo(0);
+        bool isInAttackState = stateInfo.IsTag("Attack") && stateInfo.normalizedTime >= 0.1f && stateInfo.normalizedTime <= 0.3f;
 
-        lastAttackTime = Time.time;
+        if (isInAttackState) return;
 
         if (!SystemManager.Instance.weaponManager.IsWeaponEquipped())
         {
@@ -93,7 +91,7 @@ public class SkillController : Singleton<SkillController>
             Debug.Log("A: 공격 불가 또는 방향 전환 중 - 공격 입력 버퍼링");
             SystemManager.Instance.actionBufferUtil.BufferAction(
                 "NormalAttack",
-                () => IsExecutable() && GameManager.Instance.player.controller.canAttack,
+                () => IsExecutable() && GameManager.Instance.player.controller.canAttack && !isInAttackState,
                 () => StartCoroutine(DelayedCombatExecution()));
 
             return;
@@ -135,11 +133,10 @@ public class SkillController : Singleton<SkillController>
     public void SetSkillPlaying(bool value) => isSkillPlaying = value;
     public void OnSetSkillFalse() => isSkillPlaying = false;
 
-    // 턴 애니메이션을 임시로 일단 제거해뒀음, 임시라 일단 여긴 나둘건데 턴 애니메이션 못고치면 걍 안쓰는 방향으로 갈듯
     public bool IsTurning()
     {
         AnimatorStateInfo stateInfo = GameManager.Instance.player.animator.GetCurrentAnimatorStateInfo(0);
-        return stateInfo.IsTag("Turn") || stateInfo.IsTag("Fall") || stateInfo.IsTag("Dash");
+        return stateInfo.IsTag("Turn") || stateInfo.IsTag("Dash");
     }
 
     public bool IsExecutable()
@@ -158,19 +155,24 @@ public class SkillController : Singleton<SkillController>
         return false;
     }
 
-    public bool IsAttacking()
+    //public bool IsAttacking()
+    //{
+    //    // 활이 검보다 안좋은 것같아서 스킬 사용 제한을 임시로 풀어줌 평타 중 스킬 사용 가능
+    //    return (comboAttack != null && comboAttack.IsAttacking) ||
+    //           //(rangedAttack != null && rangedAttack.IsAttacking) ||
+    //           isSkillPlaying;
+    //}
+
+    public bool IsBasicAttack()
     {
-        // 활이 검보다 안좋은 것같아서 스킬 사용 제한을 임시로 풀어줌 평타 중 스킬 사용 가능
         return (comboAttack != null && comboAttack.IsAttacking) ||
-               //(rangedAttack != null && rangedAttack.IsAttacking) ||
-               isSkillPlaying;
+               (rangedAttack != null && rangedAttack.IsAttacking);
     }
 
-    public bool IsAttack()
+    public bool IsJumpAttack()
     {
-        return (comboAttack != null && comboAttack.IsAttacking) ||
-               (rangedAttack != null && rangedAttack.IsAttacking) ||
-               isSkillPlaying;
+        return (comboAttack != null && !comboAttack.canJumpAttack) ||
+            (rangedAttack != null && !rangedAttack.canJumpAttack);
     }
 
     IEnumerator UseSkillRoutine(SkillInstance instance)
@@ -229,7 +231,7 @@ public class SkillController : Singleton<SkillController>
             return;
         }
 
-        if (combatSkill.weaponType != WeaponType.Bow && IsAttacking()) return;
+        if (combatSkill.weaponType != WeaponType.Bow && isSkillPlaying) return;
 
         if (IsExecutable())
         {
@@ -263,8 +265,22 @@ public class SkillController : Singleton<SkillController>
         }
     }
 
+    private void ResetJumpAttack()
+    {
+        if(comboAttack != null && rangedAttack != null)
+        {
+            comboAttack.canJumpAttack = true;
+            rangedAttack.canJumpAttack = true;
+
+            comboAttack.IsAttacking = false;
+            rangedAttack.IsAttacking = false;
+        }
+    }
+
     public void ResetAttack()
     {
+        ResetJumpAttack();
+
         if (SystemManager.Instance.weaponManager.GetCurrentWeaponData() != null) 
         {
             isSkillPlaying = false;

@@ -19,7 +19,15 @@ public class FallState : AirState
     {
         base.Update();
         if (player.isGround)
-            player.ChangeState(PlayerState.Idle);
+        {
+            AnimatorStateInfo stateInfo = player.animator.GetCurrentAnimatorStateInfo(0);
+            bool isJumpAttack = stateInfo.IsTag("Attack") && stateInfo.normalizedTime < 1f;
+
+            if (isJumpAttack)
+                player.WaitForEnd();
+            else
+                player.ChangeState(PlayerState.Idle);
+        }
     }
 
     public override void Exit()

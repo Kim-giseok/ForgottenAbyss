@@ -10,12 +10,25 @@ public class ComboAttack : MonoBehaviour
     [SerializeField] private ComboBar comboBar;
 
     private ComboAttackSO comboData;
+    private ControllerPlayer player;
 
     public int attackIndex = 0;
+    public bool canJumpAttack = true;
     bool canNextCombo = false;
     bool inputCombo = false;
+   
+    public bool IsAttacking = false;
 
-    public bool IsAttacking { get; private set; } = false;
+    private void Start()
+    {
+        StartCoroutine(WaitForGameManagerReady());
+    }
+
+    private IEnumerator WaitForGameManagerReady()
+    {
+        yield return new WaitUntil(() => GameManager.Instance != null && GameManager.Instance.player.controller != null);
+        player = GameManager.Instance.player.controller;
+    }
 
     public void SetComboData(ComboAttackSO comboData)
     {
@@ -36,6 +49,16 @@ public class ComboAttack : MonoBehaviour
             return;
         }
 
+        if (!player.isGround)
+        {
+            if (!IsAttacking)
+                StartJumpAttack();
+            return;
+        }
+
+        if (Time.time - player.lastJumpTime < 0.1f)
+            return;
+
         if (IsAttacking)
         {
             if (canNextCombo)
@@ -49,6 +72,7 @@ public class ComboAttack : MonoBehaviour
 
     private void StartComboAttack()
     {
+        canJumpAttack = false;
         IsAttacking = true;
         attackIndex = 1;
         animator.ResetTrigger("AttackTrigger");
@@ -57,6 +81,27 @@ public class ComboAttack : MonoBehaviour
         UpdateComboAttackUI(attackIndex - 1);
     }
 
+    private void StartJumpAttack()
+    {
+        if (canJumpAttack == true)
+        {
+            canJumpAttack = false;
+            IsAttacking = true;
+            attackIndex = 1;
+            animator.ResetTrigger("SwordJumpTrigger");
+            animator.SetTrigger("SwordJumpTrigger");
+            //animator.Play("SwordAttack_Jump");
+        }
+        else
+            Debug.Log("이미 점프 공격 실행 중...");
+    }
+
+    void OnEndJumpAttack()
+    {
+        canJumpAttack = true;
+        IsAttacking = false;
+        attackIndex = 1;
+    }
 
     void OnComboCheck(float bufferTime)
     {
@@ -93,20 +138,10 @@ public class ComboAttack : MonoBehaviour
 
     void OnComboNext()
     {
-        if (GameManager.Instance.player.controller == null) return;
+        if (player == null) return;
 
         if (inputCombo)
         {
-            if (!GameManager.Instance.player.controller.isGround && attackIndex >= 3)
-            {
-                inputCombo = false;
-                attackIndex = 1;
-                animator.SetInteger("AttackCombo", attackIndex);
-                animator.Play(comboData.comboSteps[attackIndex - 1].animationName);
-                comboBar.PlayEffect();
-                return;
-            }
-
             if (attackIndex < maxCombo)
             {
                 inputCombo = false;
@@ -116,7 +151,7 @@ public class ComboAttack : MonoBehaviour
                 animator.Play(comboData.comboSteps[attackIndex - 1].animationName);
                 comboBar.PlayEffect();
             }
-            else if (attackIndex >= maxCombo)
+            else
             {
                 EndComboAttack();
             }
@@ -130,6 +165,7 @@ public class ComboAttack : MonoBehaviour
         if (this == null || animator == null || !gameObject.activeInHierarchy)
             return;
 
+        canJumpAttack = true;
         IsAttacking = false;
         canNextCombo = false;
 
@@ -153,6 +189,7 @@ public class ComboAttack : MonoBehaviour
     {
         yield return new WaitForSeconds(delay);
         attackIndex = 1;
+        canJumpAttack = true;
         IsAttacking = true;
         canNextCombo = true;
 
@@ -173,7 +210,7 @@ public class ComboAttack : MonoBehaviour
 
     void OnMoveForward(float distance)
     {
-        if(!GameManager.Instance.player.controller.isGround) return;
+        if(!player.isGround) return;
 
         StartCoroutine(MoveForwardCoroutine(distance));
     }
@@ -334,7 +371,7 @@ public class ComboAttack : MonoBehaviour
         float radius = step.radius;
         float offset = step.offset;
         
-        Vector2 forward = GameManager.Instance.player.controller.isFacingRight ? Vector2.right : Vector2.left;
+        Vector2 forward = player.isFacingRight ? Vector2.right : Vector2.left;
         Vector2 origin = (Vector2)transform.position + Vector2.up * 0.5f + forward * offset; ;
 
         Collider2D[] hits = Physics2D.OverlapCircleAll(origin, radius, LayerMask.GetMask("Enemy"));
