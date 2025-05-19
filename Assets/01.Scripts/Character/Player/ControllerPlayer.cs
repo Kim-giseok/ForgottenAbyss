@@ -55,8 +55,12 @@ public class ControllerPlayer : MonoBehaviour
     public LayerMask groundLayer;
     public bool isOnLadder = false;
 
+    [Header("InputTimeCheck")]
     private float lastDirectionChangeTime = 0f;
     private float directionChangeCooldown = 0.1f;
+    public float lastJumpTime = 0f;
+    private float jumpInputCooldown = 0.1f;
+
     public float dashCoolTime = 0f;
 
     private void Awake()
@@ -137,22 +141,6 @@ public class ControllerPlayer : MonoBehaviour
 
         AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
 
-        //if (!isGround && rigid.velocity.y < 0)
-        //{
-        //    if (!stateInfo.IsTag("Attack") && !stateInfo.IsTag("Ladder") && !stateInfo.IsTag("WallSlide") && !stateInfo.IsTag("Dash"))
-        //    {
-        //        if (!animator.GetBool("IsFall"))
-        //        {
-        //            animator.SetTrigger("FallTrigger");
-        //            animator.SetBool("IsFall", true);
-        //        }
-        //    }
-        //}
-        //else
-        //{
-        //    animator.SetBool("IsFall", false);
-        //}
-
         if (dashBuffered)
         {
             if (!stateInfo.IsTag("Turn"))
@@ -195,14 +183,19 @@ public class ControllerPlayer : MonoBehaviour
         if (!isAlive) return;
         if (value.isPressed)
         {
-            var weaponData = SystemManager.Instance.weaponManager.GetCurrentWeaponData();
-            var skillController = SkillController.Instance;
-
-            if (weaponData != null && weaponData.Type == WeaponType.Sword && !skillController.comboAttack.canJumpAttack)
+            if (Time.time - lastJumpTime < jumpInputCooldown)
             {
-                Debug.Log("일반 공격 중! 점프 불가!");
+                Debug.Log("점프 직후 공격 입력 차단!");
                 return;
             }
+
+            if (IsJumpAttacking() || IsBasicAttacking())
+            {
+                Debug.Log("공격 중! 점프 불가!");
+                return;
+            }
+
+            lastJumpTime = Time.time;
 
             if (states.ContainsKey(currentState))
             {
@@ -501,8 +494,15 @@ public class ControllerPlayer : MonoBehaviour
 
     public bool IsJumpAttacking()
     {
-        if(SkillController.Instance != null && (!SkillController.Instance.comboAttack.canJumpAttack || !SkillController.Instance.rangedAttack.canJumpAttack))
-            return true;
+        if (SkillController.Instance != null)
+            return SkillController.Instance.IsJumpAttack();
+        return false;
+    }
+
+    public bool IsBasicAttacking()
+    {
+        if (SkillController.Instance != null)
+            return SkillController.Instance.IsBasicAttack();
         return false;
     }
 

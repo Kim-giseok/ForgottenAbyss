@@ -17,7 +17,7 @@ public class ComboAttack : MonoBehaviour
     bool canNextCombo = false;
     bool inputCombo = false;
    
-    public bool IsAttacking { get; private set; } = false;
+    public bool IsAttacking = false;
 
     private void Start()
     {
@@ -55,6 +55,9 @@ public class ComboAttack : MonoBehaviour
                 StartJumpAttack();
             return;
         }
+
+        if (Time.time - player.lastJumpTime < 0.1f)
+            return;
 
         if (IsAttacking)
         {

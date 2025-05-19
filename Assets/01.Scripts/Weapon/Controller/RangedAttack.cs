@@ -19,7 +19,7 @@ public class RangedAttack : MonoBehaviour
     private bool inputCombo = false;
     private bool isSkill = false;
 
-    public bool IsAttacking { get; private set; } = false;
+    public bool IsAttacking = false;
 
     private void Start()
     {
@@ -50,6 +50,9 @@ public class RangedAttack : MonoBehaviour
             return;
         }
 
+        if (Time.time - player.lastJumpTime < 0.1f)
+            return;
+
         if (IsAttacking)
         {
             if (canNextCombo)
@@ -65,6 +68,7 @@ public class RangedAttack : MonoBehaviour
 
     private void StartRangedAttack()
     {
+        canJumpAttack = false;
         IsAttacking = true;
         attackIndex = 1;
         animator.ResetTrigger("BowTrigger");

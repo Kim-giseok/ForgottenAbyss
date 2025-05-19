@@ -155,19 +155,24 @@ public class SkillController : Singleton<SkillController>
         return false;
     }
 
-    public bool IsAttacking()
+    //public bool IsAttacking()
+    //{
+    //    // 활이 검보다 안좋은 것같아서 스킬 사용 제한을 임시로 풀어줌 평타 중 스킬 사용 가능
+    //    return (comboAttack != null && comboAttack.IsAttacking) ||
+    //           //(rangedAttack != null && rangedAttack.IsAttacking) ||
+    //           isSkillPlaying;
+    //}
+
+    public bool IsBasicAttack()
     {
-        // 활이 검보다 안좋은 것같아서 스킬 사용 제한을 임시로 풀어줌 평타 중 스킬 사용 가능
         return (comboAttack != null && comboAttack.IsAttacking) ||
-               //(rangedAttack != null && rangedAttack.IsAttacking) ||
-               isSkillPlaying;
+               (rangedAttack != null && rangedAttack.IsAttacking);
     }
 
-    public bool IsAttack()
+    public bool IsJumpAttack()
     {
-        return (comboAttack != null && comboAttack.IsAttacking) ||
-               (rangedAttack != null && rangedAttack.IsAttacking) ||
-               isSkillPlaying;
+        return (comboAttack != null && !comboAttack.canJumpAttack) ||
+            (rangedAttack != null && !rangedAttack.canJumpAttack);
     }
 
     IEnumerator UseSkillRoutine(SkillInstance instance)
@@ -226,7 +231,7 @@ public class SkillController : Singleton<SkillController>
             return;
         }
 
-        if (combatSkill.weaponType != WeaponType.Bow && IsAttacking()) return;
+        if (combatSkill.weaponType != WeaponType.Bow && isSkillPlaying) return;
 
         if (IsExecutable())
         {
@@ -260,8 +265,22 @@ public class SkillController : Singleton<SkillController>
         }
     }
 
+    private void ResetJumpAttack()
+    {
+        if(comboAttack != null && rangedAttack != null)
+        {
+            comboAttack.canJumpAttack = true;
+            rangedAttack.canJumpAttack = true;
+
+            comboAttack.IsAttacking = false;
+            rangedAttack.IsAttacking = false;
+        }
+    }
+
     public void ResetAttack()
     {
+        ResetJumpAttack();
+
         if (SystemManager.Instance.weaponManager.GetCurrentWeaponData() != null) 
         {
             isSkillPlaying = false;
