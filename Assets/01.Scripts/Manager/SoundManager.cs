@@ -124,6 +124,12 @@ public class SoundManager : SingletonLoadRemain<SoundManager>
         if (!bgmSource.isPlaying) return; 
         bgmSource.DOFade(0f, duration).OnComplete(() => bgmSource.Stop());
     }
+    
+    public void FadeOutSFX(float duration = 1f)
+    {
+        sfxSource.DOFade(0f, duration).OnComplete(() => sfxSource.Stop());
+    }
+
 
     public void PlaySFX(AudioClip sfx)
     {

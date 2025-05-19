@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 2009387081959225048}
   - component: {fileID: 5292714364755261926}
   - component: {fileID: 3819076553290228586}
-  - component: {fileID: 4088284106929515272}
   m_Layer: 8
   m_Name: AgisSpawnActor
   m_TagString: Untagged
@@ -108,22 +107,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &4088284106929515272
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7976011045325049185}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5cc70f13ddbe4228acb7dece49b0c844, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  duration: 4
-  spiralLoops: 2
-  startRadius: 5
-  startAngle: 0
 --- !u!1001 &8142179289090147757
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -175,6 +158,10 @@ PrefabInstance:
     - target: {fileID: 3869095630872079332, guid: 24c023a79cdc9482f88ca97f0729c1ca, type: 3}
       propertyPath: m_Name
       value: GhostTrailer
+      objectReference: {fileID: 0}
+    - target: {fileID: 7089059407793244187, guid: 24c023a79cdc9482f88ca97f0729c1ca, type: 3}
+      propertyPath: frameDelay
+      value: 4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

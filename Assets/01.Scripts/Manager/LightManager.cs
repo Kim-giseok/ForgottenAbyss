@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
@@ -24,6 +23,12 @@ public class LightManager: SingletonLoadRemain<LightManager>
     public void Reset()
     {
         globalLight.intensity = 1f;
-        globalLight.color = Color.white;
+        // error: 컬러 제대로 못가져오는 현상 발생
+        globalLight.color = UnityEngine.Color.white;
+    }
+
+    public void Color(Color newColor)
+    {
+        globalLight.color = newColor;
     }
 }

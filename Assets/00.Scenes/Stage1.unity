@@ -129,7 +129,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 1878314946}
+    m_TransformParent: {fileID: 1646087499}
     m_Modifications:
     - target: {fileID: 622054787059341965, guid: 927567a7dc5e64c0aa20de24fb924ee6, type: 3}
       propertyPath: m_Name
@@ -796,6 +796,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3592222812765152639, guid: 6dc31ed564c18ca4b9568794c27595d7, type: 3}
   m_PrefabInstance: {fileID: 1354557273}
   m_PrefabAsset: {fileID: 0}
+--- !u!224 &1646087499 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 7766137188011670335, guid: ed47ba49385e21645ac5b5c62afb620e, type: 3}
+  m_PrefabInstance: {fileID: 1878314945}
+  m_PrefabAsset: {fileID: 0}
 --- !u!224 &1747843133 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1273727586582367473, guid: 927567a7dc5e64c0aa20de24fb924ee6, type: 3}
@@ -1449,16 +1454,11 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 2198884749457505663, guid: ed47ba49385e21645ac5b5c62afb620e, type: 3}
-      insertIndex: 0
+    - targetCorrespondingSourceObject: {fileID: 7766137188011670335, guid: ed47ba49385e21645ac5b5c62afb620e, type: 3}
+      insertIndex: -1
       addedObject: {fileID: 1747843133}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ed47ba49385e21645ac5b5c62afb620e, type: 3}
---- !u!224 &1878314946 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 2198884749457505663, guid: ed47ba49385e21645ac5b5c62afb620e, type: 3}
-  m_PrefabInstance: {fileID: 1878314945}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6919454846969171862
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1486,27 +1486,27 @@ PrefabInstance:
     - target: {fileID: 5771899917361786963, guid: 73ebf0a50cec85d46a7a6c23506d898d, type: 3}
       propertyPath: maps.Array.data[0]
       value: 
-      objectReference: {fileID: 3523219499257367131, guid: b589b2edeb6da8c4480ac372a3ae3e7d, type: 3}
+      objectReference: {fileID: 3523219499257367131, guid: 9ed317d0111c77a4bb341fbebe1eca26, type: 3}
     - target: {fileID: 5771899917361786963, guid: 73ebf0a50cec85d46a7a6c23506d898d, type: 3}
       propertyPath: maps.Array.data[1]
       value: 
-      objectReference: {fileID: 3523219499257367131, guid: 8e7a9d93f404940488fbcef786b7a686, type: 3}
+      objectReference: {fileID: 3523219499257367131, guid: b589b2edeb6da8c4480ac372a3ae3e7d, type: 3}
     - target: {fileID: 5771899917361786963, guid: 73ebf0a50cec85d46a7a6c23506d898d, type: 3}
       propertyPath: maps.Array.data[2]
       value: 
-      objectReference: {fileID: 3523219499257367131, guid: d0e181ad0382201409ba889a3026e569, type: 3}
+      objectReference: {fileID: 3523219499257367131, guid: 8e7a9d93f404940488fbcef786b7a686, type: 3}
     - target: {fileID: 5771899917361786963, guid: 73ebf0a50cec85d46a7a6c23506d898d, type: 3}
       propertyPath: maps.Array.data[3]
       value: 
-      objectReference: {fileID: 3523219499257367131, guid: f9cbcf48101f8c141a480ae0b834321f, type: 3}
+      objectReference: {fileID: 3523219499257367131, guid: d0e181ad0382201409ba889a3026e569, type: 3}
     - target: {fileID: 5771899917361786963, guid: 73ebf0a50cec85d46a7a6c23506d898d, type: 3}
       propertyPath: maps.Array.data[4]
       value: 
-      objectReference: {fileID: 3523219499257367131, guid: 144acfd897326124892987ae24ad45fd, type: 3}
+      objectReference: {fileID: 3523219499257367131, guid: f9cbcf48101f8c141a480ae0b834321f, type: 3}
     - target: {fileID: 5771899917361786963, guid: 73ebf0a50cec85d46a7a6c23506d898d, type: 3}
       propertyPath: maps.Array.data[5]
       value: 
-      objectReference: {fileID: 3523219499257367131, guid: 9ed317d0111c77a4bb341fbebe1eca26, type: 3}
+      objectReference: {fileID: 3523219499257367131, guid: 144acfd897326124892987ae24ad45fd, type: 3}
     - target: {fileID: 5771899917361786963, guid: 73ebf0a50cec85d46a7a6c23506d898d, type: 3}
       propertyPath: backGrounds.Array.size
       value: 7
