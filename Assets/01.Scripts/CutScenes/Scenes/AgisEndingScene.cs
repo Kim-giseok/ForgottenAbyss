@@ -168,14 +168,14 @@ public class AgisEndingScene: CutScene
         await Wait();
         
         ToolTip.Set("I를 눌러 인벤토리를 닫아주세요.", new Vector3(0, 400, 0));
-        Narration("인벤토리에서 클릭을 통해 장착이 가능합니다.\n(현재는 자동으로 장착되었습니다.)").Forget();
-        SetCutSceneMode(false);
+        Narration("클릭을 통해 장착하며, R키로 사용 가능합니다.\n(현재는 자동으로 장착되었습니다.)").Forget();
 
         SetInput(KeyCode.I);
         await Wait();
 
         ToolTip.Set();
         Narration().Forget();
+        SetCutSceneMode(false);
         GameManager.Instance.PausePlayer(false);
     }
 }
