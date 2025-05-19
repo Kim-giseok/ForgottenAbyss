@@ -36,7 +36,8 @@ public class PlayerStatus : CharacterStatus
         StatType.CRITICAL,
         StatType.MaxHP,
         StatType.DEF,
-        StatType.SPEED
+        StatType.SPEED,
+        StatType.COOLDOWN_REDUCTION
     };
 
     public void SavePlayerData()
@@ -56,10 +57,10 @@ public class PlayerStatus : CharacterStatus
         // 베이스 스탯 저장
         foreach (var pair in baseStats)
         {
-            data.baseStats.Add(new PlayerData.StatData 
+            data.baseStats.Add(new PlayerData.StatData
             {
-                statType = (int)pair.Key, 
-                value = pair.Value 
+                statType = (int)pair.Key,
+                value = pair.Value
             });
         }
 
@@ -189,6 +190,7 @@ public class PlayerStatus : CharacterStatus
     public void OnApplicationQuit()
     {
         ResetPlayerData();
+        ResetStatPointData();
     }
 
     private void Awake()
@@ -294,6 +296,7 @@ public class PlayerStatus : CharacterStatus
         statPointIncrease[StatType.MaxHP] = 10f;    // 최대HP 증가량
         statPointIncrease[StatType.DEF] = 1f;       // 방어력 증가량
         statPointIncrease[StatType.SPEED] = 0.2f;   // 이동속도 증가량
+        statPointIncrease[StatType.COOLDOWN_REDUCTION] = 2f;   // 이동속도 증가량
 
         // 패시브 스탯 최대 레벨
         maxStatInvestment[StatType.ATK] = 10;
@@ -301,6 +304,7 @@ public class PlayerStatus : CharacterStatus
         maxStatInvestment[StatType.MaxHP] = 10;
         maxStatInvestment[StatType.DEF] = 10;
         maxStatInvestment[StatType.SPEED] = 10;
+        maxStatInvestment[StatType.COOLDOWN_REDUCTION] = 10;
     }
 
 
@@ -435,32 +439,49 @@ public class PlayerStatus : CharacterStatus
     // 패시브 스탯 초기화
     public void ResetStatPoints()
     {
-        int totalPoints = 0;
+        int totalReturnedPoints = 0;
 
-        foreach (StatType statType in investableStats)
+        var keys = new List<StatType>(investedStatPoints.Keys);
+
+        foreach (StatType statType in keys)
         {
-            if (investedStatPoints.ContainsKey(statType))
+            int invested = investedStatPoints[statType];
+
+            if (invested > 0)
             {
+                totalReturnedPoints += invested;
 
-                int pointsInvested = investedStatPoints[statType];
-                totalPoints += pointsInvested;
+                float decreaseAmount = statPointIncrease.ContainsKey(statType) ? invested * statPointIncrease[statType] : 0f;
 
-                float originalValue = stats[statType] - (pointsInvested * statPointIncrease[statType]);
-                SetStat(statType, originalValue);
+                if (baseStats.ContainsKey(statType))
+                    baseStats[statType] -= decreaseAmount;
+
+                if (stats.ContainsKey(statType))
+                    SetStat(statType, baseStats[statType]);
 
                 investedStatPoints[statType] = 0;
             }
         }
 
-        if (investedStatPoints.ContainsKey(StatType.MaxHP))
+        // 체력 비율 유지
+        if (stats.ContainsKey(StatType.CurrentHP) && stats.ContainsKey(StatType.MaxHP))
         {
-            float currentHPRatio = stats[StatType.CurrentHP] / stats[StatType.MaxHP];
-            SetStat(StatType.CurrentHP, stats[StatType.MaxHP] * currentHPRatio);
+            float ratio = stats[StatType.CurrentHP] / stats[StatType.MaxHP];
+            SetStat(StatType.CurrentHP, baseStats[StatType.MaxHP] * ratio);
         }
 
-        availableStatPoints += totalPoints;
+        // 포인트 반환
+        availableStatPoints += totalReturnedPoints;
+
+        // 이벤트 호출 및 UI 갱신
         OnStatPointsChanged?.Invoke(availableStatPoints);
+
+        // 스탯 전체 재계산 (장비/세트 포함)
+        SystemManager.Instance.equipmentManager.RecalculateStats();
+
+        Debug.Log($"[ResetStatPoints] {totalReturnedPoints}개 스탯 포인트 반환 완료.");
     }
+
 
     // 패시브 스탯 포인트 획득
     public int GetAvailableStatPoints()
@@ -498,4 +519,37 @@ public class PlayerStatus : CharacterStatus
         stats.TryGetValue(statType, out float value);
         return value;
     }
+
+    public void ResetStatPointData()
+    {
+        int totalInvested = 0;
+        var keys = new List<StatType>(investedStatPoints.Keys);
+
+        foreach (var statType in keys)
+        {
+            int invested = investedStatPoints[statType];
+
+            if (invested > 0)
+            {
+                float decreaseAmount = invested * GetStatIncreasePerPoint(statType);
+
+                if (baseStats.ContainsKey(statType))
+                    baseStats[statType] -= decreaseAmount;
+
+                if (stats.ContainsKey(statType))
+                    SetStat(statType, baseStats[statType]);
+
+                investedStatPoints[statType] = 0;
+                totalInvested += invested;
+            }
+        }
+
+        availableStatPoints = 0;
+        OnStatPointsChanged?.Invoke(availableStatPoints);
+        SystemManager.Instance.equipmentManager.RecalculateStats();
+
+        Debug.Log($"[GameExit] 스탯 포인트와 투자 기록 초기화 완료 (총 {totalInvested} 포인트)");
+    }
+
+
 }
