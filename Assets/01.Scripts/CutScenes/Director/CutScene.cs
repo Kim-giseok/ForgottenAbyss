@@ -20,6 +20,7 @@ public abstract class CutScene: MonoBehaviour
     
     protected PointingComp Pointing => CutSceneManager.Instance.Pointing;
     protected FadeScreen FadeScreen => CutSceneManager.Instance.FadeScreen;
+    protected GrayScreen GrayScreen => CutSceneManager.Instance.GrayScreen;
     
     
     protected Action OnFinish;

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
@@ -18,5 +19,11 @@ public class LightManager: SingletonLoadRemain<LightManager>
             yield return null;
         }
         globalLight.intensity = to;
+    }
+
+    public void Reset()
+    {
+        globalLight.intensity = 1f;
+        globalLight.color = Color.white;
     }
 }

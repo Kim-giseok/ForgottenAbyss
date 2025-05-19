@@ -22,7 +22,7 @@ public class CutSceneManager: MonoBehaviour
     public Light2D PointLight;
 
     public FadeScreen FadeScreen;
-    public Image GrayScreen;
+    public GrayScreen GrayScreen;
 
     private void Awake()
     {

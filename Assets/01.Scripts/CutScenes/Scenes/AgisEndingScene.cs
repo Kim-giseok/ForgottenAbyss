@@ -13,10 +13,11 @@ public class AgisEndingScene: CutScene
 
     public GameObject summon;
     private readonly List<GameObject> summonedObjects = new();
-
-
+    
     public Material shinyMat;
     private Material playerMaterial;
+
+    public RectTransform moonstoneProfile;
     
     protected override async UniTask StartScene()
     {
@@ -27,6 +28,7 @@ public class AgisEndingScene: CutScene
         Camera.Init();
         Camera.DisConnect();
         playerMaterial = Player.controller.spriteRenderer.material;
+        UI.HideIngameUI();
         
         SetCutSceneMode(true);
         Player.controller.rigid.velocity = Vector2.zero;
@@ -119,6 +121,15 @@ public class AgisEndingScene: CutScene
         await Narration("붉은 달이 떠오를 때, 더 붉게 비추던 존재.");
         await Wait();
 
+        GrayScreen.Set(true, 0.4f).Forget();
+        UIPool.Set(moonstoneProfile, Vector3.zero);
+        UIPool.Fade(true, 1f).Forget();
+        await UniTask.Delay(3000);
+        
+        GrayScreen.Set(false, 1f).Forget();
+        UIPool.Fade(false, 0.4f).Forget();
+        await UniTask.Delay(1000);
+        UIPool.Delete(moonstoneProfile);
     
         Narration().Forget();
         await Text("문 스톤...");
@@ -141,15 +152,30 @@ public class AgisEndingScene: CutScene
         
         Camera.Reset();
         Sound.StopBGM();
-        Narration().Forget();
-        SetCutSceneMode(false);
         
-        Light.globalLight.intensity = 1f;
-        Light.globalLight.color = Color.white;
+        Light.Reset();
         Player.controller.spriteRenderer.material = playerMaterial;
         Player.controller.rigid.isKinematic = false;
         
         FadeScreen.SetFade(true, 0.6f);
         Light.FadeIn(0.6f);
+
+        UI.ShowGuideUI();
+        Narration("인벤토리에서 메모리 스킬을 확인해보세요.").Forget();
+        ToolTip.Set("I를 눌러 인벤토리를 열어보세요.", new Vector3(0, 400, 0));
+        
+        SetInput(KeyCode.I);
+        await Wait();
+        
+        ToolTip.Set("I를 눌러 인벤토리를 닫아주세요.", new Vector3(0, 400, 0));
+        Narration("인벤토리에서 클릭을 통해 장착이 가능합니다.\n(현재는 자동으로 장착되었습니다.)").Forget();
+        SetCutSceneMode(false);
+
+        SetInput(KeyCode.I);
+        await Wait();
+
+        ToolTip.Set();
+        Narration().Forget();
+        GameManager.Instance.PausePlayer(false);
     }
 }
