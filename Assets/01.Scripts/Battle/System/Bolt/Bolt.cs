@@ -4,14 +4,11 @@ public class Bolt: MonoBehaviour
 {
     private BoltBuilder attr;
     private HitBox hitBox;
-    private Collider2D collider;
 
     private void Awake()
     {
         attr = GetComponent<BoltBuilder>();
         hitBox = GetComponent<HitBox>();
-        collider = GetComponent<Collider2D>();
-        
     }
 
     protected void Update()
@@ -48,8 +45,6 @@ public class Bolt: MonoBehaviour
         attr.SetParticle(false);
         
         hitBox.enabled = true;
-        collider.enabled = true;
-        
         attr.isStarted = false;
         
     }
