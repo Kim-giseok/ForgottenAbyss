@@ -14,6 +14,7 @@ public class ComboAttack : MonoBehaviour
     public int attackIndex = 0;
     bool canNextCombo = false;
     bool inputCombo = false;
+    bool canJumpAttack = true;
 
     public bool IsAttacking { get; private set; } = false;
 
@@ -36,6 +37,12 @@ public class ComboAttack : MonoBehaviour
             return;
         }
 
+        if (!GameManager.Instance.player.controller.isGround)
+        {
+            StartJumpAttack();
+            return;
+        }
+
         if (IsAttacking)
         {
             if (canNextCombo)
@@ -55,6 +62,28 @@ public class ComboAttack : MonoBehaviour
         animator.SetTrigger("AttackTrigger");
         animator.SetInteger("AttackCombo", attackIndex);
         UpdateComboAttackUI(attackIndex - 1);
+    }
+
+    private void StartJumpAttack()
+    {
+        if (canJumpAttack == true)
+        {
+            canJumpAttack = false;
+            IsAttacking = true;
+            attackIndex = 6;
+            animator.ResetTrigger("JumpAttackTrigger");
+            animator.SetTrigger("JumpAttackTrigger");
+            //animator.Play("SwordAttack_Jump");
+        }
+        else
+            Debug.Log("이미 점프 공격 실행 중...");
+    }
+
+    void OnEndJumpAttack()
+    {
+        canJumpAttack = true;
+        IsAttacking = false;
+        attackIndex = 1;
     }
 
 
@@ -130,6 +159,7 @@ public class ComboAttack : MonoBehaviour
         if (this == null || animator == null || !gameObject.activeInHierarchy)
             return;
 
+        canJumpAttack = true;
         IsAttacking = false;
         canNextCombo = false;
 
@@ -204,6 +234,11 @@ public class ComboAttack : MonoBehaviour
         StartCoroutine(JumpSmashCoroutine(height, duration));
     }
 
+    void OnJumpSmashFall(float duration)
+    {
+        StartCoroutine(JumpSmashFall(duration));
+    }
+
     private IEnumerator JumpSmashCoroutine(float height, float duration)
     {
         Vector3 startPos = transform.position;
@@ -258,6 +293,37 @@ public class ComboAttack : MonoBehaviour
             {
                 transform.position = hit.point;
                 yield break; // 점프 중단
+            }
+
+            transform.position = nextPos;
+            yield return null;
+        }
+
+        transform.position = Vector3.Lerp(transform.position, endPos, Time.deltaTime * 10f);
+    }
+
+    private IEnumerator JumpSmashFall(float duration)
+    {
+        Vector3 startPos = transform.position;
+        Vector3 endPos = startPos + Vector3.down * 5f; // 하강 거리 설정
+
+        float elapsed = 0f;
+        LayerMask wallMask = LayerMask.GetMask("Wall", "Ground"); // 충돌 감지 레이어
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float t = elapsed / duration;
+            float easeT = 1f - Mathf.Cos(t * Mathf.PI * 0.5f); // EaseInSine
+
+            Vector3 nextPos = Vector3.Lerp(startPos, endPos, easeT);
+            Vector3 moveDir = nextPos - transform.position;
+
+            RaycastHit2D hit = Physics2D.Raycast(transform.position, moveDir.normalized, moveDir.magnitude, wallMask);
+            if (hit.collider != null)
+            {
+                transform.position = hit.point;
+                yield break; // 충돌 시 점프 공격 종료
             }
 
             transform.position = nextPos;

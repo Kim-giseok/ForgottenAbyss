@@ -498,4 +498,15 @@ public class ControllerPlayer : MonoBehaviour
 
         Debug.Log($"[대쉬 설정] {weaponType} 장착 - 거리: {dashDistance}, 시간: {dashTime}, 비용: {dashCost}");
     }
+
+    public void WaitForEnd()
+    {
+        StartCoroutine(WaitForAnimationEnd());
+    }
+
+    public IEnumerator WaitForAnimationEnd()
+    {
+        yield return new WaitUntil(() => animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f);
+        ChangeState(PlayerState.Idle);
+    }
 }
