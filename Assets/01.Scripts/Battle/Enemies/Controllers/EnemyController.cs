@@ -1,9 +1,8 @@
-using System;
-using System.Collections;
+using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.Serialization;
-using Random = UnityEngine.Random;
+using UnityEngine.AddressableAssets;
+using UnityEditor;
 
 public class EnemyController : EnemyBaseController, IDamagable
 {
@@ -34,43 +33,53 @@ public class EnemyController : EnemyBaseController, IDamagable
     }
 
     // animator 변경 시 첫번 째 스프라이트 렌더러로 등록하기
-    public void OnValidate()
+    #if UNITY_EDITOR
+    private void OnValidate()
     {
-        // Addressables.LoadAssetsAsync<RuntimeAnimatorController>("EnemyAnimator", null).Completed += (handle) =>
-        // {
-        //     var currAnimator = handle.Result.FirstOrDefault(anim => anim.name == enemyName.ToString());
-        //     if (!currAnimator) return;
-        //    
-        //     var animator = GetComponent<Animator>();
-        //     animator.runtimeAnimatorController = currAnimator;
-        //     
-        //     var firstClip = animator.runtimeAnimatorController.animationClips.FirstOrDefault();
-        //     if (!firstClip) return;
-        //     
-        //     var bindings = GetObjectReferenceCurveBindings(firstClip);
-        //
-        //     foreach (var binding in bindings)
-        //     {
-        //         var keyframes = GetObjectReferenceCurve(firstClip, binding);
-        //         var firstSprite = keyframes.FirstOrDefault().value as Sprite;
-        //         if(!firstSprite) continue;
-        //         
-        //         GetComponent<SpriteRenderer>().sprite = firstSprite;
-        //         break;
-        //     }
-        //     
-        //     Addressables.LoadAssetAsync<EnemiesViewInfoSO>("EnemiesViewInfoSO").Completed += (handle) =>
-        //     {
-        //         var currInfo = handle.Result.EnemyViewInfos.Find(info => info.enemyName == enemyName.ToString());
-        //         if (currInfo == null) return;
-        //         transform.localScale = new Vector2(currInfo.ratio, currInfo.ratio);
-        //         
-        //         var currCollider = GetComponent<CapsuleCollider2D>();
-        //         currCollider.size = currInfo.size;
-        //         currCollider.offset = new Vector2(0, currInfo.size.y / 2);
-        //     };
-        // };
+        // 애니메이터 불러오기
+        Addressables.LoadAssetsAsync<RuntimeAnimatorController>("EnemyAnimator", null).Completed += (handle) =>
+        {
+            var currAnimator = handle.Result.FirstOrDefault(anim => anim.name == enemyName.ToString());
+            if (!currAnimator) return;
+
+            var animator = GetComponent<Animator>();
+            animator.runtimeAnimatorController = currAnimator;
+
+            var firstClip = animator.runtimeAnimatorController.animationClips.FirstOrDefault();
+            if (!firstClip) return;
+
+            // 애니메이션에서 Sprite 추출
+            var bindings = AnimationUtility.GetObjectReferenceCurveBindings(firstClip);
+            foreach (var binding in bindings)
+            {
+                var keyframes = AnimationUtility.GetObjectReferenceCurve(firstClip, binding);
+                var firstSprite = keyframes.FirstOrDefault().value as Sprite;
+                if (firstSprite != null)
+                {
+                    var renderer = GetComponent<SpriteRenderer>();
+                    if (renderer) renderer.sprite = firstSprite;
+                    break;
+                }
+            }
+
+            // 적 정보 불러오기
+            Addressables.LoadAssetAsync<EnemiesViewInfoSO>("EnemiesViewInfoSO").Completed += (enemyHandle) =>
+            {
+                var currInfo = enemyHandle.Result.EnemyViewInfos.Find(info => info.enemyName == enemyName.ToString());
+                if (currInfo == null) return;
+
+                transform.localScale = Vector3.one * currInfo.ratio;
+
+                var collider = GetComponent<CapsuleCollider2D>();
+                if (collider)
+                {
+                    collider.size = currInfo.size;
+                    collider.offset = new Vector2(0, currInfo.size.y / 2);
+                }
+            };
+        };
     }
+    #endif
 
     #if UNITY_EDITOR
     private async Task WaitForAssetsToLoad() { while (!EnemiesLoader.IsLoaded || !EnemiesAnimator.IsLoaded) { await Task.Yield(); } }
