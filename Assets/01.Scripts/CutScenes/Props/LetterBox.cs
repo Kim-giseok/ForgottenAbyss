@@ -1,4 +1,6 @@
+using System;
 using System.Collections;
+using Cysharp.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -11,7 +13,6 @@ public class LetterBox : MonoBehaviour
 
     public TextMeshProUGUI narrationText;
     
-    private Coroutine narrationCoroutine; 
     private Coroutine letterBoxCoroutine; 
     
     private bool skipLine;
@@ -63,14 +64,22 @@ public class LetterBox : MonoBehaviour
         if(!isShow) gameObject.SetActive(false);
     }
 
-    public void SetLetterBox(bool isShow)
+    public void Set(bool isShow)
     {
         if(letterBoxCoroutine != null) StopCoroutine(letterBoxCoroutine);
         if(isShow) gameObject.SetActive(true);
         letterBoxCoroutine = StartCoroutine(HandleWidth(isShow));
     }
-    
-    private IEnumerator Narration(string text)
+
+    private void Update()
+    {
+        if (Input.GetMouseButtonDown(0) || Input.anyKeyDown)
+        {
+            skipLine = true;
+        }
+    }
+
+    public async UniTask SetNarration(string text)
     {
         if(!narrationText.gameObject.activeSelf) { narrationText.gameObject.SetActive(true); }
         
@@ -83,22 +92,8 @@ public class LetterBox : MonoBehaviour
             
             SoundManager.Instance.Playsfx("Tick");
             narrationText.text += c;
-            yield return new WaitForSeconds(0.035f);
+            await UniTask.Delay(30);
         }
-        
-        skipLine = true;
-    }
-
-    public void ShowNarration(string text)
-    {
-        if(narrationCoroutine != null) StopCoroutine(narrationCoroutine);
-        narrationCoroutine = StartCoroutine(Narration(text));
-    }
-
-    public void HideNarration()
-    {
-        if(narrationCoroutine != null) StopCoroutine(narrationCoroutine);
-        narrationText.gameObject.SetActive(false);
     }
 
     public void SetNarrationColor(Color newColor)

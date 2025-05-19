@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,51 +10,36 @@ public class SentenceUI : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI sentenceTxt;
     [SerializeField] RectTransform rect;
-    
-    Coroutine typingCoroutine;
-    public bool isTyping { get; private set; }
-    public bool skipTyping { get; private set; }
-    public bool isFinished { get; private set; } = true;
 
+    private bool isPressed;
+    
     private void Update()
     {
-        if (isTyping && Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) || Input.anyKeyDown)
         {
-            skipTyping = true;
+            isPressed = true;       
         }
     }
-    
-    public void Ondialogue(string sentence)
+
+    // notice: 인풋 담당을 컷신 매니저로 빼는 것은 어떨까?
+    public async UniTask Set(string sentence)
     {
         if (!gameObject.activeSelf) gameObject.SetActive(true);
-        if (typingCoroutine != null) StopCoroutine(typingCoroutine);
 
-        // 새로운 대사 시작 시 상태 초기화
-        isFinished = false;
-        skipTyping = false;
-        typingCoroutine = StartCoroutine(TypeSentence(sentence));
-    }
-
-    // ReSharper disable Unity.PerformanceAnalysis
-    IEnumerator TypeSentence(string sentence)
-    {
         sentenceTxt.text = "";
-        isTyping = true;
+        isPressed = false;
         
-        for (int i = 0; i < sentence.Length; i++)
+        foreach (var text in sentence)
         {
-            if (skipTyping)
+            if (isPressed)
             {
                 sentenceTxt.text = sentence;
                 break;
             }
 
-            sentenceTxt.text += sentence[i];
+            sentenceTxt.text += text;
             SoundManager.Instance.Playsfx("Tick");
-            yield return new WaitForSecondsRealtime(0.06f);
+            await UniTask.Delay(40);
         }
-
-        isTyping = false;
-        isFinished = true;
     }
 }

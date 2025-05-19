@@ -31,22 +31,17 @@ public class CutSceneManager: MonoBehaviour
         DontDestroyOnLoad(this);
     }
     
-    public void ShowText(Transform target, string sentnece)
-    {
-        UIManager.Instance.OnTalk(target, sentnece);
-    }
-
-    public void SetCutSceneMode(bool isCutsceneMode)
+    public void SetMode(bool isCutsceneMode)
     {
         if (isCutsceneMode)
         {
             UIManager.Instance.HideIngameUI();
-            Instance.LetterBox.SetLetterBox(true);
+            Instance.LetterBox.Set(true);
         }
         else
         {
             UIManager.Instance.ShowIngameUI();
-            Instance.LetterBox.SetLetterBox(false);
+            Instance.LetterBox.Set(false);
         }
     }
 }

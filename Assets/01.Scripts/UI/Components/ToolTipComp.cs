@@ -29,16 +29,15 @@ public class ToolTipComp: MonoBehaviour
         SoundManager.Instance.Playsfx("Wrong");
         _rectTransform.DOShakeAnchorPos(duration, new Vector2(strength, 0f), vibrato, randomness: 90, snapping: false, fadeOut: true);
     }
-
-    public void On(bool isOn)
+    
+    public void Set(string currText = null, Vector3 currPos = default)
     {
-        gameObject.SetActive(isOn);
-    }
-
-    public void Set(Vector3 currPos, string currText)
-    {
+        if (currText == null) { gameObject.SetActive(false); return; }
+        
         isActive = true;
         gameObject.SetActive(true);
+        
+        var newPos = currPos == default ? Vector3.zero : currPos;
         
         // RectTransformUtility.ScreenPointToLocalPointInRectangle()
         // Vector3 screenPos = Camera.main!.WorldToScreenPoint(currPos);
@@ -46,10 +45,10 @@ public class ToolTipComp: MonoBehaviour
         
         _textUI.text = currText;
         
-        _rectTransform.anchoredPosition = currPos + Vector3.up * 100f;
+        _rectTransform.anchoredPosition = newPos + Vector3.up * 100f;
         _canvasGroup.alpha = 0;
 
-        _rectTransform.DOAnchorPos(currPos, 0.4f).SetEase(Ease.OutCubic);
+        _rectTransform.DOAnchorPos(newPos, 0.4f).SetEase(Ease.OutCubic);
         _canvasGroup.DOFade(1f, 0.4f);
     }
 }

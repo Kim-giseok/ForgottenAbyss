@@ -13,137 +13,97 @@ public abstract class CutScene: MonoBehaviour
     protected SoundManager Sound => SoundManager.Instance;
     protected UIManager UI => UIManager.Instance;
     protected CutUIPool UIPool => CutSceneManager.Instance.UIPool;
-    protected BoltsPool BoltsPool => BoltsPool.Instance;
+    protected ToolTipComp ToolTip => CutSceneManager.Instance.ToolTip;
+    protected BoltsPool Projectile => BoltsPool.Instance;
     protected LightManager Light => LightManager.Instance;
     protected Player Player => GameManager.Instance.player;
     
-    protected Func<UniTask>[] Actions;
     
     protected Action OnFinish;
-    public UnityEvent OnFinishUnityEvent;
+    public UnityEvent onFinishUnityEvent;
 
-    private KeyCode _currInputKey = KeyCode.None;
-    public void SetCurrInputKey(KeyCode newInputKey) => _currInputKey = newInputKey;
-    private bool isKeyPressed => _currInputKey == KeyCode.None ? Input.anyKeyDown : Input.GetKeyDown(_currInputKey);
+    private KeyCode currInputKey = KeyCode.None;
+    protected void SetInput(KeyCode newInputKey) => currInputKey = newInputKey;
 
-    protected CueMachine CueMachine { get; set; }
+    private bool stopPressed;
+    private bool IsPressed { get; set; }
     
-    public Func<UniTask> Do(Action action)
+    protected async UniTask Wait()
     {
-        return () =>
-        {
-            action.Invoke();
-            return UniTask.CompletedTask;
-        };
+        await UniTask.WaitUntil(() => IsPressed);
     }
 
-    public Func<UniTask> Do(Func<UniTask> asyncFunc)
-    {
-        return asyncFunc.Invoke;
-    }
+    protected virtual async UniTask Init() { await UniTask.Delay(1000); }
 
-    protected virtual void Init() { }
-
-    private void Awake()
+    private void Start()
     {
-        OnFinish += () => gameObject.SetActive(false);
-        CueMachine = new CueMachine
-        {
-            OnFinish = OnFinish,
-            OnFinishUnityEvent = OnFinishUnityEvent
-        };
-        Init();
-    }
-
-    private void OnEnable()
-    {
-        CueMachine.Define(Actions);
-        CueMachine.Start();
-        CueMachine.Next();
+        _ = Init();
     }
 
     private void Update()
     {
-        if (!CueMachine.IsPlaying) return;
+        if(stopPressed) return;
         
-        var currKeyPressed = Input.anyKeyDown;
-        
-        // notice: 코드 정리 필요
-        if (currKeyPressed != isKeyPressed && CutSceneManager.Instance.ToolTip.isActive)
+        var currPressed = Input.anyKeyDown; 
+        IsPressed = currInputKey == KeyCode.None ? (Input.anyKeyDown || Input.GetMouseButtonDown(0)) : Input.GetKeyDown(currInputKey);
+
+        if (currPressed && !IsPressed)
         {
+            // ReSharper disable once Unity.PerformanceCriticalCodeInvocation
             CutSceneManager.Instance.ToolTip.Shake(0.2f, 20f, 30);
+        }
+    }
+
+    // 아래 부터는 참조를 직접 받아서 하도록 변경하기
+    protected async UniTask Text(string texts = null, Transform newTransform = null)
+    {
+        if(texts == null) { UIManager.Instance.OffTalk(); return; }
+        
+        var currTransform = newTransform ? newTransform : GameManager.Instance.player.transform;
+        UI.talkBox.transform.position = currTransform.position + new Vector3(2f, 2.6f, 0f);
+
+        stopPressed = true;
+        await UI.talkBox.Set(texts);
+        stopPressed = false;
+        
+        await Wait();
+        UI.OffTalk();
+    }
+
+
+    // 그냥 참조로 가져오기
+    protected void SetCutSceneMode(bool isCutsceneMode) => CutSceneManager.Instance.SetMode(isCutsceneMode);
+    
+    // Light Manager 에서 관리하기
+    protected void SetPointingLight(Transform target = null)
+    {
+        var pointLight = CutSceneManager.Instance.PointLight;
+
+        if (!target)
+        {
+            LightManager.Instance.globalLight.color = Color.white;
+            pointLight.gameObject.SetActive(false);
             return;
-        } 
+        }
         
-        if (!isKeyPressed || CueMachine.isCutSceneStarted) return;
-        UIManager.Instance.OffTalk();
-        CueMachine.Next();
-    }
-    
-
-    protected void SetSentence(string texts, Transform newTransform = null)
-    {
-        CutSceneManager.Instance.ShowText(!newTransform ? GameManager.Instance.player.transform : newTransform, texts);
-    }
-
-    protected void ClearSentence()
-    {
-        UIManager.Instance.OffTalk();
-    }
-    
-    protected void SetCutSceneMode(bool isCutsceneMode) => CutSceneManager.Instance.SetCutSceneMode(isCutsceneMode);
-
-    protected void Pointing(Transform target)
-    {
-        SoundManager.Instance.Playsfx("Pointing");
-        var pointing = CutSceneManager.Instance.Pointing;
-        pointing.gameObject.SetActive(true);
-        pointing.transform.position = target.position;
-        pointing.SetSize(transform);
-    }
-
-    protected void ResetPointer()
-    {
-        CutSceneManager.Instance.Pointing.On(false);
-    }
-
-    protected void SetPointingLight(Transform target)
-    {
         LightManager.Instance.globalLight.color = new Color32(80, 80, 80, 255);
-        
-        var light = CutSceneManager.Instance.PointLight;
-        light.gameObject.SetActive(true);
+        pointLight.gameObject.SetActive(true);
         
         // 스프라이트 피봇으로 인한 조정 값 필요
-        light.transform.position = target.position + Vector3.up * 0.3f;
+        pointLight.transform.position = target.position + Vector3.up * 0.3f;
     }
-
-    protected void ResetPointingLight()
-    {
-        LightManager.Instance.globalLight.color = Color.white;
-        
-        var light = CutSceneManager.Instance.PointLight;
-        light.gameObject.SetActive(false);
-    }
-
-    protected void SetToolTip(Vector3 newPos, string text)
-    {
-        CutSceneManager.Instance.ToolTip.Set(newPos, text);
-    }
-
-    protected void SetNarration(string newNarration = "")
+    
+    // 최대한 하나로 합치기, 내부에서 처리하도록 변경하기
+    protected async UniTask Narration(string newNarration = "")
     {
         if (newNarration == null)
         {
-            CutSceneManager.Instance.LetterBox.HideNarration();
+            CutSceneManager.Instance.LetterBox.narrationText.gameObject.SetActive(false);
+            return;
         }
-        CutSceneManager.Instance.LetterBox.ShowNarration(newNarration);
-    }
-
-    // 셋 툴팁 오버로드로 정리하기
-    protected void ResetToolTip()
-    {
-        CutSceneManager.Instance.ToolTip.gameObject.SetActive(false);
-
+        
+        stopPressed = true;
+        await CutSceneManager.Instance.LetterBox.SetNarration(newNarration);
+        stopPressed = false;
     }
 }

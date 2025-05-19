@@ -122,13 +122,13 @@ public class SubCameraInteract: MonoBehaviour
         ActiveCam = nextCam;
     }
     
-    public void SetNoiseProfile(NoiseType newNoiseType)
+    public void Profile(NoiseType newNoiseType)
     {
         virCam1Noise.m_NoiseProfile = noiseProfiles[(int)newNoiseType];
         virCam2Noise.m_NoiseProfile = noiseProfiles[(int)newNoiseType];
     }
 
-    public void SetNoise(float amplitudeGain, float frequencyGain)
+    public void Noise(float amplitudeGain, float frequencyGain)
     {
         
         virCam1Noise.m_AmplitudeGain = amplitudeGain;
@@ -138,7 +138,7 @@ public class SubCameraInteract: MonoBehaviour
         virCam2Noise.m_FrequencyGain = frequencyGain;
     }
 
-    public void SetNoise(float gain)
+    public void Noise(float gain)
     {
         virCam1Noise.m_AmplitudeGain = gain;
         virCam1Noise.m_FrequencyGain = gain;
@@ -156,9 +156,9 @@ public class SubCameraInteract: MonoBehaviour
     {
         try
         {
-            SetNoise(amplitude, frequency);
+            Noise(amplitude, frequency);
             await UniTask.Delay(TimeSpan.FromSeconds(duration));
-            SetNoise(0f);
+            Noise(0f);
         }
         catch (Exception e)
         {
