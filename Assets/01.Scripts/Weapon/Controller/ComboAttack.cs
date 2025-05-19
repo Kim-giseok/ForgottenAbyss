@@ -45,7 +45,7 @@ public class ComboAttack : MonoBehaviour
     {
         if (comboData == null)
         {
-            Debug.LogWarning("comboData�� �������� �ʾҽ��ϴ�. ���Ⱑ ����� �����Ǿ����� Ȯ���ϼ���.");
+            Debug.LogWarning("comboData�� �������� �ʾҽ��ϴ�. ���Ⱑ �����?�����Ǿ����� Ȯ���ϼ���.");
             return;
         }
 
@@ -257,7 +257,7 @@ public class ComboAttack : MonoBehaviour
 
         LayerMask wallMask = LayerMask.GetMask("Wall", "Ground"); // �浹 ������ ���̾� ����
 
-        // ���
+        // ���?
         while (elapsed < halfDuration)
         {
             elapsed += Time.deltaTime;
@@ -334,12 +334,18 @@ public class ComboAttack : MonoBehaviour
 
             if (target != null)
             {
-                var enemy = target.GetComponent<EnemyController>();
-                if (enemy != null)
+                if (target.TryGetComponent<LaberDamagerble>(out var laber))
                 {
-                    enemy.GetDamage(result.damage);
+                    Debug.Log("���� Ÿ��!");
+                    laber.GetDamage(result.damage);
+                    continue;
+                }
 
-                    Vector3 textPosition = enemy.transform.position + Vector3.up * 1f;
+                if (target.TryGetComponent<IDamagable>(out var damageable))
+                {
+                    damageable.GetDamage(result.damage);
+
+                    Vector3 textPosition = target.transform.position + Vector3.up * 1f;
                     DamageTextManager.Instance.ShowDamage(textPosition, (int)result.damage, result.isCrit);
 
                     GameManager.Instance.cameraShake.Shake(0.2f, 0.4f);
@@ -352,13 +358,6 @@ public class ComboAttack : MonoBehaviour
                         Vector2 attackerPos = (Vector2)transform.position + Vector2.up * 0.5f;
                         KnockbackUtil.ApplyKnockback(target, attackerPos, knockbackStrength);
                     }
-                }
-
-                var laber = target.GetComponentInChildren<LaberDamagerble>();
-                if (laber != null)
-                {
-                    Debug.Log("���� Ÿ��!");
-                    laber.GetDamage(result.damage);
                 }
             }
         }
