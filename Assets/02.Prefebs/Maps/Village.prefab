@@ -7708,10 +7708,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5642877689612767702, guid: 2cbf6a9ab79343745b0a8e36d979f394, type: 3}
       propertyPath: activatedEvent.m_PersistentCalls.m_Calls.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5642877689612767702, guid: 2cbf6a9ab79343745b0a8e36d979f394, type: 3}
       propertyPath: activatedEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5642877689612767702, guid: 2cbf6a9ab79343745b0a8e36d979f394, type: 3}
+      propertyPath: activatedEvent.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
       value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 5642877689612767702, guid: 2cbf6a9ab79343745b0a8e36d979f394, type: 3}
@@ -7719,7 +7723,15 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 7721726696516483068}
     - target: {fileID: 5642877689612767702, guid: 2cbf6a9ab79343745b0a8e36d979f394, type: 3}
+      propertyPath: activatedEvent.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 5637289032125631535}
+    - target: {fileID: 5642877689612767702, guid: 2cbf6a9ab79343745b0a8e36d979f394, type: 3}
       propertyPath: activatedEvent.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5642877689612767702, guid: 2cbf6a9ab79343745b0a8e36d979f394, type: 3}
+      propertyPath: activatedEvent.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5642877689612767702, guid: 2cbf6a9ab79343745b0a8e36d979f394, type: 3}
@@ -7727,7 +7739,15 @@ PrefabInstance:
       value: SetActive
       objectReference: {fileID: 0}
     - target: {fileID: 5642877689612767702, guid: 2cbf6a9ab79343745b0a8e36d979f394, type: 3}
+      propertyPath: activatedEvent.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: SetActive
+      objectReference: {fileID: 0}
+    - target: {fileID: 5642877689612767702, guid: 2cbf6a9ab79343745b0a8e36d979f394, type: 3}
       propertyPath: activatedEvent.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: UnityEngine.GameObject, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 5642877689612767702, guid: 2cbf6a9ab79343745b0a8e36d979f394, type: 3}
+      propertyPath: activatedEvent.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
       value: UnityEngine.GameObject, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 5642877689612767702, guid: 2cbf6a9ab79343745b0a8e36d979f394, type: 3}
@@ -7735,7 +7755,15 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5642877689612767702, guid: 2cbf6a9ab79343745b0a8e36d979f394, type: 3}
+      propertyPath: activatedEvent.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_BoolArgument
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5642877689612767702, guid: 2cbf6a9ab79343745b0a8e36d979f394, type: 3}
       propertyPath: activatedEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 5642877689612767702, guid: 2cbf6a9ab79343745b0a8e36d979f394, type: 3}
+      propertyPath: activatedEvent.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -8215,7 +8243,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2200350032846286578, guid: 48de69252ef3ce94f9f97f5961a0241c, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6505933833311063045, guid: 48de69252ef3ce94f9f97f5961a0241c, type: 3}
       propertyPath: m_Controller

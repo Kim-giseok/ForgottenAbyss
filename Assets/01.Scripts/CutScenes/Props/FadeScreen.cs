@@ -10,6 +10,7 @@ public class FadeScreen: MonoBehaviour
     private void Awake()
     {
         image = GetComponent<Image>();
+        gameObject.SetActive(false);
     }
 
     public void SetAlpha(float alpha)
