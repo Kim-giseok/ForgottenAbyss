@@ -85,8 +85,8 @@ public class ComboAttack : MonoBehaviour
             canJumpAttack = false;
             IsAttacking = true;
             attackIndex = 1;
-            animator.ResetTrigger("JumpAttackTrigger");
-            animator.SetTrigger("JumpAttackTrigger");
+            animator.ResetTrigger("SwordJumpTrigger");
+            animator.SetTrigger("SwordJumpTrigger");
             //animator.Play("SwordAttack_Jump");
         }
         else

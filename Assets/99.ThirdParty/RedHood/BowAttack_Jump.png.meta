@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 32e2beda243c2c04ca15a919cc8e13f5
+guid: 574282568ea5d294ba041390b35fa0ae
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -136,13 +136,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: jumpAtk_0
+      name: BowAttack_Jump_0
       rect:
         serializedVersion: 2
-        x: 30
-        y: 21
-        width: 20
-        height: 31
+        x: 28
+        y: 25
+        width: 25
+        height: 32
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -150,18 +150,39 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5b8a7f47275fdd74ea4ce8c1c41aab40
-      internalID: -1579608071
+      spriteID: c59a2d954feca6741a7ab88680982b4a
+      internalID: -1133017203
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: jumpAtk_1
+      name: BowAttack_Jump_1
       rect:
         serializedVersion: 2
-        x: 113
-        y: 21
+        x: 142
+        y: 25
+        width: 25
+        height: 32
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: aa611d7b920bf0d4687a9880b87eaf41
+      internalID: 226195326
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BowAttack_Jump_2
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 25
         width: 24
         height: 33
       alignment: 7
@@ -171,20 +192,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 57065bd835271d64eb9387a8eef5ae9a
-      internalID: 1395669978
+      spriteID: 7afc50ab9a77b324d9b826d772e9b163
+      internalID: -1937282068
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: jumpAtk_2
+      name: BowAttack_Jump_3
       rect:
         serializedVersion: 2
-        x: 188
-        y: 22
-        width: 40
-        height: 27
+        x: 370
+        y: 26
+        width: 25
+        height: 33
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -192,20 +213,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f29a020ddcc14c846b840e0614feede1
-      internalID: -1004672991
+      spriteID: 78c25b6d55d3f6f44a04d6a47a7b2d5b
+      internalID: -1569117363
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: jumpAtk_3
+      name: BowAttack_Jump_4
       rect:
         serializedVersion: 2
-        x: 258
-        y: 21
-        width: 53
-        height: 36
+        x: 485
+        y: 25
+        width: 25
+        height: 34
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -213,20 +234,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d024148311f23d846b390bf5553a51d4
-      internalID: -526960189
+      spriteID: b0291a2f25225a34394c79d902f1c099
+      internalID: -235816062
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: jumpAtk_4
+      name: BowAttack_Jump_5
       rect:
         serializedVersion: 2
-        x: 344
-        y: 21
-        width: 36
-        height: 27
+        x: 591
+        y: 25
+        width: 30
+        height: 33
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -234,8 +255,71 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: be3b66fc09c984a4d80c4d2432cd7145
-      internalID: 1146950597
+      spriteID: 84f33ac59f656464d867eb6f6e82d703
+      internalID: -1215960266
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BowAttack_Jump_6
+      rect:
+        serializedVersion: 2
+        x: 702
+        y: 25
+        width: 28
+        height: 33
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 478370d886ccf704db97a506755577ca
+      internalID: 1995700218
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BowAttack_Jump_7
+      rect:
+        serializedVersion: 2
+        x: 816
+        y: 25
+        width: 25
+        height: 33
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d946d42bbd715c547b1328e6bf7f45c2
+      internalID: 485981010
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BowAttack_Jump_8
+      rect:
+        serializedVersion: 2
+        x: 928
+        y: 24
+        width: 22
+        height: 33
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ae01a89171a1e7c42a3b089e1a7d1734
+      internalID: -1405100266
       vertices: []
       indices: 
       edges: []
@@ -251,11 +335,15 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      jumpAtk_0: -1579608071
-      jumpAtk_1: 1395669978
-      jumpAtk_2: -1004672991
-      jumpAtk_3: -526960189
-      jumpAtk_4: 1146950597
+      BowAttack_Jump_0: -1133017203
+      BowAttack_Jump_1: 226195326
+      BowAttack_Jump_2: -1937282068
+      BowAttack_Jump_3: -1569117363
+      BowAttack_Jump_4: -235816062
+      BowAttack_Jump_5: -1215960266
+      BowAttack_Jump_6: 1995700218
+      BowAttack_Jump_7: 485981010
+      BowAttack_Jump_8: -1405100266
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

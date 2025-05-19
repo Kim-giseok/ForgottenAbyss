@@ -501,7 +501,7 @@ public class ControllerPlayer : MonoBehaviour
 
     public bool IsJumpAttacking()
     {
-        if(SkillController.Instance != null && !SkillController.Instance.comboAttack.canJumpAttack)
+        if(SkillController.Instance != null && (!SkillController.Instance.comboAttack.canJumpAttack || !SkillController.Instance.rangedAttack.canJumpAttack))
             return true;
         return false;
     }
