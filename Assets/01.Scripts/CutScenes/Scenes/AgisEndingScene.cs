@@ -176,6 +176,9 @@ public class AgisEndingScene: CutScene
         ToolTip.Set();
         Narration().Forget();
         SetCutSceneMode(false);
+        
+        GrayScreen.gameObject.SetActive(true);
+        FadeScreen.gameObject.SetActive(true);
         GameManager.Instance.PausePlayer(false);
     }
 }
