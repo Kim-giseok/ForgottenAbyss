@@ -499,6 +499,13 @@ public class ControllerPlayer : MonoBehaviour
         Debug.Log($"[대쉬 설정] {weaponType} 장착 - 거리: {dashDistance}, 시간: {dashTime}, 비용: {dashCost}");
     }
 
+    public bool IsJumpAttacking()
+    {
+        if(SkillController.Instance != null && !SkillController.Instance.comboAttack.canJumpAttack)
+            return true;
+        return false;
+    }
+
     public void WaitForEnd()
     {
         StartCoroutine(WaitForAnimationEnd());

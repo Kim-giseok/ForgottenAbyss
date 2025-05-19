@@ -76,7 +76,7 @@ public class SkillController : Singleton<SkillController>
     void OnAttack(InputValue value)
     {
         AnimatorStateInfo stateInfo = GameManager.Instance.player.animator.GetCurrentAnimatorStateInfo(0);
-        bool isInAttackState = stateInfo.IsTag("Attack") && stateInfo.normalizedTime < 0.2f;
+        bool isInAttackState = stateInfo.IsTag("Attack") && stateInfo.normalizedTime >= 0.1f && stateInfo.normalizedTime <= 0.3f;
 
         if (isInAttackState) return;
 
@@ -133,11 +133,10 @@ public class SkillController : Singleton<SkillController>
     public void SetSkillPlaying(bool value) => isSkillPlaying = value;
     public void OnSetSkillFalse() => isSkillPlaying = false;
 
-    // 턴 애니메이션을 임시로 일단 제거해뒀음, 임시라 일단 여긴 나둘건데 턴 애니메이션 못고치면 걍 안쓰는 방향으로 갈듯
     public bool IsTurning()
     {
         AnimatorStateInfo stateInfo = GameManager.Instance.player.animator.GetCurrentAnimatorStateInfo(0);
-        return stateInfo.IsTag("Turn") || stateInfo.IsTag("Fall") || stateInfo.IsTag("Dash");
+        return stateInfo.IsTag("Turn") || stateInfo.IsTag("Dash");
     }
 
     public bool IsExecutable()

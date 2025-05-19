@@ -33,7 +33,7 @@ public class JumpState : AirState
         if (player.rigid.velocity.y < -player.rigid.gravityScale * Time.fixedDeltaTime && stateInfo.IsTag("Attack"))
             player.playerCollider.excludeLayers = 0;
 
-        if (player.rigid.velocity.y < -player.rigid.gravityScale * Time.fixedDeltaTime && !stateInfo.IsTag("Attack"))
+        if (player.rigid.velocity.y < -player.rigid.gravityScale * Time.fixedDeltaTime && !stateInfo.IsTag("Attack") && !player.IsJumpAttacking())
             player.ChangeState(PlayerState.Fall);
     }
 
