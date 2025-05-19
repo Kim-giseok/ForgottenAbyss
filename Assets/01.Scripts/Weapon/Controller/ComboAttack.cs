@@ -10,13 +10,25 @@ public class ComboAttack : MonoBehaviour
     [SerializeField] private ComboBar comboBar;
 
     private ComboAttackSO comboData;
+    private ControllerPlayer player;
 
     public int attackIndex = 0;
+    public bool canJumpAttack = true;
     bool canNextCombo = false;
     bool inputCombo = false;
-    bool canJumpAttack = true;
-
+   
     public bool IsAttacking { get; private set; } = false;
+
+    private void Start()
+    {
+        StartCoroutine(WaitForGameManagerReady());
+    }
+
+    private IEnumerator WaitForGameManagerReady()
+    {
+        yield return new WaitUntil(() => GameManager.Instance != null && GameManager.Instance.player.controller != null);
+        player = GameManager.Instance.player.controller;
+    }
 
     public void SetComboData(ComboAttackSO comboData)
     {
@@ -37,9 +49,10 @@ public class ComboAttack : MonoBehaviour
             return;
         }
 
-        if (!GameManager.Instance.player.controller.isGround)
+        if (!player.isGround)
         {
-            StartJumpAttack();
+            if (!IsAttacking)
+                StartJumpAttack();
             return;
         }
 
@@ -56,6 +69,7 @@ public class ComboAttack : MonoBehaviour
 
     private void StartComboAttack()
     {
+        canJumpAttack = false;
         IsAttacking = true;
         attackIndex = 1;
         animator.ResetTrigger("AttackTrigger");
@@ -70,7 +84,7 @@ public class ComboAttack : MonoBehaviour
         {
             canJumpAttack = false;
             IsAttacking = true;
-            attackIndex = 6;
+            attackIndex = 1;
             animator.ResetTrigger("JumpAttackTrigger");
             animator.SetTrigger("JumpAttackTrigger");
             //animator.Play("SwordAttack_Jump");
@@ -85,7 +99,6 @@ public class ComboAttack : MonoBehaviour
         IsAttacking = false;
         attackIndex = 1;
     }
-
 
     void OnComboCheck(float bufferTime)
     {
@@ -122,20 +135,10 @@ public class ComboAttack : MonoBehaviour
 
     void OnComboNext()
     {
-        if (GameManager.Instance.player.controller == null) return;
+        if (player == null) return;
 
         if (inputCombo)
         {
-            if (!GameManager.Instance.player.controller.isGround && attackIndex >= 3)
-            {
-                inputCombo = false;
-                attackIndex = 1;
-                animator.SetInteger("AttackCombo", attackIndex);
-                animator.Play(comboData.comboSteps[attackIndex - 1].animationName);
-                comboBar.PlayEffect();
-                return;
-            }
-
             if (attackIndex < maxCombo)
             {
                 inputCombo = false;
@@ -145,7 +148,7 @@ public class ComboAttack : MonoBehaviour
                 animator.Play(comboData.comboSteps[attackIndex - 1].animationName);
                 comboBar.PlayEffect();
             }
-            else if (attackIndex >= maxCombo)
+            else
             {
                 EndComboAttack();
             }
@@ -183,6 +186,7 @@ public class ComboAttack : MonoBehaviour
     {
         yield return new WaitForSeconds(delay);
         attackIndex = 1;
+        canJumpAttack = true;
         IsAttacking = true;
         canNextCombo = true;
 
@@ -203,7 +207,7 @@ public class ComboAttack : MonoBehaviour
 
     void OnMoveForward(float distance)
     {
-        if(!GameManager.Instance.player.controller.isGround) return;
+        if(!player.isGround) return;
 
         StartCoroutine(MoveForwardCoroutine(distance));
     }
@@ -232,11 +236,6 @@ public class ComboAttack : MonoBehaviour
         float duration = float.Parse(parts[1]);
 
         StartCoroutine(JumpSmashCoroutine(height, duration));
-    }
-
-    void OnJumpSmashFall(float duration)
-    {
-        StartCoroutine(JumpSmashFall(duration));
     }
 
     private IEnumerator JumpSmashCoroutine(float height, float duration)
@@ -293,37 +292,6 @@ public class ComboAttack : MonoBehaviour
             {
                 transform.position = hit.point;
                 yield break; // 점프 중단
-            }
-
-            transform.position = nextPos;
-            yield return null;
-        }
-
-        transform.position = Vector3.Lerp(transform.position, endPos, Time.deltaTime * 10f);
-    }
-
-    private IEnumerator JumpSmashFall(float duration)
-    {
-        Vector3 startPos = transform.position;
-        Vector3 endPos = startPos + Vector3.down * 5f; // 하강 거리 설정
-
-        float elapsed = 0f;
-        LayerMask wallMask = LayerMask.GetMask("Wall", "Ground"); // 충돌 감지 레이어
-
-        while (elapsed < duration)
-        {
-            elapsed += Time.deltaTime;
-            float t = elapsed / duration;
-            float easeT = 1f - Mathf.Cos(t * Mathf.PI * 0.5f); // EaseInSine
-
-            Vector3 nextPos = Vector3.Lerp(startPos, endPos, easeT);
-            Vector3 moveDir = nextPos - transform.position;
-
-            RaycastHit2D hit = Physics2D.Raycast(transform.position, moveDir.normalized, moveDir.magnitude, wallMask);
-            if (hit.collider != null)
-            {
-                transform.position = hit.point;
-                yield break; // 충돌 시 점프 공격 종료
             }
 
             transform.position = nextPos;
@@ -400,7 +368,7 @@ public class ComboAttack : MonoBehaviour
         float radius = step.radius;
         float offset = step.offset;
         
-        Vector2 forward = GameManager.Instance.player.controller.isFacingRight ? Vector2.right : Vector2.left;
+        Vector2 forward = player.isFacingRight ? Vector2.right : Vector2.left;
         Vector2 origin = (Vector2)transform.position + Vector2.up * 0.5f + forward * offset; ;
 
         Collider2D[] hits = Physics2D.OverlapCircleAll(origin, radius, LayerMask.GetMask("Enemy"));

@@ -198,9 +198,9 @@ public class ControllerPlayer : MonoBehaviour
             var weaponData = SystemManager.Instance.weaponManager.GetCurrentWeaponData();
             var skillController = SkillController.Instance;
 
-            if (weaponData != null && weaponData.Type == WeaponType.Sword && skillController.comboAttack.attackIndex >= 3)
+            if (weaponData != null && weaponData.Type == WeaponType.Sword && !skillController.comboAttack.canJumpAttack)
             {
-                Debug.Log("콤보가 3 이상이라 점프할 수 없습니다!");
+                Debug.Log("일반 공격 중! 점프 불가!");
                 return;
             }
 

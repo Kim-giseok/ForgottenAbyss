@@ -46,14 +46,9 @@ public class JumpState : AirState
             bool isJumpAttack = stateInfo.IsTag("Attack") && stateInfo.normalizedTime < 1f;
 
             if (isJumpAttack)
-            {
-                Debug.Log("점프 공격 도중 착지 - Idle 상태 변경 방지");
                 player.WaitForEnd();
-            }
             else
-            {
-                player.ChangeState(PlayerState.Idle);
-            }
+                player.ChangeState(PlayerState.Idle);    
         }
     }
 

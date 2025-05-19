@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 110a5c39d1e8f7c42b4d95b2cb094c82
+guid: 32e2beda243c2c04ca15a919cc8e13f5
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -136,12 +136,12 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: jumpAtk_turn_0
+      name: jumpAtk_0
       rect:
         serializedVersion: 2
-        x: 31
-        y: 24
-        width: 15
+        x: 30
+        y: 21
+        width: 20
         height: 31
       alignment: 7
       pivot: {x: 0.5, y: 0}
@@ -150,143 +150,17 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 15124d04373174e4ebad7d090e304433
-      internalID: 372319080
+      spriteID: 5b8a7f47275fdd74ea4ce8c1c41aab40
+      internalID: -1579608071
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: jumpAtk_turn_1
+      name: jumpAtk_1
       rect:
         serializedVersion: 2
-        x: 69
-        y: 23
-        width: 24
-        height: 28
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: bd8192a976899454f883bff62bd8cbf3
-      internalID: -1769690343
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: jumpAtk_turn_2
-      rect:
-        serializedVersion: 2
-        x: 105
-        y: 24
-        width: 24
-        height: 26
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 6bd41f087d2a4b4439cbac70212038c3
-      internalID: 340940572
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: jumpAtk_turn_3
-      rect:
-        serializedVersion: 2
-        x: 144
-        y: 24
-        width: 28
-        height: 28
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: c9ba67f566eef5748891c6c26760eff1
-      internalID: 157393268
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: jumpAtk_turn_4
-      rect:
-        serializedVersion: 2
-        x: 186
-        y: 23
-        width: 36
-        height: 27
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 8bf01abf98a2e584c92652676ea77f88
-      internalID: -722557205
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: jumpAtk_turn_5
-      rect:
-        serializedVersion: 2
-        x: 232
-        y: 23
-        width: 54
-        height: 28
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 771243bed736f8b4bb48cb9be26f5575
-      internalID: -1771650385
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: jumpAtk_turn_6
-      rect:
-        serializedVersion: 2
-        x: 293
-        y: 22
-        width: 40
-        height: 27
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 0639ccf57d0da764db9778465bd9ff10
-      internalID: 760363979
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: jumpAtk_turn_7
-      rect:
-        serializedVersion: 2
-        x: 346
+        x: 113
         y: 21
         width: 24
         height: 33
@@ -297,20 +171,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f3c00fc01b6996d4dab7340609c1ecea
-      internalID: 1045335131
+      spriteID: 57065bd835271d64eb9387a8eef5ae9a
+      internalID: 1395669978
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: jumpAtk_turn_8
+      name: jumpAtk_2
       rect:
         serializedVersion: 2
-        x: 389
+        x: 188
         y: 22
-        width: 20
-        height: 31
+        width: 40
+        height: 27
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -318,8 +192,50 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d183ab12c89512f44b0170180b717ba4
-      internalID: 1902706737
+      spriteID: f29a020ddcc14c846b840e0614feede1
+      internalID: -1004672991
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: jumpAtk_3
+      rect:
+        serializedVersion: 2
+        x: 258
+        y: 21
+        width: 53
+        height: 36
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d024148311f23d846b390bf5553a51d4
+      internalID: -526960189
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: jumpAtk_4
+      rect:
+        serializedVersion: 2
+        x: 344
+        y: 21
+        width: 36
+        height: 27
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: be3b66fc09c984a4d80c4d2432cd7145
+      internalID: 1146950597
       vertices: []
       indices: 
       edges: []
@@ -335,15 +251,11 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      jumpAtk_turn_0: 372319080
-      jumpAtk_turn_1: -1769690343
-      jumpAtk_turn_2: 340940572
-      jumpAtk_turn_3: 157393268
-      jumpAtk_turn_4: -722557205
-      jumpAtk_turn_5: -1771650385
-      jumpAtk_turn_6: 760363979
-      jumpAtk_turn_7: 1045335131
-      jumpAtk_turn_8: 1902706737
+      jumpAtk_0: -1579608071
+      jumpAtk_1: 1395669978
+      jumpAtk_2: -1004672991
+      jumpAtk_3: -526960189
+      jumpAtk_4: 1146950597
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
