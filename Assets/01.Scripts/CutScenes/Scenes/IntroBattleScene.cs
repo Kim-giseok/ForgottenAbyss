@@ -206,6 +206,7 @@ public class IntroBattleScene: CutScene
         await Text();
         SetCutSceneMode(false);
         GameManager.Instance.PausePlayer(false);
+        Sound.Reset();
         
         Player.controller.playerCollider.isTrigger = false;
         Player.controller.rigid.gravityScale = 2;
