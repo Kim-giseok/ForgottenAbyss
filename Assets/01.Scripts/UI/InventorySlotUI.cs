@@ -168,6 +168,7 @@ public class InventorySlotUI : MonoBehaviour, IPointerClickHandler, ITooltipData
 
     public void OnPointerEnter(PointerEventData eventData)
     {
+        Debug.Log("ÅøÆÁ ÁøÀÔ");
         var tooltipData = GetTooltipData();
         if (tooltipData != null)
             UIManager.Instance.ShowTooltip(tooltipData, Input.mousePosition);

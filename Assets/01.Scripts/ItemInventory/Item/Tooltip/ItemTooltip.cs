@@ -36,8 +36,32 @@ public class ItemTooltip : MonoBehaviour
 
         tooltipPanel.SetActive(true);
 
-        tooltipRect.pivot = new Vector2(0f, 1f);
-        tooltipRect.position = screenPos;
+        Vector2 offset = new Vector2(100f, -180f);
+        Vector2 desiredScreenPos = screenPos + offset;
+        Vector2 tooltipSize = tooltipRect.sizeDelta;
+
+        bool shouldFlipVertically = desiredScreenPos.y - tooltipSize.y < 0;
+
+        if (shouldFlipVertically)
+        {
+            tooltipRect.pivot = new Vector2(0f, 0f);
+            offset.y = 20f;
+            desiredScreenPos = screenPos + offset;
+        }
+        else
+        {
+            tooltipRect.pivot = new Vector2(0f, 1f);
+        }
+
+        float clampedX = Mathf.Clamp(desiredScreenPos.x, 0f, Screen.width - tooltipSize.x);
+        float clampedY = Mathf.Clamp(desiredScreenPos.y, tooltipSize.y, Screen.height);
+        Vector2 clampedScreenPos = new Vector2(clampedX, clampedY);
+
+        Vector2 localPoint;
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRect, clampedScreenPos, null, out localPoint);
+        tooltipRect.localPosition = localPoint;
+
+        tooltipRect.SetAsLastSibling();
     }
 
     public void Hide()
