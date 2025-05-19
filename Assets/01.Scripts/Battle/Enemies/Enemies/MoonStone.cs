@@ -5,21 +5,21 @@ public class MoonStoneWalk : Node
 {
     public override void Start()
     {
-        controller.animHandler.Play("Walk");
+        controller.Anim.Play("Walk");
     }
 
     public override void Update()
     {
         if (currTime > 2f) { SetStatus(Status.Success); return; }
 
-        Vector2 direction = controller.Rigidbody.velocity;
+        Vector2 direction = controller.Rigid.velocity;
         direction.x = 0.4f;
         // controller.rigidbody.velocity = direction;
     }
 
     public override void End()
     {
-        controller.Rigidbody.velocity = Vector2.zero;
+        controller.Rigid.velocity = Vector2.zero;
     }
 }
 
@@ -27,7 +27,7 @@ public class MoonWarp : Node
 {
     public override void Start()
     {   
-        controller.animHandler.Play("Warp");
+        controller.Anim.Play("Warp");
 
         int platform = Random.Range(0, 7);
         var selected = NavSurface.Instance.platforms[platform].centerCell.WorldPos;
@@ -57,7 +57,7 @@ public class MoonWarp : Node
 
     public override void End()
     {
-        controller.animHandler.Play("Idle");
+        controller.Anim.Play("Idle");
     }
 }
 
@@ -65,9 +65,9 @@ public class MoonAttack1 : Node
 {
     public override void Start()
     {
-        controller.Rigidbody.drag = 4f;
-        controller.Rigidbody.AddForce(new Vector2(16f, 0), ForceMode2D.Impulse);
-        controller.animHandler.Play("Attack");
+        controller.Rigid.drag = 4f;
+        controller.Rigid.AddForce(new Vector2(16f, 0), ForceMode2D.Impulse);
+        controller.Anim.Play("Attack");
     }
 
     public override void OnAnimated(AnimationStatus status, AnimatorStateInfo animInfo)
@@ -78,8 +78,8 @@ public class MoonAttack1 : Node
 
     public override void End()
     {
-        controller.Rigidbody.velocity = Vector2.zero;
-        controller.Rigidbody.drag = 0f;
+        controller.Rigid.velocity = Vector2.zero;
+        controller.Rigid.drag = 0f;
     }
 }
 
@@ -142,8 +142,8 @@ public class MoonFlyingMode : Node
 {
     public override void Start()
     {
-        controller.animHandler.Play("Fly");
-        controller.Rigidbody.gravityScale = 0;
+        controller.Anim.Play("Fly");
+        controller.Rigid.gravityScale = 0;
         controller.Collider.enabled = false;
 
     }
@@ -197,9 +197,9 @@ public class MoonFlyingEndNode : Node
 
     public override void End()
     {
-        controller.animHandler.Play("Land");
+        controller.Anim.Play("Land");
         controller.Collider.enabled = true;
-        controller.Rigidbody.gravityScale = 2;
+        controller.Rigid.gravityScale = 2;
     }
 }
 
@@ -211,7 +211,7 @@ public class MoonFlyingAttack : Node
     {
         if(currTime > 4f) { SetStatus(Status.Success); return; }
         
-        Vector3 targetPos = controller.agent.target.transform.position;
+        Vector3 targetPos = controller.Agent.target.transform.position;
         targetPos.z = controller.transform.position.z;
 
         float speed = 3f;
@@ -244,7 +244,7 @@ public class MoonFlyingSummonAttack : Node
     {
         if (controller is not SummonController sController) return; 
 
-        controller.animHandler.Play("Fly");
+        controller.Anim.Play("Fly");
         controller.transform.SetParent(sController.caster);
     }
 

@@ -1,9 +1,12 @@
+using System;
 using System.Collections;
+using System.Threading;
+using Cysharp.Threading.Tasks;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.UI;
 
+// 나레이션 컴포넌트로 분리하기
 public class LetterBox : MonoBehaviour
 {
     private VerticalLayoutGroup verticalLayoutGroup;
@@ -11,7 +14,7 @@ public class LetterBox : MonoBehaviour
 
     public TextMeshProUGUI narrationText;
     
-    private Coroutine narrationCoroutine; 
+    private CancellationTokenSource _narrationCTS;
     private Coroutine letterBoxCoroutine; 
     
     private bool skipLine;
@@ -21,20 +24,20 @@ public class LetterBox : MonoBehaviour
     public float minWidth;
     public float duration;
     
-    private bool isStartNarration;
-    private bool isNarrationEnd;
-
-    public UnityEvent OnNarrationStarted;
-    public UnityEvent OnNarrationEnd;
-    
-    [TextArea(2, 2)] public string[] narrations;
-    
     private void Awake()
     {
         verticalLayoutGroup = GetComponent<VerticalLayoutGroup>();
         canvasGroup = GetComponent<CanvasGroup>();
     }
-    
+
+    private void Update()
+    {
+        if (Input.anyKeyDown || Input.GetMouseButtonDown(0))
+        {
+            skipLine = true;
+        }
+    }
+
     private IEnumerator HandleWidth(bool isShow)
     {
         float currTime = 0f;
@@ -63,41 +66,51 @@ public class LetterBox : MonoBehaviour
         if(!isShow) gameObject.SetActive(false);
     }
 
-    public void ShowLetterBox(bool isShow)
+    public void Set(bool isShow)
     {
         if(letterBoxCoroutine != null) StopCoroutine(letterBoxCoroutine);
         if(isShow) gameObject.SetActive(true);
         letterBoxCoroutine = StartCoroutine(HandleWidth(isShow));
     }
     
-    private IEnumerator Narration(string text)
+    private async UniTask PlayNarrationAsync(string text)
     {
         if(!narrationText.gameObject.activeSelf) { narrationText.gameObject.SetActive(true); }
         
         skipLine = false;
         narrationText.text = "";
     
-        foreach (char c in text)
+        foreach (var c in text)
         {
-            if (skipLine) { narrationText.text = text; break; }
+            if (skipLine)
+            {
+                narrationText.text = text; 
+                _narrationCTS.Token.ThrowIfCancellationRequested();
+                break;
+            }
             
             SoundManager.Instance.Playsfx("Tick");
             narrationText.text += c;
-            yield return new WaitForSeconds(0.05f);
+            await UniTask.Delay(50);
+        }
+    }
+
+    public async UniTask Narration(string text)
+    {
+        _narrationCTS?.Cancel();
+        
+        if (text == "")
+        {
+            narrationText.gameObject.SetActive(false);
+            return;
         }
         
-        skipLine = true;
+        _narrationCTS = new CancellationTokenSource();
+        await PlayNarrationAsync(text);
     }
 
-    public void ShowNarration(string text)
+    public void SetColor(Color newColor)
     {
-        if(narrationCoroutine != null) StopCoroutine(narrationCoroutine);
-        narrationCoroutine = StartCoroutine(Narration(text));
-    }
-
-    public void HideNarration()
-    {
-        if(narrationCoroutine != null) StopCoroutine(narrationCoroutine);
-        narrationText.gameObject.SetActive(false);
+        narrationText.color = newColor;
     }
 }

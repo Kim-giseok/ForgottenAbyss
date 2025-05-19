@@ -18,12 +18,11 @@ public class NpcSentence : MonoBehaviour
     {
         GameManager.Instance.PausePlayer();
 
-        foreach (var sentnece in sentences)
+        foreach (var texts in sentences)
         {
-            UIManager.Instance.OnTalk(transform, sentnece);
+            UIManager.Instance.OnTalk(transform, texts);
             
-            while (!UIManager.Instance.talkBox.isFinished) { yield return null; }
-            yield return new WaitForSeconds(0.6f);
+            yield return new WaitForSeconds(1f);
         }
         
         UIManager.Instance.OffTalk();

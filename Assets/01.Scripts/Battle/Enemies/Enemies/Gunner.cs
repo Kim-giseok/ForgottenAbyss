@@ -5,7 +5,7 @@ public class GunnerRangeAttack : Node
 {
     public override void Start()
     {
-        controller.animHandler.Play("Attack");
+        controller.Anim.Play("Attack");
         controller.LookTarget();
     }
 
@@ -14,7 +14,7 @@ public class GunnerRangeAttack : Node
         if (isFire)
         {
             BoltsPool.Instance.Create(controller.transform, Bolts.Type.Laser)
-                .SetDirection(controller.agent.GetDirection())
+                .SetDirection(controller.Agent.GetDirection())
                 // .SetTrailCurve(BoltsPool.TrailType.Laser)
                 .SetEffect(Bolts.EffectType.Penetration)
                 .SetSpeed(20f)

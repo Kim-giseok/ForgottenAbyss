@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.SceneManagement;
@@ -33,14 +35,27 @@ public class SoundManager : SingletonLoadRemain<SoundManager>
 
     AudioSource bgmSource, sfxSource;
     [SerializeField] AudioClip bgm;
+    private Dictionary<string, AudioClip> addressBGMList = new();
+
 
     [SerializeField] AudioClip[] sfxList;
     private Dictionary<string, AudioClip> addressSfxList = new();
 
-    protected override void OnSceneLoaded(Scene scene, LoadSceneMode mode) { }
+    protected override void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name == "Stage1") { PlayBGM("Combat1"); }
+    }
 
     protected override void Init()
     {
+        Addressables.LoadAssetsAsync<AudioClip>("BGM", null).Completed += (handle) =>
+        {
+            foreach (var clip in handle.Result)
+            {
+                addressBGMList.Add(clip.name, clip);
+            }
+        };
+        
         Addressables.LoadAssetsAsync<AudioClip>("SFX", null).Completed += (handle) =>
         {
             foreach (var clip in handle.Result)
@@ -86,6 +101,36 @@ public class SoundManager : SingletonLoadRemain<SoundManager>
         bgmSource.Play();
     }
 
+    public void PlayBGM(string bgmName)
+    {
+        if (!addressBGMList.ContainsKey(bgmName)) return;
+        bgmSource.Stop();
+        bgmSource.clip = addressBGMList[bgmName];
+        bgmSource.Play();
+    }
+
+    public void StopBGM()
+    {
+        bgmSource.Stop();
+    }
+
+    public void StopSFX()
+    {
+        sfxSource.Stop();
+    }
+    
+    public void FadeOutBGM(float duration = 1f)
+    {
+        if (!bgmSource.isPlaying) return; 
+        bgmSource.DOFade(0f, duration).OnComplete(() => bgmSource.Stop());
+    }
+    
+    public void FadeOutSFX(float duration = 1f)
+    {
+        sfxSource.DOFade(0f, duration).OnComplete(() => sfxSource.Stop());
+    }
+
+
     public void PlaySFX(AudioClip sfx)
     {
         sfxSource.PlayOneShot(sfx, volumes[VOLTYPE.MASTER] * volumes[VOLTYPE.SFX]);
@@ -110,6 +155,23 @@ public class SoundManager : SingletonLoadRemain<SoundManager>
         if (sfx != null)
             PlaySFX(sfx);
     }
+    
+    public void PlaySfxRepeat(string sfxName, float interval, int repeatCount = 1)
+    {
+        PlaySfxRepeatAsync(sfxName, interval, repeatCount).Forget();
+    }
+
+    private async UniTaskVoid PlaySfxRepeatAsync(string sfxName, float interval, int repeatCount)
+    {
+        int count = 0;
+        while (repeatCount < 0 || count < repeatCount)
+        {
+            Playsfx(sfxName);
+            count++;
+            await UniTask.Delay(TimeSpan.FromSeconds(interval));
+        }
+    }
+
 
     public void ChangeSound(VOLTYPE voltype, float amount)
     {

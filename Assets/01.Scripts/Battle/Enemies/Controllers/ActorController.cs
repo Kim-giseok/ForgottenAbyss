@@ -12,13 +12,13 @@ public class ActorController: EnemyBaseController
         IsEnd = false;
         // 기본 노드 안에 waitNode하나를 둬서 다음 행동이 발생하기 전까지 기다리게 하기
         // 한텀 돌면 삭제가 아니라 잠시 정지
-        machine.OnLooped += () =>
+        Machine.OnLooped += () =>
         {
-            machine.SetPlaying(false);
+            Machine.SetPlaying(false);
             IsEnd = true;
         };
         
-        machine.Define(node);
-        machine.Start();
+        Machine.Define(node);
+        Machine.Start();
     }
 }

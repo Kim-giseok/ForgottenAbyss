@@ -8,7 +8,7 @@ public class AttackNode : Node
 
     public override void Start()
     {
-        controller.animHandler.Play(command.animName);
+        controller.Anim.Play(command.animName);
         // if(currSkill.isLookTarget) controller.LookTarget();
     }
     
@@ -55,8 +55,8 @@ public class WaitNode : Node
 
     public override void Start()
     {
-        controller.Rigidbody.velocity = new Vector2(0, controller.Rigidbody.velocity.y);
-        controller.animHandler.Play(currWaitCommand.animName);
+        controller.Rigid.velocity = new Vector2(0, controller.Rigid.velocity.y);
+        controller.Anim.Play(currWaitCommand.animName);
     }
 
     public override void Update()
@@ -80,7 +80,7 @@ public class MoveNode : Node
     public override void Update()
     {
         // 추적 형태인 경우
-        controller.Rigidbody.velocity = new Vector2(controller.agent.GetDirection().x * controller.agent.tracingSpeed, controller.Rigidbody.velocity.y);
+        controller.Rigid.velocity = new Vector2(controller.Agent.GetDirection().x * controller.Agent.tracingSpeed, controller.Rigid.velocity.y);
     }
 
     public override void End()

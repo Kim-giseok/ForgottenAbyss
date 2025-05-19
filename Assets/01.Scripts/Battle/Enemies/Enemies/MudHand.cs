@@ -4,7 +4,7 @@ public class MudAggroNode : Node
 {
     public override void Start()
     {
-        controller.animHandler.Play("Idle");
+        controller.Anim.Play("Idle");
     }
     public override void Update()
     {
@@ -18,7 +18,7 @@ public class MudIdleNode : Node
 {
     public override void Start()
     {
-        controller.animHandler.Play("Idle");
+        controller.Anim.Play("Idle");
     }
 
     public override void Update()
@@ -32,7 +32,7 @@ public class MudCastingNode : Node
 {
     public override void Start()
     {
-        controller.animHandler.Play("Casting");
+        controller.Anim.Play("Casting");
     }
 
     public override void Update()
@@ -53,7 +53,7 @@ public class MudAttackNode : Node
 {
     public override void Start()
     {
-        controller.animHandler.Play("Attack");
+        controller.Anim.Play("Attack");
         if(controller is EnemyController) { controller.LookTarget(); }
         // controller.rigidbody.drag = 4f;
     }
@@ -71,15 +71,15 @@ public class MudAttackNode : Node
 
             BoltsPool.Instance.CreateMelee(controller.transform, 40f).Fire();
 
-            if(controller is EnemyController) { controller.Rigidbody.AddForce(controller.agent.GetDirection() * 4f, ForceMode2D.Impulse); }
-            if(controller is SummonController sController) { controller.Rigidbody.AddForce(Vector2.right * 4f, ForceMode2D.Impulse); }
+            if(controller is EnemyController) { controller.Rigid.AddForce(controller.Agent.GetDirection() * 4f, ForceMode2D.Impulse); }
+            if(controller is SummonController sController) { controller.Rigid.AddForce(Vector2.right * 4f, ForceMode2D.Impulse); }
             
             return;
         }
 
         if (status == AnimationStatus.End)
         {
-            controller.Rigidbody.velocity = Vector2.zero;
+            controller.Rigid.velocity = Vector2.zero;
             controller.transform.position = context.Get<Vector3>("currPos");
             
             Collider2D[] nearColiders = Physics2D.OverlapCircleAll(controller.transform.position, 1f, LayerMask.GetMask("Ground"));
@@ -92,6 +92,6 @@ public class MudAttackNode : Node
     public override void End()
     {
         BoltsPool.Instance.DisableMelee(controller.transform);
-        controller.Rigidbody.drag = 0f;
+        controller.Rigid.drag = 0f;
     }
 }

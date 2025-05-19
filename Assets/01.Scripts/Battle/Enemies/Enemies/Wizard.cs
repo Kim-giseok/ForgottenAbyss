@@ -6,7 +6,7 @@ public class HealNode : Node
 {
     public override void Start()
     {
-        controller.animHandler.Play("Heal");
+        controller.Anim.Play("Heal");
         Collider2D[] hits = Physics2D.OverlapCircleAll(controller.transform.position, 200f, LayerMask.GetMask("Enemy"));
         foreach (var hit in hits)
         {
@@ -29,7 +29,7 @@ public class WizadRecursiveNode : Node
 {
     public override void Start()
     {
-        controller.animHandler.Play("Attack");
+        controller.Anim.Play("Attack");
         controller.LookTarget();
     }
     
@@ -39,7 +39,7 @@ public class WizadRecursiveNode : Node
         if (isFire)
         {
             BoltsPool.Instance.Create(controller.transform, Bolts.Type.Recursive)
-                .SetSize(0.6f).SetDamage(10).SetSpeed(4).SetDegree(controller.agent.GetDegree())
+                .SetSize(0.6f).SetDamage(10).SetSpeed(4).SetDegree(controller.Agent.GetDegree())
                 .SetEffect(Bolts.EffectType.Penetration).SetDuration(1.6f).Fire();
         }
     }

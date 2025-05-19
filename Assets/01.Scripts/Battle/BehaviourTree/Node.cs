@@ -18,7 +18,7 @@ public abstract class Node
     public void SetController(EnemyBaseController controller)
     {
         this.controller = controller;
-        machine = controller.machine;
+        machine = controller.Machine;
         context = machine.context;
     }
 

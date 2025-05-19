@@ -38,7 +38,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.5, y: 1.5, z: 0}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 9112476804215697758}
@@ -192,11 +192,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isBaked: 1
-  health: 10
-  attack: 3
-  experience: 0
   isIgnoreHitAnim: 0
   enemyName: 6
+  level: 1
 --- !u!114 &5201733921047369293
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -276,8 +274,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82442f8733084530962e46c1a7bb21e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isHit: 0
-  stamina: 3
   castingDirection: {x: 0, y: 0}
 --- !u!114 &4784821745386414212
 MonoBehaviour:
