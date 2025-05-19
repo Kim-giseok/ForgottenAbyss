@@ -38,17 +38,26 @@ public class CameraZoom : MonoBehaviour
     {
         StopAllCoroutines();
 
-        virtualCam = MapSpawnManager.Instance.virtualCamera;
-        if (virtualCam == null)
-        {
-            Debug.Log("CameraZoom: �� ���� ����� ī�޶� ���� (������)");
-            return;
-        }
+        StartCoroutine(WaitForCamera());
+
         playerTransform = FindObjectOfType<Player>().transform;
+
         if (playerTransform == null)
         {
             Debug.LogWarning("CameraZoom: �� ������ playerTransform�� ã�� ���߽��ϴ�.");
             return;
+        }
+    }
+
+    private IEnumerator WaitForCamera()
+    {
+        yield return new WaitForSeconds(0.1f); // 짧은 시간 기다린 후 다시 시도
+
+        virtualCam = MapSpawnManager.Instance.virtualCamera;
+
+        if (virtualCam == null)
+        {
+            Debug.Log("CameraZoom: �� ���� ����� ī�޶� ���� (������)");
         }
     }
 
