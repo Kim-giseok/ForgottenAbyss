@@ -296,6 +296,20 @@ public class ControllerPlayer : MonoBehaviour
         }
     }
 
+    public void OnAttackDirectionUpdate()
+    {
+        if (inputVec.x < 0)
+        {
+            isFacingRight = false;
+            transform.localEulerAngles = new Vector3(0, 180, 0);
+        }
+        else if (inputVec.x > 0)
+        {
+            isFacingRight = true;
+            transform.localEulerAngles = new Vector3(0, 0, 0);
+        }
+    }
+
     private IEnumerator EnableSkillAfterDelay()
     {
         yield return new WaitForSeconds(directionChangeCooldown);
@@ -461,13 +475,13 @@ public class ControllerPlayer : MonoBehaviour
     {
         if (weaponType == WeaponType.Sword)
         {
-            dashDistance = 4f;
+            dashDistance = 3f;
             dashTime = 0.25f;
             dashCost = 10f;
         }
         else if (weaponType == WeaponType.Bow)
         {
-            dashDistance = 2f;
+            dashDistance = 1.75f;
             dashTime = 0.25f;
             dashCost = 5f;
         }
