@@ -37,10 +37,10 @@ public class PassiveUI : MonoBehaviour
     private int coolDownLevel = 0;
     private int maxCoolDownLevel = 10;
 
-    
+
     PlayerStatus _playerStatus => GameManager.Instance.pStatus;
 
-    
+
     private void OnDestroy()
     {
         // 이벤트 구독 해제
@@ -69,7 +69,7 @@ public class PassiveUI : MonoBehaviour
         if (speedButton != null) speedButton.interactable = hasPoints && speedLevel < maxSpeedLevel;
         if (coolDownButton != null) coolDownButton.interactable = hasPoints && coolDownLevel < maxCoolDownLevel;
 
-        
+
     }
     public void OnPassiveUI()
     {
@@ -88,19 +88,25 @@ public class PassiveUI : MonoBehaviour
             return;
         }
 
-        float currenAtk = _playerStatus.GetStat(StatType.ATK);
-        _playerStatus.baseStats[StatType.ATK] += 1;
-        _playerStatus.SetStat(StatType.ATK, currenAtk + 1);
-        Debug.Log($"공격력 증가: {_playerStatus.GetStat(StatType.ATK)}");
-        _playerStatus.AddStatPoints(-1);
-
-        if (atkLevel >= maxAtkLevel)
+        if (_playerStatus.InvestStatPoint(StatType.ATK))
         {
-            return;
+            atkLevel++;
+            atkText.text = $"공격력+1\n Lv {atkLevel}/{maxAtkLevel}";
         }
 
-        atkLevel++;
-        atkText.text = $"공격력+1\n Lv {atkLevel}/{maxAtkLevel}";
+        //float currenAtk = _playerStatus.GetStat(StatType.ATK);
+        //_playerStatus.baseStats[StatType.ATK] += 1;
+        //_playerStatus.SetStat(StatType.ATK, currenAtk + 1);
+        //Debug.Log($"공격력 증가: {_playerStatus.GetStat(StatType.ATK)}");
+        //_playerStatus.AddStatPoints(-1);
+
+        //if (atkLevel >= maxAtkLevel)
+        //{
+        //    return;
+        //}
+
+        //atkLevel++;
+        //atkText.text = $"공격력+1\n Lv {atkLevel}/{maxAtkLevel}";
     }
 
     public void OnClickCritical()
@@ -110,18 +116,24 @@ public class PassiveUI : MonoBehaviour
             return;
         }
 
-        float currentCrt = _playerStatus.GetStat(StatType.CRITICAL);
-        _playerStatus.baseStats[StatType.CRITICAL] += 3;
-        _playerStatus.SetStat(StatType.CRITICAL, currentCrt + 3);
-        _playerStatus.AddStatPoints(-1);
-
-        if (crtLevel >= maxCrtLevel)
+        if (_playerStatus.InvestStatPoint(StatType.CRITICAL))
         {
-            return;
+            crtLevel++;
+            crtText.text = $"치명타 확률+3%\n Lv {crtLevel}/{maxCrtLevel}";
         }
 
-        crtLevel++;
-        crtText.text = $"치명타 확률+3%\n Lv {crtLevel}/{maxCrtLevel}";
+        //float currentCrt = _playerStatus.GetStat(StatType.CRITICAL);
+        //_playerStatus.baseStats[StatType.CRITICAL] += 3;
+        //_playerStatus.SetStat(StatType.CRITICAL, currentCrt + 3);
+        //_playerStatus.AddStatPoints(-1);
+
+        //if (crtLevel >= maxCrtLevel)
+        //{
+        //    return;
+        //}
+
+        //crtLevel++;
+        //crtText.text = $"치명타 확률+3%\n Lv {crtLevel}/{maxCrtLevel}";
     }
 
     public void OnClickHp()
@@ -131,18 +143,24 @@ public class PassiveUI : MonoBehaviour
             return;
         }
 
-        float currentHp = _playerStatus.GetStat(StatType.MaxHP);
-        _playerStatus.baseStats[StatType.MaxHP] += 10;
-        _playerStatus.SetStat(StatType.MaxHP, currentHp + 10);
-        _playerStatus.AddStatPoints(-1);
-
-        if (hpLevel >= maxHpLevel)
+        if (_playerStatus.InvestStatPoint(StatType.MaxHP))
         {
-            return;
+            hpLevel++;
+            hpText.text = $"HP+10\n Lv {hpLevel}/{maxHpLevel}";
         }
 
-        hpLevel++;
-        hpText.text = $"HP+10\n Lv {hpLevel}/{maxHpLevel}";
+        //float currentHp = _playerStatus.GetStat(StatType.MaxHP);
+        //_playerStatus.baseStats[StatType.MaxHP] += 10;
+        //_playerStatus.SetStat(StatType.MaxHP, currentHp + 10);
+        //_playerStatus.AddStatPoints(-1);
+
+        //if (hpLevel >= maxHpLevel)
+        //{
+        //    return;
+        //}
+
+        //hpLevel++;
+        //hpText.text = $"HP+10\n Lv {hpLevel}/{maxHpLevel}";
     }
 
     public void OnClickDefence()
@@ -152,18 +170,24 @@ public class PassiveUI : MonoBehaviour
             return;
         }
 
-        float currentDef = _playerStatus.GetStat(StatType.DEF);
-        _playerStatus.baseStats[StatType.DEF] += 2;
-        _playerStatus.SetStat(StatType.DEF, currentDef + 2);
-        _playerStatus.AddStatPoints(-1);
-
-        if (defLevel >= maxDefLevel)
+        if (_playerStatus.InvestStatPoint(StatType.DEF))
         {
-            return;
+            defLevel++;
+            defText.text = $"방어력+1\n Lv {defLevel}/{maxDefLevel}";
         }
 
-        defLevel++;
-        defText.text = $"방어력+2\n Lv {defLevel}/{maxDefLevel}";    
+        //float currentDef = _playerStatus.GetStat(StatType.DEF);
+        //_playerStatus.baseStats[StatType.DEF] += 2;
+        //_playerStatus.SetStat(StatType.DEF, currentDef + 2);
+        //_playerStatus.AddStatPoints(-1);
+
+        //if (defLevel >= maxDefLevel)
+        //{
+        //    return;
+        //}
+
+        //defLevel++;
+        //defText.text = $"방어력+2\n Lv {defLevel}/{maxDefLevel}";
     }
 
     public void OnClickSpeed()
@@ -173,18 +197,24 @@ public class PassiveUI : MonoBehaviour
             return;
         }
 
-        float currentSpd = _playerStatus.GetStat(StatType.SPEED);
-        _playerStatus.baseStats[StatType.SPEED] += 0.2f;
-        _playerStatus.SetStat(StatType.SPEED, currentSpd + 0.2f);
-        _playerStatus.AddStatPoints(-1);
-
-        if (speedLevel >= maxSpeedLevel)
+        if (_playerStatus.InvestStatPoint(StatType.SPEED))
         {
-            return;
+            speedLevel++;
+            speedText.text = $"이동속도+0.2\n Lv {speedLevel}/{maxSpeedLevel}";
         }
 
-        speedLevel++;
-        speedText.text = $"이동속도+0.2\n Lv {speedLevel}/{maxSpeedLevel}";
+        //float currentSpd = _playerStatus.GetStat(StatType.SPEED);
+        //_playerStatus.baseStats[StatType.SPEED] += 0.2f;
+        //_playerStatus.SetStat(StatType.SPEED, currentSpd + 0.2f);
+        //_playerStatus.AddStatPoints(-1);
+
+        //if (speedLevel >= maxSpeedLevel)
+        //{
+        //    return;
+        //}
+
+        //speedLevel++;
+        //speedText.text = $"이동속도+0.2\n Lv {speedLevel}/{maxSpeedLevel}";
     }
 
     public void OnClickCoolDown()
@@ -194,20 +224,45 @@ public class PassiveUI : MonoBehaviour
             return;
         }
 
-        float currentCdw = _playerStatus.GetStat(StatType.COOLDOWN_REDUCTION);
-
-        _playerStatus.baseStats[StatType.COOLDOWN_REDUCTION] += 2f;
-        _playerStatus.SetStat(StatType.COOLDOWN_REDUCTION, currentCdw + 2f);
-
-        _playerStatus.AddStatPoints(-1);
-
-        if (speedLevel >= maxSpeedLevel)
+        if (_playerStatus.InvestStatPoint(StatType.COOLDOWN_REDUCTION))
         {
-            return;
+            coolDownLevel++;
+            coolDownText.text = $"스킬 쿨타임 감소\n2%\n Lv {coolDownLevel}/{maxCoolDownLevel}";
         }
 
-        coolDownLevel++;
-        coolDownText.text = $"스킬 쿨타임 감소\n2%\n Lv {coolDownLevel}/{maxCoolDownLevel}";
+        //float currentCdw = _playerStatus.GetStat(StatType.COOLDOWN_REDUCTION);
+
+        //_playerStatus.baseStats[StatType.COOLDOWN_REDUCTION] += 2f;
+        //_playerStatus.SetStat(StatType.COOLDOWN_REDUCTION, currentCdw + 2f);
+
+        //_playerStatus.AddStatPoints(-1);
+
+        //if (speedLevel >= maxSpeedLevel)
+        //{
+        //    return;
+        //}
+
+        //coolDownLevel++;
+        //coolDownText.text = $"스킬 쿨타임 감소\n2%\n Lv {coolDownLevel}/{maxCoolDownLevel}";
     }
-       
+
+    public void OnClickResetStats()
+    {
+        // PlayerStatus의 ResetStatPoints() 호출
+        _playerStatus.ResetStatPoints();
+
+        // UI에 표시된 레벨과 텍스트도 초기화
+        atkLevel = crtLevel = hpLevel = defLevel = speedLevel = coolDownLevel = 0;
+
+        atkText.text = $"공격력+1\n Lv {atkLevel}/{maxAtkLevel}";
+        crtText.text = $"치명타 확률+3%\n Lv {crtLevel}/{maxCrtLevel}";
+        hpText.text = $"HP+10\n Lv {hpLevel}/{maxHpLevel}";
+        defText.text = $"방어력+2\n Lv {defLevel}/{maxDefLevel}";
+        speedText.text = $"이동속도+0.2\n Lv {speedLevel}/{maxSpeedLevel}";
+        coolDownText.text = $"스킬 쿨타임 감소\n2%\n Lv {coolDownLevel}/{maxCoolDownLevel}";
+
+        // 버튼 상태도 업데이트
+        UpdateStatPointsUI(_playerStatus.GetAvailableStatPoints());
+    }
+
 }
