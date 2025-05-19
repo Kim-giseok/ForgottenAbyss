@@ -13,7 +13,7 @@ public class IntroBattleScene: CutScene
     [FormerlySerializedAs("nightBoneItem")] public FieldItemDropAnimator item;
     [FormerlySerializedAs("nightBoneItemComp")] public RectTransform itemUI;
 
-    protected override async UniTask Init()
+    protected override async UniTask StartScene()
     {
         // 빌리지에서 바로 시작할 경우 문제 발생
         await UniTask.Delay(1000);
@@ -58,7 +58,7 @@ public class IntroBattleScene: CutScene
         Camera.Focus(Player);
 
         ToolTip.Set("왼쪽 Shift를 눌러 이동해주세요.", new Vector3(0, 340, 0));
-        await Narration("대시를 통해서 빠른 이동 및 적의 공격을 회피할 수 있습니다.");
+        Narration("대시를 통해서 빠른 이동 및 적의 공격을 회피할 수 있습니다.");
         
         SetInput(KeyCode.LeftShift);
         await Wait();            
@@ -80,7 +80,7 @@ public class IntroBattleScene: CutScene
         // [공격 진행]
         Sound.PlayBGM("Intro1");
         ToolTip.Set("A 키를 눌러 다음으로 진행해주세요.", new Vector3(0, 340, 0));
-        await Narration("기본 공격을 통해 6연타 콤보 공격이 가능합니다.\n(본 게임에서는 플레이어 상단 콤보 게이지가 끊기지 않아야 합니다.)");
+        Narration("기본 공격을 통해 6연타 콤보 공격이 가능합니다.\n(본 게임에서는 플레이어 상단 콤보 게이지가 끊기지 않아야 합니다.)");
         
         SetInput(KeyCode.A);
         nightBone.Rigid.drag = 10;
@@ -97,7 +97,7 @@ public class IntroBattleScene: CutScene
         Player.controller.rigid.velocity = Vector2.zero;
         Player.controller.rigid.drag = 0;
         ToolTip.Set();
-        await Narration();
+        Narration();
         nightBone.Anim.Play("Die");
         await UniTask.Delay(800);
 
@@ -108,7 +108,7 @@ public class IntroBattleScene: CutScene
         nightBone.gameObject.SetActive(false);
         
         ToolTip.Set("I키를 눌러 인벤토리를 열어주세요.", new Vector3(0, 340, 0));
-        await Narration("메모리 스킬 아이템은 퀵슬롯에 등록하여 사용하실 수 있습니다.");
+        Narration("메모리 스킬 아이템은 퀵슬롯에 등록하여 사용하실 수 있습니다.");
         SetPointingLight(item.transform);
         
         SetInput(KeyCode.I);
@@ -116,7 +116,7 @@ public class IntroBattleScene: CutScene
         
         // [아이템 장착하기]
         Destroy(item.gameObject);
-        await Narration(); // Narration.Set 형태로 적용하기
+        Narration(); // Narration.Set 형태로 적용하기
         SetPointingLight(); // Set으로 통일하기
         ToolTip.Set("I키를 눌러 인벤토리를 닫아주세요.", new Vector3(0, 340, 0));
         Sound.Playsfx("GetItem");
@@ -176,11 +176,11 @@ public class IntroBattleScene: CutScene
         await UniTask.Delay(250);
         Light.FadeOut(1);
         await UniTask.Delay(2000);
-        await Narration("그림자 속에서 희미한 장면을 떠올렸다.");
-        await UniTask.Delay(1000);
+        Narration("그림자 속에서 희미한 장면을 떠올렸다.");
+        await Wait();
 
         // [스토리 관련 대사 진행]
-        await Narration();
+        Narration();
         // notice: destroy 방식으로하면 다시 재생이 안되므로 disable로 하기
         Destroy(npc.gameObject);
         npcOrigin.SetActive(true);

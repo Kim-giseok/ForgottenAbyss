@@ -18,6 +18,8 @@ public abstract class CutScene: MonoBehaviour
     protected LightManager Light => LightManager.Instance;
     protected Player Player => GameManager.Instance.player;
     
+    protected PointingComp Pointing => CutSceneManager.Instance.Pointing;
+    
     
     protected Action OnFinish;
     public UnityEvent onFinishUnityEvent;
@@ -30,14 +32,32 @@ public abstract class CutScene: MonoBehaviour
     
     protected async UniTask Wait()
     {
+        IsPressed = false;
         await UniTask.WaitUntil(() => IsPressed);
     }
+    
+    protected virtual async UniTask StartScene() { await UniTask.Yield(); }
 
-    protected virtual async UniTask Init() { await UniTask.Delay(1000); }
+    private async UniTask _StartScene()
+    {
+        await StartScene();
+        
+        gameObject.SetActive(false);
+        OnFinish?.Invoke();
+        onFinishUnityEvent?.Invoke();
+    }
+    
+    protected virtual void PreLoad() {}
+
 
     private void Start()
     {
-        _ = Init();
+        PreLoad();
+    }
+
+    private void OnEnable()
+    {
+        _StartScene().Forget();
     }
 
     private void Update()
@@ -94,16 +114,14 @@ public abstract class CutScene: MonoBehaviour
     }
     
     // 최대한 하나로 합치기, 내부에서 처리하도록 변경하기
-    protected async UniTask Narration(string newNarration = "")
+    protected void Narration(string newNarration = "")
     {
         if (newNarration == null)
         {
             CutSceneManager.Instance.LetterBox.narrationText.gameObject.SetActive(false);
             return;
         }
-        
-        stopPressed = true;
-        await CutSceneManager.Instance.LetterBox.SetNarration(newNarration);
-        stopPressed = false;
+
+        CutSceneManager.Instance.LetterBox.Narration(newNarration);
     }
 }

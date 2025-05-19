@@ -1,11 +1,9 @@
-using System;
 using System.Collections;
-using Cysharp.Threading.Tasks;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.UI;
 
+// 나레이션 컴포넌트로 분리하기
 public class LetterBox : MonoBehaviour
 {
     private VerticalLayoutGroup verticalLayoutGroup;
@@ -13,6 +11,7 @@ public class LetterBox : MonoBehaviour
 
     public TextMeshProUGUI narrationText;
     
+    private Coroutine narrationCoroutine; 
     private Coroutine letterBoxCoroutine; 
     
     private bool skipLine;
@@ -21,14 +20,6 @@ public class LetterBox : MonoBehaviour
     public float maxWidth;
     public float minWidth;
     public float duration;
-    
-    private bool isStartNarration;
-    private bool isNarrationEnd;
-
-    public UnityEvent OnNarrationStarted;
-    public UnityEvent OnNarrationEnd;
-    
-    [TextArea(2, 2)] public string[] narrations;
     
     private void Awake()
     {
@@ -70,16 +61,8 @@ public class LetterBox : MonoBehaviour
         if(isShow) gameObject.SetActive(true);
         letterBoxCoroutine = StartCoroutine(HandleWidth(isShow));
     }
-
-    private void Update()
-    {
-        if (Input.GetMouseButtonDown(0) || Input.anyKeyDown)
-        {
-            skipLine = true;
-        }
-    }
-
-    public async UniTask SetNarration(string text)
+    
+    private IEnumerator StartNarration(string text)
     {
         if(!narrationText.gameObject.activeSelf) { narrationText.gameObject.SetActive(true); }
         
@@ -92,8 +75,23 @@ public class LetterBox : MonoBehaviour
             
             SoundManager.Instance.Playsfx("Tick");
             narrationText.text += c;
-            await UniTask.Delay(30);
+            yield return new WaitForSeconds(0.035f);
         }
+        
+        skipLine = true;
+    }
+
+    public void Narration(string text)
+    {
+        if(narrationCoroutine != null) StopCoroutine(narrationCoroutine);
+
+        if (text == "")
+        {
+            narrationText.gameObject.SetActive(false);
+            return;
+        }
+        
+        narrationCoroutine = StartCoroutine(StartNarration(text));
     }
 
     public void SetNarrationColor(Color newColor)

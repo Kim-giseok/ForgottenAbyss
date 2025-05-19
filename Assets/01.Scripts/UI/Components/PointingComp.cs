@@ -8,15 +8,14 @@ public class PointingComp : MonoBehaviour
     {
         _rectTransform = GetComponent<RectTransform>();
     }
-
-    public void SetSize(Transform target)
+    
+    public void Set(Transform target = null)
     {
+        if (!target) { gameObject.SetActive(false); return; }
+        gameObject.SetActive(true);
+        
+        SoundManager.Instance.Playsfx("Pointing");
         transform.localScale = target.localScale * 2.5f;
-    }
-
-    public void On(bool isOn)
-    {
-        transform.position = Vector3.zero;
-        gameObject.SetActive(isOn);
+        transform.position = target.position;   
     }
 }
