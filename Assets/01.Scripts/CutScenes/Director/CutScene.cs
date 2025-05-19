@@ -19,6 +19,7 @@ public abstract class CutScene: MonoBehaviour
     protected Player Player => GameManager.Instance.player;
     
     protected PointingComp Pointing => CutSceneManager.Instance.Pointing;
+    protected FadeScreen FadeScreen => CutSceneManager.Instance.FadeScreen;
     
     
     protected Action OnFinish;
@@ -114,7 +115,7 @@ public abstract class CutScene: MonoBehaviour
     }
     
     // 최대한 하나로 합치기, 내부에서 처리하도록 변경하기
-    protected void Narration(string newNarration = "")
+    protected async UniTask Narration(string newNarration = "")
     {
         if (newNarration == null)
         {
@@ -122,6 +123,6 @@ public abstract class CutScene: MonoBehaviour
             return;
         }
 
-        CutSceneManager.Instance.LetterBox.Narration(newNarration);
+        await CutSceneManager.Instance.LetterBox.Narration(newNarration);
     }
 }

@@ -87,6 +87,8 @@ public class SubCameraInteract: MonoBehaviour
         
         virCam2.Follow = null;
         virCam2.LookAt = null;
+        
+        Noise(0);
     }
     
     public void Focus(Vector3 targetPos)

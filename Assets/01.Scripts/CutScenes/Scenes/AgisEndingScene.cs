@@ -16,6 +16,7 @@ public class AgisEndingScene: CutScene
 
 
     public Material shinyMat;
+    private Material playerMaterial;
     
     protected override async UniTask StartScene()
     {
@@ -25,6 +26,7 @@ public class AgisEndingScene: CutScene
         // Player.transform.position = new Vector2(-3, -1);
         Camera.Init();
         Camera.DisConnect();
+        playerMaterial = Player.controller.spriteRenderer.material;
         
         SetCutSceneMode(true);
         Player.controller.rigid.velocity = Vector2.zero;
@@ -64,7 +66,7 @@ public class AgisEndingScene: CutScene
         
         Sound.StopSFX();
         Sound.Playsfx("AgisSpell");
-        for (int index = 0; index < 9; index++)
+        for (var index = 0; index < 9; index++)
         {
             var currSummon = Instantiate(summon, Player.transform.position + Vector3.down * 1.5f, Quaternion.Euler(0f, 0f, 0f));
             currSummon.transform.SetParent(transform);
@@ -89,46 +91,65 @@ public class AgisEndingScene: CutScene
 
         // [나레이션 시작]
         Sound.PlayBGM("Boss1EndingScene");
-        Narration("그 순간, 그는 흐릿한 장면을 떠올렸다.");
+        await Narration("그 순간, 그는 흐릿한 장면을 떠올렸다.");
         await Wait();
         
         Camera.Noise(1f, 1f);
-        Narration("그 날, 지금처럼 그림자를 흡수하여 모든 것을 파괴시키던 날을..");
+        await Narration("그 날, 지금처럼 그림자를 흡수하여 모든 것을 파괴시키던 날을..");
         await Wait();
         
-        Narration();
+        Narration().Forget();
         await Text("이럴수가..");
         await Text("내가 그림자인건가..");
         
         LetterBox.SetColor(Color.red);
-        Narration("아지스의 음성 - 그림자여, 이미 우리는 하나의 약속된 운명을 함께할 것이다..");
+        await Narration("아지스의 음성 - 그림자여, 이미 우리는 하나의 약속된 운명을 함께할 것이다..");
         await Wait();
      
         LetterBox.SetColor(Color.white);
-        Narration("그는 진실을 알수 없는 현실 속에서 큰 혼란을 가득 품게 된다.");
+        await Narration("그는 진실을 알수 없는 현실 속에서 큰 혼란을 가득 품게 된다.");
         await Wait();
      
-        Narration();
+        Narration().Forget();
         await Text("도대체 그림자는 무엇이지..");
         await Text("어떻게 해야 벗어날 수 있는 것인가..");
         
-        Narration("그 순간 머릿 속에서 어떤 이의 얼굴을 희미하게 떠올렸다.");
+        await Narration("그 순간 머릿 속에서 어떤 이의 얼굴을 희미하게 떠올렸다.");
         await Wait();
-        Narration("붉은 달이 떠오를 때, 더 붉게 비추던 존재.");
+        await Narration("붉은 달이 떠오를 때, 더 붉게 비추던 존재.");
         await Wait();
 
     
-        Narration();
+        Narration().Forget();
         await Text("문 스톤...");
         await Text("그 존재를 없애면,");
         await Text("끝없는 반복 속에서 벗어날 수 있을거야.");
         
-        Narration("그는 자신의 존재의 소멸을 각오한 채,");
+        await Narration("그는 자신의 존재의 소멸을 각오한 채,");
         await Wait();
-        Narration("모든 것을 끝낼 것을 결심한다.");
+        await Narration("모든 것을 끝낼 것을 결심한다.");
         await Wait();
 
-        Light.FadeOut(1, 0.4f);
-        // Light.FadeIn(1, 0.4f);
+        Light.FadeOut(3, 0.4f);
+        FadeScreen.SetFade(false, 3f);
+        await UniTask.Delay(3000); 
+
+        // [초기화]
+        summonedObjects.ForEach(Destroy);
+        Destroy(absorptionParticle);
+        Destroy(electronicParticle);
+        
+        Camera.Reset();
+        Sound.StopBGM();
+        Narration().Forget();
+        SetCutSceneMode(false);
+        
+        Light.globalLight.intensity = 1f;
+        Light.globalLight.color = Color.white;
+        Player.controller.spriteRenderer.material = playerMaterial;
+        Player.controller.rigid.isKinematic = false;
+        
+        FadeScreen.SetFade(true, 0.6f);
+        Light.FadeIn(0.6f);
     }
 }

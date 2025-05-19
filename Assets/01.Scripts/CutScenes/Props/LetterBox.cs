@@ -1,4 +1,7 @@
+using System;
 using System.Collections;
+using System.Threading;
+using Cysharp.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,7 +14,7 @@ public class LetterBox : MonoBehaviour
 
     public TextMeshProUGUI narrationText;
     
-    private Coroutine narrationCoroutine; 
+    private CancellationTokenSource _narrationCTS;
     private Coroutine letterBoxCoroutine; 
     
     private bool skipLine;
@@ -26,7 +29,15 @@ public class LetterBox : MonoBehaviour
         verticalLayoutGroup = GetComponent<VerticalLayoutGroup>();
         canvasGroup = GetComponent<CanvasGroup>();
     }
-    
+
+    private void Update()
+    {
+        if (Input.anyKeyDown || Input.GetMouseButtonDown(0))
+        {
+            skipLine = true;
+        }
+    }
+
     private IEnumerator HandleWidth(bool isShow)
     {
         float currTime = 0f;
@@ -62,36 +73,40 @@ public class LetterBox : MonoBehaviour
         letterBoxCoroutine = StartCoroutine(HandleWidth(isShow));
     }
     
-    private IEnumerator StartNarration(string text)
+    private async UniTask PlayNarrationAsync(string text)
     {
         if(!narrationText.gameObject.activeSelf) { narrationText.gameObject.SetActive(true); }
         
         skipLine = false;
         narrationText.text = "";
     
-        foreach (char c in text)
+        foreach (var c in text)
         {
-            if (skipLine) { narrationText.text = text; break; }
+            if (skipLine)
+            {
+                narrationText.text = text; 
+                _narrationCTS.Token.ThrowIfCancellationRequested();
+                break;
+            }
             
             SoundManager.Instance.Playsfx("Tick");
             narrationText.text += c;
-            yield return new WaitForSeconds(0.035f);
+            await UniTask.Delay(50);
         }
-        
-        skipLine = true;
     }
 
-    public void Narration(string text)
+    public async UniTask Narration(string text)
     {
-        if(narrationCoroutine != null) StopCoroutine(narrationCoroutine);
-
+        _narrationCTS?.Cancel();
+        
         if (text == "")
         {
             narrationText.gameObject.SetActive(false);
             return;
         }
         
-        narrationCoroutine = StartCoroutine(StartNarration(text));
+        _narrationCTS = new CancellationTokenSource();
+        await PlayNarrationAsync(text);
     }
 
     public void SetColor(Color newColor)
