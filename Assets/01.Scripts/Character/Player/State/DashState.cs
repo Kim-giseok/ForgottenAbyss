@@ -30,6 +30,9 @@ public class DashState : PlayerStateMachine
     public override void Update()
     {
         base.Update();
+
+        player.UpdateDirection();
+
         dashTimer += Time.deltaTime;
         if (dashTimer >= player.dashTime) //대쉬 종료
         {
