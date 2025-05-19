@@ -89,6 +89,7 @@ public class SubCameraInteract: MonoBehaviour
         virCam2.LookAt = null;
         
         Noise(0);
+        Profile(NoiseType.Base);
     }
     
     public void Focus(Vector3 targetPos)

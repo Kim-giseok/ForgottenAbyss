@@ -64,16 +64,17 @@ public class AgisStartScene : CutScene
         Camera.DisConnect();
         
         // [등장]
+        Light.FadeOut(3, 0.2f);
         soundTimeline.SetActive(true);
         agisAppears.SetActive(true);
         
         Camera.Focus(agisAppears);
-        Camera.Noise(2, 1);
-        Light.FadeIn(1f);
+        Camera.Profile(SubCameraInteract.NoiseType.Held);
+        Camera.Noise(2, 2);
         
-        await UniTask.Delay(4000);
+        await UniTask.Delay(6000);
         Camera.Noise(0);
-        await UniTask.Delay(4000);
+        await UniTask.Delay(2000);
         
         // [agis main actor  등장]
         soundTimeline.gameObject.SetActive(false);
@@ -96,6 +97,7 @@ public class AgisStartScene : CutScene
         Camera.Reset();
         Narration().Forget();
         LetterBox.SetColor(Color.white);
+        Light.Reset();
 
         SetCutSceneMode(false);
         await UniTask.Delay(3000);

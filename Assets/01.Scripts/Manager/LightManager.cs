@@ -10,11 +10,11 @@ public class LightManager: SingletonLoadRemain<LightManager>
 
     private IEnumerator FadeLight(float from, float to, float duration)
     {
-        float t = 0f;
-        while (t < duration)
+        float currTime = 0f;
+        while (currTime < duration)
         {
-            t += Time.deltaTime;
-            globalLight.intensity = Mathf.Lerp(from, to, t / duration);
+            currTime += Time.deltaTime;
+            globalLight.intensity = Mathf.Lerp(from, to, currTime / duration);
             yield return null;
         }
         globalLight.intensity = to;
