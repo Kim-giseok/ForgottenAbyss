@@ -94,7 +94,7 @@ public class LetterBox : MonoBehaviour
         narrationCoroutine = StartCoroutine(StartNarration(text));
     }
 
-    public void SetNarrationColor(Color newColor)
+    public void SetColor(Color newColor)
     {
         narrationText.color = newColor;
     }

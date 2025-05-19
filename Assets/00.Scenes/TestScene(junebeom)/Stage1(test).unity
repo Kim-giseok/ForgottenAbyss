@@ -820,10 +820,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6fc7535184bc471291ada56078e4df97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  OnFinishUnityEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  Screenshot: {fileID: 1693377594}
 --- !u!4 &1162163318
 Transform:
   m_ObjectHideFlags: 0
@@ -1115,7 +1111,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9056182808368914233, guid: ab8df4aa6cd8a4834a48e9c45bb51d55, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

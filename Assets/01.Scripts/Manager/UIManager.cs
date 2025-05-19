@@ -90,6 +90,7 @@ public class UIManager : MonoBehaviour
             npcText.SetActive(false);
     }
 
+    // ReSharper disable Unity.PerformanceAnalysis
     public void OnTalk(Transform parent, string sentence)
     {
         talkBox.Set(sentence).Forget();
