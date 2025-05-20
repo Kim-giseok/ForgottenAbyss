@@ -1,10 +1,13 @@
+using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 
 public class Boss2EndingScene: CutScene
 { 
     public RectTransform screenshot;
+    public List<GameObject> mudEyes;
     
     protected override async UniTask StartScene()
     {
@@ -12,8 +15,9 @@ public class Boss2EndingScene: CutScene
         GameManager.Instance.PausePlayer();
         SetCutSceneMode(true); // error: 먼저 활성화되어야 Fade 가능
         Scene.FadeScreen.SetFade(false, 3f);
-        
         await UniTask.Delay(5000);
+        
+        // [이미지 표시]
         UIPool.Set(screenshot);
         Scene.FadeScreen.SetFade(true, 3f);
         
@@ -26,5 +30,15 @@ public class Boss2EndingScene: CutScene
         await Wait();
         await Narration("그리고, 지켜내지 못했던 잊혀진 나락을..");
         await Wait();
+
+        // [초기화]
+        Scene.FadeScreen.SetFade(false, 0f);
+        UIPool.Delete(screenshot);
+        Narration().Forget();
+        
+        // [화면 전환]
+        await UniTask.Delay(5000);
+        gameObject.SetActive(false);
+        SceneManager.LoadScene("FlashbackScene");
     }
 }
