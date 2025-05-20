@@ -30,6 +30,7 @@ public class IntroBattleScene: CutScene
         await Text("이름도, 이 곳에 온 이유도 아무것도 ...");
 
         // [추적 씬]
+        Sound.Playsfx("Running");
         Camera.Focus(npc.transform);
         Camera.Zoom(true, 0.4f, 4.4f);
         Camera.Noise(1, 1f);
