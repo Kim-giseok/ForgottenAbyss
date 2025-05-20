@@ -30,6 +30,9 @@ public class DashState : PlayerStateMachine
     public override void Update()
     {
         base.Update();
+
+        player.UpdateDirection();
+
         dashTimer += Time.deltaTime;
         if (dashTimer >= player.dashTime) //대쉬 종료
         {
@@ -57,7 +60,7 @@ public class DashState : PlayerStateMachine
 
         //player.StartCoroutine(WaitForLandingToResetCollision());
         player.rigid.collisionDetectionMode = CollisionDetectionMode2D.Discrete;
-        player.StartCoroutine(DashCooldown(0.5f));
+        player.StartCoroutine(DashCooldown(player.dashCoolTime));
     }
 
     private IEnumerator WaitForLandingToResetCollision()

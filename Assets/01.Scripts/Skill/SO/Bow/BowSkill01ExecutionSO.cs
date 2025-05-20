@@ -9,6 +9,7 @@ public class BowSkill01ExecutionSO : SkillExecutionSO
     public LayerMask hitMask;
     public float damageDelay;
     public float hitRadius;
+    float soundDelay = 0.25f;
 
     public override void Execute(GameObject caster, GameObject target, SkillData data)
     {
@@ -18,18 +19,20 @@ public class BowSkill01ExecutionSO : SkillExecutionSO
         Vector2 origin = (Vector2)caster.transform.position + Vector2.up * 0.5f + direction * 2f;
 
         SkillController.Instance.isBowAttack = true;
-        SkillController.Instance.rangedAttack.PlayComboEffect();
         SystemManager.Instance.coroutinRunner.RunCoroutine(ExecuteWithEffectDelay(caster, origin, direction, castData));
     }
 
     private IEnumerator ExecuteWithEffectDelay(GameObject caster, Vector2 origin, Vector2 direction, SkillCastData castData)
     {
-        //PlaySound("BowShoot2");
+        yield return new WaitForSeconds(soundDelay);
+        PlaySound("BowAttack2");
         GameManager.Instance.cameraZoom.ZoomIn(0.5f);  
-        yield return new WaitForSeconds(damageDelay);
-        SkillController.Instance.rangedAttack.AdvanceCombo();
+
+        yield return new WaitForSeconds(damageDelay - soundDelay);
+
         SkillController.Instance.rangedAttack.PlayShotEffect();
         GameManager.Instance.cameraZoom.ZoomOut();
+
         float extraLength = 3f; // 범위 확장값
         Vector2 dir = direction.normalized;
 

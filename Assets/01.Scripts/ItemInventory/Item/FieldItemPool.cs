@@ -13,7 +13,7 @@ public class FieldItemPool: SingletonLoadRemain<FieldItemPool>
 
     public FieldItem memoryItem;
     public Dictionary<string, MemorySkillItem> MemoryItemList { get; private set; } = new();
-    private readonly List<FieldItem> _currMemoryItems = new();
+    public List<FieldItem> CurrMemoryItems { get; private set;  } = new();
     
     protected override void OnSceneLoaded(Scene scene, LoadSceneMode mode) {}
 
@@ -30,11 +30,11 @@ public class FieldItemPool: SingletonLoadRemain<FieldItemPool>
 
     public void CreateMemoryItem(Vector2 position, string itemName)
     {
-        var newMemoryItem = _currMemoryItems.Find(item => !item.gameObject.activeSelf);
+        var newMemoryItem = CurrMemoryItems.Find(item => !item.gameObject.activeSelf);
         if (!newMemoryItem)
         {
             newMemoryItem = Instantiate(memoryItem, transform).GetComponent<FieldItem>();
-            _currMemoryItems.Add(newMemoryItem);
+            CurrMemoryItems.Add(newMemoryItem);
         }
 
         if (MemoryItemList.TryGetValue(itemName, out var currSkillItem))

@@ -9,7 +9,7 @@ public class Test1Node : Node
     }
     public override void Start()
     {
-        controller.animHandler.Play("Run");
+        controller.Anim.Play("Run");
         controller.Flip(false);
     }
 
@@ -21,13 +21,13 @@ public class Test1Node : Node
             return;
         }
         
-        var currVelocity = controller.Rigidbody.velocity;
-        controller.Rigidbody.velocity = new Vector2(-3, currVelocity.y);
+        var currVelocity = controller.Rigid.velocity;
+        controller.Rigid.velocity = new Vector2(-3, currVelocity.y);
     }
 
     public override void End()
     {
-        controller.Rigidbody.velocity = Vector2.zero;
+        controller.Rigid.velocity = Vector2.zero;
         controller.Flip(isFlipEnd);
     }
 }

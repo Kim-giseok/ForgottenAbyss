@@ -6,7 +6,7 @@ public class ExplosionNode : Node
 {
     public override void Start()
     {
-        controller.animHandler.Play("Explosion");
+        controller.Anim.Play("Explosion");
     }
 
     public override void OnAnimatedEvent(bool isFire)
@@ -18,7 +18,7 @@ public class ExplosionNode : Node
                 .SetSize(2f)
                 .Fire();
             
-            BoltsPool.Instance.CreateParticle(controller.transform, "NightBone_Explosion")
+            BoltsPool.Instance.Particle(controller.transform, "NightBone_Explosion")
                 .SetSize(2.5f).SetPosition(controller.transform.position + new Vector3(Random.Range(-0.2f, 0.2f), 0.6f + Random.Range(-0.2f, 0.2f))).Play();
 
         }
@@ -44,7 +44,7 @@ public class ChargingNode : Node
     
     public override void Start()
     {
-        controller.animHandler.Play("Charging");
+        controller.Anim.Play("Charging");
         SoundManager.Instance.Playsfx("ElectronicCast");
     }
 
@@ -59,9 +59,9 @@ public class StopNode : Node
 {
     public override void Start()
     {
-        if(controller.agent.status != EnemyAgent.Status.Tracked) { SetStatus(Status.Fail); return; }
+        if(controller.Agent.status != EnemyAgent.Status.Tracked) { SetStatus(Status.Fail); return; }
 
-        controller.Rigidbody.velocity = Vector2.zero;
+        controller.Rigid.velocity = Vector2.zero;
         SetStatus(Status.Success);
         return;
     }

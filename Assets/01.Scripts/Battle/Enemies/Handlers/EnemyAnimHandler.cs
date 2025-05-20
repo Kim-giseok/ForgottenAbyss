@@ -40,9 +40,9 @@ public class EnemyAnimHandler: MonoBehaviour
         {
             currStatus = Status.Start;
             
-            if (controller.machine.currNode == null) return;
-            controller.machine.currNode.SetController(controller);
-            controller.machine.currNode.OnAnimated(Node.AnimationStatus.Start, stateInfo);
+            if (controller.Machine.currNode == null) return;
+            controller.Machine.currNode.SetController(controller);
+            controller.Machine.currNode.OnAnimated(Node.AnimationStatus.Start, stateInfo);
         }
         
         
@@ -51,11 +51,11 @@ public class EnemyAnimHandler: MonoBehaviour
         {
             currStatus = Status.End;
 
-            if (controller.machine.currNode == null) return;
+            if (controller.Machine.currNode == null) return;
             
             // 에러 발생 확인 필요 - confirm : 확인 결과 Node 내부에서 에러가 나면 여기서 에러를 반환
-            controller.machine.currNode.SetController(controller);
-            controller.machine.currNode.OnAnimated(Node.AnimationStatus.End, stateInfo);
+            controller.Machine.currNode.SetController(controller);
+            controller.Machine.currNode.OnAnimated(Node.AnimationStatus.End, stateInfo);
         }   
     }
 }

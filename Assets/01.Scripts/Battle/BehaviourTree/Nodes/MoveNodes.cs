@@ -12,8 +12,8 @@ public class IdleNode : Node
 
     public override void Start()
     {
-        controller.Rigidbody.velocity = new Vector2(0, controller.Rigidbody.velocity.y);
-        controller.animHandler.Play("Idle");
+        controller.Rigid.velocity = new Vector2(0, controller.Rigid.velocity.y);
+        controller.Anim.Play("Idle");
     }
 
     public override void Update()
@@ -48,7 +48,7 @@ public class PatrolMove : Node
             SetStatus(Status.Fail); return;
         } 
      
-        controller.animHandler.Play("Run");
+        controller.Anim.Play("Run");
     }
 
     public override void Update()
@@ -58,7 +58,7 @@ public class PatrolMove : Node
             SetStatus(Status.Success); return;
         }
         
-        controller.Rigidbody.velocity = new Vector2(context.Get<Vector2>("direction").x, controller.Rigidbody.velocity.y);
+        controller.Rigid.velocity = new Vector2(context.Get<Vector2>("direction").x, controller.Rigid.velocity.y);
     }
     
     public override void OnAgentDetected(EnemyAgent.Status status)
@@ -72,9 +72,9 @@ public class TracingNode : Node
     public override void Start()
     {
         // 추적이 완료되면 무한 재귀 발생
-        if(controller.agent.status == EnemyAgent.Status.None) { SetStatus(Status.Fail); return; }
-        if(controller.agent.status == EnemyAgent.Status.Tracked) { SetStatus(Status.Success); return; }
-        controller.animHandler.Play("Run");
+        if(controller.Agent.status == EnemyAgent.Status.None) { SetStatus(Status.Fail); return; }
+        if(controller.Agent.status == EnemyAgent.Status.Tracked) { SetStatus(Status.Success); return; }
+        controller.Anim.Play("Run");
     }
     
     public override void Update()
@@ -93,7 +93,7 @@ public class TracingNode : Node
         //     SetStatus(Status.Success);            
         // }
         
-        controller.Rigidbody.velocity = new Vector2(controller.agent.GetDirection().x * controller.agent.tracingSpeed, controller.Rigidbody.velocity.y);
+        controller.Rigid.velocity = new Vector2(controller.Agent.GetDirection().x * controller.Agent.tracingSpeed, controller.Rigid.velocity.y);
     }
     
     public override void OnAgentDetected(EnemyAgent.Status status)
@@ -116,19 +116,19 @@ public class MovePlatformNode : Node
 {
     public override void Start()
     {
-        if (NavSurface.Instance.GetPlatformId(controller.agent.target) == NavSurface.Instance.GetPlatformId(controller.gameObject))
+        if (NavSurface.Instance.GetPlatformId(controller.Agent.target) == NavSurface.Instance.GetPlatformId(controller.gameObject))
         {
             // 플랫폼 이동과 추적 간의 순서는 좀 더 생각해보기
             SetStatus(Status.Success);
             return;
         }
         
-        var targetPlatform = NavSurface.Instance.platforms.Find(platform => platform.id == NavSurface.Instance.GetPlatformId(controller.agent.target));
+        var targetPlatform = NavSurface.Instance.platforms.Find(platform => platform.id == NavSurface.Instance.GetPlatformId(controller.Agent.target));
         Vector2 destination = targetPlatform.centerCell.WorldPos;
         context.Set("destination", new Vector3(destination.x, destination.y, 0));
         
         controller.Collider.isTrigger = true;
-        controller.Rigidbody.gravityScale = 0;
+        controller.Rigid.gravityScale = 0;
         // controller.rigidbody.isKinematic = true;
     }
 
@@ -152,7 +152,7 @@ public class MovePlatformNode : Node
     {
         controller.Collider.isTrigger = false;
         // controller.rigidbody.isKinematic = false;
-        controller.Rigidbody.gravityScale = 2;
+        controller.Rigid.gravityScale = 2;
     }
 }
 
@@ -166,7 +166,7 @@ public class DashNode : Node // 현재 방향이거나 타겟 방향
     public override void Update()
     {
         if(currTime > 1) { SetStatus(Status.Success); return; }
-        controller.Rigidbody.velocity = new Vector2(controller.transform.localEulerAngles.y == 180 ? -2 : 2, controller.Rigidbody.velocity.y);
+        controller.Rigid.velocity = new Vector2(controller.transform.localEulerAngles.y == 180 ? -2 : 2, controller.Rigid.velocity.y);
     }
 }
 
@@ -180,6 +180,6 @@ public class JumpNode : Node
         // var direction = currDirection.x < 0 ? -1 : 1; // 타깃이 몬스터라면 문제가 생김
         
         // controller.rigidbody.AddForce(new Vector2(direction * 1f, 4f), ForceMode2D.Impulse);
-        controller.Rigidbody.AddForce(new Vector2(1f, 4f), ForceMode2D.Impulse);
+        controller.Rigid.AddForce(new Vector2(1f, 4f), ForceMode2D.Impulse);
     }
 }

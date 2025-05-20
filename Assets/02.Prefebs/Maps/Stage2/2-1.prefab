@@ -2952,6 +2952,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startP: {fileID: 7893453707778757205}
   <CameraCollider>k__BackingField: {fileID: 528031507469768712}
+  <monsterManager>k__BackingField: {fileID: 0}
 --- !u!1 &5437016505993273112
 GameObject:
   m_ObjectHideFlags: 0
@@ -2977,7 +2978,7 @@ Transform:
   m_GameObject: {fileID: 5437016505993273112}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -8, y: -3, z: 0}
+  m_LocalPosition: {x: -8, y: -4, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3028,13 +3029,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 607881c967f830647b23c3f6afc77d9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  laberAnim: {fileID: 6110450174999154851}
   targetMachines:
   - {fileID: 2140804774002791276}
   - {fileID: 2607232811532164710}
   - {fileID: 1390567955029351407}
-  laberAnim: {fileID: 6110450174999154851}
-  activeOnce: 0
-  flagName: 0
+  activatableConditionFlag: 0
+  activeOnceFlag: 0
   enemies: []
 --- !u!95 &6110450174999154851
 Animator:
@@ -5308,17 +5309,17 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 55, y: 8}
-      - {x: 31.75, y: 8}
-      - {x: 31.75, y: -1}
-      - {x: 31.25, y: -1}
-      - {x: 31.25, y: 8}
-      - {x: 8.75, y: 8}
-      - {x: 8.75, y: -1}
-      - {x: 8.25, y: -1}
-      - {x: 8.25, y: 8}
+    - - {x: 9, y: 8}
       - {x: -13, y: 8}
       - {x: -13, y: -6}
+      - {x: 9, y: -6}
+    - - {x: 32, y: 8}
+      - {x: 8, y: 8}
+      - {x: 8, y: -6}
+      - {x: 32, y: -6}
+    - - {x: 55, y: 8}
+      - {x: 31, y: 8}
+      - {x: 31, y: -6}
       - {x: 55, y: -6}
   m_UseDelaunayMesh: 0
 --- !u!1001 &900662018579963022

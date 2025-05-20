@@ -8,7 +8,7 @@ public class InitNode: Node
     public override void Start()
     {
         controller.transform.localScale = size;
-        controller.Renderer.enabled = true;
+        controller.Render.enabled = true;
         SetStatus(Status.Success);
     }
 }

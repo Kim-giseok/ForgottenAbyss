@@ -4,9 +4,9 @@ public class SSCastingNode : Node
 {
     public override void Start()
     {
-        controller.animHandler.Play("Casting");
+        controller.Anim.Play("Casting");
         controller.LookTarget();
-        controller.Rigidbody.velocity = Vector2.zero;
+        controller.Rigid.velocity = Vector2.zero;
     }
 
     public override void OnAnimated(AnimationStatus status, AnimatorStateInfo animInfo)
@@ -27,13 +27,13 @@ public class SSDashAttack : Node
 
     public override void Start()
     {
-        controller.animHandler.Play(animationName);
+        controller.Anim.Play(animationName);
         controller.LookTarget();
 
-        controller.Rigidbody.velocity = Vector2.zero;
+        controller.Rigid.velocity = Vector2.zero;
         // controller.rigidbody.gravityScale = 0f;
-        controller.Rigidbody.drag = 4f;
-        controller.Rigidbody.AddForce(new Vector2(controller.agent.GetDirection().x * 24f, 0), ForceMode2D.Impulse);
+        controller.Rigid.drag = 4f;
+        controller.Rigid.AddForce(new Vector2(controller.Agent.GetDirection().x * 24f, 0), ForceMode2D.Impulse);
 
         controller.soundHandler.Play(EnemySoundType.Attack);
     }
@@ -56,7 +56,7 @@ public class SSDashAttack : Node
 
     public override void End()
     {
-        controller.Rigidbody.drag = 0;
+        controller.Rigid.drag = 0;
     }
     
 }
@@ -67,9 +67,9 @@ public class RandomCoolTimeNode : Node
     {
         context.Set("idleRandomDuration", Random.Range(0.4f, 2f));
         
-        controller.Rigidbody.velocity = new Vector2(0, controller.Rigidbody.velocity.y);
+        controller.Rigid.velocity = new Vector2(0, controller.Rigid.velocity.y);
         
-        controller.animHandler.Play("Idle");
+        controller.Anim.Play("Idle");
     }
 
     public override void Update()
@@ -91,7 +91,7 @@ public class CoolTimeNode : Node
     public CoolTimeNode(float duration) => this.duration = duration;
     public override void Start()
     {
-        controller.animHandler.Play("Idle");
+        controller.Anim.Play("Idle");
     }
 
     public override void Update()

@@ -503,6 +503,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 17536
   isOnLadder: 0
+  lastJumpTime: 0
+  dashCoolTime: 0
 --- !u!114 &7695836731054088730
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -520,7 +522,7 @@ MonoBehaviour:
   controller: {fileID: 0}
   isDead: 0
   defenseFactor: 100
-  hpRegenRate: 10
+  hpRegenRate: 50
   mpRegenRate: 5
   speed: 0
 --- !u!114 &5384723960413066390
@@ -570,6 +572,8 @@ MonoBehaviour:
   maxCombo: 6
   comboBar: {fileID: 2449659017570709894}
   attackIndex: 0
+  canJumpAttack: 1
+  IsAttacking: 0
 --- !u!114 &8607925810357332777
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -587,6 +591,8 @@ MonoBehaviour:
   maxCombo: 3
   comboBar: {fileID: 2449659017570709894}
   shotAnimator: {fileID: 5684409444336252699}
+  canJumpAttack: 1
+  IsAttacking: 0
 --- !u!114 &307188709645930398
 MonoBehaviour:
   m_ObjectHideFlags: 0

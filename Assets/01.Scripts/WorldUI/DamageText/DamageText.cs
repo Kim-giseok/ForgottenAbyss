@@ -25,43 +25,14 @@ public class DamageText : MonoBehaviour
     {
         dmgText.text = damage.ToString();
 
-        Color targetColor = Color.white;
+        Color defaultColor = Color.white;
+        Color criticalColor = new Color(1f, 0.84f, 0f);
+        Color targetColor = isCritical ? criticalColor : defaultColor;
 
-        if (damage > 40)
-            targetColor = new Color(1f, 0.2f, 0.2f); // ������
-        else if (damage > 30)
-            targetColor = new Color(1f, 0.5f, 0f); // ��Ȳ��
-        else if (damage > 20)
-            targetColor = new Color(1f, 1f, 0f); // �����
+        float criticalSize = defaultFontSize * 3f;
+        float targetSize = isCritical ? criticalSize : defaultFontSize;
 
-        Material newMat = new Material(originalMaterial);
-
-        // ũ��Ƽ���� �� 
-        if (isCritical)
-        {
-            dmgText.fontSize = defaultFontSize * 1.5f;
-
-            // �ƿ����� + �۷ο� ȿ��
-            newMat.SetColor("_OutlineColor", targetColor);
-            newMat.SetFloat("_OutlineWidth", 0.125f);
-
-            newMat.EnableKeyword("GLOW_ON");
-            newMat.SetColor("_GlowColor", Color.white);
-            newMat.SetFloat("_GlowPower", 0.2f);
-            newMat.SetFloat("_GlowOuter", 0.1f);
-        }
-        else
-        {
-            // �Ϲ� �������� ��� ȿ�� ����
-            newMat.SetColor("_OutlineColor", targetColor);
-            newMat.SetFloat("_OutlineWidth", 0.05f);
-            newMat.DisableKeyword("GLOW_ON");
-        }
-
-        dmgText.fontMaterial = newMat;
-        dmgText.SetAllDirty();
-
-        StartCoroutine(AnimateText(targetColor, dmgText.fontSize, isCritical));
+        StartCoroutine(AnimateText(targetColor, targetSize, isCritical));
 
         // ��ġ ���� ����
         Vector2 randomOffset = new Vector2(Random.Range(-0.5f, 0.5f), Random.Range(0f, 1f));
@@ -100,15 +71,7 @@ public class DamageText : MonoBehaviour
     {
         dmgText.text = message;
         dmgText.color = color ?? Color.red;
-
-        Material newMat = new Material(originalMaterial);
-
-        newMat.SetColor("_OutlineColor", Color.black);
-        newMat.SetFloat("_OutlineWidth", 0.1f);
-
-        dmgText.fontMaterial = newMat;
         dmgText.fontSize = defaultFontSize;
-        dmgText.SetAllDirty();
 
         StartCoroutine(AnimateMessageText());
     }

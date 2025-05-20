@@ -7,7 +7,7 @@ public class MudMoveNode : Node
     public MudMoveNode(Vector2 direction) => this.direction = direction;
     public override void Start()
     {
-        controller.Rigidbody.AddForce(direction, ForceMode2D.Impulse);
+        controller.Rigid.AddForce(direction, ForceMode2D.Impulse);
     }
 
     public override void Update()
@@ -17,7 +17,7 @@ public class MudMoveNode : Node
 
     public override void End()
     {
-        controller.Rigidbody.velocity = Vector2.zero;
+        controller.Rigid.velocity = Vector2.zero;
     }
 }
 
@@ -25,7 +25,7 @@ public class MudWarpNode : Node
 {
     public override void Start()
     {
-        controller.animHandler.Play("Warp");
+        controller.Anim.Play("Warp");
         float clampedX = Random.Range(-7, 7);
         float clampedY = Random.Range(-5, 5);
         controller.transform.position = new Vector2(clampedX, clampedY);
@@ -42,7 +42,7 @@ public class MudSpawnNode : Node
 {
     public override void Start()
     {
-        var currPos = NavSurface.Instance.GetPlatform(controller.agent.target).centerCell.WorldPos + new Vector2(0, 1.7f);
+        var currPos = NavSurface.Instance.GetPlatform(controller.Agent.target).centerCell.WorldPos + new Vector2(0, 1.7f);
         EnemiesPool.Instance.Create(Enemy.MudHand, currPos);
         SetStatus(Status.Success);
     }

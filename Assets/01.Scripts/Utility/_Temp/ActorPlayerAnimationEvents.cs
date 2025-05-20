@@ -7,4 +7,5 @@ public class ActorPlayerAnimationEvents: MonoBehaviour
     public void OnComboCheck() {}
     public void OnMoveForward() {}
     public void OnJumpSmash() {}
+    public void onPlaySound() {}
 }

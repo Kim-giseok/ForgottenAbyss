@@ -19,14 +19,14 @@ public class DashAttack : Node
     {
         if (controller is not SummonController sController) { SetStatus(Status.Fail); return; }
         
-        controller.animHandler.SetSpeed(2f);
-        controller.animHandler.Play("Attack");
+        controller.Anim.SetSpeed(2f);
+        controller.Anim.Play("Attack");
         
         context.Set("direction", sController.cRigidbody.velocity.normalized);
         sController.Flip(Mathf.Approximately(sController.caster.eulerAngles.y, 0));
         
-        controller.Rigidbody.velocity = sController.cRigidbody.velocity.normalized * 80f;
-        controller.Rigidbody.drag = 20f;
+        controller.Rigid.velocity = sController.cRigidbody.velocity.normalized * 80f;
+        controller.Rigid.drag = 20f;
 
     }
 
@@ -46,14 +46,14 @@ public class DashAttack : Node
         
         if (status == AnimationStatus.End)
         {
-            controller.Rigidbody.drag = 0;
+            controller.Rigid.drag = 0;
             SetStatus(Status.Success);
         }
     }
 
     public override void End()
     {
-        controller.animHandler.SetSpeed(1f);
+        controller.Anim.SetSpeed(1f);
         BoltsPool.Instance.DisableMelee(controller.transform);
     }
 }
@@ -64,8 +64,8 @@ public class Explosion : Node
     public override void Start()
     {
         if(controller is not SummonController sController) { SetStatus(Status.Fail); return; }
-        sController.animHandler.Play("Explosion");
-        controller.animHandler.SetSpeed(1f);
+        sController.Anim.Play("Explosion");
+        controller.Anim.SetSpeed(1f);
     }
 
     public override void OnAnimatedEvent(bool isFire)
@@ -89,7 +89,7 @@ public class Explosion : Node
 
     public override void End()
     {
-        controller.animHandler.SetSpeed(1f);
+        controller.Anim.SetSpeed(1f);
     }
 }
 
@@ -102,13 +102,13 @@ public class ComboDashAttack : Node
     {
         if (controller is not SummonController sController) return;
 
-        controller.animHandler.Play(combo[currComboCount]);
+        controller.Anim.Play(combo[currComboCount]);
 
-        controller.Rigidbody.velocity = Vector2.zero;
-        controller.Rigidbody.gravityScale = 0f;
-        controller.Rigidbody.drag = 4f;
+        controller.Rigid.velocity = Vector2.zero;
+        controller.Rigid.gravityScale = 0f;
+        controller.Rigid.drag = 4f;
         
-        controller.Rigidbody.AddForce(sController.direction * 40f, ForceMode2D.Impulse);
+        controller.Rigid.AddForce(sController.direction * 40f, ForceMode2D.Impulse);
         
         // 공격 방향으로 Z축 회전
         float angle = Mathf.Atan2(sController.direction.y, Mathf.Abs(sController.direction.x)) * Mathf.Rad2Deg;
@@ -182,7 +182,7 @@ public class SkillHealNode : Node
     {
         if(controller is not SummonController sController) return;
         
-        controller.animHandler.Play("Heal");
+        controller.Anim.Play("Heal");
         Collider2D[] hits = Physics2D.OverlapCircleAll(controller.transform.position, 20f, LayerMask.GetMask("Enemy"));
         foreach (var hit in hits)
         {

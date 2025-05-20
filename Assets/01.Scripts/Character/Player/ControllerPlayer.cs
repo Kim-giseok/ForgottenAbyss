@@ -54,9 +54,15 @@ public class ControllerPlayer : MonoBehaviour
     [SerializeField] private float groundCheckRadius = 0.2f;
     public LayerMask groundLayer;
     public bool isOnLadder = false;
+    private bool wasGrounded = false;
 
+    [Header("InputTimeCheck")]
     private float lastDirectionChangeTime = 0f;
     private float directionChangeCooldown = 0.1f;
+    public float lastJumpTime = 0f;
+    private float jumpInputCooldown = 0.1f;
+
+    public float dashCoolTime = 0f;
 
     private void Awake()
     {
@@ -136,22 +142,6 @@ public class ControllerPlayer : MonoBehaviour
 
         AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
 
-        //if (!isGround && rigid.velocity.y < 0)
-        //{
-        //    if (!stateInfo.IsTag("Attack") && !stateInfo.IsTag("Ladder") && !stateInfo.IsTag("WallSlide") && !stateInfo.IsTag("Dash"))
-        //    {
-        //        if (!animator.GetBool("IsFall"))
-        //        {
-        //            animator.SetTrigger("FallTrigger");
-        //            animator.SetBool("IsFall", true);
-        //        }
-        //    }
-        //}
-        //else
-        //{
-        //    animator.SetBool("IsFall", false);
-        //}
-
         if (dashBuffered)
         {
             if (!stateInfo.IsTag("Turn"))
@@ -194,14 +184,19 @@ public class ControllerPlayer : MonoBehaviour
         if (!isAlive) return;
         if (value.isPressed)
         {
-            var weaponData = SystemManager.Instance.weaponManager.GetCurrentWeaponData();
-            var skillController = SkillController.Instance;
-
-            if (weaponData != null && weaponData.Type == WeaponType.Sword && skillController.comboAttack.attackIndex >= 3)
+            if (Time.time - lastJumpTime < jumpInputCooldown)
             {
-                Debug.Log("콤보가 3 이상이라 점프할 수 없습니다!");
+                Debug.Log("점프 직후 공격 입력 차단!");
                 return;
             }
+
+            if (IsJumpAttacking() || IsBasicAttacking())
+            {
+                Debug.Log("공격 중! 점프 불가!");
+                return;
+            }
+
+            lastJumpTime = Time.time;
 
             if (states.ContainsKey(currentState))
             {
@@ -296,6 +291,20 @@ public class ControllerPlayer : MonoBehaviour
         }
     }
 
+    public void OnAttackDirectionUpdate()
+    {
+        if (inputVec.x < 0)
+        {
+            isFacingRight = false;
+            transform.localEulerAngles = new Vector3(0, 180, 0);
+        }
+        else if (inputVec.x > 0)
+        {
+            isFacingRight = true;
+            transform.localEulerAngles = new Vector3(0, 0, 0);
+        }
+    }
+
     private IEnumerator EnableSkillAfterDelay()
     {
         yield return new WaitForSeconds(directionChangeCooldown);
@@ -314,9 +323,9 @@ public class ControllerPlayer : MonoBehaviour
         if (collision.gameObject.CompareTag("Ground"))
         {
             playerSound.LandSound();
-            isGround = true;
+            //isGround = true;
             animator.SetBool("IsJump", false);
-            currentJumpCount = 0;
+            //currentJumpCount = 0;
             rigid.velocity = Vector3.zero;
         }
 
@@ -443,10 +452,17 @@ public class ControllerPlayer : MonoBehaviour
 
     public void UpdateGroundCheck()
     {
-        if (currentState != PlayerState.Climb)
+        bool nowGrounded = Physics2D.OverlapCircle(transform.position, groundCheckRadius, groundLayer);
+
+        // 공중(false) → 착지(true) 순간에만 리셋
+        if (!wasGrounded && nowGrounded)
         {
-            isGround = Physics2D.OverlapCircle(transform.position, groundCheckRadius, groundLayer);
+            animator.SetBool("IsJump", false);
+            currentJumpCount = 0;
         }
+
+        isGround = nowGrounded;
+        wasGrounded = nowGrounded;
     }
 
     public void OnAttackAnimationEnd()
@@ -461,23 +477,54 @@ public class ControllerPlayer : MonoBehaviour
     {
         if (weaponType == WeaponType.Sword)
         {
-            dashDistance = 4f;
+            dashDistance = 3f;
             dashTime = 0.25f;
             dashCost = 10f;
+            dashCoolTime = 0.5f;
         }
         else if (weaponType == WeaponType.Bow)
         {
-            dashDistance = 2f;
-            dashTime = 0.25f;
+            dashDistance = 1.5f;
+            dashTime = 0.175f;
             dashCost = 5f;
+            dashCoolTime = 0.25f;
         }
         else
         {
             dashDistance = 2f; // 기본값
             dashTime = 0.25f;
             dashCost = 10f;
+            dashCoolTime = 0.5f;
         }
 
         Debug.Log($"[대쉬 설정] {weaponType} 장착 - 거리: {dashDistance}, 시간: {dashTime}, 비용: {dashCost}");
+    }
+
+    public bool IsJumpAttacking()
+    {
+        if (SkillController.Instance != null)
+            return SkillController.Instance.IsJumpAttack();
+        return false;
+    }
+
+    public bool IsBasicAttacking()
+    {
+        if (SkillController.Instance != null)
+            return SkillController.Instance.IsBasicAttack();
+        return false;
+    }
+
+    public void WaitForEnd()
+    {
+        if(SystemManager.Instance.weaponManager.GetCurrentWeaponData().Type == WeaponType.Sword)
+            StartCoroutine(WaitForAnimationEnd());
+        else
+            ChangeState(PlayerState.Idle);
+    }
+
+    public IEnumerator WaitForAnimationEnd()
+    {
+        yield return new WaitUntil(() => animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f);
+        ChangeState(PlayerState.Idle);
     }
 }

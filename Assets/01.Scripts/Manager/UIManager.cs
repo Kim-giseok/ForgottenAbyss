@@ -1,4 +1,5 @@
 using System.Collections;
+using Cysharp.Threading.Tasks;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
@@ -45,7 +46,7 @@ public class UIManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
 
         DragManager = new DragManager();
-        Debug.Log("[UIManager] DragManager »ý¼ºµÊ");
+        Debug.Log("[UIManager] DragManager ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
 
     }
 
@@ -90,9 +91,10 @@ public class UIManager : MonoBehaviour
             npcText.SetActive(false);
     }
 
+    // ReSharper disable Unity.PerformanceAnalysis
     public void OnTalk(Transform parent, string sentence)
     {
-        talkBox.Ondialogue(sentence);
+        talkBox.Set(sentence).Forget();
         talkBox.transform.position = parent.position + new Vector3(2f, 2.6f, 0f);
     }
 
@@ -170,7 +172,7 @@ public class UIManager : MonoBehaviour
         statUI.OffStatUI();
         passiveUI.OffPassiveUI();
 
-        Debug.Log("[UIManager] ëª¨ë“  UI ?¨ê? ?„ë£Œ");
+        Debug.Log("[UIManager] ëª¨ë“  UI ?ï¿½ï¿½? ?ï¿½ë£Œ");
     }
 
     public void ToggleStatUI()

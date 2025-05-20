@@ -2,7 +2,7 @@ public class GhostSummoningNode : Node
 {
     public override void Start()
     {
-        controller.animHandler.Play("Summoning");
+        controller.Anim.Play("Summoning");
     }
 }
 

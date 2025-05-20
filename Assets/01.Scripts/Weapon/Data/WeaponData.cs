@@ -14,7 +14,7 @@ public class WeaponData
     public int Id;
     public string Name;
     public string Description;
-    public int Damage;
+    public float Damage;
     public float Range;
     public int ComboAttack;
     public int RangedAttack;

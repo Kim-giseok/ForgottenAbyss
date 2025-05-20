@@ -19,8 +19,12 @@ public class SwordSkill01ExecutionSO : SkillExecutionSO
 
     private IEnumerator HitTwiceCoroutine(GameObject caster, SkillCastData castData)
     {
+        PlaySound("SwordAttack4");
         HitEnemies(caster, castData);
+
         yield return new WaitForSeconds(delayBetweenHits);
+
+        PlaySound("SwordAttack4");
         HitEnemies(caster, castData);
     }
 
@@ -28,8 +32,6 @@ public class SwordSkill01ExecutionSO : SkillExecutionSO
     {
         Vector2 center = caster.transform.position;
         Collider2D[] hits = GetEnemiesInRange(center, range, targetLayer);
-
-        //PlaySound("AWP_Miss_Katana_01");
 
         foreach (var hit in hits)
         {
