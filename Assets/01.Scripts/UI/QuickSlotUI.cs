@@ -16,12 +16,13 @@ public class QuickSlotUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHan
     private float remainingCooldown = 0f;
     private bool waitingToClear = false;
 
-    private IItemContainer container;
+    private IItemContainer container; // 우클릭용
+    private IItemContainer originContainer; // 인벤토리 참조용
     private ISlot slot;
     private int index;
 
     public ISlot Slot => slot;
-    public IItemContainer Container => container;
+    public IItemContainer Container => originContainer;
     public int Index => index;
     public bool IsEmpty => slot == null || slot.IsEmpty;
 
@@ -30,20 +31,18 @@ public class QuickSlotUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHan
         itemUI = GetComponentInChildren<ItemUI>(true);
     }
 
-    public void SetSlot(ISlot newSlot, int slotIndex, IItemContainer parent)
+    public void SetSlot(ISlot newSlot, int slotIndex, IItemContainer quickSlotController, IItemContainer inventory)
     {
         slot = newSlot;
         index = slotIndex;
-        container = parent;
+        container = quickSlotController;
+        originContainer = inventory;
 
         if (slot != null && !slot.IsEmpty)
         {
             iconImage.sprite = slot.Item.itemIcon;
             iconImage.enabled = true;
             amountText.text = slot.Quantity.ToString();
-
-            //var dragHandler = itemUI.GetComponent<ItemDragHandler>();
-            //dragHandler?.SetOrigin(container, index);
 
             itemUI?.SetItem(slot.Item);
             itemUI?.gameObject.SetActive(true);
@@ -77,14 +76,9 @@ public class QuickSlotUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHan
             if (remainingCooldown <= 0f)
             {
                 cooldownOverlay.fillAmount = 0f;
+
                 if (waitingToClear)
                 {
-                    if (slot != null && !slot.IsEmpty && slot.Item != null)
-                    {
-                        container?.RemoveItem(slot.Item, 1);
-                        UIManager.Instance.inventoryUI.InventoryController.NotifyChanged();
-                    }
-
                     if (slot == null || slot.IsEmpty)
                     {
                         Clear();
@@ -110,6 +104,9 @@ public class QuickSlotUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHan
 
     public void OnPointerClick(PointerEventData eventData)
     {
+        Debug.Log($"[QuickSlotUI] container 타입: {container?.GetType().Name ?? "null"}");
+
+
         if (container is QuickSlotController quickSlot)
         {
             if (eventData.button == PointerEventData.InputButton.Right)
@@ -125,6 +122,10 @@ public class QuickSlotUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHan
                     quickSlot.SelectSlotFromOutside(index);
             }
         }
+        else
+        {
+            Debug.LogWarning($"[QuickSlotUI] container 타입이 QuickSlotController 아님: {container?.GetType().Name}");
+        }
     }
 
 
@@ -134,12 +135,15 @@ public class QuickSlotUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHan
             return;
 
         if (SlotUtils.TryUseSlot(slot))
+        { 
             waitingToClear = true;
+            remainingCooldown = cooldownTime;
+            StartCoroutine(BlinkIcon());
 
-        remainingCooldown = cooldownTime;
-        StartCoroutine(BlinkIcon());
+            amountText.text = slot.Quantity.ToString();
+        }
 
-        amountText.text = slot.Quantity.ToString();
+        
     }
 
     public void SetSelected(bool selected)

@@ -127,6 +127,12 @@ public class InventorySlotUI : MonoBehaviour, IPointerClickHandler, ITooltipData
 
                     Debug.Log($"[InventorySlotUI] {itemName} 우클릭 → 사용 시도");
 
+                    if (UIManager.Instance.quickSlotController.IsInventorySlotLinked(Index))
+                    {
+                        Debug.LogWarning($"[InventorySlotUI] {itemName} 은(는) 퀵슬롯에 연결되어 있어 인벤토리에서 직접 사용할 수 없습니다.");
+                        return;
+                    }
+
                     if (itemName == "기억의 파편") break;
 
                     if (SlotUtils.TryUseSlot(slot))
@@ -191,7 +197,6 @@ public class InventorySlotUI : MonoBehaviour, IPointerClickHandler, ITooltipData
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        Debug.Log("툴팁 진입");
         var tooltipData = GetTooltipData();
         if (tooltipData != null)
             UIManager.Instance.ShowTooltip(tooltipData, Input.mousePosition);

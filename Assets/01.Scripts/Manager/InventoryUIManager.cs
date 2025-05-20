@@ -104,4 +104,21 @@ public class InventoryUIManager : MonoBehaviour
             }
         }
     }
+
+    public void MarkQuickSlotLinked(int index)
+    {
+        GetSlotUI(index)?.SetLinkedToQuickSlot(true);
+    }
+
+    public void UnmarkQuickSlotLinked(int index)
+    {
+        GetSlotUI(index)?.SetLinkedToQuickSlot(false);
+    }
+
+    public InventorySlotUI GetSlotUI(int index)
+    {
+        if (index < 0 || index >= slotUIs.Length) return null;
+        return slotUIs[index];
+    }
+
 }
