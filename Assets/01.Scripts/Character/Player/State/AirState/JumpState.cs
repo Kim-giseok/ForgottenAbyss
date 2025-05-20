@@ -14,6 +14,7 @@ public class JumpState : AirState
             player.animator.SetBool("IsJump", true);
             player.isGround = false;
         }
+        Debug.Log("มกวม");
         player.currentJumpCount++;
         playerSound.JumpSound();
 

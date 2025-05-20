@@ -24,6 +24,8 @@ public class SlideState : PlayerStateMachine
 
         player.rigid.gravityScale = 0.5f;
 
+        player.currentJumpCount = 0;
+
         //player.jumpPower = 100f;
 
         ////벽 꼭대기 확인
