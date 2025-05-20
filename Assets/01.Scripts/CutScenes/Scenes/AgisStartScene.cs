@@ -56,7 +56,8 @@ public class AgisStartScene : CutScene
     {
         // [초기화]
         await UniTask.Delay(1000);
-
+        Sound.StopBGM();
+        
         GameManager.Instance.PausePlayer();
         SetCutSceneMode(true);
         

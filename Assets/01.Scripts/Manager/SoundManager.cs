@@ -178,4 +178,9 @@ public class SoundManager : SingletonLoadRemain<SoundManager>
         volumes[voltype] = amount;
         bgmSource.volume = volumes[VOLTYPE.MASTER] * volumes[VOLTYPE.BGM];
     }
+
+    public void Reset()
+    {
+        bgmSource.volume = volumes[VOLTYPE.MASTER] * volumes[VOLTYPE.BGM];
+    }
 }
