@@ -15,7 +15,6 @@ public class EnemyResourceHandler: MonoBehaviour
     
     public void Define(EnemyStatSO newStatSO)
     {
-        Debug.LogWarning(newStatSO.enemyName);
         if (!newStatSO) return;
 
         _statSO = newStatSO;
