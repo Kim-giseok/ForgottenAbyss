@@ -17,10 +17,11 @@ public class RangedAttack : MonoBehaviour
     public bool canJumpAttack = true;
     private bool canNextCombo = false;
     private bool inputCombo = false;
-    private bool isSkill = false;
     private bool comboReady = false;
 
     public bool IsAttacking = false;
+
+    //private bool isSkill = false;
 
     private void Start()
     {

@@ -231,7 +231,7 @@ public class SkillController : Singleton<SkillController>
             return;
         }
 
-        if (combatSkill.weaponType != WeaponType.Bow && isSkillPlaying) return;
+        if (isSkillPlaying) return;
 
         if (IsExecutable())
         {
