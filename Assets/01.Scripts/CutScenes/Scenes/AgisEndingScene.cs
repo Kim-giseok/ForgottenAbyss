@@ -94,11 +94,9 @@ public class AgisEndingScene: CutScene
         // [나레이션 시작]
         Sound.PlayBGM("Boss1EndingScene");
         await Narration("그 순간, 그는 흐릿한 장면을 떠올렸다.");
-        await Wait();
         
         Camera.Noise(1f, 1f);
         await Narration("그 날, 지금처럼 그림자를 흡수하여 모든 것을 파괴시키던 날을..");
-        await Wait();
         
         Narration().Forget();
         await Text("이럴수가..");
@@ -106,20 +104,16 @@ public class AgisEndingScene: CutScene
         
         LetterBox.SetColor(Color.red);
         await Narration("아지스의 음성 - 그림자여, 이미 우리는 하나의 약속된 운명을 함께할 것이다..");
-        await Wait();
      
         LetterBox.SetColor(Color.white);
         await Narration("그는 진실을 알수 없는 현실 속에서 큰 혼란을 가득 품게 된다.");
-        await Wait();
      
         Narration().Forget();
         await Text("도대체 그림자는 무엇이지..");
         await Text("어떻게 해야 벗어날 수 있는 것인가..");
         
         await Narration("그 순간 머릿 속에서 어떤 이의 얼굴을 희미하게 떠올렸다.");
-        await Wait();
         await Narration("붉은 달이 떠오를 때, 더 붉게 비추던 존재.");
-        await Wait();
 
         GrayScreen.Set(true, 0.4f).Forget();
         UIPool.Set(moonstoneProfile, Vector3.zero);
@@ -137,9 +131,7 @@ public class AgisEndingScene: CutScene
         await Text("끝없는 반복 속에서 벗어날 수 있을거야.");
         
         await Narration("그는 자신의 존재의 소멸을 각오한 채,");
-        await Wait();
         await Narration("모든 것을 끝낼 것을 결심한다.");
-        await Wait();
 
         Light.FadeOut(3, 0.4f);
         FadeScreen.SetFade(false, 3f);

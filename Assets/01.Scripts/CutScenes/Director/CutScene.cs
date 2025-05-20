@@ -125,5 +125,6 @@ public abstract class CutScene: MonoBehaviour
         }
 
         await CutSceneManager.Instance.LetterBox.Narration(newNarration);
+        await Wait(); // 내부에서 처리해보기
     }
 }

@@ -178,7 +178,6 @@ public class IntroBattleScene: CutScene
         Light.FadeOut(1);
         await UniTask.Delay(2000);
         await Narration("그림자 속에서 희미한 장면을 떠올렸다.");
-        await Wait();
 
         // [스토리 관련 대사 진행]
         Narration().Forget();
