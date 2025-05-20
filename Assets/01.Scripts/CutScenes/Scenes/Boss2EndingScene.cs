@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 
@@ -9,8 +10,9 @@ public class Boss2EndingScene: CutScene
     public RectTransform screenshot;
 
     public ActorController mudEye;
-    private readonly List<ActorController> mudEyes = new();
     
+    private readonly List<ActorController> mudEyes = new();
+    private List<Light2D> mudEyesLight = new();
     
     protected override async UniTask StartScene()
     {
@@ -18,28 +20,39 @@ public class Boss2EndingScene: CutScene
         GameManager.Instance.PausePlayer();
         Player.controller.rigid.velocity = Vector2.zero;
         Player.controller.rigid.isKinematic = true;
-
+        Light.FadeOut(1f, 0.5f);
         await UniTask.Delay(1000);
+        Sound.StopBGM();
         Camera.Init();
         
         SetCutSceneMode(true); // error: 먼저 활성화되어야 Fade 가능
 
+        Camera.Profile(SubCameraInteract.NoiseType.Held);
+        Camera.Shake(4, 4, 1f);
         // MudEye 사망 모션
         for (var index = 0; index < 32; index++)
         {
-            var newPos = Player.controller.transform.position + new Vector3(Random.Range(-3, 3), Random.Range(-3, 3), 0);
+            
+            Vector2 offset = new Vector2(Random.Range(-3f, 3f) + Random.Range(-1f, 1f), Random.Range(-1f, 1f) + Random.Range(-1f, 1f)) * 3f;
+            
+            var newPos = Player.controller.transform.position + new Vector3(offset.x, offset.y, 0);
             var newMudEye = Instantiate(mudEye, newPos, Quaternion.identity);
-            newMudEye.transform.localScale = new Vector3(Random.Range(0.8f, 1.2f), Random.Range(0.8f, 1.2f), 1);
+            newMudEye.gameObject.SetActive(true);
+            newMudEye.transform.localScale = new Vector3(Random.Range(0.8f, 4f), Random.Range(0.8f, 4f), 1);
             
             newMudEye.Anim.Play("Hit");
             mudEyes.Add(newMudEye);
         
-            Camera.Shake(1, 1, 0.2f);
             Sound.Playsfx("Piano1");
+            
+            mudEyesLight.Add(newMudEye.GetComponentInChildren<Light2D>(true));
         
-            await UniTask.Delay(30);
+            await UniTask.Delay(Random.Range(30, 60));
         }
-        
+        mudEyesLight.ForEach(mudLight => mudLight.gameObject.SetActive(true));
+
+        Camera.Profile(SubCameraInteract.NoiseType.Base);
+
         await UniTask.Delay(1000);
         Scene.FadeScreen.SetFade(false, 3f);
         Camera.Focus(Player);
@@ -48,7 +61,7 @@ public class Boss2EndingScene: CutScene
         await UniTask.Delay(5000);
         // [이미지 표시]
         UIPool.Set(screenshot);
-        Scene.FadeScreen.SetFade(true, 3f);
+        Scene.FadeScreen.SetFade(true, 5f);
         
         LetterBox.SetColor(Color.red);
         await Narration("그는 결국, 그날의 기억을 발견했다.");
@@ -61,6 +74,7 @@ public class Boss2EndingScene: CutScene
         await Wait();
 
         // [초기화]
+        Light.FadeIn(0f, 1f);
         Scene.FadeScreen.SetFade(false, 0f);
         UIPool.Delete(screenshot);
         Narration().Forget();

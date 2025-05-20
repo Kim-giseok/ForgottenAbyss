@@ -50,8 +50,7 @@ public class DieNode : Node
         controller.Rigid.velocity = Vector3.zero; // fix: 넉백으로 날라가는 현상 발생
         controller.Rigid.isKinematic = true;
 
-        
-        eController.Anim.Play("Die");
+        controller.Anim.Play("Die");
     }
 
     public override void OnAnimated(AnimationStatus status, AnimatorStateInfo animInfo)

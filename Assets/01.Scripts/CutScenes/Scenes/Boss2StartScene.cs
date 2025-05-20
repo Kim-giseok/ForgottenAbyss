@@ -1,11 +1,13 @@
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class Boss2StartScene: CutScene
 {
     public List<GameObject> mudHands;
-    public GameObject mudEye;
+    public GameObject mudEyeActor;
+    public GameObject mydEye;
 
     private async UniTask FocusMud(GameObject currMud)
     {
@@ -33,8 +35,8 @@ public class Boss2StartScene: CutScene
         await UniTask.Delay(1000);
         
         // [머드 아이 등장]
-        mudEye.SetActive(true);
-        Camera.Focus(mudEye.transform);
+        mudEyeActor.SetActive(true);
+        Camera.Focus(mudEyeActor.transform);
         Camera.Zoom(true, 0.2f, 2);
         Sound.Playsfx("MudEye_Appear");
 
@@ -60,15 +62,20 @@ public class Boss2StartScene: CutScene
         await Text("내가 만약 그림자가 자식이라면..");
         await Text("아버지를 베기 위해 이 곳에 왔다.");
         
-        Camera.Focus(mudEye);
+        Camera.Focus(mudEyeActor);
         await Narration("그림자여, 이미 우리는 하나의 약속된 운명을 함께할 것이다.");
         await Wait();
         
         await Narration("지독한 시간 속에서 서서히 잠식되리라.");
         await Wait();
         
+        
+        Narration().Forget();
         SetCutSceneMode(false);
         await UniTask.Delay(1000);
+        
+        mudEyeActor.gameObject.SetActive(false);
+        mydEye.SetActive(true);
         
         Camera.Reset();
         GameManager.Instance.PausePlayer(false);
