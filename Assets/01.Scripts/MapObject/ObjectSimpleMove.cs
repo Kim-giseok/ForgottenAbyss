@@ -32,7 +32,7 @@ public class ObjectSimpleMove : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        if (moveDirects == null) return;
+        if (moveDirects == null || moveDirects.Length == 0) return;
 
         Gizmos.color = Color.red;
         Vector3 startP = transform.position;
