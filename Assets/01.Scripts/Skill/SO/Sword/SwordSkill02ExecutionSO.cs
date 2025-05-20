@@ -72,7 +72,7 @@ public class SwordSkill02ExecutionSO : SkillExecutionSO
     {
         yield return new WaitForSeconds(damageDelay);
 
-        //PlaySound("AWP_Dagger_UnSheath");
+        PlaySound("SwordAttack2");
 
         float extraLength = 3f;
         Vector2 dashDir = (end - start).normalized;

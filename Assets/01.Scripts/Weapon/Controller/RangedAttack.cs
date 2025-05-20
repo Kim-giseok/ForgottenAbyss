@@ -17,9 +17,11 @@ public class RangedAttack : MonoBehaviour
     public bool canJumpAttack = true;
     private bool canNextCombo = false;
     private bool inputCombo = false;
-    private bool isSkill = false;
+    private bool comboReady = false;
 
     public bool IsAttacking = false;
+
+    //private bool isSkill = false;
 
     private void Start()
     {
@@ -62,7 +64,18 @@ public class RangedAttack : MonoBehaviour
         }
         else
         {
-            StartRangedAttack();
+            //if (comboReady)
+            //{
+            //    comboReady = false;
+            //    IsAttacking = true;
+            //    isSkill = false;
+            //    animator.SetInteger("BowCombo", attackIndex);
+            //    UpdateRangedAttackUI(attackIndex - 1);
+            //    comboBar.PlayEffect();
+            //    PlayRangedAnimation();
+            //}
+            //else
+                StartRangedAttack();
         }
     }
 
@@ -107,11 +120,7 @@ public class RangedAttack : MonoBehaviour
     public void OnRangedCheck(float bufferTime)
     {
         canNextCombo = true;
-
-        if(!isSkill)
-            comboBar.StartCombo(bufferTime);
-        else
-            isSkill = false;
+        comboBar.StartCombo(bufferTime);
 
         StartCoroutine(RangedInputBuffer(bufferTime));
     }
@@ -141,7 +150,10 @@ public class RangedAttack : MonoBehaviour
         if (inputCombo && attackIndex < maxCombo)
         {
             inputCombo = false;
-            attackIndex++;
+
+            if (!comboReady)
+                attackIndex++;
+
             animator.SetInteger("BowCombo", attackIndex);
             UpdateRangedAttackUI(attackIndex-1);
             comboBar.PlayEffect();
@@ -275,10 +287,10 @@ public class RangedAttack : MonoBehaviour
         else
         {
             attackIndex = 1;
-            animator.SetInteger("BowCombo", 1);
+            animator.SetInteger("BowCombo", 0);
             animator.Play("Idle");
 
-            if(SystemManager.Instance.weaponManager.GetCurrentWeaponData().Type == WeaponType.Bow)
+            if (SystemManager.Instance.weaponManager.GetCurrentWeaponData().Type == WeaponType.Bow)
                 UpdateRangedAttackUI(attackIndex-1);
         }
     }
@@ -287,11 +299,7 @@ public class RangedAttack : MonoBehaviour
     {
         yield return new WaitForSeconds(delay);
 
-        if (attackIndex >= maxCombo)
-        {
-            attackIndex = 1; // maxCombo 일때 1로 리셋
-        }
-
+        attackIndex = 1;
         canJumpAttack = true;
         IsAttacking = true;
         canNextCombo = true;
@@ -306,31 +314,42 @@ public class RangedAttack : MonoBehaviour
         }
     }
 
-    public void AdvanceCombo()
-    {
-        //inputCombo = true;
-    }
-
-    public void PlayComboEffect()
-    {
-        isSkill = true;
-        IsAttacking = true;
-        comboBar.PlayEffect();
-        StartCoroutine(InputTimer(0.5f));
-    }
-
     public void PlayShotEffect()
     {
         shotAnimator.SetTrigger("ShotTrigger");
     }
 
-    IEnumerator InputTimer(float time)
-    {
-        player.canAttack = false;
+    //public void RangedAttackTriggerReset()
+    //{
+    //    animator.ResetTrigger("BowTrigger");
+    //    animator.SetInteger("BowCombo", 0);
+    //    IsAttacking = false;
+    //}
 
-        yield return new WaitForSeconds(time);
+    //public void AdvanceCombo()
+    //{
+    //    comboReady = true;
 
-        player.canAttack = true;
-        OnRangedCheck(0.3f);
-    }
+    //    if (attackIndex < maxCombo)
+    //        attackIndex++;
+
+    //    UpdateRangedAttackUI(attackIndex - 1);
+    //}
+
+    //public void PlayComboEffect()
+    //{
+    //    isSkill = true;
+    //    IsAttacking = true;
+    //    comboBar.PlayEffect();
+    //    StartCoroutine(InputTimer(0.5f));
+    //}
+
+    //IEnumerator InputTimer(float time)
+    //{
+    //    player.canAttack = false;
+
+    //    yield return new WaitForSeconds(time);
+
+    //    player.canAttack = true;
+    //}
 }

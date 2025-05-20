@@ -45,7 +45,7 @@ public class ComboAttack : MonoBehaviour
     {
         if (comboData == null)
         {
-            Debug.LogWarning("comboDataï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¾Ò½ï¿½ï¿½Ï´ï¿½. ï¿½ï¿½ï¿½â°¡ ï¿½ï¿½ï¿½ï¿½ï¿?ï¿½ï¿½ï¿½ï¿½ï¿½Ç¾ï¿½ï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½ï¿½Ï¼ï¿½ï¿½ï¿½.");
+            Debug.LogWarning("comboData°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
             return;
         }
 
@@ -90,7 +90,6 @@ public class ComboAttack : MonoBehaviour
             attackIndex = 1;
             animator.ResetTrigger("SwordJumpTrigger");
             animator.SetTrigger("SwordJumpTrigger");
-            //animator.Play("SwordAttack_Jump");
         }
         else
             Debug.Log("ÀÌ¹Ì Á¡ÇÁ °ø°Ý ½ÇÇà Áß...");
@@ -113,7 +112,10 @@ public class ComboAttack : MonoBehaviour
 
     void onPlaySound()
     {
-        //SoundManager.Instance.Playsfx($"SwordAttack{attackIndex}");
+        if(attackIndex < 4)
+            SoundManager.Instance.Playsfx($"SwordAttack3");
+        else
+            SoundManager.Instance.Playsfx($"SwordAttack1");
     }
 
     IEnumerator ComboInputBuffer(float time)
@@ -177,7 +179,7 @@ public class ComboAttack : MonoBehaviour
         else
         {
             attackIndex = 1;
-            animator.SetInteger("AttackCombo", 1);
+            animator.SetInteger("AttackCombo", 0);
             animator.Play("Idle");
 
             if (SystemManager.Instance.weaponManager.GetCurrentWeaponData()?.Type == WeaponType.Sword)
@@ -217,7 +219,7 @@ public class ComboAttack : MonoBehaviour
 
     IEnumerator MoveForwardCoroutine(float distance)
     {
-        float moveTime = 0.1f; // ï¿½Ìµï¿½ ï¿½Ã°ï¿½
+        float moveTime = 0.1f;
         float elapsed = 0f;
         Vector3 startPos = transform.position;
         Vector3 targetPos = transform.position + (transform.right * distance);
@@ -229,7 +231,7 @@ public class ComboAttack : MonoBehaviour
             yield return null;
         }
 
-        transform.position = targetPos; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ï¿½
+        transform.position = targetPos;
     }
 
     void OnJumpSmash(string data)
@@ -245,47 +247,43 @@ public class ComboAttack : MonoBehaviour
     {
         Vector3 startPos = transform.position;
 
-        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ (ï¿½ë°¢ï¿½ï¿½ ï¿½ï¿½)
         Vector3 jumpDir = (transform.right + Vector3.up*0.5f).normalized;
         Vector3 peakPos = startPos + jumpDir * height;
 
         Vector3 horizontalDir = transform.right;
-        Vector3 endPos = startPos + horizontalDir * height; // ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½ ï¿½ï¿½ï¿½ï¿½
+        Vector3 endPos = startPos + horizontalDir * height;
 
         float halfDuration = duration / 2f;
         float elapsed = 0f;
 
-        LayerMask wallMask = LayerMask.GetMask("Wall", "Ground"); // ï¿½æµ¹ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½ï¿½ï¿½
+        LayerMask wallMask = LayerMask.GetMask("Wall", "Ground");
 
-        // ï¿½ï¿½ï¿?
         while (elapsed < halfDuration)
         {
             elapsed += Time.deltaTime;
             float t = elapsed / halfDuration;
-            float easeT = Mathf.Sin(t * Mathf.PI * 0.5f); // EaseOutSine
+            float easeT = Mathf.Sin(t * Mathf.PI * 0.5f);
 
             Vector3 nextPos = Vector3.Lerp(startPos, peakPos, easeT);
             Vector3 moveDir = nextPos - transform.position;
 
-            // ï¿½ï¿½ Ã¼Å©
             RaycastHit2D hit = Physics2D.Raycast(transform.position, moveDir.normalized, moveDir.magnitude, wallMask);
             if (hit.collider != null)
             {
                 transform.position = hit.point;
-                yield break; // ï¿½ï¿½ï¿½ï¿½ ï¿½ß´ï¿½
+                yield break;
             }
 
             transform.position = nextPos;
             yield return null;
         }
 
-        // ï¿½Ï°ï¿½
         elapsed = 0f;
         while (elapsed < halfDuration)
         {
             elapsed += Time.deltaTime;
             float t = elapsed / halfDuration;
-            float easeT = 1f - Mathf.Cos(t * Mathf.PI * 0.5f); // EaseInSine
+            float easeT = 1f - Mathf.Cos(t * Mathf.PI * 0.5f);
 
             Vector3 nextPos = Vector3.Lerp(peakPos, endPos, easeT);
             Vector3 moveDir = nextPos - transform.position;
@@ -294,7 +292,7 @@ public class ComboAttack : MonoBehaviour
             if (hit.collider != null)
             {
                 transform.position = hit.point;
-                yield break; // ï¿½ï¿½ï¿½ï¿½ ï¿½ß´ï¿½
+                yield break;
             }
 
             transform.position = nextPos;
@@ -308,7 +306,7 @@ public class ComboAttack : MonoBehaviour
     {
         if (comboData == null || attackIndex <= 0 || attackIndex > comboData.comboSteps.Count)
         {
-            Debug.LogWarning("ï¿½ß¸ï¿½ï¿½ï¿½ attackIndex ï¿½Ç´ï¿½ comboData ï¿½ï¿½ï¿½ï¿½");
+            Debug.LogWarning("Àß¸øµÈ attackIndex ¶Ç´Â comboData ¾øÀ½");
             return;
         }
 
@@ -318,7 +316,7 @@ public class ComboAttack : MonoBehaviour
 
         if (targets == null || targets.Count == 0)
         {
-            Debug.Log("Å¸ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.");
+            Debug.Log("Å¸°ÙÀÌ ¾ø½À´Ï´Ù.");
             return;
         }
 
@@ -394,7 +392,7 @@ public class ComboAttack : MonoBehaviour
         }
         else
         {
-            // 3~6Å¸: ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+            // 4~6Å¸: ¹üÀ§ °ø°Ý
             DebugDrawUtil.DrawCircle(origin, radius, Color.red, 0.5f);
             return hits.Select(hit => hit.gameObject).ToList();
         }

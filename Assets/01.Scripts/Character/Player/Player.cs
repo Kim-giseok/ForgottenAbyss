@@ -155,22 +155,28 @@ public class Player : MonoBehaviour, IDamagable
     {
         float dt = Time.deltaTime;
 
+        float currentHP = playerstatus.stats[StatType.CurrentHP];
+        float maxHP = playerstatus.stats[StatType.MaxHP];
+
         float currentMP = playerstatus.stats[StatType.CurrentMP];
         float maxMP = playerstatus.stats[StatType.MaxMP];
 
-        currentMP = Mathf.Min(currentMP + mpRegenRate * dt, maxMP);
-
-        playerstatus.SetStat(StatType.CurrentMP, currentMP);
-
-        // 마을에서는 체력 자동 회복
-        if (SceneManager.GetActiveScene().name == "Village")
+        // MP 자동 회복
+        if (currentMP < maxMP)
         {
-            float currentHP = playerstatus.stats[StatType.CurrentHP];
-            float maxHP = playerstatus.stats[StatType.MaxHP];
+            currentMP = Mathf.Min(currentMP + mpRegenRate * dt, maxMP);
 
-            currentHP = Mathf.Min(currentHP + hpRegenRate * dt, maxHP);
+            playerstatus.SetStat(StatType.CurrentMP, currentMP);
+        }
 
-            playerstatus.SetStat(StatType.CurrentHP, currentHP);
+        // 마을에서만 HP 자동 회복
+        if (currentHP < maxHP && SceneManager.GetActiveScene().name == "Village")
+        {
+            {
+                currentHP = Mathf.Min(currentHP + hpRegenRate * dt, maxHP);
+
+                playerstatus.SetStat(StatType.CurrentHP, currentHP);
+            }
         }
     }
 }

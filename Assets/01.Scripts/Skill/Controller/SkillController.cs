@@ -231,7 +231,7 @@ public class SkillController : Singleton<SkillController>
             return;
         }
 
-        if (combatSkill.weaponType != WeaponType.Bow && isSkillPlaying) return;
+        if (isSkillPlaying) return;
 
         if (IsExecutable())
         {
@@ -281,10 +281,10 @@ public class SkillController : Singleton<SkillController>
     {
         ResetJumpAttack();
 
+        isSkillPlaying = false;
+
         if (SystemManager.Instance.weaponManager.GetCurrentWeaponData() != null) 
         {
-            isSkillPlaying = false;
-
             var currentWeaponType = SystemManager.Instance.weaponManager.GetCurrentWeaponData().Type;
 
             switch (currentWeaponType)
