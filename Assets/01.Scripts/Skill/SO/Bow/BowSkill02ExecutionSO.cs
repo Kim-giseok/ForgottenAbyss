@@ -26,7 +26,6 @@ public class BowSkill02ExecutionSO : SkillExecutionSO
             if (visualSO != null)
             {
                 Transform spawnPoint = caster.transform;
-                //SkillController.Instance.rangedAttack.PlayComboEffect();
                 CoroutineRunner.instance.StartCoroutine(PlayEffectWithDelay(visualSO, spawnPoint, data, castData));
             }
         }
@@ -44,7 +43,6 @@ public class BowSkill02ExecutionSO : SkillExecutionSO
         if (visualSO.effectDelay > 0f)
             yield return new WaitForSeconds(visualSO.effectDelay);
 
-        //SkillController.Instance.rangedAttack.AdvanceCombo();
         SkillController.Instance.rangedAttack.PlayShotEffect();
         GameManager.Instance.cameraZoom.ZoomOut();
 

@@ -18,7 +18,6 @@ public class BowSkill01ExecutionSO : SkillExecutionSO
         Vector2 origin = (Vector2)caster.transform.position + Vector2.up * 0.5f + direction * 2f;
 
         SkillController.Instance.isBowAttack = true;
-        //SkillController.Instance.rangedAttack.PlayComboEffect();
         SystemManager.Instance.coroutinRunner.RunCoroutine(ExecuteWithEffectDelay(caster, origin, direction, castData));
     }
 
@@ -26,10 +25,12 @@ public class BowSkill01ExecutionSO : SkillExecutionSO
     {
         //PlaySound("BowShoot2");
         GameManager.Instance.cameraZoom.ZoomIn(0.5f);  
+
         yield return new WaitForSeconds(damageDelay);
-        //SkillController.Instance.rangedAttack.AdvanceCombo();
+
         SkillController.Instance.rangedAttack.PlayShotEffect();
         GameManager.Instance.cameraZoom.ZoomOut();
+
         float extraLength = 3f; // 범위 확장값
         Vector2 dir = direction.normalized;
 
