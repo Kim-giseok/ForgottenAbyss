@@ -508,7 +508,10 @@ public class ControllerPlayer : MonoBehaviour
 
     public void WaitForEnd()
     {
-        StartCoroutine(WaitForAnimationEnd());
+        if(SystemManager.Instance.weaponManager.GetCurrentWeaponData().Type == WeaponType.Sword)
+            StartCoroutine(WaitForAnimationEnd());
+        else
+            ChangeState(PlayerState.Idle);
     }
 
     public IEnumerator WaitForAnimationEnd()

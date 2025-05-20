@@ -290,8 +290,6 @@ public class RangedAttack : MonoBehaviour
             animator.SetInteger("BowCombo", 0);
             animator.Play("Idle");
 
-            Debug.Log("√ ±‚»≠");
-
             if (SystemManager.Instance.weaponManager.GetCurrentWeaponData().Type == WeaponType.Bow)
                 UpdateRangedAttackUI(attackIndex-1);
         }
