@@ -78,7 +78,7 @@ public class SkillController : Singleton<SkillController>
         AnimatorStateInfo stateInfo = GameManager.Instance.player.animator.GetCurrentAnimatorStateInfo(0);
         bool isInAttackState = stateInfo.IsTag("Attack") && stateInfo.normalizedTime >= 0.1f && stateInfo.normalizedTime <= 0.3f;
 
-        if (isInAttackState) return;
+        if (isInAttackState || isSkillPlaying) return;
 
         if (!SystemManager.Instance.weaponManager.IsWeaponEquipped())
         {
