@@ -13,6 +13,7 @@ public class EndingScene: CutScene
         await UniTask.Delay(1000);
         UI.HideIngameUI();
         SetCutSceneMode(true);
+        await UniTask.Delay(2000);
 
         await Narration("그림자는 아마 소멸하지 않을 지 모른다.");
         await Narration("그리고 빛이 보이지 날,\n자신이 마지 그림자처럼 보일지도 모른다.");
