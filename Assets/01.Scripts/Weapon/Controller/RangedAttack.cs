@@ -66,6 +66,7 @@ public class RangedAttack : MonoBehaviour
             if (comboReady)
             {
                 comboReady = false;
+                IsAttacking = true;
                 animator.SetInteger("BowCombo", attackIndex);
                 UpdateRangedAttackUI(attackIndex - 1);
                 comboBar.PlayEffect();
@@ -117,11 +118,7 @@ public class RangedAttack : MonoBehaviour
     public void OnRangedCheck(float bufferTime)
     {
         canNextCombo = true;
-
-        if(!isSkill)
-            comboBar.StartCombo(bufferTime);
-        else
-            isSkill = false;
+        comboBar.StartCombo(bufferTime);
 
         StartCoroutine(RangedInputBuffer(bufferTime));
     }
@@ -325,6 +322,10 @@ public class RangedAttack : MonoBehaviour
     public void AdvanceCombo()
     {
         comboReady = true;
+
+        if(attackIndex < maxCombo)
+            attackIndex++;
+
         UpdateRangedAttackUI(attackIndex - 1);
     }
 
@@ -348,6 +349,6 @@ public class RangedAttack : MonoBehaviour
         yield return new WaitForSeconds(time);
 
         player.canAttack = true;
-        OnRangedCheck(0.3f);
+        //OnRangedCheck(0.3f);
     }
 }
