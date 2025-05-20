@@ -90,7 +90,6 @@ public class ComboAttack : MonoBehaviour
             attackIndex = 1;
             animator.ResetTrigger("SwordJumpTrigger");
             animator.SetTrigger("SwordJumpTrigger");
-            //animator.Play("SwordAttack_Jump");
         }
         else
             Debug.Log("이미 점프 공격 실행 중...");
@@ -113,7 +112,10 @@ public class ComboAttack : MonoBehaviour
 
     void onPlaySound()
     {
-        //SoundManager.Instance.Playsfx($"SwordAttack{attackIndex}");
+        if(attackIndex < 4)
+            SoundManager.Instance.Playsfx($"SwordAttack3");
+        else
+            SoundManager.Instance.Playsfx($"SwordAttack1");
     }
 
     IEnumerator ComboInputBuffer(float time)

@@ -11,6 +11,7 @@ public class BowSkill02ExecutionSO : SkillExecutionSO
     public int shotCount = 3;
     public float angleBetweenShots = 10f;
     public float delayBetweenShots = 0.05f;
+    float soundDelay = 0.25f;
 
     LayerMask targetLayer;
 
@@ -37,11 +38,12 @@ public class BowSkill02ExecutionSO : SkillExecutionSO
 
     private IEnumerator PlayEffectWithDelay(SkillVisualSO visualSO, Transform spawnPoint, SkillData data, SkillCastData castData)
     {
-        //PlaySound("BowShoot2");
+        yield return new WaitForSeconds(soundDelay);
+        PlaySound("BowAttack2");
         GameManager.Instance.cameraZoom.ZoomIn(0.5f);
         
         if (visualSO.effectDelay > 0f)
-            yield return new WaitForSeconds(visualSO.effectDelay);
+            yield return new WaitForSeconds(visualSO.effectDelay - soundDelay);
 
         SkillController.Instance.rangedAttack.PlayShotEffect();
         GameManager.Instance.cameraZoom.ZoomOut();

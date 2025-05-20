@@ -9,6 +9,7 @@ public class BowSkill01ExecutionSO : SkillExecutionSO
     public LayerMask hitMask;
     public float damageDelay;
     public float hitRadius;
+    float soundDelay = 0.25f;
 
     public override void Execute(GameObject caster, GameObject target, SkillData data)
     {
@@ -23,10 +24,11 @@ public class BowSkill01ExecutionSO : SkillExecutionSO
 
     private IEnumerator ExecuteWithEffectDelay(GameObject caster, Vector2 origin, Vector2 direction, SkillCastData castData)
     {
-        //PlaySound("BowShoot2");
+        yield return new WaitForSeconds(soundDelay);
+        PlaySound("BowAttack2");
         GameManager.Instance.cameraZoom.ZoomIn(0.5f);  
 
-        yield return new WaitForSeconds(damageDelay);
+        yield return new WaitForSeconds(damageDelay - soundDelay);
 
         SkillController.Instance.rangedAttack.PlayShotEffect();
         GameManager.Instance.cameraZoom.ZoomOut();
