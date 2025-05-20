@@ -5,13 +5,19 @@ public class EventMoonstoneDeath: MonoBehaviour, IDamagable
 {
     private EnemyController controller;
     public GameObject endingCutScene;
+
+    private void Awake()
+    {
+        controller = GetComponent<EnemyController>();
+    }
     
     public void GetDamage(float damage)
     {
         if (controller.resourceHandler.Get(EnemyStatType.Health).currValue - damage < 0)
         {
-            endingCutScene.SetActive(true);
+            controller.Anim.Play("Hit");
             controller.Machine.SetPlaying(false);
+            endingCutScene.SetActive(true);
             return;
         }
         
