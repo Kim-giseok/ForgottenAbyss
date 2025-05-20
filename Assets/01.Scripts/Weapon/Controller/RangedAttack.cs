@@ -18,6 +18,7 @@ public class RangedAttack : MonoBehaviour
     private bool canNextCombo = false;
     private bool inputCombo = false;
     private bool isSkill = false;
+    private bool comboReady = false;
 
     public bool IsAttacking = false;
 
@@ -62,7 +63,16 @@ public class RangedAttack : MonoBehaviour
         }
         else
         {
-            StartRangedAttack();
+            if (comboReady)
+            {
+                comboReady = false;
+                animator.SetInteger("BowCombo", attackIndex);
+                UpdateRangedAttackUI(attackIndex - 1);
+                comboBar.PlayEffect();
+                PlayRangedAnimation();
+            }
+            else
+                StartRangedAttack();
         }
     }
 
@@ -141,7 +151,10 @@ public class RangedAttack : MonoBehaviour
         if (inputCombo && attackIndex < maxCombo)
         {
             inputCombo = false;
-            attackIndex++;
+
+            if (!comboReady)
+                attackIndex++;
+
             animator.SetInteger("BowCombo", attackIndex);
             UpdateRangedAttackUI(attackIndex-1);
             comboBar.PlayEffect();
@@ -274,12 +287,15 @@ public class RangedAttack : MonoBehaviour
         }
         else
         {
-            attackIndex = 1;
-            animator.SetInteger("BowCombo", 1);
-            animator.Play("Idle");
+            if (!comboReady)
+            {
+                attackIndex = 1;
+                animator.SetInteger("BowCombo", 1);
+                animator.Play("Idle");
 
-            if(SystemManager.Instance.weaponManager.GetCurrentWeaponData().Type == WeaponType.Bow)
-                UpdateRangedAttackUI(attackIndex-1);
+                if (SystemManager.Instance.weaponManager.GetCurrentWeaponData().Type == WeaponType.Bow)
+                    UpdateRangedAttackUI(attackIndex - 1);
+            }   
         }
     }
 
@@ -308,7 +324,8 @@ public class RangedAttack : MonoBehaviour
 
     public void AdvanceCombo()
     {
-        //inputCombo = true;
+        comboReady = true;
+        UpdateRangedAttackUI(attackIndex - 1);
     }
 
     public void PlayComboEffect()
