@@ -16,21 +16,41 @@ public class InventorySlotUI : MonoBehaviour, IPointerClickHandler, ITooltipData
 
     public bool IsEmpty => slot == null || slot.Item == null || slot.Quantity <= 0;
 
-
+    private bool isLinkedToQuickSlot = false;
     private ISlot slot;
     private IItemContainer container;
 
     public void SetSlot(ISlot newSlot, int index, IItemContainer parent)
     {
-        //Debug.Log($"[InventorySlotUI] SetSlot 호출됨 - Index: {index}, Item: {(newSlot?.Item == null ? "null" : newSlot.Item.itemName)}");
-
         slot = newSlot;
         Index = index;
         container = parent;
 
         UpdateUI();
+    }
 
-        // Debug.Log($"[InventorySlotUI] SetSlot {index}: {slot?.Item?.itemName ?? "없음"}, 수량: {slot?.Quantity}");
+    public void SetLinkedToQuickSlot(bool isLinked)
+    {
+        isLinkedToQuickSlot = isLinked;
+
+        if (iconImage != null)
+        {
+            Color iconColor = iconImage.color;
+            iconColor.a = isLinked ? 0.5f : 1f;
+            iconImage.color = iconColor;
+        }
+
+        if (amountText != null)
+        {
+            amountText.alpha = isLinked ? 0.5f : 1f;
+        }
+
+        if (itemUI != null)
+        {
+            var cg = itemUI.GetComponent<CanvasGroup>();
+            if (cg != null)
+                cg.alpha = isLinked ? 0.5f : 1f;
+        }
     }
 
     private void UpdateUI()
@@ -47,11 +67,14 @@ public class InventorySlotUI : MonoBehaviour, IPointerClickHandler, ITooltipData
 
         iconImage.sprite = slot.Item.itemIcon;
         iconImage.enabled = true;
-        amountText.text = slot.Quantity > 1 ? slot.Quantity.ToString() : "";
+
+        amountText.text = slot.Quantity.ToString();
 
         itemUI?.SetItem(slot.Item);
         Debug.Log($"[InventorySlotUI] UpdateUI - 아이템: {slot.Item?.itemName}, IsEmpty: {IsEmpty}");
         RefreshOutline();
+
+        SetLinkedToQuickSlot(isLinkedToQuickSlot);
     }
 
     public void Clear()

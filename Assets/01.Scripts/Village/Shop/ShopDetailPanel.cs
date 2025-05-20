@@ -56,37 +56,32 @@ public class ShopDetailPanel : MonoBehaviour
 
     private void Buy()
     {
-        Debug.Log($"[Buy] item: {currentData?.item}, name: {currentData?.item?.itemName}");
-
-        if (currentData == null || currentData.item == null)
+        if (!GoldManager.Instance.SpendGold(currentData.price))
         {
-            Debug.LogError("[Shop] 구매할 아이템 정보가 null입니다.");
+            Debug.Log("골드 부족!");
             return;
         }
 
-        if (container == null)
+        var inventory = UIManager.Instance.inventoryUI.InventoryController;
+        var quickSlot = UIManager.Instance.quickSlotController;
+
+        int linkedSlotIndex = quickSlot.GetLinkedInventorySlotIndex(currentData.item);
+        if (linkedSlotIndex >= 0)
         {
-            Debug.LogError("[Shop] IItemContainer 연결이 되어있지 않습니다.");
-            return;
-        }
-
-        if (GoldManager.Instance.SpendGold(currentData.price))
-        {
-            container.AddItem(currentData.item, 1);
-            Debug.Log("구매 완료!");
-
-            //// 인벤토리 열려 있으면 강제로 UI 갱신
-            //if (UIManager.Instance.inventoryUI.inventoryPanel.activeSelf)
-            //{
-            //    UIManager.Instance.inventoryUI.UpdateUI();
-            //}
-
-            Hide();
+            var slot = inventory.GetSlot(linkedSlotIndex) as Slot;
+            if (slot != null)
+            {
+                slot.Add(1);
+                inventory.NotifyChanged();
+            }
         }
         else
         {
-            Debug.Log("골드 부족!");
+            inventory.AddItem(currentData.item, 1);
+            inventory.NotifyChanged();
         }
-        
+
+        Debug.Log("구매 완료!");
+        Hide();
     }
 }

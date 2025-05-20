@@ -40,7 +40,7 @@ public class QuickSlotUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHan
         {
             iconImage.sprite = slot.Item.itemIcon;
             iconImage.enabled = true;
-            amountText.text = slot.Quantity > 1 ? slot.Quantity.ToString() : "";
+            amountText.text = slot.Quantity.ToString();
 
             //var dragHandler = itemUI.GetComponent<ItemDragHandler>();
             //dragHandler?.SetOrigin(container, index);
@@ -79,8 +79,29 @@ public class QuickSlotUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHan
                 cooldownOverlay.fillAmount = 0f;
                 if (waitingToClear)
                 {
-                    container.RemoveItem(slot.Item, 1);
-                    Clear();
+                    if (slot != null && !slot.IsEmpty && slot.Item != null)
+                    {
+                        container?.RemoveItem(slot.Item, 1);
+                        UIManager.Instance.inventoryUI.InventoryController.NotifyChanged();
+                    }
+
+                    if (slot == null || slot.IsEmpty)
+                    {
+                        Clear();
+                    }
+                    else
+                    {
+                        // 수량이 남아있으면 UI 갱신
+                        amountText.text = slot.Quantity.ToString();
+                        itemUI?.SetItem(slot.Item);
+
+                        // 슬롯 재연결
+                        if (container is QuickSlotController quickSlot)
+                        {
+                            quickSlot.TryRebindSlotByItemName(index);
+                        }
+                    }
+
                     waitingToClear = false;
                 }
             }
@@ -91,10 +112,18 @@ public class QuickSlotUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHan
     {
         if (container is QuickSlotController quickSlot)
         {
-            if (quickSlot.SelectedIndex == index)
-                UseItem();
+            if (eventData.button == PointerEventData.InputButton.Right)
+            {
+                Debug.Log($"[QuickSlotUI] 우클릭으로 퀵슬롯 해제 시도 (index: {index})");
+                quickSlot.RemoveItemAt(index);
+            }
             else
-                quickSlot.SelectSlotFromOutside(index);
+            {
+                if (quickSlot.SelectedIndex == index)
+                    UseItem();
+                else
+                    quickSlot.SelectSlotFromOutside(index);
+            }
         }
     }
 
@@ -110,7 +139,7 @@ public class QuickSlotUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHan
         remainingCooldown = cooldownTime;
         StartCoroutine(BlinkIcon());
 
-        amountText.text = slot.Quantity > 1 ? slot.Quantity.ToString() : "";
+        amountText.text = slot.Quantity.ToString();
     }
 
     public void SetSelected(bool selected)

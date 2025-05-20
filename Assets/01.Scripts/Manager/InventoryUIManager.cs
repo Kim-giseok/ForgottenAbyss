@@ -60,6 +60,8 @@ public class InventoryUIManager : MonoBehaviour
     {
         if (inventoryController == null || slotUIs == null) return;
 
+        var quickSlot = UIManager.Instance.quickSlotController;
+
         for (int i = 0; i < slotUIs.Length; i++)
         {
             var slotUI = slotUIs[i];
@@ -67,9 +69,10 @@ public class InventoryUIManager : MonoBehaviour
             if (i < inventoryController.SlotCount)
             {
                 var slot = inventoryController.GetSlot(i);
-                // Debug.Log($"[UpdateUI] [{i}] 아이템: {slot?.Item?.itemName ?? "없음"}, 수량: {slot?.Quantity}, 해시: {slot?.GetHashCode()}");
-
                 slotUI.SetSlot(slot, i, inventoryController); // 슬롯 + 인덱스 + 컨테이너 전달
+
+                bool isLinked = quickSlot.IsInventorySlotLinked(i);
+                slotUI.SetLinkedToQuickSlot(isLinked);
             }
             else
             {
