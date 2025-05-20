@@ -136,13 +136,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: jumpAtk_turn_0
+      name: SwordAttackJump_0
       rect:
         serializedVersion: 2
-        x: 31
-        y: 24
-        width: 15
-        height: 31
+        x: 20
+        y: 16
+        width: 20
+        height: 32
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -150,144 +150,18 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 15124d04373174e4ebad7d090e304433
-      internalID: 372319080
+      spriteID: f36d692457c8821468f947731916eba7
+      internalID: 126272121
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: jumpAtk_turn_1
+      name: SwordAttackJump_1
       rect:
         serializedVersion: 2
-        x: 69
-        y: 23
-        width: 24
-        height: 28
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: bd8192a976899454f883bff62bd8cbf3
-      internalID: -1769690343
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: jumpAtk_turn_2
-      rect:
-        serializedVersion: 2
-        x: 105
-        y: 24
-        width: 24
-        height: 26
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 6bd41f087d2a4b4439cbac70212038c3
-      internalID: 340940572
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: jumpAtk_turn_3
-      rect:
-        serializedVersion: 2
-        x: 144
-        y: 24
-        width: 28
-        height: 28
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: c9ba67f566eef5748891c6c26760eff1
-      internalID: 157393268
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: jumpAtk_turn_4
-      rect:
-        serializedVersion: 2
-        x: 186
-        y: 23
-        width: 36
-        height: 27
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 8bf01abf98a2e584c92652676ea77f88
-      internalID: -722557205
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: jumpAtk_turn_5
-      rect:
-        serializedVersion: 2
-        x: 232
-        y: 23
-        width: 54
-        height: 28
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 771243bed736f8b4bb48cb9be26f5575
-      internalID: -1771650385
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: jumpAtk_turn_6
-      rect:
-        serializedVersion: 2
-        x: 293
-        y: 22
-        width: 40
-        height: 27
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 0639ccf57d0da764db9778465bd9ff10
-      internalID: 760363979
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: jumpAtk_turn_7
-      rect:
-        serializedVersion: 2
-        x: 346
-        y: 21
+        x: 79
+        y: 16
         width: 24
         height: 33
       alignment: 7
@@ -297,19 +171,40 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f3c00fc01b6996d4dab7340609c1ecea
-      internalID: 1045335131
+      spriteID: ba1e88bd9a6cb9942be1b0012b89f7ca
+      internalID: 763000318
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: jumpAtk_turn_8
+      name: SwordAttackJump_2
       rect:
         serializedVersion: 2
-        x: 389
-        y: 22
-        width: 20
+        x: 135
+        y: 18
+        width: 40
+        height: 29
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c36f4c69d6ff8e848808a6c25f2bb355
+      internalID: 1814886356
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SwordAttackJump_3
+      rect:
+        serializedVersion: 2
+        x: 208
+        y: 16
+        width: 53
         height: 31
       alignment: 7
       pivot: {x: 0.5, y: 0}
@@ -318,8 +213,302 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d183ab12c89512f44b0170180b717ba4
-      internalID: 1902706737
+      spriteID: 86ce1d04ce055f543b9879266ee4ba74
+      internalID: -1167478051
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SwordAttackJump_4
+      rect:
+        serializedVersion: 2
+        x: 319
+        y: 17
+        width: 36
+        height: 29
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ab8a68d0568a2e14d80f782e2300f614
+      internalID: -904498724
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SwordAttackJump_5
+      rect:
+        serializedVersion: 2
+        x: 411
+        y: 19
+        width: 27
+        height: 29
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 253c47bf2c706f1409d865c533a4f7fc
+      internalID: 1306150731
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SwordAttackJump_6
+      rect:
+        serializedVersion: 2
+        x: 481
+        y: 22
+        width: 25
+        height: 29
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 234e5240a857fad4d95a85ebd8c96b49
+      internalID: -2067481356
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SwordAttackJump_7
+      rect:
+        serializedVersion: 2
+        x: 594
+        y: 22
+        width: 19
+        height: 29
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2ac5dea2c1869b44f92dabd77e52e363
+      internalID: 1384740826
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SwordAttackJump_8
+      rect:
+        serializedVersion: 2
+        x: 708
+        y: 22
+        width: 17
+        height: 30
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: db39a3c0036654a4faae8b5564da927d
+      internalID: 1051334068
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SwordAttackJump_9
+      rect:
+        serializedVersion: 2
+        x: 818
+        y: 22
+        width: 18
+        height: 31
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ebe46d8bab1ffae46a0485a06fb1b7f2
+      internalID: 1364100788
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SwordAttackJump_10
+      rect:
+        serializedVersion: 2
+        x: 879
+        y: 20
+        width: 43
+        height: 39
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 52b3ece2d78ac5541b8ff8b603ae30ed
+      internalID: -604498039
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SwordAttackJump_11
+      rect:
+        serializedVersion: 2
+        x: 991
+        y: 23
+        width: 46
+        height: 33
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 999b67a08860b464a9c71eaa090a6a24
+      internalID: -883872825
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SwordAttackJump_12
+      rect:
+        serializedVersion: 2
+        x: 1123
+        y: 22
+        width: 27
+        height: 25
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 88c6d00abfdb0fa4cb8fb0041948815f
+      internalID: -353283490
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SwordAttackJump_13
+      rect:
+        serializedVersion: 2
+        x: 1235
+        y: 23
+        width: 27
+        height: 24
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 41666e1d5b9cd8c4b838789cf795f7cd
+      internalID: 1050289921
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SwordAttackJump_14
+      rect:
+        serializedVersion: 2
+        x: 1347
+        y: 25
+        width: 24
+        height: 22
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cf953744c31d11641a0fb7eaceb3134e
+      internalID: -660576975
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SwordAttackJump_15
+      rect:
+        serializedVersion: 2
+        x: 1459
+        y: 24
+        width: 27
+        height: 23
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c6aba613067f641478e4dc9d51104373
+      internalID: -151015814
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SwordAttackJump_16
+      rect:
+        serializedVersion: 2
+        x: 1574
+        y: 23
+        width: 18
+        height: 26
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 695d415d57e8f744b94c0bca324d0d5a
+      internalID: 1438876999
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SwordAttackJump_17
+      rect:
+        serializedVersion: 2
+        x: 1638
+        y: 25
+        width: 19
+        height: 25
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d704c04cdb40a79449aa3efcef6b8963
+      internalID: -1466174850
       vertices: []
       indices: 
       edges: []
@@ -335,6 +524,24 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
+      SwordAttackJump_0: 126272121
+      SwordAttackJump_1: 763000318
+      SwordAttackJump_10: -604498039
+      SwordAttackJump_11: -883872825
+      SwordAttackJump_12: -353283490
+      SwordAttackJump_13: 1050289921
+      SwordAttackJump_14: -660576975
+      SwordAttackJump_15: -151015814
+      SwordAttackJump_16: 1438876999
+      SwordAttackJump_17: -1466174850
+      SwordAttackJump_2: 1814886356
+      SwordAttackJump_3: -1167478051
+      SwordAttackJump_4: -904498724
+      SwordAttackJump_5: 1306150731
+      SwordAttackJump_6: -2067481356
+      SwordAttackJump_7: 1384740826
+      SwordAttackJump_8: 1051334068
+      SwordAttackJump_9: 1364100788
       jumpAtk_turn_0: 372319080
       jumpAtk_turn_1: -1769690343
       jumpAtk_turn_2: 340940572
