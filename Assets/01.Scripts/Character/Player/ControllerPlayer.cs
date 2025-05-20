@@ -54,6 +54,7 @@ public class ControllerPlayer : MonoBehaviour
     [SerializeField] private float groundCheckRadius = 0.2f;
     public LayerMask groundLayer;
     public bool isOnLadder = false;
+    private bool wasGrounded = false;
 
     [Header("InputTimeCheck")]
     private float lastDirectionChangeTime = 0f;
@@ -322,9 +323,9 @@ public class ControllerPlayer : MonoBehaviour
         if (collision.gameObject.CompareTag("Ground"))
         {
             playerSound.LandSound();
-            isGround = true;
+            //isGround = true;
             animator.SetBool("IsJump", false);
-            currentJumpCount = 0;
+            //currentJumpCount = 0;
             rigid.velocity = Vector3.zero;
         }
 
@@ -451,10 +452,17 @@ public class ControllerPlayer : MonoBehaviour
 
     public void UpdateGroundCheck()
     {
-        if (currentState != PlayerState.Climb)
+        bool nowGrounded = Physics2D.OverlapCircle(transform.position, groundCheckRadius, groundLayer);
+
+        // 공중(false) → 착지(true) 순간에만 리셋
+        if (!wasGrounded && nowGrounded)
         {
-            isGround = Physics2D.OverlapCircle(transform.position, groundCheckRadius, groundLayer);
+            animator.SetBool("IsJump", false);
+            currentJumpCount = 0;
         }
+
+        isGround = nowGrounded;
+        wasGrounded = nowGrounded;
     }
 
     public void OnAttackAnimationEnd()
