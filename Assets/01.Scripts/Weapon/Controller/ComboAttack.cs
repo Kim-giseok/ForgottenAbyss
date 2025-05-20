@@ -177,7 +177,7 @@ public class ComboAttack : MonoBehaviour
         else
         {
             attackIndex = 1;
-            animator.SetInteger("AttackCombo", 1);
+            animator.SetInteger("AttackCombo", 0);
             animator.Play("Idle");
 
             if (SystemManager.Instance.weaponManager.GetCurrentWeaponData()?.Type == WeaponType.Sword)

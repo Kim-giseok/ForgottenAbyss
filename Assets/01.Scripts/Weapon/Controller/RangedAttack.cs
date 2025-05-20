@@ -284,15 +284,14 @@ public class RangedAttack : MonoBehaviour
         }
         else
         {
-            if (!comboReady)
-            {
-                attackIndex = 1;
-                animator.SetInteger("BowCombo", 1);
-                animator.Play("Idle");
+            attackIndex = 1;
+            animator.SetInteger("BowCombo", 0);
+            animator.Play("Idle");
 
-                if (SystemManager.Instance.weaponManager.GetCurrentWeaponData().Type == WeaponType.Bow)
-                    UpdateRangedAttackUI(attackIndex - 1);
-            }   
+            Debug.Log("초기화");
+
+            if (SystemManager.Instance.weaponManager.GetCurrentWeaponData().Type == WeaponType.Bow)
+                UpdateRangedAttackUI(attackIndex-1);
         }
     }
 
@@ -300,11 +299,7 @@ public class RangedAttack : MonoBehaviour
     {
         yield return new WaitForSeconds(delay);
 
-        if (attackIndex >= maxCombo)
-        {
-            attackIndex = 1; // maxCombo 일때 1로 리셋
-        }
-
+        attackIndex = 1; // maxCombo 일때 1로 리셋
         canJumpAttack = true;
         IsAttacking = true;
         canNextCombo = true;
@@ -317,6 +312,13 @@ public class RangedAttack : MonoBehaviour
             comboBar.PlayEffect();
             UpdateRangedAttackUI(attackIndex - 1);
         }
+    }
+
+    public void RangedAttackTriggerReset()
+    {
+        animator.ResetTrigger("BowTrigger");
+        animator.SetInteger("BowCombo", 0);
+        IsAttacking = false;
     }
 
     public void AdvanceCombo()
@@ -349,6 +351,5 @@ public class RangedAttack : MonoBehaviour
         yield return new WaitForSeconds(time);
 
         player.canAttack = true;
-        //OnRangedCheck(0.3f);
     }
 }
