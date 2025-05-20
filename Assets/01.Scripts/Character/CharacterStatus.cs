@@ -38,6 +38,11 @@ public class CharacterStatus : MonoBehaviour
         OnStatChanged?.Invoke(type, value); // 스탯 변경 이벤트 발생
     }
 
+    public float GetCurrentHP()
+    {
+        return stats[StatType.CurrentHP];
+    }
+
     public void SetHP(StatType type)
     {
         if (type == StatType.MaxHP && stats.ContainsKey(StatType.CurrentHP) &&
@@ -153,10 +158,14 @@ public class CharacterStatus : MonoBehaviour
 
     public void ResetStats()
     {
+        float currentHP = stats[StatType.CurrentHP];
+
         stats = new Dictionary<StatType, float>(baseStats);
         equipmentBonuses.Clear();
         setBonusMultipliers.Clear();
         equippedArmorIDs.Clear();
+
+        stats[StatType.CurrentHP] = currentHP;
 
         Debug.Log("[ResetStats] 플레이어 스탯 초기화 완료");
     }
