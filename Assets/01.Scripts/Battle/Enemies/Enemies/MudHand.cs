@@ -171,7 +171,7 @@ public class MudHandRangeAttack : Node
                     .SetDamage(eController.resourceHandler.Get(EnemyStatType.Attack).value)
                     .SetSpeed(8)
                     .SetDegree(currDegree)
-                    .SetDuration(0.6f)
+                    .SetDuration(3f)
                     .Fire();
             }
         }

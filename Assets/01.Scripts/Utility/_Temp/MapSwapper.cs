@@ -51,15 +51,15 @@ public class MapSwapper: MonoBehaviour
         }
     }
     
-    // private void Update()
-    // {
-    //     currTime += Time.deltaTime;
-    //     if (currTime >= duration)
-    //     {
-    //         currTime = 0;
-    //         SwapMapAsync().Forget();
-    //     }
-    // }
+    private void Update()
+    {
+        currTime += Time.deltaTime;
+        if (currTime >= duration)
+        {
+            currTime = 0;
+            SwapMapAsync().Forget();
+        }
+    }
 
     // ReSharper disable Unity.PerformanceAnalysis
     public async UniTaskVoid SwapMapAsync()

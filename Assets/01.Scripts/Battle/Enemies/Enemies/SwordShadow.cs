@@ -65,7 +65,7 @@ public class RandomCoolTimeNode : Node
 {
     public override void Start()
     {
-        context.Set("idleRandomDuration", Random.Range(2f, 4f));
+        context.Set("idleRandomDuration", Random.Range(1.4f, 2.8f));
         
         controller.Rigid.velocity = new Vector2(0, controller.Rigid.velocity.y);
         

@@ -45,7 +45,6 @@ public class PlatformDetector: MonoBehaviour
         
         if (curTile == null) return;
         
-        Debug.LogError(curTile.platformID);
         NavSurface.Instance.targetPlatforms[target] = curTile.platformID;
     }
 }
