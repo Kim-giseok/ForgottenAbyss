@@ -14,14 +14,15 @@ public class RangeMultiAttackNode : Node
         // 콜백으로 공격 방식 추상화
         if (isFire)
         {
-            for (int currDegree = -20; currDegree <= 20; currDegree += 10)
+            for (int currDegree = -10; currDegree <= 10; currDegree += 10)
             {
-                if (controller is EnemyController)
+                if (controller is EnemyController eController)
                 {
                     BoltsPool.Instance.Create(controller.transform, Bolts.Type.Decrescendo)
                         .SetSprite("arrow")
+                        .SetEffect(Bolts.EffectType.Penetration)
                         .SetSize(1f)
-                        .SetDamage(10)
+                        .SetDamage(eController.resourceHandler.Get(EnemyStatType.Attack).value)
                         .SetSpeed(30)
                         .SetDegree(controller.Agent.GetDegree() + currDegree)
                         .SetDuration(0.6f)

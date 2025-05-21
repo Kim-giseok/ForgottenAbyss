@@ -36,27 +36,33 @@ public class Platform
 public class NavSurface : MonoBehaviour
 {
     public Dictionary<GameObject, int> targetPlatforms { get; private set; } = new();
-    public static NavSurface Instance;
+    
+    // notice: 매니저는 하나이고 서페이스는 여러개인 것이 맞을 듯
+    public static NavSurface Instance { get; private set; } = new();
     
     public Vector2Int area; // 타일맵 자체 너비
     public List<Cell> cells = new();
     public List<Platform> platforms = new();
-    
+
     public LayerMask layerMask { get; private set; }
     public Tilemap tilemap { get; private set; }
 
-    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
-    private static void Init()
-    {
-        if(!Instance) { Instance = FindObjectOfType<NavSurface>(); }
-    }
+    // [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
+    // private static void Init()
+    // {
+    // }
     
     private void Awake()
     {
         layerMask = gameObject.layer;
-        tilemap = gameObject.GetComponent<Tilemap>();
         
+        // 인스턴스에 붙어있는 상황
+        tilemap = GetComponent<Tilemap>();
         cells.Clear();
+
+        if (!Instance) { Instance = this; }
+
+        
         ScanArea();
     }
     

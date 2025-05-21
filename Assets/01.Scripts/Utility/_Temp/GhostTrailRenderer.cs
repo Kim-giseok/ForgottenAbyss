@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,7 +11,17 @@ public class GhostTrailRenderer : MonoBehaviour
     private int frameCounter = 0;
 
     private bool isFlip = false;
-    
+
+    // notice: 위치 초기화
+    private void OnDisable()
+    {
+      spriteRenderers.ForEach(currRenderer =>
+      {
+          currRenderer.transform.position = Vector3.zero;
+          currRenderer.sprite = null;
+      });
+    }
+
     void Start()
     {
         var parentRenderer = GetComponentInParent<SpriteRenderer>();

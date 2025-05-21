@@ -27,7 +27,7 @@ public class HitNode : Node
         // do: 시퀀스를 통행 애초에 진입이 안되도록 노드 지정
         if (controller is not EnemyController eController) return;
         if (!eController.statusHandler.GetMode(EnmeyMode.Hit)) { SetStatus(Status.Fail); return; }
-        if(eController.resourceHandler.Get(EnemyStatType.Health).currValue <= 0) { SetStatus(Status.Success); return; }
+        if(eController.resourceHandler.Get(EnemyStatType.Health).value <= 0) { SetStatus(Status.Success); return; }
         
         eController.statusHandler.SetMode(EnmeyMode.Hit, false);
         eController.Anim.Play("Hit");
@@ -44,14 +44,13 @@ public class DieNode : Node
 {
     public override void Start()
     {
-        if (controller is not EnemyController eController || eController.resourceHandler.Get(EnemyStatType.Health).currValue > 0) { SetStatus(Status.Fail); return;}
+        if (controller is not EnemyController eController || eController.resourceHandler.Get(EnemyStatType.Health).value > 0) { SetStatus(Status.Fail); return;}
         
         controller.Collider.enabled = false; // 죽은 이후로는 피격 불가능하도록 처리
         controller.Rigid.velocity = Vector3.zero; // fix: 넉백으로 날라가는 현상 발생
         controller.Rigid.isKinematic = true;
 
-        
-        eController.Anim.Play("Die");
+        controller.Anim.Play("Die");
     }
 
     public override void OnAnimated(AnimationStatus status, AnimatorStateInfo animInfo)

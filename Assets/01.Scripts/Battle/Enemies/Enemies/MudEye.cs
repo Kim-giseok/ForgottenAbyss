@@ -38,16 +38,6 @@ public class MudWarpNode : Node
     }
 }
 
-public class MudSpawnNode : Node
-{
-    public override void Start()
-    {
-        var currPos = NavSurface.Instance.GetPlatform(controller.Agent.target).centerCell.WorldPos + new Vector2(0, 1.7f);
-        EnemiesPool.Instance.Create(Enemy.MudHand, currPos);
-        SetStatus(Status.Success);
-    }
-}
-
 public class MudControlnode : Node
 {
     public override void Update()

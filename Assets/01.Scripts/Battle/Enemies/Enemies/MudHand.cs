@@ -1,5 +1,39 @@
 using UnityEngine;
 
+public class MudSHandpawnNode : Node
+{
+    public override void Start()
+    {
+        if (controller is not EnemyController eController || eController.Board.IsSpawned)
+        {
+            SetStatus(Status.Success);
+            return;
+        }
+        
+        for (int currDegree = -180; currDegree <= 90; currDegree += 60)
+        {
+            {
+                BoltsPool.Instance.Create(controller.transform, Bolts.Type.Parabola)
+                    .SetEffect(Bolts.EffectType.Penetration)
+                    .SetSize(0.6f)
+                    .SetDamage(eController.resourceHandler.Get(EnemyStatType.Attack).value)
+                    .SetSpeed(8)
+                    .SetDegree(currDegree)
+                    .SetDuration(0.6f)
+                    .Fire();
+            }
+        }
+
+        controller.Anim.Play("Spawn");
+        eController.Board.IsSpawned = true;
+    }
+
+    public override void OnAnimated(AnimationStatus status, AnimatorStateInfo animInfo)
+    {
+        if (animInfo.IsName("Spawn") && status == AnimationStatus.End) { SetStatus(Status.Success); }
+    }
+}
+
 public class MudAggroNode : Node
 {
     public override void Start()
@@ -8,9 +42,9 @@ public class MudAggroNode : Node
     }
     public override void Update()
     {
-        if (NavSurface.Instance.GetPlatformId(controller.gameObject) == NavSurface.Instance.GetPlatformId(GameManager.Instance.player.gameObject)) { SetStatus(Status.Success); return;
-        }
-        controller.LookTarget();
+        // if (NavSurface.Instance.GetPlatformId(controller.gameObject) == NavSurface.Instance.GetPlatformId(GameManager.Instance.player.gameObject)) { SetStatus(Status.Success); return;
+        // }
+        // controller.LookTarget();
     }
 }
 
@@ -46,6 +80,28 @@ public class MudCastingNode : Node
         {
             SetStatus(Status.Success);
         }
+    }
+}
+
+public class MudHandRandCoolNode : Node
+{
+    public override void Start()
+    {
+        context.Set("idleRandomDuration", Random.Range(0.4f, 4f));
+        
+        controller.Rigid.velocity = new Vector2(0, controller.Rigid.velocity.y);
+        
+        controller.Anim.Play("Idle");
+    }
+
+    public override void Update()
+    {
+        if (currTime >= context.Get<float>("idleRandomDuration")) { SetStatus(Status.Success); }
+    }
+
+    public override void OnAgentDetected(EnemyAgent.Status status)
+    {
+        if(status == EnemyAgent.Status.None) { SetStatus(Status.Fail); }
     }
 }
 
@@ -93,5 +149,38 @@ public class MudAttackNode : Node
     {
         BoltsPool.Instance.DisableMelee(controller.transform);
         controller.Rigid.drag = 0f;
+    }
+}
+
+public class MudHandRangeAttack : Node
+{
+    public override void Start()
+    {
+        if (controller is not EnemyController eController)
+        {
+            SetStatus(Status.Success);
+            return;
+        }
+
+        for (int currDegree = -180; currDegree <= 90; currDegree += 60)
+        {
+            {
+                BoltsPool.Instance.Create(controller.transform, Bolts.Type.Parabola)
+                    .SetEffect(Bolts.EffectType.Penetration)
+                    .SetSize(0.6f)
+                    .SetDamage(eController.resourceHandler.Get(EnemyStatType.Attack).value)
+                    .SetSpeed(8)
+                    .SetDegree(currDegree)
+                    .SetDuration(3f)
+                    .Fire();
+            }
+        }
+
+        controller.Anim.Play("Attack");
+    }
+
+    public override void OnAnimated(AnimationStatus status, AnimatorStateInfo animInfo)
+    {
+        if (animInfo.IsName("Attack") && status == AnimationStatus.End) { SetStatus(Status.Success); }
     }
 }

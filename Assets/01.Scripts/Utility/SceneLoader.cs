@@ -19,6 +19,7 @@ public class SceneLoader : SingletonLoadRemain<SceneLoader>
 
     public void LoadScene(string sceneName)
     {
+        CutSceneManager.Instance.FadeScreen.gameObject.SetActive(fade);
         nextSceneName = sceneName;
         SceneManager.LoadScene(loadingSceneName);
     }
