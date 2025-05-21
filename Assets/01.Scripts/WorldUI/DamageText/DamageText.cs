@@ -176,7 +176,7 @@ public class DamageText : MonoBehaviour
 
     private void ReturnToPool()
     {
-        DamageTextManager.Instance.pool.ReturnToPool(gameObject);
         ResetMaterial();
+        DamageTextManager.Instance.pool.ReturnToPool(gameObject);
     }
 }
