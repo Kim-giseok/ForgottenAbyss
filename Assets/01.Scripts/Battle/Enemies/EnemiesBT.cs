@@ -32,8 +32,13 @@ public class EnemiesBT
             (int)Enemy.Archer,
             new SelectorNode(
                 new SequenceNode(new HitNode(), new DieNode()),
-                new SequenceNode(new TracingNode(), new StopNode(), new ChargingNode(2f), new RangeMultiAttackNode()),
-                new SequenceNode(new IdleNode(1), new PatrolMove(1))
+                new SequenceNode(
+                    new CheckNode((controller) => controller.detectHandler.isWalkable),
+                    new TracingNode(),
+                    new StopNode(), new ChargingNode(0.8f), new RangeMultiAttackNode())
+                ,
+                new SequenceNode(new IdleNode(1))
+                // new SequenceNode(new IdleNode(1), new PatrolMove(1))
                 )
         },
         {

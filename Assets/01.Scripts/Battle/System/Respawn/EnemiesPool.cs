@@ -9,7 +9,7 @@ public class EnemiesPool: SingletonLoadRemain<EnemiesPool>
     public EnemyController enemy;
     private readonly List<EnemyController> _currEnemies = new();
     
-    public void Create( Enemy enemyName, Vector2 position)
+    public EnemyController Create( Enemy enemyName, Vector2 position)
     {
         var currEnemy = _currEnemies.Find(prevEnemy => prevEnemy.enemyName == enemyName && !prevEnemy.gameObject.activeSelf);
         if (!currEnemy)
@@ -22,5 +22,19 @@ public class EnemiesPool: SingletonLoadRemain<EnemiesPool>
 
         currEnemy.Init(enemyName);
         currEnemy.gameObject.SetActive(true);
+
+        return currEnemy;
+    }
+
+    public void Delete(GameObject prefab)
+    {
+        var currController = prefab.GetComponent<EnemyController>();
+        if (!currController)
+        {
+            Destroy(prefab);
+            return;
+        }
+        currController.gameObject.SetActive(false);
+        _currEnemies.Remove(currController);
     }
 }

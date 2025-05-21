@@ -13,7 +13,7 @@ public class EventMoonstoneDeath: MonoBehaviour, IDamagable
     
     public void GetDamage(float damage)
     {
-        if (controller.resourceHandler.Get(EnemyStatType.Health).currValue - damage < 0)
+        if (controller.resourceHandler.Get(EnemyStatType.Health).value - damage < 0)
         {
             controller.Anim.Play("Hit");
             controller.Machine.SetPlaying(false);

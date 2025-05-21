@@ -27,22 +27,25 @@ public class PlatformDetector: MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (!other.TryGetComponent(out Collider2D tilemapCollider) || other.gameObject.layer != NavSurface.Instance.layerMask) return;
+        // if (!other.TryGetComponent(out Collider2D tilemapCollider) || other.gameObject.layer != NavSurface.Instance.layerMask) return;
+        if (other.gameObject.layer != LayerMask.NameToLayer("Ground") && other.gameObject.layer != LayerMask.NameToLayer("IgnoreCollision")) return;
 
         // 플레이어는 transform.position이 바닥이지만 일반적인 경우 중앙부터 - 수정 필요
         tRayPoint.x = tCollider.bounds.center.x; tRayPoint.y = tCollider.bounds.min.y;
-        RaycastHit2D hit = Physics2D.Raycast(tRayPoint, Vector2.down, 0.2f, LayerMask.GetMask("Ground"));
+        RaycastHit2D hit = Physics2D.Raycast(tRayPoint, Vector2.down, 0.2f, LayerMask.GetMask("Ground", "IgnoreCollision"));
         
         if (!hit.collider) return;
         
         Vector3 hitPoint = hit.point;
         
+        // 타일맵이 인스턴스에 붙어있는 상황
         // bug: 정수 변환으로 인해 위치 값이 일치하지 않는 경우 발생 
         var cellPos = NavSurface.Instance.tilemap.WorldToCell(hitPoint);
         var curTile = NavSurface.Instance.cells.Find(cell => cell.tilePos.x == cellPos.x && cell.tilePos.y == cellPos.y);
         
         if (curTile == null) return;
         
+        Debug.LogError(curTile.platformID);
         NavSurface.Instance.targetPlatforms[target] = curTile.platformID;
     }
 }

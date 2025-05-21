@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using Random = UnityEngine.Random;
 
+// 추후에 조건별 파일 폴더 분리하기
 public class RootNode : Node
 {
     public RootNode(Node node)
@@ -204,5 +205,22 @@ public class ConditionNode : Node
     public override void GetStatus(Status newStatus, Node caller)
     {
         SetStatus(newStatus);
+    }
+}
+
+public class CheckNode : Node
+{
+    private readonly Func<EnemyBaseController, bool> callback;
+
+    public CheckNode(Func<EnemyBaseController, bool> callback)
+    {
+        this.callback = callback;
+    }
+
+
+    public override void Start()
+    {
+        bool result = callback(controller);
+        SetStatus(result ? Status.Success : Status.Fail);
     }
 }

@@ -2,9 +2,11 @@ using UnityEngine;
 
 public class EnemyBoard
 {
-    public Vector2 currMoveDirection = Vector2.zero;
-    public float currTime = 0f;
+    public bool IsAttacking = false;
+    public Vector2 CurrMoveDirection = Vector2.zero;
+    public float CurrTime = 0f;
 
-    public int currAttackTick = -1;
-    public int lastAttackTick = -1;
+    // notice: Agis 특수 board
+    public int CurrAttackTick = -1;
+    public int LastAttackTick = -1;
 }

@@ -8,9 +8,9 @@ public class MudAggroNode : Node
     }
     public override void Update()
     {
-        if (NavSurface.Instance.GetPlatformId(controller.gameObject) == NavSurface.Instance.GetPlatformId(GameManager.Instance.player.gameObject)) { SetStatus(Status.Success); return;
-        }
-        controller.LookTarget();
+        // if (NavSurface.Instance.GetPlatformId(controller.gameObject) == NavSurface.Instance.GetPlatformId(GameManager.Instance.player.gameObject)) { SetStatus(Status.Success); return;
+        // }
+        // controller.LookTarget();
     }
 }
 
