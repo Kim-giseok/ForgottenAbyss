@@ -9,6 +9,7 @@ public class LinearBolt : BoltNode
     }
 }
 
+
 public class RainBolt : BoltNode
 {
     public override void Start()
@@ -41,13 +42,17 @@ public class BoltGuidedNode : BoltNode
     }
 }
 
-public class BoldParabolaNode : BoltNode
+public class ParabolaBolt : BoltNode
 {
     public override void Start()
     {
-        // projectile.rigidbody.gravityScale = 1f;
-        // projectile.rigidbody.velocity = Vector2.zero;
-        // projectile.rigidbody.AddForce(direction * power, ForceMode2D.Impulse);
+        bolt.Rigidbody.gravityScale = 2f;
+        bolt.Rigidbody.AddForce(bolt.direction.normalized * bolt.speed, ForceMode2D.Impulse);
+    }
+
+    public override void End()
+    {
+        bolt.Rigidbody.gravityScale = 0f;
     }
 }
 

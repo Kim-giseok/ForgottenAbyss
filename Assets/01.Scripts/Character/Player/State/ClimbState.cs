@@ -34,6 +34,21 @@ public class ClimbState : PlayerStateMachine
         base.FixedUpdate();
         // Y축 입력에 따라 상하 이동
         player.rigid.velocity = new Vector2(player.inputVec.x * 0.5f, player.inputVec.y) * climbSpeed;
+
+        if (Mathf.Abs(player.inputVec.y) > 0.1f)
+        {
+            if (!player.animator.GetBool("IsMovingLadder"))
+            {
+                player.animator.SetBool("IsMovingLadder", true);
+            }
+        }
+        else
+        {
+            if (player.animator.GetBool("IsMovingLadder"))
+            {
+                player.animator.SetBool("IsMovingLadder", false);
+            }
+        }
     }
 
     public override void Exit()

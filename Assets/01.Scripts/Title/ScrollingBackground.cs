@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class ScrollingBackground : MonoBehaviour
 {
@@ -13,12 +14,17 @@ public class ScrollingBackground : MonoBehaviour
 
         public void Initialize()
         {
-            if (layerInstances.Length > 0 && layerInstances[0] != null)
+            Tilemap tilemap = layerInstances[0].GetComponent<Tilemap>();
+            if (tilemap != null)
             {
-                SpriteRenderer sr = layerInstances[0].GetComponent<SpriteRenderer>();
-                if (sr != null)
+                spriteWidth = tilemap.localBounds.size.x;
+            }
+            else
+            {
+                Renderer renderer = layerInstances[0].GetComponent<Renderer>();
+                if (renderer != null)
                 {
-                    spriteWidth = sr.bounds.size.x;
+                    spriteWidth = renderer.bounds.size.x;
                 }
             }
         }

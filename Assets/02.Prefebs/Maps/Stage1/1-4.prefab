@@ -11406,11 +11406,6 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 3032473684653006820}
   m_SourcePrefab: {fileID: 100100000, guid: 19ca1b0d068e303408e7013c00c88c47, type: 3}
---- !u!95 &2738755538405324990 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 7216624940239668031, guid: 19ca1b0d068e303408e7013c00c88c47, type: 3}
-  m_PrefabInstance: {fileID: 4766103093743827841}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &4221900758338723518 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8697486465934222655, guid: 19ca1b0d068e303408e7013c00c88c47, type: 3}
@@ -11439,7 +11434,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c84cbb63f99ea8f4aa02a332c2282f71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  laberAnim: {fileID: 2738755538405324990}
+  laberAnim: {fileID: 0}
   targetMachines:
   - {fileID: 3897091464780542251}
   - {fileID: 1983513805092747389}

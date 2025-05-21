@@ -133,33 +133,33 @@ public class AgisMoveNode : Node
     {
         controller.Anim.Play("Run");
 
-        if (controller.Board.currMoveDirection == Vector2.zero)
+        if (controller.Board.CurrMoveDirection == Vector2.zero)
         {
-            controller.Board.currMoveDirection = Vector2.right;
+            controller.Board.CurrMoveDirection = Vector2.right;
         }
     }
     
     public override void Update()
     {
         
-        if (controller.Board.currMoveDirection == Vector2.right && controller.transform.position.x > 8.0f)
+        if (controller.Board.CurrMoveDirection == Vector2.right && controller.transform.position.x > 8.0f)
         {
-            controller.Board.currMoveDirection = Vector2.left;
+            controller.Board.CurrMoveDirection = Vector2.left;
             SetStatus(Status.Success); 
             return;
         }
 
-        if (controller.Board.currMoveDirection == Vector2.left && controller.transform.position.x < -8.0f)
+        if (controller.Board.CurrMoveDirection == Vector2.left && controller.transform.position.x < -8.0f)
         {
-            controller.Board.currMoveDirection = Vector2.right;
+            controller.Board.CurrMoveDirection = Vector2.right;
             SetStatus(Status.Success); 
             return;
         }
         
-        controller.Board.currAttackTick = Mathf.FloorToInt(Time.time / 3.8f);
-        if (controller.Board.currAttackTick != controller.Board.lastAttackTick)
+        controller.Board.CurrAttackTick = Mathf.FloorToInt(Time.time / 3.8f);
+        if (controller.Board.CurrAttackTick != controller.Board.LastAttackTick)
         {
-            controller.Board.lastAttackTick = controller.Board.currAttackTick;
+            controller.Board.LastAttackTick = controller.Board.CurrAttackTick;
             
             int attackType = Random.Range(0, 3);
 
@@ -203,7 +203,7 @@ public class AgisMoveNode : Node
             }
         }
         
-        controller.Rigid.velocity = new Vector2(controller.Board.currMoveDirection.x * 4f, controller.Rigid.velocity.y);
+        controller.Rigid.velocity = new Vector2(controller.Board.CurrMoveDirection.x * 4f, controller.Rigid.velocity.y);
     }
 
     public override void End()

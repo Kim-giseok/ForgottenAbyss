@@ -80,7 +80,6 @@ public class TracingNode : Node
     public override void Update()
     {
         // 플랫폼을 우선 체크하여 넘어갈 수 없는 상황이라면 점프
-        
         controller.LookTarget();
         // bug: 추적 방향이 위쪽이면 속도까지 줄어드는 문제 발생
         

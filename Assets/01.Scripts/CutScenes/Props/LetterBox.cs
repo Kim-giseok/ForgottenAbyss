@@ -82,16 +82,12 @@ public class LetterBox : MonoBehaviour
     
         foreach (var c in text)
         {
-            if (skipLine)
-            {
-                narrationText.text = text; 
-                _narrationCTS.Token.ThrowIfCancellationRequested();
-                break;
-            }
+            _narrationCTS.Token.ThrowIfCancellationRequested();
             
+            if (skipLine) { narrationText.text = text; break; }
             SoundManager.Instance.Playsfx("Tick");
             narrationText.text += c;
-            await UniTask.Delay(50);
+            await UniTask.Delay(50, cancellationToken: _narrationCTS.Token);
         }
     }
 

@@ -37,7 +37,7 @@ public class DashState : PlayerStateMachine
         if (dashTimer >= player.dashTime) //대쉬 종료
         {
             player.ChangeState(PlayerState.Idle);
-
+            player.rigid.velocity = Vector2.zero;
             player.rigid.velocity = new Vector2(player.inputVec.x * player.status.stats[StatType.SPEED], player.rigid.velocity.y);
         }
     }

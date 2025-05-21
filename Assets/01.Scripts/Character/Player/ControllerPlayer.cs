@@ -348,7 +348,10 @@ public class ControllerPlayer : MonoBehaviour
     public void OnTriggerStay2D(Collider2D collision)
     {
         if (collision.gameObject.layer == LayerMask.NameToLayer("Climb") && inputVec.y != 0)
-            ChangeState(PlayerState.Climb);
+            if (currentState != PlayerState.Climb) // 중복 실행 방지
+            {
+                ChangeState(PlayerState.Climb);
+            }
 
         if (states.ContainsKey(currentState))
             states[currentState].OnTriggerStay(collision);
@@ -484,10 +487,10 @@ public class ControllerPlayer : MonoBehaviour
         }
         else if (weaponType == WeaponType.Bow)
         {
-            dashDistance = 1.5f;
-            dashTime = 0.175f;
-            dashCost = 5f;
-            dashCoolTime = 0.25f;
+            dashDistance = 2f;
+            dashTime = 0.25f;
+            dashCost = 7f;
+            dashCoolTime = 0.3f;
         }
         else
         {
