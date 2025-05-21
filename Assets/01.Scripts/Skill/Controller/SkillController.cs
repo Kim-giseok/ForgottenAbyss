@@ -17,6 +17,8 @@ public class SkillController : Singleton<SkillController>
     public Transform skillSpawnPoint;
     public Transform skillSpawnPoint2;
 
+    public ControllerPlayer player;
+
     private bool isGettingHit = false;
     private bool isDead = false;
     public bool isSkillPlaying = false;
@@ -31,6 +33,7 @@ public class SkillController : Singleton<SkillController>
     {
         var weaponManager = SystemManager.Instance.weaponManager;
         var skillManager = SystemManager.Instance.skillManager;
+        player = GameManager.Instance.player.controller;
 
         var weaponSO = weaponManager.GetCurrentWeaponSO();
         var weaponData = weaponManager.GetCurrentWeaponData();
@@ -78,7 +81,7 @@ public class SkillController : Singleton<SkillController>
         AnimatorStateInfo stateInfo = GameManager.Instance.player.animator.GetCurrentAnimatorStateInfo(0);
         bool isInAttackState = stateInfo.IsTag("Attack") && stateInfo.normalizedTime >= 0.1f && stateInfo.normalizedTime <= 0.3f;
 
-        if (isInAttackState || isSkillPlaying) return;
+        if (isInAttackState || isSkillPlaying || player.isOnLadder) return;
 
         if (!SystemManager.Instance.weaponManager.IsWeaponEquipped())
         {
@@ -86,12 +89,12 @@ public class SkillController : Singleton<SkillController>
             return;
         }
 
-        if (!IsExecutable() || !GameManager.Instance.player.controller.canAttack || IsTurning())
+        if (!IsExecutable() || !player.canAttack || IsTurning())
         {
             Debug.Log("A: 공격 불가 또는 방향 전환 중 - 공격 입력 버퍼링");
             SystemManager.Instance.actionBufferUtil.BufferAction(
                 "NormalAttack",
-                () => IsExecutable() && GameManager.Instance.player.controller.canAttack && !isInAttackState,
+                () => IsExecutable() && player.canAttack && !isInAttackState,
                 () => StartCoroutine(DelayedCombatExecution()));
 
             return;
@@ -104,21 +107,21 @@ public class SkillController : Singleton<SkillController>
 
     void OnFirstSkill(InputValue value)
     {
-        if (!IsExecutable() && !IsBufferable()) return;
+        if ((!IsExecutable() && !IsBufferable()) || player.isOnLadder) return;
         TryBufferOrExecuteSkill(skill01, "FirstSkill");
         Debug.Log("S: 스킬1");
     }
 
     void OnSecondSkill(InputValue value)
     {
-        if (!IsExecutable() && !IsBufferable()) return;
+        if ((!IsExecutable() && !IsBufferable()) || player.isOnLadder) return;
         TryBufferOrExecuteSkill(skill02, "SecondSkill");
         Debug.Log("D: 스킬2");
     }
 
     void OnSpecialSkill(InputValue value)
     {
-        if (!IsExecutable() && !IsBufferable()) return;
+        if ((!IsExecutable() && !IsBufferable()) || player.isOnLadder) return;
         if (memorySkill == null)
         {
             if (DamageTextManager.Instance != null)
@@ -141,17 +144,17 @@ public class SkillController : Singleton<SkillController>
 
     public bool IsExecutable()
     {
-        var player = GameManager.Instance.player.controller;
+        if (!player.canAttack || !player.canSkill || isGettingHit || isDead)
+            return false;
 
-        if(!player.canAttack || !player.canSkill || isGettingHit || isDead) return false;
-        else return true;
+        return true;
     }
 
     public bool IsBufferable()
     {
-        var player = GameManager.Instance.player.controller;
+        if (!player.canAttack || !player.canSkill)
+            return true;
 
-        if (!player.canAttack || !player.canSkill) return true;
         return false;
     }
 
@@ -184,9 +187,9 @@ public class SkillController : Singleton<SkillController>
 
         if (SystemManager.Instance.skillManager.IsMemorySkill(instance))
         {
-            GameManager.Instance.player.controller.isInvincible = true;
+            player.isInvincible = true;
             yield return new WaitForSeconds(3.0f);
-            GameManager.Instance.player.controller.isInvincible = false;
+            player.isInvincible = false;
         }
         else
         {
