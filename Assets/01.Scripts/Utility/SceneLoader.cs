@@ -17,9 +17,9 @@ public class SceneLoader : SingletonLoadRemain<SceneLoader>
         fade = GetComponent<FadeScene>();
     }
 
+    // fix: 페이드 스크린 초기 활성화 오류 수정
     public void LoadScene(string sceneName)
     {
-        CutSceneManager.Instance.FadeScreen.gameObject.SetActive(fade);
         nextSceneName = sceneName;
         SceneManager.LoadScene(loadingSceneName);
     }
