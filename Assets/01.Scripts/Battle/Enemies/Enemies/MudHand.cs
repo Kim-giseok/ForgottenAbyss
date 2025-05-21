@@ -1,5 +1,37 @@
 using UnityEngine;
 
+public class MudSHandpawnNode : Node
+{
+    public override void Start()
+    {
+        if (controller is not EnemyController eController || eController.Board.IsSpawned)
+        {
+            SetStatus(Status.Success);
+            return;
+        }
+        
+        for (int currDegree = -180; currDegree <= 90; currDegree += 60)
+        {
+            {
+                BoltsPool.Instance.Create(controller.transform, Bolts.Type.Parabola)
+                    .SetEffect(Bolts.EffectType.Penetration)
+                    .SetSize(0.6f)
+                    .SetDamage(eController.resourceHandler.Get(EnemyStatType.Attack).value)
+                    .SetSpeed(8)
+                    .SetDegree(currDegree)
+                    .SetDuration(0.6f)
+                    .Fire();
+            }
+        }
+        controller.Anim.Play("Spawn");
+    }
+
+    public override void OnAnimated(AnimationStatus status, AnimatorStateInfo animInfo)
+    {
+        if (animInfo.IsName("Spawn") && status == AnimationStatus.End) { SetStatus(Status.Success); }
+    }
+}
+
 public class MudAggroNode : Node
 {
     public override void Start()

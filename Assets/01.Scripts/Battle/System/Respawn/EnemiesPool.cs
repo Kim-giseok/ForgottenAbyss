@@ -25,7 +25,7 @@ public class EnemiesPool: SingletonLoadRemain<EnemiesPool>
 
         return currEnemy;
     }
-
+    
     public void Delete(GameObject prefab)
     {
         var currController = prefab.GetComponent<EnemyController>();

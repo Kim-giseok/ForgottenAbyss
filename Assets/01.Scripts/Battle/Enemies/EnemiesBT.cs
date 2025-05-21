@@ -112,7 +112,7 @@ public class EnemiesBT
             (int)Enemy.MudHand,
             new SelectorNode(
                 new SequenceNode(new HitNode(), new DieNode()),
-                new SequenceNode(new MudAggroNode(), new MudCastingNode(), new MudAttackNode(), new MudIdleNode())
+                new SequenceNode(new MudSHandpawnNode(), new MudAggroNode(), new MudCastingNode(), new MudAttackNode(), new MudIdleNode())
             )
         },
         {

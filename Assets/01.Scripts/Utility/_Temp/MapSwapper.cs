@@ -3,7 +3,6 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
-using UnityEngine.AI;
 using UnityEngine.Serialization;
 
 public class Session
@@ -26,7 +25,9 @@ public class MapSwapper: MonoBehaviour
     public float duration = 5f;
     public float fadeDuration = 1f;
     
+    
     // mud 관련 코드
+    public EnemyController mudHand;
     public List<EnemyController> mudHands = new();
 
     private void Awake()
@@ -48,11 +49,7 @@ public class MapSwapper: MonoBehaviour
             sessions[0].gameObject.SetActive(true);
         }
     }
-
-    private void Start()
-    {
-    }
-
+    
     private void Update()
     {
         currTime += Time.deltaTime;
@@ -60,6 +57,17 @@ public class MapSwapper: MonoBehaviour
         {
             currTime = 0;
             SwapMapAsync().Forget();
+        }
+    }
+
+    private void SpawnMudHandsAsync()
+    {
+        foreach (var platform in currSurface.platforms)
+        {
+            // await UniTask.Delay(Random.Range(10, 50));
+
+            var mudHand = EnemiesPool.Instance.Create(Enemy.MudHand, platform.startCell.WorldPos);
+            mudHands.Add(mudHand);
         }
     }
 
@@ -92,6 +100,8 @@ public class MapSwapper: MonoBehaviour
         mudHands.ForEach(currMudHand =>
         {
             currMudHand.gameObject.SetActive(false);
+            currMudHand.Board.IsSpawned = false;
+            currMudHand.Machine.Notify();
         });
 
         prevSurface.gameObject.SetActive(false);
@@ -107,12 +117,19 @@ public class MapSwapper: MonoBehaviour
         await nextMat.DOFade(1f, fadeDuration).SetEase(Ease.InOutQuad).AsyncWaitForCompletion();
         
         currSurface = nextSurface;
-        currSurface.platforms.ForEach(paltform =>
+        // 순차 랜덤 생성
+        SoundManager.Instance.Playsfx("MudHand_Appear");
+        currSurface.platforms.ForEach(platform =>
         {
-            var mudHand = EnemiesPool.Instance.Create(Enemy.MudHand, paltform.startCell.WorldPos);
-            mudHands.Add(mudHand);
+            var currMud = mudHands.Find(mudhand => !mudhand.gameObject.activeSelf);
+            if (!currMud)
+            {
+                currMud = Instantiate(mudHand, platform.startCell.WorldPos, Quaternion.identity);
+                mudHands.Add(currMud);
+            }
+            currMud.transform.position = platform.startCell.WorldPos;
+            currMud.gameObject.SetActive(true);
         });
-        
         currSession = nextSession;
     }
 }
