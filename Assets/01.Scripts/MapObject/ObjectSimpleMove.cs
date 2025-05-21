@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -54,6 +55,10 @@ public class ObjectSimpleMove : MonoBehaviour
 
         Gizmos.color = Color.red;
         Vector3 startP = originP == null ? transform.position : originP;
+#if UNITY_EDITOR
+        if (!EditorApplication.isPlaying)
+            startP = transform.position;
+#endif
         Vector3 nextP;
 
         foreach (var movedirect in moveDirects)
