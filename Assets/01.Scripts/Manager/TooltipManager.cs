@@ -18,7 +18,6 @@ public class TooltipManager : MonoBehaviour
             tooltipCanvasGroup = itemTooltip.gameObject.AddComponent<CanvasGroup>();
         }
 
-        tooltipCanvasGroup.alpha = 0f;
         itemTooltip.Hide();
     }
 
@@ -27,7 +26,7 @@ public class TooltipManager : MonoBehaviour
         if (data == null) return;
 
         itemTooltip.SetData(data);
-        itemTooltip.Show(screenPos); // 위치, SetActive 처리
+        itemTooltip.Show(screenPos); // SetActive 처리
         FadeIn();
     }
 
@@ -37,22 +36,6 @@ public class TooltipManager : MonoBehaviour
             StopCoroutine(fadeCoroutine);
 
         fadeCoroutine = StartCoroutine(FadeOut());
-    }
-
-    private void PositionTooltip(Vector2 screenPos)
-    {
-        RectTransform tooltipRect = itemTooltip.GetComponent<RectTransform>();
-        RectTransform canvasRect = itemTooltip.GetComponentInParent<Canvas>().GetComponent<RectTransform>();
-
-        tooltipRect.pivot = new Vector2(0f, 1f); // 좌상단 기준
-
-        Vector2 size = tooltipRect.rect.size;
-        Vector2 anchoredPos = screenPos;
-
-        anchoredPos.x = Mathf.Clamp(anchoredPos.x, padding, Screen.width - size.x - padding);
-        anchoredPos.y = Mathf.Clamp(anchoredPos.y, size.y + padding, Screen.height - padding);
-
-        tooltipRect.position = anchoredPos;
     }
 
     private void FadeIn()
