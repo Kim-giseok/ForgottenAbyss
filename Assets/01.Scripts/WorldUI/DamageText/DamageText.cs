@@ -29,8 +29,8 @@ public class DamageText : MonoBehaviour
         Color criticalColor = new Color(1f, 0.84f, 0f);
         Color targetColor = isCritical ? criticalColor : defaultColor;
 
-        float defaultSize = defaultFontSize * 1.5f;
-        float criticalSize = defaultFontSize * 3f;
+        float defaultSize = defaultFontSize;
+        float criticalSize = defaultFontSize * 2f;
         float targetSize = isCritical ? criticalSize : defaultSize;
 
         Material newMat = new Material(originalMaterial);
@@ -137,7 +137,7 @@ public class DamageText : MonoBehaviour
 
     private IEnumerator PopingScale()
     {
-        float duration = 0.15f;
+        float duration = 0.2f;
         float maxScale = 2f;
         float elapsed = 0f;
 
@@ -146,6 +146,7 @@ public class DamageText : MonoBehaviour
             float t = elapsed / duration;
             float scale = Mathf.Lerp(maxScale, 1f, t);
             transform.localScale = Vector3.one * scale;
+
             elapsed += Time.deltaTime;
             yield return null;
         }
