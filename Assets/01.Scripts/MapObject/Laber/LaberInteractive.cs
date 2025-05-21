@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class LaberInteractive : LaberBase, IInteractable
 {
+    public bool unswitchable;
+
     public override void SwitchMachine()
     {
         base.SwitchMachine();
@@ -12,7 +14,10 @@ public class LaberInteractive : LaberBase, IInteractable
 
     public void ActiveInteraction()
     {
-        SwitchMachine();
+        if (!isSwitched)
+            SwitchMachine();
+        else if (unswitchable)
+            DisSwitchMachine();
     }
 
     public void ReadyInteraction()

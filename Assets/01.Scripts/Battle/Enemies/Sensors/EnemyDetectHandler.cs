@@ -12,9 +12,9 @@ public class EnemyDetectHandler : MonoBehaviour
     private Collider2D _collider;
     private float gravityScale;
     
-    private float rayWallDistance = 0.5f;
-    private float rayGroundDistance = 0.1f;
-    private float groundBoxSize = 0.1f;
+    private readonly float rayWallDistance = 0.5f;
+    private readonly float rayGroundDistance = 1f;
+    private readonly float groundBoxSize = 0.1f;
     
     private bool isGrounded = false;
     public bool isWalkable { get; private set; } = true;
@@ -34,7 +34,7 @@ public class EnemyDetectHandler : MonoBehaviour
     private void FixedUpdate()
     {
         bool currIsWalkable = IsWalkable();
-        if (isWalkable != IsWalkable())
+        if (isWalkable != currIsWalkable)
         {
             isWalkable = currIsWalkable;
             controller.Machine.Notify();
@@ -82,8 +82,10 @@ public class EnemyDetectHandler : MonoBehaviour
     private bool IsWalkable()
     {
         var position = new Vector2(transform.rotation.eulerAngles.y == 0 ? _collider.bounds.max.x : _collider.bounds.min.x, _collider.bounds.min.y);
-        RaycastHit2D hit = Physics2D.Raycast(position, Vector2.down,  rayGroundDistance, 1 << LayerMask.NameToLayer("Ground"));
         
+        // fix: 카메라 콜라이더로 인해 인식 안됬던 부분으로 확인
+        LayerMask mask = LayerMask.GetMask("Ground", "IgnoreCollision");
+        RaycastHit2D hit = Physics2D.Raycast(position, Vector2.down,  rayGroundDistance, mask);
         Debug.DrawRay(position, Vector2.down * rayGroundDistance);
         
         return hit.collider;

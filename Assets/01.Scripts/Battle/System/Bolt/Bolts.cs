@@ -11,7 +11,8 @@ public class Bolts
         Recursive,
         Laser,
         Forward,
-        LevelUp
+        LevelUp,
+        Parabola,
     }
     public enum EffectType { Penetration, Reflection }
     public static BoltNode[] Get(Type type) => boltNodes[type];
@@ -28,6 +29,7 @@ public class Bolts
         { Type.Decrescendo, new BoltNode[] { new DecrescendoBolt() }},
         { Type.Recursive, new BoltNode[] { new RecursiveBolt(), new RecursiveBolt(), new RecursiveBolt(), new RecursiveBolt()}},
         { Type.Forward, new BoltNode[] { new ForwardBolt() }},
+        { Type.Parabola, new BoltNode[] { new ParabolaBolt() }},
     };
 
     private static Dictionary<EffectType, BoltEffect> effects = new()
