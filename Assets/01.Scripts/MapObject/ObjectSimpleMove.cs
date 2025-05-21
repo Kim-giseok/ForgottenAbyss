@@ -20,33 +20,31 @@ public class ObjectSimpleMove : MonoBehaviour
 
     IEnumerator MoveAllRoot()
     {
-        Vector3 nextP, direction;
+        Vector3 nextP;
         while (true)
         {
             foreach (var movePoint in moveDirects)
             {
                 nextP = transform.position + movePoint;
-                direction = movePoint.normalized;
-
-                while (Vector3.Distance(nextP, transform.position) >= speed * Time.deltaTime)
-                {
-                    transform.position += direction * speed * Time.deltaTime;
-                    yield return null;
-                }
-                transform.position = nextP;
+                yield return StartCoroutine(Goto(nextP));
             }
             if (!isLoop) break;
 
             nextP = originP;
-            direction = (originP - transform.position).normalized;
-
-            while (Vector3.Distance(nextP, transform.position) >= speed * Time.deltaTime)
-            {
-                transform.position += direction * speed * Time.deltaTime;
-                yield return null;
-            }
-            transform.position = nextP;
+            yield return StartCoroutine(Goto(nextP));
         }
+    }
+
+    IEnumerator Goto(Vector3 nextP)
+    {
+        Vector3 direction = (nextP - transform.position).normalized;
+
+        while (Vector3.Distance(nextP, transform.position) >= speed * Time.deltaTime)
+        {
+            transform.position += direction * speed * Time.deltaTime;
+            yield return null;
+        }
+        transform.position = nextP;
     }
 
     private void OnDrawGizmos()
@@ -55,10 +53,11 @@ public class ObjectSimpleMove : MonoBehaviour
 
         Gizmos.color = Color.red;
         Vector3 startP = originP == null ? transform.position : originP;
+        Vector3 nextP;
 
         foreach (var movedirect in moveDirects)
         {
-            Vector3 nextP = startP + movedirect;
+            nextP = startP + movedirect;
             Gizmos.DrawLine(startP, nextP);
             startP = nextP;
         }
