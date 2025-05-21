@@ -14,8 +14,7 @@ public class ObjectSimpleMove : MonoBehaviour
 
     public void Move()
     {
-        if (originP == null)
-            originP = transform.position;
+        originP = transform.position;
         if (moveDirects == null) return;
         StartCoroutine(MoveAllRoot());
     }
