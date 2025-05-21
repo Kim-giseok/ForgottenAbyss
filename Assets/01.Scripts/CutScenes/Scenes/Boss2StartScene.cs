@@ -79,6 +79,7 @@ public class Boss2StartScene: CutScene
         
         // [한번 섞기]
         MapSwapper.SwapMapAsync().Forget();
+        // MapSwapper.isStart = true;
         
         Camera.Reset();
         GameManager.Instance.PausePlayer(false);

@@ -26,6 +26,8 @@ public class MapSwapper: MonoBehaviour
     public float duration = 5f;
     public float fadeDuration = 1f;
     
+    public bool isStart = false;
+    
     // mud 관련 코드
     public EnemyController mudEye;
     public EnemyController mudHand;
@@ -53,6 +55,7 @@ public class MapSwapper: MonoBehaviour
     
     private void Update()
     {
+        if (!isStart) return;
         currTime += Time.deltaTime;
         if (currTime >= duration)
         {
