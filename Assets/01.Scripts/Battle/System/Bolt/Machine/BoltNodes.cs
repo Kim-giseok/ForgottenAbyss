@@ -46,7 +46,7 @@ public class ParabolaBolt : BoltNode
 {
     public override void Start()
     {
-        bolt.Rigidbody.gravityScale = 4f;
+        bolt.Rigidbody.gravityScale = 2f;
         bolt.Rigidbody.AddForce(bolt.direction.normalized * bolt.speed, ForceMode2D.Impulse);
     }
 

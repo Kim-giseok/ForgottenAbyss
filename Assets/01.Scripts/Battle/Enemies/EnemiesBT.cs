@@ -33,9 +33,7 @@ public class EnemiesBT
             new SelectorNode(
                 new SequenceNode(new HitNode(), new DieNode()),
                 new SequenceNode(
-                    new CheckNode((controller) => controller.detectHandler.isWalkable),
-                    new TracingNode(),
-                    new StopNode(), new ChargingNode(0.8f), new RangeMultiAttackNode())
+                    new TracingNode(), new StopNode(), new ChargingNode(0.8f), new RangeMultiAttackNode())
                 ,
                 new SequenceNode(new IdleNode(1))
                 // new SequenceNode(new IdleNode(1), new PatrolMove(1))
@@ -105,14 +103,16 @@ public class EnemiesBT
             new SelectorNode(
                 new SequenceNode(new HitNode(), new DieNode()),
                 // new SequenceNode(new MudWarpNode(), new MudWarpNode(), new MudWarpNode())
-                new SequenceNode(new IdleNode(1), new MudSpawnNode(), new MudWarpNode())
+                // new SequenceNode(new IdleNode(1), new MudWarpNode())
+                new SequenceNode(new IdleNode(1))
                 )
         },
         {
             (int)Enemy.MudHand,
             new SelectorNode(
                 new SequenceNode(new HitNode(), new DieNode()),
-                new SequenceNode(new MudSHandpawnNode(), new MudAggroNode(), new MudCastingNode(), new MudAttackNode(), new MudIdleNode())
+                new SequenceNode(new MudSHandpawnNode(), new RandomCoolTimeNode(), new MudHandRangeAttack())
+                // new SequenceNode(new MudSHandpawnNode(), new MudCastingNode(), new MudAttackNode(), new MudIdleNode())
             )
         },
         {

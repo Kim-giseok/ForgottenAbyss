@@ -15,6 +15,7 @@ public class Session
 public class MapSwapper: MonoBehaviour
 {
     public MapSwapper Instance { get; private set; }
+    public Transform mudHandPool;
     
     private readonly List<NavSurface> sessions = new();
     private int currSession = 0;
@@ -25,10 +26,10 @@ public class MapSwapper: MonoBehaviour
     public float duration = 5f;
     public float fadeDuration = 1f;
     
-    
     // mud 관련 코드
+    public EnemyController mudEye;
     public EnemyController mudHand;
-    public List<EnemyController> mudHands = new();
+    private readonly List<EnemyController> mudHands = new();
 
     private void Awake()
     {
@@ -50,28 +51,18 @@ public class MapSwapper: MonoBehaviour
         }
     }
     
-    private void Update()
-    {
-        currTime += Time.deltaTime;
-        if (currTime >= duration)
-        {
-            currTime = 0;
-            SwapMapAsync().Forget();
-        }
-    }
+    // private void Update()
+    // {
+    //     currTime += Time.deltaTime;
+    //     if (currTime >= duration)
+    //     {
+    //         currTime = 0;
+    //         SwapMapAsync().Forget();
+    //     }
+    // }
 
-    private void SpawnMudHandsAsync()
-    {
-        foreach (var platform in currSurface.platforms)
-        {
-            // await UniTask.Delay(Random.Range(10, 50));
-
-            var mudHand = EnemiesPool.Instance.Create(Enemy.MudHand, platform.startCell.WorldPos);
-            mudHands.Add(mudHand);
-        }
-    }
-
-    private async UniTaskVoid SwapMapAsync()
+    // ReSharper disable Unity.PerformanceAnalysis
+    public async UniTaskVoid SwapMapAsync()
     {
         if (sessions.Count < 2) return;
 
@@ -119,17 +110,30 @@ public class MapSwapper: MonoBehaviour
         currSurface = nextSurface;
         // 순차 랜덤 생성
         SoundManager.Instance.Playsfx("MudHand_Appear");
-        currSurface.platforms.ForEach(platform =>
+        
+        var bossIndex = Random.Range(0, currSurface.platforms.Count);
+        for (var i = 0; i < currSurface.platforms.Count; i++)
         {
+            if (i == bossIndex)
+            {
+               mudEye.transform.position = currSurface.platforms[i].centerCell.WorldPos + Vector2.up * 2f;
+               continue;
+            }
+               
+            var platform = currSurface.platforms[i];
+            Cell[] cells = { platform.startCell, platform.centerCell, platform.endCell };
+            var newPos = cells[Random.Range(0, 3)].WorldPos;
+            
             var currMud = mudHands.Find(mudhand => !mudhand.gameObject.activeSelf);
             if (!currMud)
             {
-                currMud = Instantiate(mudHand, platform.startCell.WorldPos, Quaternion.identity);
+                currMud = Instantiate(mudHand, newPos, Quaternion.identity);
+                currMud.transform.SetParent(mudHandPool);
                 mudHands.Add(currMud);
             }
-            currMud.transform.position = platform.startCell.WorldPos;
+            currMud.transform.position = newPos;
             currMud.gameObject.SetActive(true);
-        });
-        currSession = nextSession;
+            currSession = nextSession;
+        }
     }
 }

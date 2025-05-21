@@ -1,13 +1,14 @@
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class Boss2StartScene: CutScene
 {
     public List<GameObject> mudHands;
     public GameObject mudEyeActor;
     public GameObject mydEye;
+
+    public MapSwapper MapSwapper;
 
     private async UniTask FocusMud(GameObject currMud)
     {
@@ -25,7 +26,6 @@ public class Boss2StartScene: CutScene
         Camera.Init();
         Camera.DisConnect();
         SetCutSceneMode(true);
-        
         
         // [등장]
         Sound.Playsfx("Drone_Doom");
@@ -76,6 +76,9 @@ public class Boss2StartScene: CutScene
         
         mudEyeActor.gameObject.SetActive(false);
         mydEye.SetActive(true);
+        
+        // [한번 섞기]
+        MapSwapper.SwapMapAsync().Forget();
         
         Camera.Reset();
         GameManager.Instance.PausePlayer(false);
