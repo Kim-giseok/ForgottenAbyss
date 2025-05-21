@@ -20,8 +20,8 @@ public class LaberBase : MonoBehaviour
     public virtual void SwitchMachine()
     {
         if (!isActivatable || isAleadyActivated) return;
-
-        laberAnim?.SetFloat("Active", 1);
+        if (laberAnim != null)
+            laberAnim?.SetFloat("Active", 1);
         foreach (var targetMachine in targetMachines)
             targetMachine.Active(this);
 
@@ -32,7 +32,8 @@ public class LaberBase : MonoBehaviour
     public virtual void DisSwitchMachine()
     {
         if (!isSwitched) return;
-        laberAnim?.SetFloat("Active", -1);
+        if (laberAnim != null)
+            laberAnim?.SetFloat("Active", -1);
         foreach (var targetMachine in targetMachines)
             targetMachine.UnActive();
         isSwitched = false;

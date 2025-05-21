@@ -9,7 +9,11 @@ public class MonsterManager : LaberBase
 
     public void AddList(EnemyController enemy)
     {
-        DisSwitchMachine();
+        if (enemies != null && enemies.Count == 0)
+        {
+            isSwitched = true;
+            DisSwitchMachine();
+        }
         enemies.Add(enemy);
     }
 

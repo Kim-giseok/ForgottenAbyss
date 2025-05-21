@@ -107,14 +107,34 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
 
         var originSlot = dragManager.OriginContainer.GetSlot(dragManager.OriginIndex);
 
-        if (dragManager.OriginContainer == targetContainer)
+        // 퀵슬롯 참조된 인벤토리 슬롯이면 이동 금지
+        if (dragManager.OriginContainer is InventoryController inv &&
+            UIManager.Instance.quickSlotController.IsInventorySlotLinked(dragManager.OriginIndex))
+        {
+            Debug.LogWarning("[ItemDragHandler] 퀵슬롯에 등록된 인벤토리 아이템은 이동할 수 없습니다.");
+            dragManager.Clear();
+            return;
+        }
+
+        if (targetContainer is QuickSlotController quickSlot &&
+            dragManager.OriginContainer is InventoryController originInventory)
+        {
+            // 퀵슬롯 등록 처리
+            quickSlot.LinkToInventorySlot(
+                quickSlotIndex: targetIndex,
+                inventorySlotIndex: dragManager.OriginIndex,
+                inventorySlot: originSlot,
+                inventory: originInventory
+            );
+        }
+        else if (dragManager.OriginContainer == targetContainer)
         {
             // 같은 컨테이너 → 스왑
             dragManager.OriginContainer.SwapItems(dragManager.OriginIndex, targetIndex);
         }
         else
         {
-            // 다른 컨테이너 간 이동 시 반드시 미리 복사한 값을 사용
+            // 서로 다른 컨테이너에서 일반 이동
             var draggedItem = originSlot.Item;
             var draggedAmount = originSlot.Quantity;
 
@@ -124,6 +144,7 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
 
         dragManager.Clear();
     }
+
 
     private bool TryGetTargetSlot(PointerEventData eventData, out IItemContainer container, out int index)
     {

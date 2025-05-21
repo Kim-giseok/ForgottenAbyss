@@ -1,8 +1,9 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class ShopSlotUI : MonoBehaviour
+public class ShopSlotUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField] private TextMeshProUGUI nameText;
     [SerializeField] private TextMeshProUGUI priceText;
@@ -10,7 +11,6 @@ public class ShopSlotUI : MonoBehaviour
 
     private ShopItemData itemData;
     private ShopUI shopUI;
-
     private Button button;
 
     public void Setup(ShopItemData data, ShopUI shop)
@@ -25,8 +25,6 @@ public class ShopSlotUI : MonoBehaviour
             gameObject.SetActive(false);
             return;
         }
-
-        Debug.Log($"[ShopSlotUI] Setup: {itemData.item.itemName}");
 
         iconImage.sprite = itemData.item.itemIcon;
         nameText.text = itemData.item.itemName;
@@ -44,5 +42,19 @@ public class ShopSlotUI : MonoBehaviour
         });
 
         gameObject.SetActive(true);
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        if (itemData?.item != null)
+        {
+            var tooltipData = new ItemTooltipData(itemData.item);
+            UIManager.Instance.ShowTooltip(new ShopTooltipData(itemData), Input.mousePosition);
+        }
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        UIManager.Instance.HideTooltip();
     }
 }

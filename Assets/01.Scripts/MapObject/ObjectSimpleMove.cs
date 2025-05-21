@@ -1,45 +1,69 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class ObjectSimpleMove : MonoBehaviour
 {
     [SerializeField] Vector3[] moveDirects;
     [SerializeField] float speed;
+    public bool stop { get; set; } = false;
+    float Speed => speed * (stop ? 0 : 1);
     [SerializeField] bool isLoop;
+    Vector3 originP;
 
     public void Move()
     {
+        originP = transform.position;
         if (moveDirects == null) return;
         StartCoroutine(MoveAllRoot());
     }
 
     IEnumerator MoveAllRoot()
     {
-        foreach (var movePoint in moveDirects)
+        Vector3 nextP;
+        while (true)
         {
-            Vector3 nextP = transform.position + movePoint;
-            Vector3 direction = movePoint.normalized;
-
-            while (Vector3.Distance(nextP, transform.position) >= speed * Time.deltaTime)
+            foreach (var movePoint in moveDirects)
             {
-                transform.position += direction * speed * Time.deltaTime;
-                yield return null;
+                nextP = transform.position + movePoint;
+                yield return StartCoroutine(Goto(nextP));
             }
-            transform.position = nextP;
+
+            if (!isLoop) break;
+            nextP = originP;
+            yield return StartCoroutine(Goto(nextP));
         }
+    }
+
+    IEnumerator Goto(Vector3 nextP)
+    {
+        Vector3 direction = (nextP - transform.position).normalized;
+
+        while (Vector3.Distance(nextP, transform.position) >= speed * Time.deltaTime)
+        {
+            transform.position += direction * Speed * Time.deltaTime;
+            yield return null;
+        }
+        transform.position = nextP;
     }
 
     private void OnDrawGizmos()
     {
-        if (moveDirects == null) return;
+        if (moveDirects == null || moveDirects.Length == 0) return;
 
         Gizmos.color = Color.red;
-        Vector3 startP = transform.position;
+        Vector3 startP = originP == null ? transform.position : originP;
+#if UNITY_EDITOR
+        if (!EditorApplication.isPlaying)
+            startP = transform.position;
+#endif
+        Vector3 nextP;
 
         foreach (var movedirect in moveDirects)
         {
-            Vector3 nextP = startP + movedirect;
+            nextP = startP + movedirect;
             Gizmos.DrawLine(startP, nextP);
             startP = nextP;
         }

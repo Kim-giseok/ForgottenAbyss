@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class QuickSlotController : MonoBehaviour, IItemContainer
@@ -13,6 +14,9 @@ public class QuickSlotController : MonoBehaviour, IItemContainer
     public event Action<Item> OnItemRemovedExternally;
     public int SlotCount => slots.Length;
 
+    private Dictionary<int, int> linkedInventorySlots = new();
+    private Dictionary<int, string> quickSlotItemNames = new();
+
     private void Awake()
     {
         slots = new Slot[slotCount];
@@ -20,7 +24,7 @@ public class QuickSlotController : MonoBehaviour, IItemContainer
             slots[i] = new Slot();
 
         for (int i = 0; i < slotUIs.Length; i++)
-            slotUIs[i].SetSlot(slots[i], i, this);
+            slotUIs[i].SetSlot(slots[i], i, this, this);
     }
 
     public void OnQuickSlotKeyPressed(int index)
@@ -32,7 +36,6 @@ public class QuickSlotController : MonoBehaviour, IItemContainer
         else
             SelectSlot(index);
     }
-
 
     // 마우스 클릭할때 사용
     public void SelectSlotFromOutside(int index)
@@ -53,18 +56,18 @@ public class QuickSlotController : MonoBehaviour, IItemContainer
 
     public bool AddItem(Item item, int amount)
     {
-        for (int i = 0; i < slots.Length; i++)
-        {
-            if (slots[i].IsEmpty)
-            {
-                slots[i].Set(item, amount);
-                slotUIs[i].SetSlot(slots[i], i, this);
-                OnContainerChanged?.Invoke();
-                return true;
-            }
-        }
+        //for (int i = 0; i < slots.Length; i++)
+        //{
+        //    if (slots[i].IsEmpty)
+        //    {
+        //        slots[i].Set(item, amount);
+        //        slotUIs[i].SetSlot(slots[i], i, this);
+        //        OnContainerChanged?.Invoke();
+        //        return true;
+        //    }
+        //}
 
-        Debug.LogWarning("[QuickSlotController] 슬롯이 모두 찼습니다.");
+        Debug.LogError("[QuickSlotController] 직접 AddItem()은 허용되지 않음. 반드시 LinkToInventorySlot() 사용");
         return false;
     }
 
@@ -73,7 +76,7 @@ public class QuickSlotController : MonoBehaviour, IItemContainer
         if (index < 0 || index >= slots.Length) return false;
 
         slots[index].Set(item, amount);
-        slotUIs[index].SetSlot(slots[index], index, this);
+        slotUIs[index].SetSlot(slots[index], index, this, this);
         OnContainerChanged?.Invoke();
         return true;
     }
@@ -97,9 +100,21 @@ public class QuickSlotController : MonoBehaviour, IItemContainer
     public bool RemoveItemAt(int index)
     {
         if (index < 0 || index >= slots.Length) return false;
-        slots[index].Clear();
+
+        if (linkedInventorySlots.TryGetValue(index, out int inventoryIndex))
+        {
+            UIManager.Instance.inventoryUI.UnmarkQuickSlotLinked(inventoryIndex);
+            UnlinkInventorySlot(inventoryIndex);
+        }
+
+        quickSlotItemNames.Remove(index);
+
+        slots[index] = new Slot();
         slotUIs[index].Clear();
         OnContainerChanged?.Invoke();
+
+        Debug.Log($"[QuickSlotController] Remove 후 상태 - slot[{index}]: {(slots[index].IsEmpty ? "비었음" : slots[index].Item?.itemName)}");
+
         return true;
     }
 
@@ -110,8 +125,8 @@ public class QuickSlotController : MonoBehaviour, IItemContainer
 
         (slots[indexA], slots[indexB]) = (slots[indexB], slots[indexA]);
 
-        slotUIs[indexA].SetSlot(slots[indexA], indexA, this);
-        slotUIs[indexB].SetSlot(slots[indexB], indexB, this);
+        slotUIs[indexA].SetSlot(slots[indexA], indexA, this, this);
+        slotUIs[indexB].SetSlot(slots[indexB], indexB, this, this);
         OnContainerChanged?.Invoke();
         return true;
     }
@@ -139,5 +154,77 @@ public class QuickSlotController : MonoBehaviour, IItemContainer
         }
 
         OnItemRemovedExternally?.Invoke(item);
+    }
+
+    public int GetLinkedInventorySlotIndex(Item item)
+    {
+        foreach (var pair in linkedInventorySlots)
+        {
+            int inventoryIndex = pair.Value;
+            var slot = UIManager.Instance.inventoryUI.InventoryController.GetSlot(inventoryIndex);
+
+            if (!slot.IsEmpty && slot.Item == item)
+                return inventoryIndex;
+        }
+
+        return -1;
+    }
+
+    public void LinkToInventorySlot(int quickSlotIndex, int inventorySlotIndex, ISlot inventorySlot, IItemContainer inventory)
+    {
+        slots[quickSlotIndex] = inventorySlot as Slot;
+        linkedInventorySlots[quickSlotIndex] = inventorySlotIndex;
+
+        if (inventorySlot.Item != null)
+            quickSlotItemNames[quickSlotIndex] = inventorySlot.Item.itemName;
+
+        slotUIs[quickSlotIndex].SetSlot(inventorySlot, quickSlotIndex, this, inventory);
+
+        UIManager.Instance.inventoryUI.MarkQuickSlotLinked(inventorySlotIndex);
+        OnContainerChanged?.Invoke();
+    }
+
+    public void TryRebindSlotByItemName(int quickSlotIndex)
+    {
+        if (!quickSlotItemNames.TryGetValue(quickSlotIndex, out string itemName)) return;
+
+        var inventory = UIManager.Instance.inventoryUI.InventoryController;
+
+        for (int i = 0; i < inventory.SlotCount; i++)
+        {
+            var slot = inventory.GetSlot(i);
+            if (!slot.IsEmpty && slot.Item.itemName == itemName)
+            {
+                LinkToInventorySlot(quickSlotIndex, i, slot, inventory);
+                Debug.Log($"[QuickSlot] 슬롯 {quickSlotIndex} 다시 연결됨 → 인벤토리 슬롯 {i}");
+                return;
+            }
+        }
+
+        Debug.LogWarning($"[QuickSlot] {itemName} 해당 인벤토리 슬롯 못 찾음 → 재연결 실패");
+    }
+
+    public bool IsInventorySlotLinked(int inventoryIndex)
+    {
+        return linkedInventorySlots.ContainsValue(inventoryIndex);
+    }
+
+    public void UnlinkInventorySlot(int inventoryIndex)
+    {
+        int? keyToRemove = null;
+        foreach (var pair in linkedInventorySlots)
+        {
+            if (pair.Value == inventoryIndex)
+            {
+                keyToRemove = pair.Key;
+                break;
+            }
+        }
+
+        if (keyToRemove.HasValue)
+        {
+            linkedInventorySlots.Remove(keyToRemove.Value);
+            Debug.Log($"[QuickSlotController] 인벤토리 슬롯 {inventoryIndex} 링크 해제됨 (QuickSlot {keyToRemove.Value})");
+        }
     }
 }

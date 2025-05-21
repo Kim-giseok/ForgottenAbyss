@@ -9,6 +9,7 @@ public class UIManager : MonoBehaviour
     public static UIManager Instance { get; private set; }
     public DragManager DragManager { get; private set; }
     public DragItemPool dragItemPool;
+    public QuickSlotController quickSlotController;
 
     [Header("ScreenUI")]
     public InventoryUIManager inventoryUI;
