@@ -63,6 +63,16 @@ public class ComboBar : MonoBehaviour
 
     public void PlayEffect()
     {
-        if (comboIndex != 0) comboEffectAnimator.SetTrigger("ComboTrigger");
+        if (comboIndex != 0)
+        {
+            comboEffectAnimator.SetTrigger("ComboTrigger");
+            StartCoroutine(DelayedEndCombo(0.1f));
+        }
+    }
+
+    private IEnumerator DelayedEndCombo(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        EndCombo();
     }
 }

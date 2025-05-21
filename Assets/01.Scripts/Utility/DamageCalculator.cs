@@ -15,7 +15,7 @@ public static class DamageCalculator
 
         // 크리티컬 판정 시 크리티컬 데미지 계수 적용
         bool isCrit = Random.value < castData.critChance;
-        float finalDmg = isCrit ? damage * castData.critDamageMultiplier : damage;
+        float finalDmg = Mathf.RoundToInt(isCrit ? damage * castData.critDamageMultiplier : damage);
 
         Debug.Log(isCrit
             ? $"CRIT! ({damage}) * {castData.critDamageMultiplier} = {finalDmg}"
@@ -31,7 +31,7 @@ public static class DamageCalculator
 
         // 크리티컬 판정 시 크리티컬 데미지 계수 적용
         bool isCrit = Random.value < baData.critChance;
-        float finalDmg = isCrit ? damage * baData.critDamageMultiplier : damage;
+        float finalDmg = Mathf.RoundToInt(isCrit ? damage * baData.critDamageMultiplier : damage);
 
         Debug.Log(isCrit
             ? $"CRIT! ({damage}) * {baData.critDamageMultiplier} = {finalDmg}"

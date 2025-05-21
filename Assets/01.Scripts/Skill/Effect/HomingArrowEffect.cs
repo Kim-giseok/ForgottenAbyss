@@ -139,14 +139,16 @@ public class HomingArrowEffect : MonoBehaviour
 
     private Transform FindNearestEnemy(float searchRadius)
     {
-        Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, searchRadius, LayerMask.GetMask("Enemy"));
+        const int maxTargets = 10;
+        Collider2D[] hits = new Collider2D[maxTargets];
+        int hitCount = Physics2D.OverlapCircleNonAlloc(transform.position, searchRadius, hits, LayerMask.GetMask("Enemy"));
 
         Transform nearest = null;
         float minDist = Mathf.Infinity;
 
-        foreach (var hit in hits)
+        for (int i = 0; i < hitCount; i++)
         {
-            if (hit.TryGetComponent<EnemyController>(out var enemy))
+            if (hits[i].TryGetComponent<EnemyController>(out var enemy))
             {
                 float dist = Vector2.Distance(transform.position, enemy.transform.position);
                 if (dist < minDist)
