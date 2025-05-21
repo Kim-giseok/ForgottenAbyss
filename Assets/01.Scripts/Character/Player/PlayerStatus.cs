@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
@@ -8,7 +9,8 @@ public class PlayerStatus : CharacterStatus
     private Dictionary<int, float> expRequiredForLevel = new Dictionary<int, float>();
     // 레벨별 스탯
     private Dictionary<int, Dictionary<StatType, float>> levelStats = new Dictionary<int, Dictionary<StatType, float>>();
-
+    // 아이템 버프
+    private Dictionary<StatType, Coroutine> activeBuffs = new();
 
     [SerializeField] private int availableStatPoints; // 사용 가능한 스탯 포인트
     [SerializeField] private int statPointsPerLevel; // 레벨 업 시 획득하는 스탯 포인트
@@ -551,5 +553,27 @@ public class PlayerStatus : CharacterStatus
         Debug.Log($"[GameExit] 스탯 포인트와 투자 기록 초기화 완료 (총 {totalInvested} 포인트)");
     }
 
+    public bool TryApplyBuff(StatType stat, float amount, float duration)
+    {
+        if (activeBuffs.ContainsKey(stat))
+        {
+            Debug.LogWarning($"[PlayerStatus] {stat} 버프 이미 적용 중");
+            return false;
+        }
+
+        Coroutine co = StartCoroutine(ApplyTemporaryBuff(stat, amount, duration));
+        activeBuffs[stat] = co;
+        return true;
+    }
+
+    private IEnumerator ApplyTemporaryBuff(StatType stat, float amount, float duration)
+    {
+        SetStat(stat, GetStat(stat) + amount);
+        yield return new WaitForSeconds(duration);
+        SetStat(stat, GetStat(stat) - amount);
+        activeBuffs.Remove(stat);
+
+        Debug.Log($"[PlayerStatus] {stat} 버프 종료");
+    }
 
 }
