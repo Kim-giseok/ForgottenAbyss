@@ -7,6 +7,8 @@ public class ObjectSimpleMove : MonoBehaviour
 {
     [SerializeField] Vector3[] moveDirects;
     [SerializeField] float speed;
+    public bool stop { get; set; } = false;
+    float Speed => speed * (stop ? 0 : 1);
     [SerializeField] bool isLoop;
     Vector3 originP;
 
@@ -28,8 +30,8 @@ public class ObjectSimpleMove : MonoBehaviour
                 nextP = transform.position + movePoint;
                 yield return StartCoroutine(Goto(nextP));
             }
-            if (!isLoop) break;
 
+            if (!isLoop) break;
             nextP = originP;
             yield return StartCoroutine(Goto(nextP));
         }
@@ -41,7 +43,7 @@ public class ObjectSimpleMove : MonoBehaviour
 
         while (Vector3.Distance(nextP, transform.position) >= speed * Time.deltaTime)
         {
-            transform.position += direction * speed * Time.deltaTime;
+            transform.position += direction * Speed * Time.deltaTime;
             yield return null;
         }
         transform.position = nextP;
