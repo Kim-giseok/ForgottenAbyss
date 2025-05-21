@@ -18,6 +18,7 @@ public class RangedAttack : MonoBehaviour
     private bool canNextCombo = false;
     private bool inputCombo = false;
     private bool comboReady = false;
+    private bool isJumpAttacking = false;
 
     public bool IsAttacking = false;
 
@@ -94,6 +95,7 @@ public class RangedAttack : MonoBehaviour
     {
         if (canJumpAttack == true)
         {
+            isJumpAttacking = true;
             canJumpAttack = false;
             IsAttacking = true;
             attackIndex = 3;
@@ -106,6 +108,7 @@ public class RangedAttack : MonoBehaviour
 
     void OnEndBowJumpAttack()
     {
+        isJumpAttacking = false;
         canJumpAttack = true;
         IsAttacking = false;
         attackIndex = 1;
@@ -236,9 +239,10 @@ public class RangedAttack : MonoBehaviour
         PlayerProjectile pp = projectile.GetComponent<PlayerProjectile>();
         if (pp != null)
         {
-            int comboStepIndex = attackIndex - 1;
+            int comboStepIndex;
 
-            if (!canJumpAttack) comboStepIndex = 0;
+            if (isJumpAttacking) comboStepIndex = 0;
+            else comboStepIndex = attackIndex - 1;
 
             if (comboStepIndex >= 0 && comboStepIndex < rangedData.rangedSteps.Count)
             {
