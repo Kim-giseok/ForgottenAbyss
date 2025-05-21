@@ -245,6 +245,26 @@ public class InventoryController : MonoBehaviour, IItemContainer
         return slots[index];
     }
 
-    public void NotifyChanged() => OnContainerChanged?.Invoke();
+    public int FindFirstSlotIndex(Item item)
+    {
+        for (int i = 0; i < slots.Length; i++)
+        {
+            if (!slots[i].IsEmpty && slots[i].Item == item)
+                return i;
+        }
+        return -1;
+    }
+
+    public void NotifyChanged()
+    {
+        OnContainerChanged?.Invoke();
+
+        var quickSlot = UIManager.Instance.quickSlotController;
+
+        for (int i = 0; i < slots.Length; i++)
+        {
+            quickSlot.TryRebindSlotByItemName(i);
+        }
+    }
 
 }

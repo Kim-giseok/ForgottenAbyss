@@ -35,9 +35,24 @@ public class ItemTooltip : MonoBehaviour
         if (canvasRect == null) return;
 
         tooltipPanel.SetActive(true);
+        LayoutRebuilder.ForceRebuildLayoutImmediate(tooltipRect);
+
+        Vector2 tooltipSize = tooltipRect.rect.size;
 
         tooltipRect.pivot = new Vector2(0f, 1f);
-        tooltipRect.position = screenPos;
+
+        Vector2 offset = new Vector2(12f, -12f);
+        Vector2 desiredScreenPos = screenPos + offset;
+
+        float clampedX = Mathf.Clamp(desiredScreenPos.x, 0f, Screen.width - tooltipSize.x);
+        float clampedY = Mathf.Clamp(desiredScreenPos.y, tooltipSize.y, Screen.height);
+        Vector2 clampedScreenPos = new Vector2(clampedX, clampedY);
+
+        Vector2 localPoint;
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRect, clampedScreenPos, null, out localPoint);
+        tooltipRect.localPosition = localPoint;
+
+        tooltipRect.SetAsLastSibling();
     }
 
     public void Hide()
