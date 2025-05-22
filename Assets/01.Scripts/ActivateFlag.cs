@@ -62,7 +62,7 @@ public static class ActivateFlag
     static ActivateFlag()
     {
         var flagSaveData = new DictionaryList<FLAGKEY, bool>().FromDic(flags);
-        flagSaveData = DataSave<DictionaryList<FLAGKEY,bool>>.LoadOrBase(flagSaveData, flagSabePath);
+        flagSaveData = flagSaveData.LoadData(flagSabePath);
         flags = flagSaveData.ToDic();
 
 #if UNITY_EDITOR
@@ -83,7 +83,7 @@ public static class ActivateFlag
     static void SaveFlags()
     {
         var flagSaveData = new DictionaryList<FLAGKEY,bool>().FromDic(flags);
-        DataSave<DictionaryList<FLAGKEY, bool>>.SaveData(flagSaveData, flagSabePath);
+        flagSaveData.SaveData(flagSabePath);
     }
 
 #if UNITY_EDITOR
