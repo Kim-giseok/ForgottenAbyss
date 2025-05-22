@@ -181,7 +181,8 @@ public class EnemyController : EnemyBaseController, IDamagable
         // 방어력 개념도 구현하기
         // statusHandler.stamina -= 1;
         // if (statusHandler.stamina <= 0) { statusHandler.stamina = 3; }
-        
+
+        if (!Board.IsAttacking) { Board.IsAttacking = true; }
         OnHit(damage);
         // statusHandler.SetMode(EnmeyMode.Hit, true);
         // Machine.Notify();

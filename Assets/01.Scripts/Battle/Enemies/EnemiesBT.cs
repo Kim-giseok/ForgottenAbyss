@@ -67,15 +67,23 @@ public class EnemiesBT
             // 탱커 - 폭팔 발생 시 도주 필요
             (int)Enemy.NightBone,
             new SelectorNode(
-                new SequenceNode(new HitNode(), new DieNode()), 
                 new SequenceNode(
-                    new SequenceNode( new TracingNode(), new TracingNode()),
-                    new SequenceNode(new StopNode(), new RandomNode(new()
-                    {
-                        (0.2f, new SequenceNode(new ChargingNode(2f), new ExplosionNode())),
-                        (1f, new SequenceNode(new MeleeAttack(), new IdleNode(0.5f)))
-                    }))), 
-                new SequenceNode(new IdleNode(1), new PatrolMove(1)))
+                    new HitNode(), 
+                    new DieNode()
+                    ),
+                new ConditionNode(controller => controller.Board.IsAttacking, 
+                    new SelectorNode(
+                        new SequenceNode(new CheckNode(ctrl => ctrl.Agent.status != EnemyAgent.Status.Tracked), new TracingNode()),
+                        new SequenceNode(new StopNode(), new RandomNode(new()
+                        {
+                            (0.2f, new SequenceNode(new ChargingNode(1f), new ExplosionNode()).Ignore()),
+                            (1f, new SequenceNode(new MeleeAttack(), new IdleNode(0.5f)).Ignore())
+                        })))
+                    ),
+                new SequenceNode(
+                    new IdleNode(1), 
+                    new PatrolMove(1))
+                )
         },
         {
             // 소드맨 - 속도가 빨라서 원거리 공격이 파훼법(방어가 필요할 듯)
