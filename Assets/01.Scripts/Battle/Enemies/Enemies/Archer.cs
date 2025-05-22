@@ -79,5 +79,6 @@ public class LookTargetNode : Node
 
     public override void Update()
     {
+        controller.LookTarget();
     }
 }

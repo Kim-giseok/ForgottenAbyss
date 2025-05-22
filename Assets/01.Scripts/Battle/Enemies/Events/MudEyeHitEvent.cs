@@ -27,6 +27,7 @@ public class MudEyeHitEvent: MonoBehaviour,IDamagable
             enemyPool.SetActive(false);
             BoltsPool.Instance.Clear();
             
+            SoundManager.Instance.Playsfx("BossDeath");
             SoundManager.Instance.FadeOutBGM();
             UIManager.Instance.BossHealthUI.Active(false);
             return;

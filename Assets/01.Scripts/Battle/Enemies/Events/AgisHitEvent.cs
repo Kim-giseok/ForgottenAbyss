@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class UIDamageDetector: MonoBehaviour, IDamagable
+public class AgisHitEvent: MonoBehaviour, IDamagable
 {
     private EnemyController controller;
 
@@ -21,10 +21,11 @@ public class UIDamageDetector: MonoBehaviour, IDamagable
         
         // controller.GetDamageByType(damage, EnemyStatusHandler.HitType.Normal);
 
-        // if (controller.resourceHandler.Get(EnemyStatType.Health).currValue <= 0)
-        // {
-        //     BoltsPool.Instance.Clear();
-        // }
+        if (health.value <= 0)
+        {
+            SoundManager.Instance.Playsfx("BossDeath");
+            BoltsPool.Instance.Clear();
+        }
     }
 
     // notice: disable 인지 destroy 인지 체크 필요

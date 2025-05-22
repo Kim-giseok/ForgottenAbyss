@@ -71,7 +71,6 @@ public class TracingNode : Node
 {
     public override void Start()
     {
-        Debug.LogWarning("Tracing node");
         // 추적이 완료되면 무한 재귀 발생
         // if(controller.Agent.status == EnemyAgent.Status.None) { SetStatus(Status.Fail); return; }
         // if(controller.Agent.status == EnemyAgent.Status.Tracked) { SetStatus(Status.Success); return; }

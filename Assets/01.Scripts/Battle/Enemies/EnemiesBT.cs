@@ -81,15 +81,25 @@ public class EnemiesBT
                     new HitNode(), 
                     new DieNode()
                     ),
-                new ConditionNode(controller => controller.Board.IsAttacking, 
+                new ConditionNode(
+                    controller => controller.Board.IsAttacking, 
                     new SelectorNode(
-                        new SequenceNode(new CheckNode(ctrl => ctrl.Agent.status != EnemyAgent.Status.Tracked), new TracingNode()),
+                        // 추격 중인 경우,
+                        new ConditionNode(
+                            ctrl => ctrl.Agent.status != EnemyAgent.Status.Tracked,
+                            new SelectorNode(
+                                new ConditionNode(ctrl => ctrl.detectHandler.isWalkable, new TracingNode()),
+                                // 범위에서 벗어날 경우 그냥 공격
+                                new LookTargetNode()
+                            )
+                        ),
+                        // 공격 중인 경우
                         new SequenceNode(new StopNode(), new RandomNode(new()
-                        {
-                            (0.2f, new SequenceNode(new ChargingNode(1f), new ExplosionNode()).Ignore()),
-                            (1f, new SequenceNode(new MeleeAttack(), new IdleNode(0.5f)).Ignore())
-                        })))
-                    ),
+                            {
+                                (0.2f, new SequenceNode(new ChargingNode(1f), new ExplosionNode()).Ignore()),
+                                (1f, new SequenceNode(new MeleeAttack(), new IdleNode(0.5f)).Ignore())
+                            }))
+                    )),
                 new SequenceNode(
                     new IdleNode(1), 
                     new PatrolMove(1))
@@ -136,10 +146,29 @@ public class EnemiesBT
         {
             (int)Enemy.Bringer,
             new SelectorNode(
-                new SequenceNode(new HitNode(), new DieNode()),
-                new SequenceNode(new TracingNode(), new StopNode(), new BringerAttackNode(), new IdleNode(1f)),
-                new SequenceNode(new IdleNode(1), new PatrolMove(1))
-                )
+                new SequenceNode(
+                    new HitNode(), 
+                    new DieNode()
+                ),
+                new ConditionNode(
+                    controller => controller.Board.IsAttacking, 
+                    new SelectorNode(
+                        // 추격 중인 경우,
+                        new ConditionNode(
+                            ctrl => ctrl.Agent.status != EnemyAgent.Status.Tracked,
+                            new SelectorNode(
+                                new ConditionNode(ctrl => ctrl.detectHandler.isWalkable, new TracingNode()),
+                                // 범위에서 벗어날 경우 그냥 공격
+                                new LookTargetNode()
+                            )
+                        ),
+                        // 공격 중인 경우
+                        new SequenceNode(new StopNode(), new BringerAttackNode(), new IdleNode(1f))
+                    )),
+                new SequenceNode(
+                    new IdleNode(1), 
+                    new PatrolMove(1))
+            )
         },
         {
             (int)Enemy.MoonStone,

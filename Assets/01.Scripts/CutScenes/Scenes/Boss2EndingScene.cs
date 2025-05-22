@@ -65,13 +65,9 @@ public class Boss2EndingScene: CutScene
         
         LetterBox.SetColor(Color.red);
         await Narration("그는 결국, 그날의 기억을 발견했다.");
-        await Wait();
         await Narration("붉은 달보다도 붉게 비추던 그림자를..");
-        await Wait();
         await Narration("그리고, 지독한 그림자를 머금어야 했던 기억을..");
-        await Wait();
         await Narration("그리고, 지켜내지 못했던 잊혀진 나락을..");
-        await Wait();
 
         // [초기화]
         Light.FadeIn(0f, 1f);
@@ -84,7 +80,7 @@ public class Boss2EndingScene: CutScene
         gameObject.SetActive(false);
         
         // 로딩이 너무 오래 걸려 차라리 로딩 페이지를 거쳐가는 게 나을 듯
-        SceneLoader.Instance.LoadScene("FlashbackScene");
+        // SceneLoader.Instance.LoadScene("FlashbackScene");
         // SceneManager.LoadScene("FlashbackScene");
     }
 }
