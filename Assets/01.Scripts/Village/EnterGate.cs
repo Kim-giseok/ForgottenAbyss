@@ -8,6 +8,7 @@ public class EnterGate : MonoBehaviour, IInteractable
     public int gateNumber; //문 고유 번호
     public string sceneName;
     [SerializeField] FLAGKEY gateOpenFlag;
+    [SerializeField] FLAGKEY clearCheckFlag;
 
     private void Awake()
     {
@@ -26,12 +27,21 @@ public class EnterGate : MonoBehaviour, IInteractable
 
     public void ActiveInteraction()
     {
-        if(!ActivateFlag.CheckFlag(gateOpenFlag))
+        if (!ActivateFlag.CheckFlag(gateOpenFlag))
         {
-            UIManager.Instance.confirmationUI.PopUpUI("입장할 수 없습니다");
+            UIManager.Instance.confirmationUI.PopUpUI("이전 단계를 클리어 해야 합니다.");
             return;
         }
 
-        UIManager.Instance.confirmationUI.PopUpUI(onClickOk:OnClickEnter);
+
+        if (!ActivateFlag.CheckFlag(clearCheckFlag))
+            UIManager.Instance.confirmationUI.PopUpUI(onClickOk: OnClickEnter);
+        else
+        {
+            StageTimeInfo timeinfo = new();
+            timeinfo = timeinfo.LoadData(clearCheckFlag.ToString() + ".json");
+
+            UIManager.Instance.confirmationUI.PopUpUI($"최근 기록 {timeinfo.cleartimeinfo}", OnClickEnter);
+        }
     }
 }

@@ -1,6 +1,25 @@
+using System;
 using System.Collections.Generic;
 using Cinemachine;
 using UnityEngine;
+
+[Serializable]
+public class StageTimeInfo
+{
+    public List<float> stageEnterTime;
+    public float stageClearTime;
+
+    public string cleartimeinfo
+    {
+        get
+        {
+            int minute = (int)(stageClearTime / 60);
+            float second = stageClearTime - minute * 60;
+
+            return $"{minute:D2}:{second:F2}";
+        }
+    }
+}
 
 public class MapSpawnManager : Singleton<MapSpawnManager>
 {
@@ -16,10 +35,14 @@ public class MapSpawnManager : Singleton<MapSpawnManager>
     public BackGround backgroundprefeb;
     public BackGround[] backgrounds;
 
+    StageTimeInfo timeInfo = new();
+
     protected override void Awake()
     {
         base.Awake();
         mapIdx = 0;
+
+        timeInfo.stageEnterTime = new();
     }
 
     private void Start()
@@ -41,6 +64,9 @@ public class MapSpawnManager : Singleton<MapSpawnManager>
         if (mapIdx >= maps.Length)
         {
             ActivateFlag.ActiveFlag(stageClearedFlag);
+            timeInfo.stageClearTime = Time.time - timeInfo.stageEnterTime[0];
+            timeInfo.SaveData(stageClearedFlag.ToString() + ".json");
+
             SceneLoader.Instance.LoadScene("Village"); //���� ���� ������ ����
             return;
         }
@@ -54,6 +80,8 @@ public class MapSpawnManager : Singleton<MapSpawnManager>
 
         SpawnedMap.MapStart();
         confiner2D.m_BoundingShape2D = SpawnedMap.CameraCollider;
+
+        timeInfo.stageEnterTime.Add(Time.time);
     }
 
     void SpawnBackground()
