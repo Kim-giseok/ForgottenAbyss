@@ -11,6 +11,18 @@ public class TemporaryStatBoostItem : ConsumableItem
     public override bool Use()
     {
         PlayerStatus player = GameObject.FindObjectOfType<PlayerStatus>();
-        return player != null && player.TryApplyBuff(targetStat, boostAmount, duration);
+        
+        if (player != null && player.TryApplyBuff(targetStat, boostAmount, duration))
+        {
+            BuffUIManager uIManager = GameObject.FindObjectOfType<BuffUIManager>();
+            if (uIManager != null)
+            {
+                uIManager.ShowBuff(targetStat, duration, itemIcon);
+            }
+
+            return true;
+        }
+
+        return false;
     }
 }

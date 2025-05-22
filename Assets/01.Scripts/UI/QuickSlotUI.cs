@@ -33,30 +33,41 @@ public class QuickSlotUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHan
 
     public void SetSlot(ISlot newSlot, int slotIndex, IItemContainer quickSlotController, IItemContainer inventory)
     {
+        if (slot is Slot oldSlot)
+            oldSlot.OnSlotChanged -= UpdateUI;
+
         slot = newSlot;
         index = slotIndex;
         container = quickSlotController;
         originContainer = inventory;
 
-        if (slot != null && !slot.IsEmpty)
-        {
-            iconImage.sprite = slot.Item.itemIcon;
-            iconImage.enabled = true;
-            amountText.text = slot.Quantity.ToString();
+        if (slot is Slot currentSlot)
+            currentSlot.OnSlotChanged += UpdateUI;
 
-            itemUI?.SetItem(slot.Item);
-            itemUI?.gameObject.SetActive(true);
-        }
-        else
-        {
-            Clear();
-        }
+        UpdateUI();
 
-        SetSelected(false);
+        //if (slot != null && !slot.IsEmpty)
+        //{
+        //    iconImage.sprite = slot.Item.itemIcon;
+        //    iconImage.enabled = true;
+        //    amountText.text = slot.Quantity.ToString();
+
+        //    itemUI?.SetItem(slot.Item);
+        //    itemUI?.gameObject.SetActive(true);
+        //}
+        //else
+        //{
+        //    Clear();
+        //}
+
+        //SetSelected(false);
     }
 
     public void Clear()
     {
+        if (slot is Slot oldSlot)
+            oldSlot.OnSlotChanged -= UpdateUI;
+
         slot = null;
         iconImage.enabled = false;
         iconImage.sprite = null;
@@ -102,6 +113,22 @@ public class QuickSlotUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHan
         }
     }
 
+    private void UpdateUI()
+    {
+        if (slot == null || slot.IsEmpty)
+        {
+            Clear();
+            return;
+        }
+
+        iconImage.sprite = slot.Item.itemIcon;
+        iconImage.enabled = true;
+        amountText.text = slot.Quantity.ToString();
+
+        itemUI?.SetItem(slot.Item);
+        itemUI?.gameObject.SetActive(true);
+    }
+
     public void OnPointerClick(PointerEventData eventData)
     {
         Debug.Log($"[QuickSlotUI] container е╦ют: {container?.GetType().Name ?? "null"}");
@@ -139,8 +166,6 @@ public class QuickSlotUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHan
             waitingToClear = true;
             remainingCooldown = cooldownTime;
             StartCoroutine(BlinkIcon());
-
-            amountText.text = slot.Quantity.ToString();
         }
 
         

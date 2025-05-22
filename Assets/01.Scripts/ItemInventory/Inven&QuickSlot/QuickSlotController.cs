@@ -105,11 +105,12 @@ public class QuickSlotController : MonoBehaviour, IItemContainer
         {
             UIManager.Instance.inventoryUI.UnmarkQuickSlotLinked(inventoryIndex);
             UnlinkInventorySlot(inventoryIndex);
+            // linkedInventorySlots.Remove(index);
         }
-
         quickSlotItemNames.Remove(index);
 
         slots[index] = new Slot();
+        slotUIs[index].SetSlot(slots[index], index, this, this);
         slotUIs[index].Clear();
         OnContainerChanged?.Invoke();
 

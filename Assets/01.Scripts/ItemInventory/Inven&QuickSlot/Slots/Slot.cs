@@ -8,6 +8,8 @@ using UnityEngine;
 [Serializable]
 public class Slot : ISlot
 {
+    public event Action OnSlotChanged;
+
     [SerializeField] private Item item;
     [SerializeField] private int quantity;
 
@@ -15,6 +17,8 @@ public class Slot : ISlot
     public int Quantity => quantity;
 
     public bool IsEmpty => item == null || quantity <= 0;
+
+    private void NotifyChange() => OnSlotChanged?.Invoke();
 
     public bool Use()
     {
@@ -29,6 +33,7 @@ public class Slot : ISlot
             {
                 Clear();
             }
+            NotifyChange();
         }
 
         return used;
@@ -38,25 +43,32 @@ public class Slot : ISlot
     {
         item = null;
         quantity = 0;
+        NotifyChange();
     }
 
     public void Set(Item newItem, int amount)
     {
         item = newItem;
         quantity = amount;
-        Debug.Log($"[Slot] Set È£ÃâµÊ: {newItem?.name ?? "null"}, ¼ö·®: {amount}");
+        NotifyChange();
     }
 
     public void Add(int amount)
     {
         if (item != null)
+        {
             quantity += amount;
+            NotifyChange();
+        }
     }
 
     public void Remove(int amount)
     {
         quantity -= amount;
-        if (quantity <= 0) Clear();
+        if (quantity <= 0)
+            Clear();
+        else
+            NotifyChange();
     }
 
     public bool CanStack(Item other)
