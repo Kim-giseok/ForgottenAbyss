@@ -8,6 +8,17 @@ public class StageTimeInfo
 {
     public List<float> stageEnterTime;
     public float stageClearTime;
+
+    public string cleartimeinfo
+    {
+        get
+        {
+            int minute = (int)(stageClearTime / 60);
+            float second = stageClearTime - minute * 60;
+
+            return $"{minute:D2}:{second:F2}";
+        }
+    }
 }
 
 public class MapSpawnManager : Singleton<MapSpawnManager>

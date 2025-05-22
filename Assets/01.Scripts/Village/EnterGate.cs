@@ -41,9 +41,7 @@ public class EnterGate : MonoBehaviour, IInteractable
             StageTimeInfo timeinfo = new();
             timeinfo = DataSave<StageTimeInfo>.LoadOrBase(timeinfo, clearCheckFlag.ToString() + ".json");
 
-            int minute = (int)(timeinfo.stageClearTime / 60);
-            float second = timeinfo.stageClearTime - minute * 60;
-            UIManager.Instance.confirmationUI.PopUpUI($"최근 기록 {minute:D2}:{second:F2}s", OnClickEnter);
+            UIManager.Instance.confirmationUI.PopUpUI($"최근 기록 {timeinfo.cleartimeinfo}", OnClickEnter);
         }
     }
 }
