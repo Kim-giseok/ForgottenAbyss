@@ -11,6 +11,8 @@ public class SceneLoader : SingletonLoadRemain<SceneLoader>
     [SerializeField] private Texture2D normalCursor;
     [SerializeField] private Texture2D clickedCursor;
     [SerializeField] private Vector2 hotSpot = Vector2.zero;
+    [SerializeField] private float idleTime = 5f; // 5초 후 숨김
+    private float lastMouseMoveTime;
 
     public FadeScene fade;
 
@@ -22,15 +24,27 @@ public class SceneLoader : SingletonLoadRemain<SceneLoader>
         {
             Cursor.SetCursor(normalCursor, hotSpot, CursorMode.Auto);
         }
+
+        lastMouseMoveTime = Time.time;
     }
 
     private void Update()
     {
-        if (Input.GetMouseButtonDown(0)) // 클릭 시 커서 변경
+        if (Input.GetAxis("Mouse X") != 0 || Input.GetAxis("Mouse Y") != 0)
+        {
+            lastMouseMoveTime = Time.time;
+            Cursor.visible = true;
+        }
+        if (Time.time - lastMouseMoveTime > idleTime)
+        {
+            Cursor.visible = false;
+        }
+
+        if (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1))
         {
             Cursor.SetCursor(clickedCursor, hotSpot, CursorMode.Auto);
         }
-        else if (Input.GetMouseButtonUp(0)) // 클릭 해제 시 원래 커서로 복구
+        else if (Input.GetMouseButtonUp(0) || Input.GetMouseButtonUp(1))
         {
             Cursor.SetCursor(normalCursor, hotSpot, CursorMode.Auto);
         }
