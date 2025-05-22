@@ -16,9 +16,11 @@ public class DamageText : MonoBehaviour
         originalMaterial = new Material(dmgText.fontMaterial);
     }
 
-    public void ResetMaterial()
+    public void ResetFont()
     {
         dmgText.fontMaterial = originalMaterial;
+        dmgText.fontSize = defaultFontSize;
+        transform.localScale = Vector3.one;
     }
 
     public void Setup(int damage, bool isCritical)
@@ -176,7 +178,7 @@ public class DamageText : MonoBehaviour
 
     private void ReturnToPool()
     {
-        ResetMaterial();
+        ResetFont();
         DamageTextManager.Instance.pool.ReturnToPool(gameObject);
     }
 }
