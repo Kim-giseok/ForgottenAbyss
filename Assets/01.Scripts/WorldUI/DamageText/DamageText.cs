@@ -7,6 +7,7 @@ public class DamageText : MonoBehaviour
     public TextMeshProUGUI dmgText;
 
     private Material originalMaterial;
+    private CanvasGroup canvasGroup;
 
     private float duration = 1.0f;
     private float defaultFontSize = 3.0f;
@@ -14,11 +15,18 @@ public class DamageText : MonoBehaviour
     void Awake()
     {
         originalMaterial = new Material(dmgText.fontMaterial);
+
+        canvasGroup = GetComponent<CanvasGroup>();
+        if (canvasGroup == null)
+            canvasGroup = gameObject.AddComponent<CanvasGroup>();
     }
 
-    public void ResetMaterial()
+    public void ResetFont()
     {
+        canvasGroup.alpha = 1.0f;
         dmgText.fontMaterial = originalMaterial;
+        dmgText.fontSize = defaultFontSize;
+        transform.localScale = Vector3.one;
     }
 
     public void Setup(int damage, bool isCritical)
@@ -112,10 +120,6 @@ public class DamageText : MonoBehaviour
 
     private IEnumerator AnimateMessageText()
     {
-        CanvasGroup canvasGroup = GetComponent<CanvasGroup>();
-        if (canvasGroup == null)
-            canvasGroup = gameObject.AddComponent<CanvasGroup>();
-
         canvasGroup.alpha = 1f;
         float fadeDuration = 0.4f;
         float holdTime = 0.4f;
@@ -176,7 +180,7 @@ public class DamageText : MonoBehaviour
 
     private void ReturnToPool()
     {
+        ResetFont();
         DamageTextManager.Instance.pool.ReturnToPool(gameObject);
-        ResetMaterial();
     }
 }
