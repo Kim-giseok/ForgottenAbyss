@@ -21,11 +21,11 @@ public class AgisHitEvent: MonoBehaviour, IDamagable
         
         // controller.GetDamageByType(damage, EnemyStatusHandler.HitType.Normal);
 
-        if (health.value <= 0)
-        {
-            SoundManager.Instance.Playsfx("BossDeath");
-            BoltsPool.Instance.Clear();
-        }
+        if (!(health.value <= 0)) return;
+        
+        SoundManager.Instance.FadeOutBGM();
+        SoundManager.Instance.Playsfx("BossDeath");
+        BoltsPool.Instance.Clear();
     }
 
     // notice: disable 인지 destroy 인지 체크 필요
