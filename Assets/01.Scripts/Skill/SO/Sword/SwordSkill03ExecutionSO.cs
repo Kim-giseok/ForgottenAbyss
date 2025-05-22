@@ -56,7 +56,7 @@ public class SwordSkill03ExecutionSO : SkillExecutionSO
                 {
                     DealDamageToTarget(hit.gameObject, castData);
                     GameManager.Instance.cameraShake.Shake(0.2f, 0.3f);
-                    KnockbackUtil.ApplyKnockback(hit.gameObject, castData.caster.transform.position, 1f);
+                    //KnockbackUtil.ApplyKnockback(hit.gameObject, castData.caster.transform.position, 1f);
                 }
             }
 

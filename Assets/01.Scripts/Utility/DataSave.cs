@@ -39,3 +39,36 @@ public class DataSave<T> where T : class
         return data == null ? obj : data;
     }
 }
+
+public static class DataSave
+{
+    public static T SaveData<T>(this T data, string path = "savedata.json") where T : class
+    {
+        string filePath = Path.Combine(Application.persistentDataPath, path);
+
+        string jsonData = JsonUtility.ToJson(data);
+        Debug.Log(jsonData);
+        File.WriteAllText(filePath, jsonData);
+
+        Debug.Log("file saved in " + filePath);
+
+        return data;
+    }
+
+    public static T LoadData<T>(this T data, string path = "savedata.json") where T : class
+    {
+        string filePath = Path.Combine(Application.persistentDataPath, path);
+
+        if (!File.Exists(filePath))
+        {
+            Debug.Log("file doesn't exist. return origin");
+            return data;
+        }
+
+        string jsonData = File.ReadAllText(filePath);
+        data = JsonUtility.FromJson<T>(jsonData);
+        Debug.Log(path + " loaded succesfully");
+
+        return data;
+    }
+}
