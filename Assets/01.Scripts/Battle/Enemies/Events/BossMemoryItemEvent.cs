@@ -2,7 +2,7 @@ using System;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class AgisMemoryItemEvent: MonoBehaviour
+public class BossMemoryItemEvent: MonoBehaviour
 {
     private Action events;
     public void SetEvent(Action newEvent) => events += newEvent;
