@@ -68,3 +68,17 @@ public class PlayRollingAnimation : Node
         if(animInfo.IsName("Rolling") && status == AnimationStatus.End) { SetStatus(Status.Success); }
     }
 }
+
+public class LookTargetNode : Node
+{
+    public override void Start()
+    {
+        controller.Rigid.velocity = Vector3.zero;
+        controller.Anim.Play("Idle");
+    }
+
+    public override void Update()
+    {
+        controller.LookTarget();
+    }
+}

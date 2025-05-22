@@ -167,6 +167,7 @@ public class AgisMoveNode : Node
             {
                 case 0:
                     // 방사 공격
+                    SoundManager.Instance.Playsfx("AgisSpell");
                     int bulletCount = 9;
                     float angleStep = 360f / bulletCount;
                     float radius = 42f;
@@ -182,11 +183,13 @@ public class AgisMoveNode : Node
                     }
                     break;
                 case 1:
+                    SoundManager.Instance.Playsfx("AgisSpell3");
                     // 블랙홀 발사
                     BoltsPool.Instance.Create(controller.transform, Bolts.Type.BlackHole).SetEffect(Bolts.EffectType.Penetration)
                         .SetDirection(Vector2.down * 6f).SetDamage(10f).SetDuration(4).Fire();
                     break;
                 case 2:
+                    SoundManager.Instance.Playsfx("AgisSpell2");
                     // 빗물 공격
                     Vector2[] offsets = {
                         new(16f, 0f),

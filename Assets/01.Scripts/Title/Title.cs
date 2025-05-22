@@ -6,6 +6,7 @@ public class Title : MonoBehaviour
     public GameObject audioWindow;
     public GameObject optionWindow;
     public GameObject exitWindow;
+    public GameObject infoWindow;
 
     private void Start()
     {
@@ -41,6 +42,16 @@ public class Title : MonoBehaviour
     {
         optionWindow.SetActive(false);
     }
+    
+    public void OpenInfoWindow()
+    {
+        infoWindow.SetActive(true);
+    }
+
+    public void CloseInfoWindow()
+    {
+        infoWindow.SetActive(false);
+    }
 
     private void CleanUpDuplicateComponents()
     {
@@ -48,7 +59,7 @@ public class Title : MonoBehaviour
 
         if (eventSystems.Length > 1)
         {
-            Debug.LogWarning($"[LoadingScene] EventSystemÀÌ {eventSystems.Length}°³ Á¸ÀçÇÕ´Ï´Ù. Á¤¸®ÇÕ´Ï´Ù.");
+            Debug.LogWarning($"[LoadingScene] EventSystemï¿½ï¿½ {eventSystems.Length}ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Õ´Ï´ï¿½. ï¿½ï¿½ï¿½ï¿½ï¿½Õ´Ï´ï¿½.");
 
             for (int i = 1; i < eventSystems.Length; i++)
             {

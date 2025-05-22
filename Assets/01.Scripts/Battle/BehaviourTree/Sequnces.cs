@@ -34,6 +34,8 @@ public class RootNode : Node
 // node에 index 
 public class SequenceNode : Node
 {
+    private bool isIgnoreNotify = false;
+    
     public SequenceNode(params Node[] nodes)
     {
         foreach (Node child in nodes)
@@ -43,8 +45,15 @@ public class SequenceNode : Node
         }
     }
 
+    public SequenceNode Ignore()
+    {
+        isIgnoreNotify = true;
+        return this;
+    }
+
     public override void Start()
     {
+        machine.isIgnoreNotify = isIgnoreNotify;
         machine.SetCurrentNode(children[0]);
     }
 
@@ -65,6 +74,13 @@ public class SequenceNode : Node
             return;
         }
 
+        // 갱신 막기
+        if (machine.isIgnoreNotify)
+        {
+            machine.isIgnoreNotify = false;
+            machine.Notify();
+            return;
+        }
         SetStatus(Status.Success);
     }
 }
@@ -180,9 +196,9 @@ public class ParallelNode : Node
 // 컨디션 노드 추가
 public class ConditionNode : Node
 {
-    private readonly Func<EnemyBaseController, bool> callback;
+    private readonly Func<EnemyController, bool> callback;
 
-    public ConditionNode(Func<EnemyBaseController, bool> callback, Node child)
+    public ConditionNode(Func<EnemyController, bool> callback, Node child)
     {
         this.callback = callback;
         
@@ -192,7 +208,7 @@ public class ConditionNode : Node
 
     public override void Start()
     {
-        bool result = callback(controller);
+        bool result = callback(controller as EnemyController);
         if (!result)
         {
             SetStatus(Status.Fail);
@@ -210,9 +226,9 @@ public class ConditionNode : Node
 
 public class CheckNode : Node
 {
-    private readonly Func<EnemyBaseController, bool> callback;
+    private readonly Func<EnemyController, bool> callback;
 
-    public CheckNode(Func<EnemyBaseController, bool> callback)
+    public CheckNode(Func<EnemyController, bool> callback)
     {
         this.callback = callback;
     }
@@ -220,7 +236,7 @@ public class CheckNode : Node
 
     public override void Start()
     {
-        bool result = callback(controller);
+        bool result = callback(controller as EnemyController);
         SetStatus(result ? Status.Success : Status.Fail);
     }
 }
