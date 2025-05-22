@@ -70,7 +70,7 @@ public class PlayerProjectile : MonoBehaviour
                     if (attackIndex == 3)
                     {
                         Vector2 attackerPos = (Vector2)transform.position + Vector2.up * 0.5f;
-                        KnockbackUtil.ApplyKnockback(other.gameObject, attackerPos, 1.5f);
+                        //KnockbackUtil.ApplyKnockback(other.gameObject, attackerPos, 1.5f);
                     }
                 }
             }

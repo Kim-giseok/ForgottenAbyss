@@ -38,7 +38,7 @@ public class SwordSkill01ExecutionSO : SkillExecutionSO
             Debug.Log($"Hit {hit.name}");
             GameManager.Instance.cameraShake.Shake(0.2f, 0.3f);
             DealDamageToTarget(hit.gameObject, castData);
-            KnockbackUtil.ApplyKnockback(hit.gameObject, caster.transform.position, 4f);
+            //KnockbackUtil.ApplyKnockback(hit.gameObject, caster.transform.position, 4f);
         }
 
         DebugDrawUtil.DrawCircle(center, range, Color.red);
