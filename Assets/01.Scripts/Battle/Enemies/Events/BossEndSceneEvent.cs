@@ -12,7 +12,7 @@ public class BossEndSceneEvent: MonoBehaviour
         var memoryItemEvent = fieldItem.AddComponent<AgisMemoryItemEvent>();
         memoryItemEvent.SetEvent(() => endScene.SetActive(true));
         
-        if(endScene) enemyPool.gameObject.SetActive(false);
+        if(enemyPool) { enemyPool.gameObject.SetActive(false); }
         BoltsPool.Instance.Clear();
     }
 }
