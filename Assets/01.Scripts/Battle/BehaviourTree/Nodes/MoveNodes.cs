@@ -72,8 +72,8 @@ public class TracingNode : Node
     public override void Start()
     {
         // 추적이 완료되면 무한 재귀 발생
-        if(controller.Agent.status == EnemyAgent.Status.None) { SetStatus(Status.Fail); return; }
-        if(controller.Agent.status == EnemyAgent.Status.Tracked) { SetStatus(Status.Success); return; }
+        // if(controller.Agent.status == EnemyAgent.Status.None) { SetStatus(Status.Fail); return; }
+        // if(controller.Agent.status == EnemyAgent.Status.Tracked) { SetStatus(Status.Success); return; }
         controller.Anim.Play("Run");
     }
     
@@ -92,13 +92,8 @@ public class TracingNode : Node
         //     SetStatus(Status.Success);            
         // }
         
+        // SO에 있는 이동 데이터로 전달하기
         controller.Rigid.velocity = new Vector2(controller.Agent.GetDirection().x * controller.Agent.tracingSpeed, controller.Rigid.velocity.y);
-    }
-    
-    public override void OnAgentDetected(EnemyAgent.Status status)
-    {
-        if(status == EnemyAgent.Status.None) { SetStatus(Status.Fail); }
-        if(status == EnemyAgent.Status.Tracked) { SetStatus(Status.Success); }
     }
 
     // public override void OnPhysicsDetected(EnemyDetectHandler.DetectType detectType, bool able)

@@ -5,6 +5,8 @@ public class HitBox : MonoBehaviour // 1회 공격 당의 캐싱이 필요할 �
 {
     private float damage;
     // hitBox 자체는 default Layer 어야 트리거 인식 자체는 하게 된다.
+
+    public Transform owner;
     public LayerMask? ownerLayer { get; private set; } = null;
     
     private Collider2D _collider;
@@ -19,6 +21,7 @@ public class HitBox : MonoBehaviour // 1회 공격 당의 캐싱이 필요할 �
     }
     public HitBox SetOwner(Transform owner)
     {
+        this.owner = owner;
         this.ownerLayer = owner.gameObject.layer;
         return this;
     }
@@ -87,8 +90,12 @@ public class HitBox : MonoBehaviour // 1회 공격 당의 캐싱이 필요할 �
         // DamageTextManager.Instance.ShowDamage(textPosition, (int)damage);
         if (!other.TryGetComponent(out IDamagable damagable) || ownerLayer == other.gameObject.layer) return;
 
+        // notice: 플레이어 조작시 rigid가 갱신되면서 넉백이 캔슬됨
+        if (isKnockBack && other.attachedRigidbody)
+        {
+            other.attachedRigidbody.AddForce((other.transform.position - owner.position).normalized * knockBackForce, ForceMode2D.Impulse);
+        }
         
-        if (isKnockBack && other.attachedRigidbody) { other.attachedRigidbody.AddForce((other.transform.position - transform.position).normalized * knockBackForce, ForceMode2D.Impulse); }
         // notice: 캐스팅 대상이 플레이어인 경우
         if (other.gameObject.layer == LayerMask.NameToLayer("Enemy"))
         {

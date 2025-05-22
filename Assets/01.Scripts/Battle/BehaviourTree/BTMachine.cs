@@ -10,7 +10,7 @@ public class BTMachine
     private EnemyBaseController controller;
     public BTContext context = new();
 
-    public bool isIgnoreRefresh = false;
+    public bool isIgnoreNotify = false;
     public bool isRefreshRequested = false;
     
     public Action OnLooped;
@@ -92,6 +92,8 @@ public class BTMachine
 
     public void Notify() // 특정 노드로 이동 기능 구현 필요
     {
+        // 갱신 요청이 와도 기다려야 하는 경우 트리거 후 대기
+        if (isIgnoreNotify) { return; }
         SetCurrentNode(rootNode);
     }
     

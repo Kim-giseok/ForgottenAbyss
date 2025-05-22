@@ -32,4 +32,9 @@ public class GrayScreen: MonoBehaviour
 
         rectTransform.sizeDelta = new Vector2(endWidth, rectTransform.sizeDelta.y);
     }
+
+    public void Reset()
+    {
+        gameObject.SetActive(false);
+    }
 }

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Cinemachine;
 using Cysharp.Threading.Tasks;
+using Cysharp.Threading.Tasks.Triggers;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -25,6 +26,7 @@ public class AgisEndingScene: CutScene
         // [초기 설정]
         // 카메라 콜라이더로 인한 중앙 맞지 않는 부분에 대한 고민 필요
         // Player.transform.position = new Vector2(-3, -1);
+        Sound.StopBGM();
         Camera.Init();
         Camera.DisConnect();
         playerMaterial = Player.controller.spriteRenderer.material;
@@ -168,9 +170,9 @@ public class AgisEndingScene: CutScene
         ToolTip.Set();
         Narration().Forget();
         SetCutSceneMode(false);
-        
-        GrayScreen.gameObject.SetActive(true);
-        FadeScreen.gameObject.SetActive(true);
+
+        GrayScreen.Reset();
+        FadeScreen.Reset();
         GameManager.Instance.PausePlayer(false);
     }
 }

@@ -36,17 +36,29 @@ public class EnemyAgent : MonoBehaviour
     private void Update()
     {
         // notice: summon에서 monster를 역으로 추적하는 경우 - 그냥 없도록 하기
-        if (gameObject.layer == LayerMask.NameToLayer("Player") && Physics2D.OverlapCircle(transform.position, 3f, LayerMask.GetMask("Enemy")) is var hit && hit)
-        {
-            target = hit.gameObject;
-        }
+        // if (gameObject.layer == LayerMask.NameToLayer("Player") && Physics2D.OverlapCircle(transform.position, 3f, LayerMask.GetMask("Enemy")) is var hit && hit)
+        // {
+        //     target = hit.gameObject;
+        // }
 
         if (gameObject.layer == LayerMask.NameToLayer("Enemy"))
         {
             float currDistance = GetDistance();
-            
-            if (currDistance < stoppingDistance) { SetStatus(Status.Tracked); return; }
-            if (currDistance < detectedDistance) { SetStatus(Status.Detected); return; }
+
+            if (currDistance < stoppingDistance)
+            {
+                SetStatus(Status.Tracked);
+                return;
+            }
+
+            if (currDistance < detectedDistance)
+            {
+                // do: 여기서 키는 것이 맞을까?
+                if (!controller.Board.IsAttacking) { controller.Board.IsAttacking = true; }
+                SetStatus(Status.Detected);
+                return;
+            }
+
             SetStatus(Status.None);
         }
     }
@@ -57,14 +69,13 @@ public class EnemyAgent : MonoBehaviour
         this.status = status;
      
         // error : 공격 중일 때는 바로 notify되면 안된다.
-        controller.OnAgentDetected(status);
-        // controller.machine.Notify();
+        controller.Machine.Notify();
     }
-    
 
-    public float GetDistance() // horizontal 체크만 필요할 수도 있음
+
+    private float GetDistance() // horizontal 체크만 필요할 수도 있음
     {
-        if (!target) return 0;
+        if (!target) { return 0; }
         return (target.transform.position - transform.position).magnitude;
     }
 

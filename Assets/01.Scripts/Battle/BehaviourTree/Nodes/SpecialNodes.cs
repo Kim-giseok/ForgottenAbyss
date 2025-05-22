@@ -26,6 +26,7 @@ public class HitNode : Node
     {
         // do: 시퀀스를 통행 애초에 진입이 안되도록 노드 지정
         if (controller is not EnemyController eController) return;
+        // do: 조건 노드로 빼기
         if (!eController.statusHandler.GetMode(EnmeyMode.Hit)) { SetStatus(Status.Fail); return; }
         if(eController.resourceHandler.Get(EnemyStatType.Health).value <= 0) { SetStatus(Status.Success); return; }
         
