@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class PassiveUI : MonoBehaviour
 {
     public GameObject passiveUI;
+    public GameObject passiveOpenButton;
 
     public TextMeshProUGUI atkText;
     public TextMeshProUGUI crtText;
@@ -41,6 +42,8 @@ public class PassiveUI : MonoBehaviour
     PlayerStatus _playerStatus => GameManager.Instance.pStatus;
 
 
+
+
     private void OnDestroy()
     {
         // 이벤트 구독 해제
@@ -69,6 +72,10 @@ public class PassiveUI : MonoBehaviour
         if (speedButton != null) speedButton.interactable = hasPoints && speedLevel < maxSpeedLevel;
         if (coolDownButton != null) coolDownButton.interactable = hasPoints && coolDownLevel < maxCoolDownLevel;
 
+        if (passiveOpenButton != null)
+        {
+            passiveOpenButton.SetActive(availablePoints > 0);
+        }
 
     }
     public void OnPassiveUI()
@@ -79,6 +86,11 @@ public class PassiveUI : MonoBehaviour
     public void OffPassiveUI()
     {
         passiveUI.SetActive(false);
+    }
+
+    public void OnClickPassiveOpenButton()
+    {
+        OnPassiveUI();
     }
 
     public void OnClickAttack()
