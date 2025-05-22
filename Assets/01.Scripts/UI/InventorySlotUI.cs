@@ -22,9 +22,15 @@ public class InventorySlotUI : MonoBehaviour, IPointerClickHandler, ITooltipData
 
     public void SetSlot(ISlot newSlot, int index, IItemContainer parent)
     {
+        if (slot is Slot oldSlot)
+            oldSlot.OnSlotChanged -= UpdateUI;
+
         slot = newSlot;
         Index = index;
         container = parent;
+
+        if (slot is Slot currentSlot)
+            currentSlot.OnSlotChanged += UpdateUI;
 
         UpdateUI();
     }
@@ -79,6 +85,9 @@ public class InventorySlotUI : MonoBehaviour, IPointerClickHandler, ITooltipData
 
     public void Clear()
     {
+        if (slot is Slot oldSlot)
+            oldSlot.OnSlotChanged -= UpdateUI;
+
         iconImage.enabled = false;
         iconImage.sprite = null;
         amountText.text = "";
