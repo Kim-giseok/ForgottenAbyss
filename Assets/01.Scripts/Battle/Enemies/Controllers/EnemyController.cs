@@ -183,8 +183,8 @@ public class EnemyController : EnemyBaseController, IDamagable
         // if (statusHandler.stamina <= 0) { statusHandler.stamina = 3; }
         
         OnHit(damage);
-        statusHandler.SetMode(EnmeyMode.Hit, true);
-        Machine.Notify();
+        // statusHandler.SetMode(EnmeyMode.Hit, true);
+        // Machine.Notify();
     }
     
     // 리워드 표시, 리스폰 아리어에서 제거
