@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Cinemachine;
 using Cysharp.Threading.Tasks;
+using Cysharp.Threading.Tasks.Triggers;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -168,9 +169,9 @@ public class AgisEndingScene: CutScene
         ToolTip.Set();
         Narration().Forget();
         SetCutSceneMode(false);
-        
-        GrayScreen.gameObject.SetActive(true);
-        FadeScreen.gameObject.SetActive(true);
+
+        GrayScreen.Reset();
+        FadeScreen.Reset();
         GameManager.Instance.PausePlayer(false);
     }
 }

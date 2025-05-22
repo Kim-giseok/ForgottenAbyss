@@ -48,4 +48,9 @@ public class FadeScreen: MonoBehaviour
         currColor.a = endAlpha;
         image.color = currColor;
     }
+
+    public void Reset()
+    {
+        gameObject.SetActive(false);
+    }
 }
