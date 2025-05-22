@@ -18,10 +18,17 @@ public class MudEyeHitEvent: MonoBehaviour,IDamagable
     public void GetDamage(float damage)
     {
         controller.GetDamage(damage);
-        if (controller.resourceHandler.Get(EnemyStatType.Health).value - damage <= 0)
+
+        var health = controller.resourceHandler.Get(EnemyStatType.Health);
+        UIManager.Instance.BossHealthUI.SetPercentage((int)(health.value / health.maxValue * 100));
+        
+        if (controller.resourceHandler.Get(EnemyStatType.Health).value <= 0)
         {
             enemyPool.SetActive(false);
             BoltsPool.Instance.Clear();
+            
+            SoundManager.Instance.FadeOutBGM();
+            UIManager.Instance.BossHealthUI.Active(false);
             return;
         }
         

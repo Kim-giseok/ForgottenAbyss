@@ -26,6 +26,7 @@ public class AgisEndingScene: CutScene
         // [초기 설정]
         // 카메라 콜라이더로 인한 중앙 맞지 않는 부분에 대한 고민 필요
         // Player.transform.position = new Vector2(-3, -1);
+        Sound.StopBGM();
         Camera.Init();
         Camera.DisConnect();
         playerMaterial = Player.controller.spriteRenderer.material;

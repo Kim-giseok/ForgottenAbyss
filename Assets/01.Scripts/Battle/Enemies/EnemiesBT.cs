@@ -32,9 +32,19 @@ public class EnemiesBT
             (int)Enemy.Archer,
             new SelectorNode(
                 new SequenceNode(new HitNode(), new DieNode()),
-                new SequenceNode(
-                    new TracingNode(), new StopNode(), new ChargingNode(0.8f), new RangeMultiAttackNode())
-                ,
+                new ConditionNode(
+                    controller => controller.Board.IsAttacking, 
+                    new SelectorNode(
+            new ConditionNode(
+                                ctrl => ctrl.Agent.status != EnemyAgent.Status.Tracked,
+                                new SelectorNode(
+                                    new ConditionNode(ctrl => ctrl.detectHandler.isWalkable, new TracingNode()),
+                                    // 범위에서 벗어날 경우 그냥 공격
+                                    new SequenceNode(new StopNode(), new ChargingNode(0.8f), new RangeMultiAttackNode()).Ignore()
+                                    )
+                                ),
+                        new SequenceNode(new StopNode(), new ChargingNode(0.8f), new RangeMultiAttackNode()).Ignore()
+                    )),
                 new SequenceNode(new IdleNode(1))
                 // new SequenceNode(new IdleNode(1), new PatrolMove(1))
                 )

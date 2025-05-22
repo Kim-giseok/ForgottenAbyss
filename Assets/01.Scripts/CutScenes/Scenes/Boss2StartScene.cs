@@ -81,10 +81,14 @@ public class Boss2StartScene: CutScene
         MapSwapper.SwapMapAsync().Forget();
         // MapSwapper.isStart = true;
         
+        
+        UI.BossHealthUI.Active(true);
+        UI.BossHealthUI.SetProfile(BossProfileType.MudEye);
+        
         Camera.Reset();
         GameManager.Instance.PausePlayer(false);
         Player.animator.Play("Idle");
-        Sound.PlayBGM("Boss2Battle");
+        Sound.PlayBGM("BossBattle");
 
     }
 }

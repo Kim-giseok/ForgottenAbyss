@@ -77,7 +77,7 @@ public class AgisStartScene : CutScene
         agisActor.SetActive(true);
 
         AgisMainActorAppears().Forget();
-        await UniTask.Delay(4000);
+        await UniTask.Delay(3000);
 
         LetterBox.SetColor(Color.red);
         // [대사 시작]
@@ -92,16 +92,17 @@ public class AgisStartScene : CutScene
         Light.Reset();
 
         SetCutSceneMode(false);
-        await UniTask.Delay(2000);
+        await UniTask.Delay(1000);
+        
+        GameManager.Instance.PausePlayer(false);
         
         // [Agis 생성]
+        Sound.PlayBGM("BossBattle");
         agisActor.SetActive(false);
         agis.SetActive(true);
         agis.transform.SetParent(null);
         
         UI.BossHealthUI.Active(true);
         UI.BossHealthUI.SetProfile(BossProfileType.Agis);
-        
-        GameManager.Instance.PausePlayer(false);
     }   
 }
