@@ -354,7 +354,7 @@ public class ComboAttack : MonoBehaviour
                     if (knockbackStrength > 0)
                     {
                         Vector2 attackerPos = (Vector2)transform.position + Vector2.up * 0.5f;
-                        KnockbackUtil.ApplyKnockback(target, attackerPos, knockbackStrength);
+                        //KnockbackUtil.ApplyKnockback(target, attackerPos, knockbackStrength);
                     }
                 }
             }
