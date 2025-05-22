@@ -1,12 +1,6 @@
-using System;
-using System.Collections;
 using Cysharp.Threading.Tasks;
-using TMPro;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.Rendering.Universal;
-using UnityEngine.Serialization;
-using UnityEngine.UI;
 
 public class AgisStartScene : CutScene
 {
@@ -88,12 +82,9 @@ public class AgisStartScene : CutScene
         LetterBox.SetColor(Color.red);
         // [대사 시작]
         await Narration("태양이 숨을 때, 달은 깨어난다.\n언제나 그림자가 모든 것을 삼킨다.");
-        await Wait();
         await Narration("그림자는 인간의 바닥에 새겨지고\n그들은 진실을 보지 않는다.");
-        await Wait();
         await Narration("그림자를 다루는 자는\n끝내, 그림자가 되리라.");
-        await Wait();
-
+        
         // [초기화]
         Camera.Reset();
         Narration().Forget();
@@ -101,12 +92,15 @@ public class AgisStartScene : CutScene
         Light.Reset();
 
         SetCutSceneMode(false);
-        await UniTask.Delay(3000);
+        await UniTask.Delay(2000);
         
         // [Agis 생성]
         agisActor.SetActive(false);
         agis.SetActive(true);
         agis.transform.SetParent(null);
+        
+        UI.BossHealthUI.Active(true);
+        UI.BossHealthUI.SetProfile(BossProfileType.Agis);
         
         GameManager.Instance.PausePlayer(false);
     }   

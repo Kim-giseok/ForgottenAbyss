@@ -23,6 +23,7 @@ public class UIManager : MonoBehaviour
     public CanvasGroup ingameUI;
     public CanvasGroup DeathUI;
     public GameObject GuideUI;
+    public BossHealthUI BossHealthUI;
 
     [Header("WorldUI")]
     public RectTransform worldSpaceCanvas;
