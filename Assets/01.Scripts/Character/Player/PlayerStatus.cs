@@ -294,11 +294,11 @@ public class PlayerStatus : CharacterStatus
 
         // 패시브 스탯 증가량
         statPointIncrease[StatType.ATK] = 1f;       // 공격력 증가량
-        statPointIncrease[StatType.CRITICAL] = 1f;  // 치명타 확률 증가량
+        statPointIncrease[StatType.CRITICAL] = 3f;  // 치명타 확률 증가량
         statPointIncrease[StatType.MaxHP] = 10f;    // 최대HP 증가량
         statPointIncrease[StatType.DEF] = 1f;       // 방어력 증가량
         statPointIncrease[StatType.SPEED] = 0.2f;   // 이동속도 증가량
-        statPointIncrease[StatType.COOLDOWN_REDUCTION] = 2f;   // 이동속도 증가량
+        statPointIncrease[StatType.COOLDOWN_REDUCTION] = 2f;   // 스킬 쿨타임 감소
 
         // 패시브 스탯 최대 레벨
         maxStatInvestment[StatType.ATK] = 10;
