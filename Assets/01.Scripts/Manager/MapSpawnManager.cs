@@ -65,7 +65,7 @@ public class MapSpawnManager : Singleton<MapSpawnManager>
         {
             ActivateFlag.ActiveFlag(stageClearedFlag);
             timeInfo.stageClearTime = Time.time - timeInfo.stageEnterTime[0];
-            DataSave<StageTimeInfo>.SaveData(timeInfo, stageClearedFlag.ToString() + ".json");
+            timeInfo.SaveData(stageClearedFlag.ToString() + ".json");
 
             SceneLoader.Instance.LoadScene("Village"); //���� ���� ������ ����
             return;

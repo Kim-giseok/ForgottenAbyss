@@ -39,7 +39,7 @@ public class EnterGate : MonoBehaviour, IInteractable
         else
         {
             StageTimeInfo timeinfo = new();
-            timeinfo = DataSave<StageTimeInfo>.LoadOrBase(timeinfo, clearCheckFlag.ToString() + ".json");
+            timeinfo = timeinfo.LoadData(clearCheckFlag.ToString() + ".json");
 
             UIManager.Instance.confirmationUI.PopUpUI($"최근 기록 {timeinfo.cleartimeinfo}", OnClickEnter);
         }
