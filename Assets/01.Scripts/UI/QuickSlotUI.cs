@@ -104,7 +104,10 @@ public class QuickSlotUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHan
                         // ½½·Ô Àç¿¬°á
                         if (container is QuickSlotController quickSlot)
                         {
-                            quickSlot.TryRebindSlotByItemName(index);
+                            if (slot.Item is MemorySkillItem)
+                                quickSlot.TryRebindSlotByItemId(index);
+                            else
+                                quickSlot.TryRebindSlotByItemName(index);
                         }
                     }
 

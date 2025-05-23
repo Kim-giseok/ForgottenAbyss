@@ -207,7 +207,33 @@ public class InventoryController : MonoBehaviour, IItemContainer
         if (indexA == indexB)
             return false;
 
-        var tempItem = slots[indexA].Item;
+        var itemA = slots[indexA].Item;
+        var itemB = slots[indexB].Item;
+
+        if (UIManager.Instance.quickSlotController.IsInventorySlotLinked(indexA) ||
+            UIManager.Instance.quickSlotController.IsInventorySlotLinked(indexB))
+        {
+            if (itemA != null && itemB != null && itemA.itemType == ItemType.Consumable && itemB.itemType == ItemType.Consumable)
+            {
+                Debug.LogWarning("[SwapItems] 퀵슬롯에 등록된 아이템을 다른 소비 아이템으로 변경할 수 없습니다.");
+                return false;
+            }
+
+            Debug.LogWarning("[SwapItems] 퀵슬롯에 등록된 아이템은 스왑할 수 없습니다.");
+            return false;
+        }
+
+
+        if ((itemA is ArmorSO armorA && SystemManager.Instance.equipmentManager.IsArmorEquipped(armorA.slot)) ||
+            (itemB is ArmorSO armorB && SystemManager.Instance.equipmentManager.IsArmorEquipped(armorB.slot)) ||
+            (itemA is MemorySkillItem memoryA && SystemManager.Instance.equipmentManager.IsMemoryPieceEquipped(memoryA.memoryPieceId)) ||
+            (itemB is MemorySkillItem memoryB && SystemManager.Instance.equipmentManager.IsMemoryPieceEquipped(memoryB.memoryPieceId)))
+        {
+            Debug.LogWarning("[SwapItems] 장착된 아이템(방어구 또는 기억 조각)은 스왑할 수 없습니다.");
+            return false;
+        }
+
+        var tempItem = itemA;
         var tempAmount = slots[indexA].Quantity;
 
         slots[indexA].Set(slots[indexB].Item, slots[indexB].Quantity);

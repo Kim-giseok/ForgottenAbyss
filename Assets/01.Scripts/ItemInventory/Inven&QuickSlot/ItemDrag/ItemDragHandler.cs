@@ -57,13 +57,17 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         var invSlotUI = GetComponentInParent<InventorySlotUI>();
         var quickSlotUI = GetComponentInParent<QuickSlotUI>();
 
+        Item draggedItem = null;
+
+        if (quickSlotUI != null && !quickSlotUI.IsEmpty)
+        {
+            Debug.LogWarning("[ItemDragHandler] 퀵슬롯의 아이템은 드래그할 수 없습니다.");
+            return;
+        }
+
         if (invSlotUI != null && !invSlotUI.IsEmpty)
         {
-            dragManager.Set(invSlotUI.Slot.Item, invSlotUI.Container, invSlotUI.Index);
-        }
-        else if (quickSlotUI != null && !quickSlotUI.IsEmpty)
-        {
-            dragManager.Set(quickSlotUI.Slot.Item, quickSlotUI.Container, quickSlotUI.Index);
+            draggedItem = invSlotUI.Slot.Item;
         }
         else
         {
@@ -71,7 +75,20 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
             return;
         }
 
+        if (draggedItem is ArmorSO armor && SystemManager.Instance.equipmentManager.IsArmorEquipped(armor.slot))
+        {
+            Debug.LogWarning("[ItemDragHandler] 장착된 방어구는 드래그할 수 없습니다.");
+            return;
+        }
+
+        if (draggedItem is MemorySkillItem memoryPiece && SystemManager.Instance.equipmentManager.IsMemoryPieceEquipped(memoryPiece.memoryPieceId))
+        {
+            Debug.LogWarning("[ItemDragHandler] 장착된 기억 조각은 드래그할 수 없습니다.");
+            return;
+        }
+
         // 드래그 아이콘 생성
+        dragManager.Set(draggedItem, invSlotUI.Container, invSlotUI.Index);
         dragIcon = dragItemPool.Get();
         dragIcon.transform.SetParent(dragCanvas.transform, false);
         dragIcon.GetComponent<ItemUI>()?.SetItem(dragManager.Item);
@@ -89,6 +106,12 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
 
     public void OnEndDrag(PointerEventData eventData)
     {
+        if (dragIcon == null)
+        {
+            Debug.LogWarning("[ItemDragHandler] 드래그 아이콘이 존재하지 않음. 종료 처리 생략.");
+            return;
+        }
+
         dragItemPool.Return(dragIcon);
 
         if (!TryGetTargetSlot(eventData, out var targetContainer, out int targetIndex))
@@ -122,6 +145,16 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
             if (!quickSlot.CanAccept(dragManager.Item))
             {
                 Debug.LogWarning($"[ItemDragHandler] {dragManager.Item.itemName}은 퀵슬롯에 등록할 수 없는 아이템입니다.");
+                dragManager.Clear();
+                return;
+            }
+
+            var quickSlotItem = quickSlot.GetSlot(targetIndex).Item;
+            Debug.Log($"[Debug] 퀵슬롯 {targetIndex} 기존 아이템: {(quickSlotItem != null ? quickSlotItem.itemName : "비어 있음")}");
+
+            if (quickSlotItem != null)
+            {
+                Debug.LogWarning($"[ItemDragHandler] {quickSlotItem.itemName}이(가) 퀵슬롯 {targetIndex}에 이미 등록되어 있어 변경할 수 없습니다.");
                 dragManager.Clear();
                 return;
             }

@@ -16,6 +16,7 @@ public class QuickSlotController : MonoBehaviour, IItemContainer
 
     private Dictionary<int, int> linkedInventorySlots = new();
     private Dictionary<int, string> quickSlotItemNames = new();
+    private Dictionary<int, int> quickSlotItemIds = new();
 
     private void Awake()
     {
@@ -107,7 +108,15 @@ public class QuickSlotController : MonoBehaviour, IItemContainer
             UnlinkInventorySlot(inventoryIndex);
             // linkedInventorySlots.Remove(index);
         }
-        quickSlotItemNames.Remove(index);
+
+        if (quickSlotItemIds.ContainsKey(index))
+        {
+            quickSlotItemIds.Remove(index);
+        }
+        else
+        {
+            quickSlotItemNames.Remove(index);
+        }
 
         slots[index] = new Slot();
         slotUIs[index].SetSlot(slots[index], index, this, this);
@@ -123,6 +132,15 @@ public class QuickSlotController : MonoBehaviour, IItemContainer
     public bool SwapItems(int indexA, int indexB)
     {
         if (indexA == indexB || indexA >= slots.Length || indexB >= slots.Length) return false;
+
+        bool isIndexAQuickSlotLinked = UIManager.Instance.quickSlotController.IsInventorySlotLinked(indexA);
+        bool isIndexBQuickSlotLinked = UIManager.Instance.quickSlotController.IsInventorySlotLinked(indexB);
+
+        if ((isIndexAQuickSlotLinked && !isIndexBQuickSlotLinked) || (!isIndexAQuickSlotLinked && isIndexBQuickSlotLinked))
+        {
+            Debug.LogWarning("[SwapItems] 퀵슬롯에 등록된 아이템과 퀵슬롯 미등록 아이템은 스왑할 수 없습니다.");
+            return false;
+        }
 
         (slots[indexA], slots[indexB]) = (slots[indexB], slots[indexA]);
 
@@ -176,8 +194,14 @@ public class QuickSlotController : MonoBehaviour, IItemContainer
         slots[quickSlotIndex] = inventorySlot as Slot;
         linkedInventorySlots[quickSlotIndex] = inventorySlotIndex;
 
-        if (inventorySlot.Item != null)
+        if (inventorySlot.Item is MemorySkillItem memoryItem)
+        {
+            quickSlotItemIds[quickSlotIndex] = memoryItem.memoryPieceId; 
+        }
+        else if (inventorySlot.Item != null)
+        {
             quickSlotItemNames[quickSlotIndex] = inventorySlot.Item.itemName;
+        }
 
         slotUIs[quickSlotIndex].SetSlot(inventorySlot, quickSlotIndex, this, inventory);
 
@@ -203,6 +227,26 @@ public class QuickSlotController : MonoBehaviour, IItemContainer
         }
 
         Debug.LogWarning($"[QuickSlot] {itemName} 해당 인벤토리 슬롯 못 찾음 → 재연결 실패");
+    }
+
+    public void TryRebindSlotByItemId(int quickSlotIndex)
+    {
+        if (!quickSlotItemIds.TryGetValue(quickSlotIndex, out int memoryPieceId)) return;
+
+        var inventory = UIManager.Instance.inventoryUI.InventoryController;
+
+        for (int i = 0; i < inventory.SlotCount; i++)
+        {
+            var slot = inventory.GetSlot(i);
+            if (!slot.IsEmpty && slot.Item is MemorySkillItem memoryItem && memoryItem.memoryPieceId == memoryPieceId)
+            {
+                LinkToInventorySlot(quickSlotIndex, i, slot, inventory);
+                Debug.Log($"[QuickSlot] 슬롯 {quickSlotIndex} 다시 연결됨 → 인벤토리 슬롯 {i} (ID: {memoryPieceId})");
+                return;
+            }
+        }
+
+        Debug.LogWarning($"[QuickSlot] ID {memoryPieceId} 해당 인벤토리 슬롯 못 찾음 → 재연결 실패");
     }
 
     public bool IsInventorySlotLinked(int inventoryIndex)
