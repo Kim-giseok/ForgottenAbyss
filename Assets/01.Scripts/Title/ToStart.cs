@@ -41,6 +41,7 @@ public class ToStart : MonoBehaviour
 
         if (isFading)
         {
+            SoundManager.Instance.StopBGM();
             alpha += Time.deltaTime * fadeSpeed;
             fadeImage.color = new Color(0, 0, 0, alpha);
 

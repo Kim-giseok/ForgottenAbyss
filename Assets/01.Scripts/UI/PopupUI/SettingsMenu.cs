@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class SettingsMenu : MonoBehaviour
 {
@@ -13,11 +14,12 @@ public class SettingsMenu : MonoBehaviour
         Time.timeScale = isOpen ? 0f : 1f; // 게임을 멈추거나 다시 시작함
     }
 
+    public void ChangeBgmVolume(float v) => SoundManager.Instance.ChangeSound(VOLTYPE.BGM, v);
+    public void ChageSfxVolume(float v) => SoundManager.Instance.ChangeSound(VOLTYPE.SFX, v);
+
     public void ToggleSettingsMenu()
     {
         SetSettingsMenu(!isSettingsOpen);
-
-
     }
 
     public void CloseSettingsMenuUI()
