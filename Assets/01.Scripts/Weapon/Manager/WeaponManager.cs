@@ -297,10 +297,12 @@ public class WeaponManager : MonoBehaviour
 
     public void SaveWeaponState()
     {
+        var previousSaveData = DataSave<WeaponSaveData>.LoadData(WEAPON_DATA_FILE) ?? new WeaponSaveData();
+
         var saveData = new WeaponSaveData
         {
-            weaponId = currentWeaponSO != null ? currentWeaponSO.currentWeaponId : -1,
-            memoryPieceId = currentMemorySO != null ? currentMemorySO.currentMemoryPieceId : -1
+            weaponId = currentWeaponSO != null ? currentWeaponSO.currentWeaponId : previousSaveData.weaponId, // 기존 값 유지
+            memoryPieceId = currentMemorySO != null ? currentMemorySO.currentMemoryPieceId : previousSaveData.memoryPieceId // 기존 값 유지
         };
 
         DataSave<WeaponSaveData>.SaveData(saveData, WEAPON_DATA_FILE);

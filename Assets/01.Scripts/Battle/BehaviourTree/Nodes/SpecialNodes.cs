@@ -47,6 +47,9 @@ public class DieNode : Node
     {
         if (controller is not EnemyController eController || eController.resourceHandler.Get(EnemyStatType.Health).value > 0) { SetStatus(Status.Fail); return;}
         
+        if (eController.statusHandler.GetMode(EnmeyMode.Die)) { SetStatus(Status.Fail); return; }
+        eController.statusHandler.SetMode(EnmeyMode.Die, true);
+        
         controller.Collider.enabled = false; // 죽은 이후로는 피격 불가능하도록 처리
         controller.Rigid.velocity = Vector3.zero; // fix: 넉백으로 날라가는 현상 발생
         controller.Rigid.isKinematic = true;

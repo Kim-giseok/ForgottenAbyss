@@ -90,10 +90,10 @@ public class BTMachine
         if (node.children.Count > 0) { node.children.ForEach(Connect); } // method group 기능
     }
 
-    public void Notify() // 특정 노드로 이동 기능 구현 필요
+    public void Notify(bool isForce = false) // 특정 노드로 이동 기능 구현 필요
     {
         // 갱신 요청이 와도 기다려야 하는 경우 트리거 후 대기
-        if (isIgnoreNotify) { return; }
+        if (isIgnoreNotify & !isForce) { return; }
         SetCurrentNode(rootNode);
     }
     

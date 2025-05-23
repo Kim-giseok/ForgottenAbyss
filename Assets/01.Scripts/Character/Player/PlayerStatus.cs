@@ -192,6 +192,7 @@ public class PlayerStatus : CharacterStatus
     public void OnApplicationQuit()
     {
         ResetPlayerData();
+        SystemManager.Instance.equipmentManager.ClearEquippedArmorData();
         ResetStatPointData();
     }
 
@@ -552,7 +553,7 @@ public class PlayerStatus : CharacterStatus
 
         availableStatPoints = 0;
         OnStatPointsChanged?.Invoke(availableStatPoints);
-        SystemManager.Instance.equipmentManager.RecalculateStats();
+        //SystemManager.Instance.equipmentManager.RecalculateStats();
 
         Debug.Log($"[GameExit] 스탯 포인트와 투자 기록 초기화 완료 (총 {totalInvested} 포인트)");
     }
