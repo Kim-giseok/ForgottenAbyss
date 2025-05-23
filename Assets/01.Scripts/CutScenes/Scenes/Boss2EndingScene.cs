@@ -73,7 +73,7 @@ public class Boss2EndingScene: CutScene
         // [초기화]
         mudEyes.ForEach(mudEye => Destroy(mudEye.gameObject));
         Camera.Reset();
-        Light.FadeIn(0f);
+        Light.globalLight.intensity = 1;
         Scene.FadeScreen.Reset();
         Scene.GrayScreen.Reset();
         UIPool.Delete(screenshot);
