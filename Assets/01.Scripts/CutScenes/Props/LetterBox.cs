@@ -87,7 +87,7 @@ public class LetterBox : MonoBehaviour
             if (skipLine) { narrationText.text = text; break; }
             SoundManager.Instance.Playsfx("Tick");
             narrationText.text += c;
-            await UniTask.Delay(50, cancellationToken: _narrationCTS.Token);
+            await UniTask.Delay(30, cancellationToken: _narrationCTS.Token);
         }
     }
 

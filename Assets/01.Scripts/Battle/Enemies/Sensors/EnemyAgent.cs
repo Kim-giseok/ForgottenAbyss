@@ -9,13 +9,13 @@ public class EnemyAgent : MonoBehaviour
     
     public enum Status { None, Detected, Tracked }
     [HideInInspector] public Status status = Status.None;
-    
-    public float detectedDistance;
-    public float stoppingDistance;
-    public float boundaryDistance;
+
+    private float DetectedDistance => ((EnemyController)controller).resourceHandler.Get(EnemyStatType.SightRange).value;
+    private float StoppingDistance => ((EnemyController)controller).resourceHandler.Get(EnemyStatType.AttackRange).value;
+    private float BoundaryDistance => ((EnemyController)controller).resourceHandler.Get(EnemyStatType.BoundaryRange).value;
     public float defenseDistance;
     
-    public float tracingSpeed;
+    public float TracingSpeed =>  ((EnemyController)controller).resourceHandler.Get(EnemyStatType.Speed).value;
 
     public float combatDuration; // 전
     
@@ -45,13 +45,13 @@ public class EnemyAgent : MonoBehaviour
         {
             float currDistance = GetDistance();
 
-            if (currDistance < stoppingDistance)
+            if (currDistance < StoppingDistance)
             {
                 SetStatus(Status.Tracked);
                 return;
             }
 
-            if (currDistance < detectedDistance)
+            if (currDistance < DetectedDistance)
             {
                 // do: 여기서 키는 것이 맞을까?
                 if (!controller.Board.IsAttacking) { controller.Board.IsAttacking = true; }

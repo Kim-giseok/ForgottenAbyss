@@ -72,7 +72,7 @@ public class NarrationIntroUI: MonoBehaviour
             
             audioSource.PlayOneShot(audioSource.clip);
             narrationText.text += c;
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(0.05f);
         }
         
         skipLine = true;
