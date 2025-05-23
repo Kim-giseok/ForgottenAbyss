@@ -98,6 +98,7 @@ public class Player : MonoBehaviour, IDamagable
 
         isDead = true;    
         controller.isAlive = false;
+        controller.isInvincible = true;
         controller.rigid.velocity = Vector2.zero;
         controller.inputVec = Vector2.zero;
         speed = controller.status.stats[StatType.SPEED];
@@ -127,6 +128,7 @@ public class Player : MonoBehaviour, IDamagable
     {
         isDead = false;
         controller.isAlive = true;
+        controller.isInvincible = false;
         controller.rigid.velocity = Vector2.zero;
         controller.inputVec = Vector2.zero;
         controller.status.stats[StatType.SPEED] = speed;
