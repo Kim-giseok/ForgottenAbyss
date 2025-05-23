@@ -38,13 +38,32 @@ public class MudWarpNode : Node
     }
 }
 
-public class MudControlnode : Node
+public class MudEyeSpell : Node
 {
-    public override void Update()
+    public override void Start()
     {
-        if (controller is not EnemyController eController) return;
-        // Debug.Log(eController.children.Count);
+        controller.Anim.Play("Attack");
         
-        // eController.children[0].transform.localScale = Vector3.Lerp(eController.children[0].transform.localScale, Vector3.one * 2f, 0.1f);
+        controller.transform.localScale = new Vector3(Random.Range(0.8f, 3f), Random.Range(0.8f, 3f), 1);
+        
+        SoundManager.Instance.Playsfx("Piano1");
+        var count = 8;
+        for (var i = 0; i < count; i++)
+        {
+            var angle = i * 360f / count;
+            var dir = new Vector2(Mathf.Cos(angle * Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad)).normalized;
+
+            BoltsPool.Instance
+                .Create(controller.transform, Bolts.Type.Linear)
+                .SetDirection(dir)
+                .SetSpeed(16f)
+                .SetDamage(50)
+                .Fire();
+        }
     }
+
+    public override void OnAnimated(AnimationStatus status, AnimatorStateInfo animInfo)
+    {
+        if (animInfo.IsName("Attack") && status == AnimationStatus.End) { SetStatus(Status.Success); }
+     }
 }

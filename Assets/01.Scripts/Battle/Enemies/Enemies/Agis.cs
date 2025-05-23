@@ -9,7 +9,7 @@ public class EnemyAgis
 // 두개로 분리하기
 public class AgisSpreadShot : Node
 {
-    private readonly float duration = 2f;
+    private readonly float duration = 1f;
     private readonly Vector2 direction;
 
     public override void Start() // 한번 더 실행하는 현상 발생
@@ -40,7 +40,7 @@ public class AgisSpreadShot : Node
                     .Create(controller.transform, Bolts.Type.Linear)
                     .SetDirection(dir)
                     .SetSpeed(16f)
-                    .SetDamage(10)
+                    .SetDamage(20)
                     .Fire();
             }
             SetStatus(Status.Success); return;
