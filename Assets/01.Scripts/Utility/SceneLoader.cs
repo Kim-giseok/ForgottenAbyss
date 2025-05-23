@@ -60,6 +60,9 @@ public class SceneLoader : SingletonLoadRemain<SceneLoader>
     // fix: 페이드 스크린 초기 활성화 오류 수정
     public void LoadScene(string sceneName)
     {
+        if (UIManager.Instance != null)
+            UIManager.Instance.BossHealthUI.Active(false);
+
         nextSceneName = sceneName;
         SceneManager.LoadScene(loadingSceneName);
     }
