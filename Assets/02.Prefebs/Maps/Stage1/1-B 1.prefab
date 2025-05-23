@@ -2220,6 +2220,8 @@ GameObject:
   - component: {fileID: 5122716401588370429}
   - component: {fileID: 5612593576441115409}
   - component: {fileID: 6110450174999154851}
+  - component: {fileID: 942296647544900597}
+  - component: {fileID: 3100607175199940094}
   m_Layer: 0
   m_Name: MonsterManager
   m_TagString: Untagged
@@ -2256,7 +2258,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   laberAnim: {fileID: 6110450174999154851}
   targetMachines:
-  - {fileID: 4221900758338723518}
+  - {fileID: 942296647544900597}
   activatableConditionFlag: 0
   activeOnceFlag: 0
   enemies: []
@@ -2281,6 +2283,54 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &942296647544900597
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5573860476506684069}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c653c23b13451d45a00f1609302bd4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  machineAnim: {fileID: 0}
+  isActivated: 0
+  activatedEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3100607175199940094}
+        m_TargetAssemblyTypeName: PlayerWarp, Assembly-CSharp
+        m_MethodName: WarpPlayerToThis
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  unactivatedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  isLoop: 0
+  waitTime: 0
+--- !u!114 &3100607175199940094
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5573860476506684069}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a7c319513e28674fb8f4cc51367dfa7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  x: 0
+  y: 0
 --- !u!1 &6015322802946918718
 GameObject:
   m_ObjectHideFlags: 0
@@ -4883,19 +4933,44 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2113587801728021610, guid: 19ca1b0d068e303408e7013c00c88c47, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5162920354071480638}
   m_SourcePrefab: {fileID: 100100000, guid: 19ca1b0d068e303408e7013c00c88c47, type: 3}
 --- !u!114 &4221900758338723518 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8697486465934222655, guid: 19ca1b0d068e303408e7013c00c88c47, type: 3}
   m_PrefabInstance: {fileID: 4766103093743827841}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 6877103744306466795}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0aaa9a6e43efc5f41a0917df84a190c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &6877103744306466795 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2113587801728021610, guid: 19ca1b0d068e303408e7013c00c88c47, type: 3}
+  m_PrefabInstance: {fileID: 4766103093743827841}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &5162920354071480638
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6877103744306466795}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c84cbb63f99ea8f4aa02a332c2282f71, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  laberAnim: {fileID: 0}
+  targetMachines:
+  - {fileID: 4221900758338723518}
+  activatableConditionFlag: 0
+  activeOnceFlag: 0
 --- !u!4 &7526186316620333547 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3050901875184515690, guid: 19ca1b0d068e303408e7013c00c88c47, type: 3}
@@ -5034,6 +5109,34 @@ PrefabInstance:
     - target: {fileID: 2367243467829410108, guid: 94b86cdd5e0114a7e8bf2b4fbb199313, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6609889647473269382, guid: 94b86cdd5e0114a7e8bf2b4fbb199313, type: 3}
+      propertyPath: onFinishUnityEvent.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6609889647473269382, guid: 94b86cdd5e0114a7e8bf2b4fbb199313, type: 3}
+      propertyPath: onFinishUnityEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6609889647473269382, guid: 94b86cdd5e0114a7e8bf2b4fbb199313, type: 3}
+      propertyPath: onFinishUnityEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 5162920354071480638}
+    - target: {fileID: 6609889647473269382, guid: 94b86cdd5e0114a7e8bf2b4fbb199313, type: 3}
+      propertyPath: onFinishUnityEvent.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6609889647473269382, guid: 94b86cdd5e0114a7e8bf2b4fbb199313, type: 3}
+      propertyPath: onFinishUnityEvent.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: SwitchMachine
+      objectReference: {fileID: 0}
+    - target: {fileID: 6609889647473269382, guid: 94b86cdd5e0114a7e8bf2b4fbb199313, type: 3}
+      propertyPath: onFinishUnityEvent.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: LaberBase, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 6609889647473269382, guid: 94b86cdd5e0114a7e8bf2b4fbb199313, type: 3}
+      propertyPath: onFinishUnityEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 8443205562392036769, guid: 94b86cdd5e0114a7e8bf2b4fbb199313, type: 3}
       propertyPath: m_Name

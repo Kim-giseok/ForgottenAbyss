@@ -40,8 +40,8 @@ public class EquipmentManager : MonoBehaviour
 
         yield return new WaitUntil(() => playerStatus.stats != null && playerStatus.stats.Count > 0);
 
-        LoadEquippedArmors();
-        Debug.Log("[Start] 플레이어 초기화 후 장비 장착 완료");
+        //LoadEquippedArmors();
+        //Debug.Log("[Start] 플레이어 초기화 후 장비 장착 완료");
     }
 
     private void Find()
@@ -344,6 +344,7 @@ public class EquipmentManager : MonoBehaviour
 
     public void ClearEquippedArmorData()
     {
+        equippedArmors.Clear();
         PlayerPrefs.DeleteKey("EquippedArmors");
         PlayerPrefs.Save();
         Debug.Log("[Clear] 장비 저장 데이터 초기화 완료");
@@ -351,7 +352,7 @@ public class EquipmentManager : MonoBehaviour
 
     private void OnApplicationQuit()
     {
-        Debug.Log("[Auto] 애플리케이션 종료 → 장비 저장");
+        //Debug.Log("[Auto] 애플리케이션 종료 → 장비 저장");
         //SaveEquippedArmors();
     }
 
