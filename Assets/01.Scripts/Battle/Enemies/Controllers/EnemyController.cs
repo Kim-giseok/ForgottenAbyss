@@ -216,6 +216,7 @@ public class EnemyController : EnemyBaseController, IDamagable
     {
         // Die 이후 초기화
         statusHandler.SetMode(EnmeyMode.Hit, false);
+        statusHandler.SetMode(EnmeyMode.Die, false);
         Collider.enabled = true;
         Rigid.isKinematic = false;
     }
