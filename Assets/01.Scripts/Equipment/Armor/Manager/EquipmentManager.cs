@@ -79,11 +79,13 @@ public class EquipmentManager : MonoBehaviour
 
     private void Update()
     {
+#if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.Alpha6))
         {
             Debug.Log("[Test] 6번 키 → 장비 저장 데이터 초기화");
             ClearEquippedArmorData();
         }
+#endif
     }
 
     public void EquipArmor(ArmorSO armor, InventorySlotUI slot = null)
