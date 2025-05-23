@@ -44,7 +44,7 @@ public class SSDashAttack : Node
         if (!animInfo.IsName("Combo1") && !animInfo.IsName("Combo2") && !animInfo.IsName("Combo3")) return;
         if (status == AnimationStatus.Start)
         {
-            BoltsPool.Instance.CreateMelee(controller.transform).SetDamage(10).Fire();
+            BoltsPool.Instance.CreateMelee(controller.transform).SetDamage(((EnemyController)controller).resourceHandler.Get(EnemyStatType.Attack).value).Fire();
         }
         
         if (status == AnimationStatus.End)
