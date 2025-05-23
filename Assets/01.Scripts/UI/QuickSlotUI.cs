@@ -34,7 +34,7 @@ public class QuickSlotUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHan
     public void SetSlot(ISlot newSlot, int slotIndex, IItemContainer quickSlotController, IItemContainer inventory)
     {
         if (slot is Slot oldSlot)
-            oldSlot.OnSlotChanged -= UpdateUI;
+            oldSlot.OnSlotChanged -= HandleSlotChanged;
 
         slot = newSlot;
         index = slotIndex;
@@ -42,25 +42,9 @@ public class QuickSlotUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHan
         originContainer = inventory;
 
         if (slot is Slot currentSlot)
-            currentSlot.OnSlotChanged += UpdateUI;
+            currentSlot.OnSlotChanged += HandleSlotChanged;
 
         UpdateUI();
-
-        //if (slot != null && !slot.IsEmpty)
-        //{
-        //    iconImage.sprite = slot.Item.itemIcon;
-        //    iconImage.enabled = true;
-        //    amountText.text = slot.Quantity.ToString();
-
-        //    itemUI?.SetItem(slot.Item);
-        //    itemUI?.gameObject.SetActive(true);
-        //}
-        //else
-        //{
-        //    Clear();
-        //}
-
-        //SetSelected(false);
     }
 
     public void Clear()
@@ -75,6 +59,23 @@ public class QuickSlotUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHan
         cooldownOverlay.fillAmount = 0f;
 
         itemUI?.RemoveItem();
+    }
+
+    private void HandleSlotChanged()
+    {
+        if (slot == null || slot.IsEmpty)
+        {
+            // 아이템 다 써서 비워졌으면 자동 해제
+            if (container is QuickSlotController quickSlot)
+            {
+                quickSlot.RemoveItemAt(index);
+                Debug.Log($"[QuickSlotUI] 자동 해제됨: index {index} - 아이템 수량 0");
+            }
+        }
+        else
+        {
+            UpdateUI();
+        }
     }
 
     private void Update()
