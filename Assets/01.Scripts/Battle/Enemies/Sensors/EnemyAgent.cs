@@ -10,12 +10,19 @@ public class EnemyAgent : MonoBehaviour
     public enum Status { None, Detected, Tracked }
     [HideInInspector] public Status status = Status.None;
 
-    private float DetectedDistance => ((EnemyController)controller).resourceHandler.Get(EnemyStatType.SightRange).value;
-    private float StoppingDistance => ((EnemyController)controller).resourceHandler.Get(EnemyStatType.AttackRange).value;
-    private float BoundaryDistance => ((EnemyController)controller).resourceHandler.Get(EnemyStatType.BoundaryRange).value;
-    public float defenseDistance;
+    private float DetectedDistance => 
+        controller is not EnemyController eController ? 0f : eController.resourceHandler.Get(EnemyStatType.SightRange)?.value ?? 0f;
+
+    private float StoppingDistance => 
+        controller is not EnemyController eController ? 0f : eController.resourceHandler.Get(EnemyStatType.AttackRange)?.value ?? 0f;
+
+    private float BoundaryDistance => 
+        controller is not EnemyController eController ? 0f : eController.resourceHandler.Get(EnemyStatType.BoundaryRange)?.value ?? 0f;
+
+    public float TracingSpeed => 
+        controller is not EnemyController eController ? 0f : eController.resourceHandler.Get(EnemyStatType.Speed)?.value ?? 0f;
     
-    public float TracingSpeed =>  ((EnemyController)controller).resourceHandler.Get(EnemyStatType.Speed).value;
+    public float defenseDistance;
 
     public float combatDuration; // 전
     
