@@ -44,6 +44,7 @@ public class MemorySkillItem: Item
 
     private void UseAgisPattern()
     {
+        SoundManager.Instance.Playsfx("AgisSpell");
         for (int i = 0; i < repeatCount; i++)
         {
             float angle = i * 40 * Mathf.Deg2Rad;
