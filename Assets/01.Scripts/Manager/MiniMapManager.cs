@@ -1,33 +1,27 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class MiniMapManager : MonoBehaviour
 {
     public Camera miniMapCameraPrefab;
-    public GameObject miniMapUIPrefab;
-
     public RenderTexture miniMapTexture;
-
     public Transform playerTarget;
+
+    public RawImage miniMapRawImage;
 
 
     void Start()
     {
-        // 카메라 생성
+        // 미니맵 카메라 생성 및 설정
         Camera miniCam = Instantiate(miniMapCameraPrefab);
         DontDestroyOnLoad(miniCam.gameObject);
         miniCam.targetTexture = miniMapTexture;
 
-        // UI생성
-        GameObject miniMapUI = Instantiate(miniMapUIPrefab);
-        DontDestroyOnLoad(miniMapUI);
-        RawImage rawImage = miniMapUI.GetComponentInChildren<RawImage>();
-        if (rawImage != null )
-            rawImage.texture = miniMapTexture;
+        // RawImage에 텍스처 연결
+        if (miniMapRawImage != null)
+            miniMapRawImage.texture = miniMapTexture;
 
-        // 타겟 연결
+        // 플레이어 타겟 설정
         GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
         if (playerObj != null)
         {
