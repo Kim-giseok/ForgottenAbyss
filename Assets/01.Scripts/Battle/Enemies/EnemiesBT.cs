@@ -40,10 +40,10 @@ public class EnemiesBT
                                 new SelectorNode(
                                     new ConditionNode(ctrl => ctrl.detectHandler.isWalkable, new TracingNode()),
                                     // 범위에서 벗어날 경우 그냥 공격
-                                    new SequenceNode(new StopNode(), new ChargingNode(0.8f), new RangeMultiAttackNode()).Ignore()
+                                    new SequenceNode(new StopNode(), new ChargingNode(1.6f), new RangeMultiAttackNode()).Ignore()
                                     )
                                 ),
-                        new SequenceNode(new StopNode(), new ChargingNode(0.8f), new RangeMultiAttackNode()).Ignore()
+                        new SequenceNode(new StopNode(), new ChargingNode(1.6f), new RangeMultiAttackNode()).Ignore()
                     )),
                 new SequenceNode(new IdleNode(1))
                 // new SequenceNode(new IdleNode(1), new PatrolMove(1))
