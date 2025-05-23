@@ -33,7 +33,8 @@ public class SoundManager : SingletonLoadRemain<SoundManager>
 
     [SerializeField] string volumeSavePath = "volumes.json";
 
-    AudioSource bgmSource, sfxSource;
+    public AudioSource bgmSource;
+    AudioSource sfxSource;
     [SerializeField] AudioClip bgm;
     private Dictionary<string, AudioClip> addressBGMList = new();
 

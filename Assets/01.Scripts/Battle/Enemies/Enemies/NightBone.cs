@@ -14,7 +14,7 @@ public class ExplosionNode : Node
         if (isFire) {
             BoltsPool.Instance.CreateMelee(controller.transform)
                 .SetLocalPos(Vector2.zero)
-                .SetDamage(20)
+                .SetDamage(((EnemyController)controller).resourceHandler.Get(EnemyStatType.Attack).value * 2)
                 .SetSize(2f)
                 .Fire();
             

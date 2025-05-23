@@ -27,7 +27,7 @@ public class IntroBattleScene: CutScene
         // [인트로]
         ToolTip.Set("아무 키를 눌러 다음으로 진행해주세요.", new Vector3(0, 340, 0));
         await Text("아무것도 기억나지 않아...");
-        await Text("이름도, 이 곳에 온 이유도 아무것도 ...");
+        await Text("이름도,\n이 곳에 온 이유도 아무것도 ...");
 
         // [추적 씬]
         Sound.Playsfx("Running");
