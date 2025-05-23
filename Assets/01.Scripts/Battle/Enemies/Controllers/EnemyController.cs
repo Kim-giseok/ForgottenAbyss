@@ -155,6 +155,7 @@ public class EnemyController : EnemyBaseController, IDamagable
         }
 
         if (!(resourceHandler.Get(EnemyStatType.Health).value <= 0)) return;
+        Collider.enabled = false;
         statusHandler.SetMode(EnmeyMode.Hit, true);
         Machine.Notify(this);
     }
@@ -211,7 +212,8 @@ public class EnemyController : EnemyBaseController, IDamagable
         try { MapSpawnManager.Instance.SpawnedMap.monsterManager.RemoveEnemy(this); }
         catch { gameObject.SetActive(false); }
     }
-
+    
+    
     private void OnDisable()
     {
         // Die 이후 초기화
