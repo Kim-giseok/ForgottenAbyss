@@ -35,6 +35,7 @@ public class AgisEndingScene: CutScene
         SetCutSceneMode(true);
         Player.controller.rigid.velocity = Vector2.zero;
         Player.controller.rigid.isKinematic = true;
+        GameManager.Instance.PausePlayer();
         await UniTask.Delay(500);
 
         // [보스 효과 시작]
@@ -164,7 +165,7 @@ public class AgisEndingScene: CutScene
         await Wait();
         
         ToolTip.Set("I를 눌러 인벤토리를 닫아주세요.", new Vector3(0, 400, 0));
-        Narration("클릭을 통해 장착하며, R키로 사용 가능합니다.").Forget();
+        Narration("우클릭을 통해 장착하며, R키로 사용 가능합니다.").Forget();
 
         SetInput(KeyCode.I);
         await Wait();

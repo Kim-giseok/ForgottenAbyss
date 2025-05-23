@@ -132,8 +132,6 @@ public class EnemyController : EnemyBaseController, IDamagable
 
     private void OnHit(float damage, EnemyStatusHandler.HitType hitType = EnemyStatusHandler.HitType.Stun)
     {
-        if (statusHandler.GetMode(EnmeyMode.Die)) return;
-        
         resourceHandler.Modify(EnemyStatType.Health, -damage);
         
         if (hitType == EnemyStatusHandler.HitType.Normal)
@@ -155,13 +153,10 @@ public class EnemyController : EnemyBaseController, IDamagable
 
             SoundManager.Instance.Playsfx("HitByMelee");
         }
-        
-        if (resourceHandler.Get(EnemyStatType.Health).value <= 0)
-        {
-            statusHandler.SetMode(EnmeyMode.Hit, true);
-            statusHandler.SetMode(EnmeyMode.Die, true);
-            Machine.Notify();
-        }
+
+        if (!(resourceHandler.Get(EnemyStatType.Health).value <= 0)) return;
+        statusHandler.SetMode(EnmeyMode.Hit, true);
+        Machine.Notify(this);
     }
 
     public void GetDamageByType(float damage, EnemyStatusHandler.HitType hitType = EnemyStatusHandler.HitType.Stun)
@@ -221,6 +216,7 @@ public class EnemyController : EnemyBaseController, IDamagable
     {
         // Die 이후 초기화
         statusHandler.SetMode(EnmeyMode.Hit, false);
+        statusHandler.SetMode(EnmeyMode.Die, false);
         Collider.enabled = true;
         Rigid.isKinematic = false;
     }
