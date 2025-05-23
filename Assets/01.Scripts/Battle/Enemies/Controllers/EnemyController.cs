@@ -211,7 +211,6 @@ public class EnemyController : EnemyBaseController, IDamagable
             rewardHandler.DropMemoryItem();
         }
         
-        gameObject.SetActive(false);
         try { MapSpawnManager.Instance.SpawnedMap.monsterManager.RemoveEnemy(this); }
         catch { gameObject.SetActive(false); }
     }
