@@ -119,6 +119,13 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         if (targetContainer is QuickSlotController quickSlot &&
             dragManager.OriginContainer is InventoryController originInventory)
         {
+            if (!quickSlot.CanAccept(dragManager.Item))
+            {
+                Debug.LogWarning($"[ItemDragHandler] {dragManager.Item.itemName}은 퀵슬롯에 등록할 수 없는 아이템입니다.");
+                dragManager.Clear();
+                return;
+            }
+
             // 퀵슬롯 등록 처리
             quickSlot.LinkToInventorySlot(
                 quickSlotIndex: targetIndex,
