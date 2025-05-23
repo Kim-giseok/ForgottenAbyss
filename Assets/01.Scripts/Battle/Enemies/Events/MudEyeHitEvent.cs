@@ -30,6 +30,7 @@ public class MudEyeHitEvent: MonoBehaviour,IDamagable
             {
                 child.GetComponent<EnemyController>().Die();
             }
+            BoltsPool.Instance.Clear();
 
             SoundManager.Instance.Playsfx("BossDeath");
             SoundManager.Instance.FadeOutBGM();
