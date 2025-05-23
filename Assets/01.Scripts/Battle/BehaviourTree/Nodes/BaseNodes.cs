@@ -80,7 +80,7 @@ public class MoveNode : Node
     public override void Update()
     {
         // 추적 형태인 경우
-        controller.Rigid.velocity = new Vector2(controller.Agent.GetDirection().x * controller.Agent.tracingSpeed, controller.Rigid.velocity.y);
+        controller.Rigid.velocity = new Vector2(controller.Agent.GetDirection().x * controller.Agent.TracingSpeed, controller.Rigid.velocity.y);
     }
 
     public override void End()
