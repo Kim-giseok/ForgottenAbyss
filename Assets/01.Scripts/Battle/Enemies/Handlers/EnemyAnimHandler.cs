@@ -50,12 +50,9 @@ public class EnemyAnimHandler: MonoBehaviour
         if (progress > 0.95f && currStatus != Status.End)
         {
             currStatus = Status.End;
-
-            if (controller.Machine.currNode == null) return;
-            
             // 에러 발생 확인 필요 - confirm : 확인 결과 Node 내부에서 에러가 나면 여기서 에러를 반환
-            controller.Machine.currNode.SetController(controller);
-            controller.Machine.currNode.OnAnimated(Node.AnimationStatus.End, stateInfo);
+            controller.Machine.currNode?.SetController(controller);
+            controller.Machine.currNode?.OnAnimated(Node.AnimationStatus.End, stateInfo);
         }   
     }
 }
