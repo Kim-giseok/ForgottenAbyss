@@ -50,6 +50,8 @@ public class DieNode : Node
         if (eController.statusHandler.GetMode(EnmeyMode.Die)) { SetStatus(Status.Fail); return; }
         eController.statusHandler.SetMode(EnmeyMode.Die, true);
         
+        machine.isIgnoreNotify = true;
+
         controller.Collider.enabled = false; // 죽은 이후로는 피격 불가능하도록 처리
         controller.Rigid.velocity = Vector3.zero; // fix: 넉백으로 날라가는 현상 발생
         controller.Rigid.isKinematic = true;
@@ -59,7 +61,9 @@ public class DieNode : Node
 
     public override void OnAnimated(AnimationStatus status, AnimatorStateInfo animInfo)
     {
-        if (!animInfo.IsName("Die") || controller is not EnemyController eController || status != AnimationStatus.End) return;
+        if (!animInfo.IsName("Die") || controller is not EnemyController eController || status != AnimationStatus.End) return; 
+        
+        machine.isIgnoreNotify = false;
         eController.Die();
     }
 }
