@@ -1,21 +1,20 @@
 using UnityEngine;
 using UnityEngine.UI;
-using static UnityEditor.Progress;
 
 public class InventoryUIManager : MonoBehaviour
 {
     public GameObject inventoryPanel;
     [SerializeField] private Button closeButton;
-    [SerializeField] private InventorySlotUI[] slotUIs; // Slot UI ¹è¿­
+    [SerializeField] private InventorySlotUI[] slotUIs; // Slot UI ï¿½è¿­
     [SerializeField] private InventoryController inventoryController;
-    public InventoryController InventoryController => inventoryController; // ÀÐ±âÀü¿ë
+    public InventoryController InventoryController => inventoryController; // ï¿½Ð±ï¿½ï¿½ï¿½ï¿½ï¿½
 
 
     private void Awake()
     {
-        Debug.Log($"[InventoryUIManager] ¿¬°áµÈ inventoryController: {inventoryController?.gameObject.name}");
+        Debug.Log($"[InventoryUIManager] ï¿½ï¿½ï¿½ï¿½ï¿½ inventoryController: {inventoryController?.gameObject.name}");
 
-        // ½½·Ô ÀÚµ¿ ÇÒ´ç
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½Úµï¿½ ï¿½Ò´ï¿½
         slotUIs = GetComponentsInChildren<InventorySlotUI>(true);
 
         if (closeButton != null )
@@ -52,7 +51,7 @@ public class InventoryUIManager : MonoBehaviour
     public void Close()
     {
         inventoryPanel.SetActive(false);
-        UIManager.Instance.HideTooltipNextFrame(); // ´ÝÀ» ¶§ ÅøÆÁ Á¦°Å
+        UIManager.Instance.HideTooltipNextFrame(); // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
     }
 
@@ -69,7 +68,7 @@ public class InventoryUIManager : MonoBehaviour
             if (i < inventoryController.SlotCount)
             {
                 var slot = inventoryController.GetSlot(i);
-                slotUI.SetSlot(slot, i, inventoryController); // ½½·Ô + ÀÎµ¦½º + ÄÁÅ×ÀÌ³Ê Àü´Þ
+                slotUI.SetSlot(slot, i, inventoryController); // ï¿½ï¿½ï¿½ï¿½ + ï¿½Îµï¿½ï¿½ï¿½ + ï¿½ï¿½ï¿½ï¿½ï¿½Ì³ï¿½ ï¿½ï¿½ï¿½ï¿½
 
                 bool isLinked = quickSlot.IsInventorySlotLinked(i);
                 slotUI.SetLinkedToQuickSlot(isLinked);
