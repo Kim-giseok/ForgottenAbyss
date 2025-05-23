@@ -142,19 +142,17 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         if (targetContainer is QuickSlotController quickSlot &&
             dragManager.OriginContainer is InventoryController originInventory)
         {
-            if (!quickSlot.CanAccept(dragManager.Item))
+            var quickSlotItem = quickSlot.GetSlot(targetIndex).Item;
+            if (quickSlotItem != null)
             {
-                Debug.LogWarning($"[ItemDragHandler] {dragManager.Item.itemName}은 퀵슬롯에 등록할 수 없는 아이템입니다.");
+                Debug.LogWarning($"[ItemDragHandler] {quickSlotItem.itemName}이(가) 퀵슬롯 {targetIndex}에 이미 등록되어 있어 변경할 수 없습니다.");
                 dragManager.Clear();
                 return;
             }
 
-            var quickSlotItem = quickSlot.GetSlot(targetIndex).Item;
-            Debug.Log($"[Debug] 퀵슬롯 {targetIndex} 기존 아이템: {(quickSlotItem != null ? quickSlotItem.itemName : "비어 있음")}");
-
-            if (quickSlotItem != null)
+            if (!quickSlot.CanAccept(dragManager.Item))
             {
-                Debug.LogWarning($"[ItemDragHandler] {quickSlotItem.itemName}이(가) 퀵슬롯 {targetIndex}에 이미 등록되어 있어 변경할 수 없습니다.");
+                Debug.LogWarning($"[ItemDragHandler] {dragManager.Item.itemName}은 퀵슬롯에 등록할 수 없는 아이템입니다.");
                 dragManager.Clear();
                 return;
             }

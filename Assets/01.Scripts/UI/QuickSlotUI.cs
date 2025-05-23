@@ -22,7 +22,7 @@ public class QuickSlotUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHan
     private int index;
 
     public ISlot Slot => slot;
-    public IItemContainer Container => originContainer;
+    public IItemContainer Container => container;
     public int Index => index;
     public bool IsEmpty => slot == null || slot.IsEmpty;
 
