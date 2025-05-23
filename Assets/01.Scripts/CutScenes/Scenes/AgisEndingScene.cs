@@ -95,8 +95,6 @@ public class AgisEndingScene: CutScene
         }
 
         // [나레이션 시작]
-
-        Sound.bgmSource.volume = 0.5f;
         Sound.PlayBGM("Boss1EndingScene");
         await Narration("그 순간, 그는 흐릿한 장면을 떠올렸다.");
         
