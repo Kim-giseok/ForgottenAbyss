@@ -21,6 +21,7 @@ public class Boss2StartScene: CutScene
     protected override async UniTask StartScene()
     {
         // [초기화]
+        Sound.StopBGM();
         await UniTask.Delay(1000);
         GameManager.Instance.PausePlayer();
         Camera.Init();
