@@ -21,7 +21,7 @@ public class SummonSkillManager
         { (int)Skill.Heal, (Enemy.Wizard, new SkillHealNode()) },
         { (int)Skill.ArcherArrow, (Enemy.Archer, new RangeMultiAttackNode()) },
         { (int)Skill.MudWave, (Enemy.MudHand, new SequenceNode(new MudCastingNode(), new MudAttackNode())) },
-        { (int)Skill.MudEye, (Enemy.MudEye, new RangeMultiAttackNode()) },
+        { (int)Skill.MudEye, (Enemy.MudEye, new MudEyeSpell()) },
         { (int)Skill.MoonFlyingSummonAttack, (Enemy.MoonStone, new MoonFlyingSummonAttack()) }
         
         // 사방으로 복제하기(적이 사용하려는 목적으로 이용)
