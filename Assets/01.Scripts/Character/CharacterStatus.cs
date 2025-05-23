@@ -159,6 +159,9 @@ public class CharacterStatus : MonoBehaviour
     public void ResetStats()
     {
         float currentHP = stats[StatType.CurrentHP];
+        float currentMP = stats[StatType.CurrentMP];
+        float exp = stats[StatType.EXP];
+        float maxExp = stats[StatType.MaxEXP];
 
         stats = new Dictionary<StatType, float>(baseStats);
         equipmentBonuses.Clear();
@@ -166,6 +169,9 @@ public class CharacterStatus : MonoBehaviour
         equippedArmorIDs.Clear();
 
         stats[StatType.CurrentHP] = currentHP;
+        stats[StatType.CurrentMP] = currentMP;
+        stats[StatType.EXP] = exp;
+        stats[StatType.MaxEXP] = maxExp;
 
         Debug.Log("[ResetStats] 플레이어 스탯 초기화 완료");
     }
