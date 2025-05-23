@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum EnmeyMode { Defense, Hit, IgnoreSturn }
+public enum EnmeyMode { Defense, Hit, IgnoreSturn, Die }
 
 // 디폴트는 동일하게 가져가지만 몬스터마다 다르게
 public class EnemyStatusHandler: MonoBehaviour
