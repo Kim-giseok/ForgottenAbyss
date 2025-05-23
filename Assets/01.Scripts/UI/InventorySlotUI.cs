@@ -9,6 +9,8 @@ public class InventorySlotUI : MonoBehaviour, IPointerClickHandler, ITooltipData
     [SerializeField] private TextMeshProUGUI amountText;
     [SerializeField] private GameObject equippedOutline;
     [SerializeField] private ItemUI itemUI;
+    [SerializeField] private float cooldownTime = 3f;
+    private float remainingCooldown = 0f;
 
     public ISlot Slot => slot;
     public IItemContainer Container => container;
@@ -57,6 +59,12 @@ public class InventorySlotUI : MonoBehaviour, IPointerClickHandler, ITooltipData
             if (cg != null)
                 cg.alpha = isLinked ? 0.5f : 1f;
         }
+    }
+
+    private void Update()
+    {
+        if (remainingCooldown > 0f)
+            remainingCooldown -= Time.deltaTime;
     }
 
     private void UpdateUI()
@@ -134,19 +142,20 @@ public class InventorySlotUI : MonoBehaviour, IPointerClickHandler, ITooltipData
                 case ItemType.Consumable:
                     string itemName = slot.Item.itemName;
 
-                    Debug.Log($"[InventorySlotUI] {itemName} 우클릭 → 사용 시도");
-
                     if (UIManager.Instance.quickSlotController.IsInventorySlotLinked(Index))
-                    {
-                        Debug.LogWarning($"[InventorySlotUI] {itemName} 은(는) 퀵슬롯에 연결되어 있어 인벤토리에서 직접 사용할 수 없습니다.");
                         return;
-                    }
 
                     if (itemName == "기억의 파편") break;
 
+                    if (remainingCooldown > 0f)
+                    {
+                        Debug.LogWarning($"[InventorySlotUI] {itemName} 쿨타임 중이라 사용 불가 ({remainingCooldown:F1}s 남음)");
+                        return;
+                    }
+
                     if (SlotUtils.TryUseSlot(slot))
                     {
-                        Debug.Log($"[InventorySlotUI] {itemName} 사용됨");
+                        remainingCooldown = cooldownTime;
                         UpdateUI();
                     }
                     else
