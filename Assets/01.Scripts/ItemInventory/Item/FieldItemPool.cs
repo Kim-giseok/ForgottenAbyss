@@ -30,6 +30,8 @@ public class FieldItemPool: SingletonLoadRemain<FieldItemPool>
 
     public void CreateMemoryItem(Vector2 position, string itemName)
     {
+        if (!MemoryItemList.TryGetValue(itemName, out var currSkillItem)) return;
+        
         var newMemoryItem = CurrMemoryItems.Find(item => !item.gameObject.activeSelf);
         if (!newMemoryItem)
         {
@@ -37,15 +39,7 @@ public class FieldItemPool: SingletonLoadRemain<FieldItemPool>
             CurrMemoryItems.Add(newMemoryItem);
         }
 
-        if (MemoryItemList.TryGetValue(itemName, out var currSkillItem))
-        {
-            newMemoryItem.Define(currSkillItem);
-        }
-        else
-        {
-            newMemoryItem.gameObject.SetActive(false);
-            Debug.LogWarning("cannot find memory skill item SO");
-        }
+        newMemoryItem.Define(currSkillItem);
         
         newMemoryItem.transform.position = position;
 
