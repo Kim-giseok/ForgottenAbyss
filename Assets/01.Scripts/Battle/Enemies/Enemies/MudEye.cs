@@ -57,7 +57,7 @@ public class MudEyeSpell : Node
                 .Create(controller.transform, Bolts.Type.Linear)
                 .SetDirection(dir)
                 .SetSpeed(16f)
-                .SetDamage(30)
+                .SetDamage(50)
                 .Fire();
         }
     }

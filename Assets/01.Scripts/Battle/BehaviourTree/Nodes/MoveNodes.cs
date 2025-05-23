@@ -137,7 +137,6 @@ public class MovePlatformNode : Node
         if (Vector3.Distance(destination, controller.transform.position) < 0.5f)
         {
             // 중앙까지는 잘 도착햇지만 다시 플레이어 추적을 해야해서 에러남
-            Debug.Log(3);
             SetStatus(Status.Success);
         }
     }
