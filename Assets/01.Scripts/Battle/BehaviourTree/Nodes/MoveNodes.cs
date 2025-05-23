@@ -93,7 +93,7 @@ public class TracingNode : Node
         // }
         
         // SO에 있는 이동 데이터로 전달하기
-        controller.Rigid.velocity = new Vector2(controller.Agent.GetDirection().x * controller.Agent.tracingSpeed, controller.Rigid.velocity.y);
+        controller.Rigid.velocity = new Vector2(controller.Agent.GetDirection().x * controller.Agent.TracingSpeed, controller.Rigid.velocity.y);
     }
 
     // public override void OnPhysicsDetected(EnemyDetectHandler.DetectType detectType, bool able)
