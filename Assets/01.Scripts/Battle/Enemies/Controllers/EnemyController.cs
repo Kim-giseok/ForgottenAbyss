@@ -132,6 +132,8 @@ public class EnemyController : EnemyBaseController, IDamagable
 
     private void OnHit(float damage, EnemyStatusHandler.HitType hitType = EnemyStatusHandler.HitType.Stun)
     {
+        if (statusHandler.GetMode(EnmeyMode.Die)) return;
+        
         resourceHandler.Modify(EnemyStatType.Health, -damage);
         
         if (hitType == EnemyStatusHandler.HitType.Normal)
@@ -157,6 +159,7 @@ public class EnemyController : EnemyBaseController, IDamagable
         if (resourceHandler.Get(EnemyStatType.Health).value <= 0)
         {
             statusHandler.SetMode(EnmeyMode.Hit, true);
+            statusHandler.SetMode(EnmeyMode.Die, true);
             Machine.Notify();
         }
     }

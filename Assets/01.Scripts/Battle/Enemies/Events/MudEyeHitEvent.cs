@@ -15,6 +15,7 @@ public class MudEyeHitEvent: MonoBehaviour,IDamagable
         controller = GetComponent<EnemyController>();
     }
     
+    // ReSharper disable Unity.PerformanceAnalysis
     public void GetDamage(float damage)
     {
         controller.GetDamage(damage);
@@ -24,9 +25,15 @@ public class MudEyeHitEvent: MonoBehaviour,IDamagable
         
         if (controller.resourceHandler.Get(EnemyStatType.Health).value <= 0)
         {
-            enemyPool.SetActive(false);
+            // 비용 문제 추후 생각해보기
+            foreach (Transform child in enemyPool.gameObject.transform)
+            {
+                child.GetComponent<EnemyController>().Die();
+            }
             BoltsPool.Instance.Clear();
             
+            transform.position = Vector3.zero;
+
             SoundManager.Instance.Playsfx("BossDeath");
             SoundManager.Instance.FadeOutBGM();
             UIManager.Instance.BossHealthUI.Active(false);

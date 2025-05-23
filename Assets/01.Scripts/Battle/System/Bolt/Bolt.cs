@@ -25,6 +25,7 @@ public class Bolt: MonoBehaviour
         attr.currTime = 0;
         attr.hitBox.gameObject.SetActive(true);
         attr.animHandler.Play("None");
+        attr.Rigidbody.gravityScale = 0;
     }
 
     // 삭제가 없으므로
