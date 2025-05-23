@@ -155,8 +155,11 @@ public class EnemyController : EnemyBaseController, IDamagable
         }
 
         if (!(resourceHandler.Get(EnemyStatType.Health).value <= 0)) return;
-        Collider.enabled = false;
+
+        if (statusHandler.GetMode(EnmeyMode.Die)) return;
         statusHandler.SetMode(EnmeyMode.Hit, true);
+        statusHandler.SetMode(EnmeyMode.Die, true);
+        
         Machine.Notify(true);
     }
 
