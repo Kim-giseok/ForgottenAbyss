@@ -192,6 +192,7 @@ public class PlayerStatus : CharacterStatus
     public void OnApplicationQuit()
     {
         ResetPlayerData();
+        SystemManager.Instance.equipmentManager.ClearEquippedArmorData();
         ResetStatPointData();
     }
 
