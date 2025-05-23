@@ -67,10 +67,11 @@ public class Boss2EndingScene: CutScene
         LetterBox.SetColor(Color.red);
         await Narration("그는 결국, 그날의 기억을 발견했다.");
         await Narration("붉은 달보다도 붉게 비추던 그림자를..");
-        await Narration("그리고, 지독한 그림자를 머금어야 했던 기억을..");
+        await Narration("그로 인해, 지독한 그림자를 머금어야 했던 기억을..");
         await Narration("그리고, 지켜내지 못했던 잊혀진 나락을..");
 
         // [초기화]
+        Player.transform.position = Vector2.zero;
         mudEyes.ForEach(mudEye => Destroy(mudEye.gameObject));
         Camera.Reset();
         Light.globalLight.intensity = 1;
