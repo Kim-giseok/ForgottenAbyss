@@ -157,7 +157,7 @@ public class EnemyController : EnemyBaseController, IDamagable
         if (!(resourceHandler.Get(EnemyStatType.Health).value <= 0)) return;
         Collider.enabled = false;
         statusHandler.SetMode(EnmeyMode.Hit, true);
-        Machine.Notify(this);
+        Machine.Notify(true);
     }
 
     public void GetDamageByType(float damage, EnemyStatusHandler.HitType hitType = EnemyStatusHandler.HitType.Stun)

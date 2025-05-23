@@ -63,7 +63,7 @@ public class DieNode : Node
     {
         if (!animInfo.IsName("Die") || controller is not EnemyController eController || status != AnimationStatus.End) return; 
         
-        machine.isIgnoreNotify = false;
         eController.Die();
+        machine.isIgnoreNotify = false;
     }
 }
