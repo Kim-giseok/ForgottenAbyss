@@ -91,9 +91,12 @@ public class HitBox : MonoBehaviour // 1회 공격 당의 캐싱이 필요할 �
         if (!other.TryGetComponent(out IDamagable damagable) || ownerLayer == other.gameObject.layer) return;
 
         // notice: 플레이어 조작시 rigid가 갱신되면서 넉백이 캔슬됨
-        if (isKnockBack && other.attachedRigidbody)
+        if (isKnockBack && other != null && other.attachedRigidbody != null)
         {
-            other.attachedRigidbody.AddForce((other.transform.position - owner.position).normalized * knockBackForce, ForceMode2D.Impulse);
+            if (other.transform == null || owner == null || owner.Equals(null)) return;
+
+            Vector2 direction = ((Vector2)other.transform.position - (Vector2)owner.position).normalized;
+            other.attachedRigidbody.AddForce(direction * knockBackForce, ForceMode2D.Impulse);
         }
         
         // notice: 캐스팅 대상이 플레이어인 경우
