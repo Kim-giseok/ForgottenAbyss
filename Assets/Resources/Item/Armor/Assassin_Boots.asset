@@ -18,11 +18,15 @@ MonoBehaviour:
   itemType: 0
   maxStack: 99
   isConsumable: 0
-  itemDescription: "\uC774\uB3D9\uC18D\uB3C4 +1.5"
+  itemDescription: "\uC774\uB3D9\uC18D\uB3C4 +1, \uCE58\uBA85\uD0C0 \uD655\uB960
+    +5%"
   armorId: 425
   slot: 3
   setName: "\uC554\uC0B4\uC790"
   statBonuses:
   - statType: 10
-    value: 1.5
+    value: 1
+    bonusType: 0
+  - statType: 11
+    value: 5
     bonusType: 0
