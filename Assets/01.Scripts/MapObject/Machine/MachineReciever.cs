@@ -12,6 +12,6 @@ public class MachineReciever : Machine
     {
         if (recieveItem.Length <= 0) return;
         for (int i = 0; i < recieveNum; i++)
-            Instantiate(recieveItem[Random.Range(0,recieveItem.Length)], transform.position, Quaternion.identity);
+            Instantiate(recieveItem[Random.Range(0,recieveItem.Length)], transform.position, Quaternion.identity).transform.parent = MapSpawnManager.Instance.SpawnedMap.transform;
     }
 }
