@@ -129,7 +129,7 @@ public class EnemiesBT
                         {
                             (0.3f, new SequenceNode(new SSCastingNode(), new SSDashAttack("Combo1"), new RandomCoolTimeNode()).Ignore()),
                             (0.6f, new SequenceNode(new SSCastingNode(), new SSDashAttack("Combo2"), new RandomCoolTimeNode()).Ignore()),
-                            (1f, new SequenceNode(  new SSCastingNode(), new SSDashAttack("Combo3"), new RandomCoolTimeNode() ).Ignore())
+                            (1f, new SequenceNode(new SSCastingNode(), new SSDashAttack("Combo3"), new RandomCoolTimeNode()).Ignore())
                         }))),
                 new SequenceNode(
                     new IdleNode(1), 
