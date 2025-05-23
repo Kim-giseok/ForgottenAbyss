@@ -112,6 +112,10 @@ public class Player : MonoBehaviour, IDamagable
         animator.SetTrigger("DeadTrigger");
 
         StartCoroutine(DiePanel());
+        
+        // 외부 설정 초기화(추후 이동시키기)
+        SoundManager.Instance.FadeOutBGM();
+        LightManager.Instance.globalLight.intensity = 1;
     }
 
     void Hit()
