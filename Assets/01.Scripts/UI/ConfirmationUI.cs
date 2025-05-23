@@ -16,11 +16,13 @@ public class ConfirmationUI : BaseUI
     {
         confirmTxt = GetComponentInChildren<TextMeshProUGUI>();
         okBtn.onClick.AddListener(ClickEnter);
+        exitBtn.onClick.AddListener(() => GameManager.Instance.PausePlayer(false));
         exitBtn.onClick.AddListener(() => gameObject.SetActive(false));
     }
 
     public void PopUpUI(string text = "입장하시겠습니까?", Action onClickOk = null)
     {
+        GameManager.Instance.PausePlayer();
         gameObject.SetActive(true);
         confirmTxt.text = text;
         onClick = onClickOk;
