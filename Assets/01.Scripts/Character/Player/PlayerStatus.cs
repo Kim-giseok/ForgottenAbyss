@@ -225,10 +225,12 @@ public class PlayerStatus : CharacterStatus
 
     private void Update()
     {
+#if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.Alpha0))
         {
             GainExperience(100f);
         }
+#endif
     }
 
     private void InitializeStats()
@@ -380,6 +382,8 @@ public class PlayerStatus : CharacterStatus
         SetStat(StatType.CurrentMP, stats[StatType.MaxMP]);
 
         int currentLevel = (int)stats[StatType.LEVEL];
+
+        baseStats[StatType.MaxEXP] = expRequiredForLevel[currentLevel];
         SetStat(StatType.MaxEXP, expRequiredForLevel[currentLevel]);
 
         Debug.Log($"���� ����: {stats[StatType.LEVEL]}");
