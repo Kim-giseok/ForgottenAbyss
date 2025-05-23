@@ -174,6 +174,10 @@ public class EnemyController : EnemyBaseController, IDamagable
     // ReSharper disable Unity.PerformanceAnalysis
     public void GetDamage(float damage)
     {
+        // #if UNITY_EDITOR
+        // damage *= 9999;
+        // #endif
+        
         // 타격 받은 쪽으로 회전
         // Vector2 direction = (controller.agent.player.transform.position - controller.transform.position).normalized;
         // controller.Flip(direction.x > 0);

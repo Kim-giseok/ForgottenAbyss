@@ -9,7 +9,7 @@ public class BossEndSceneEvent: MonoBehaviour
     private void OnDisable()
     {
         var fieldItem = FieldItemPool.Instance.CurrMemoryItems.Find(item => item.item.itemName == "기억의 조각");
-        var memoryItemEvent = fieldItem.AddComponent<AgisMemoryItemEvent>();
+        var memoryItemEvent = fieldItem.AddComponent<BossMemoryItemEvent>();
         memoryItemEvent.SetEvent(() => endScene.SetActive(true));
         
         if(enemyPool) { enemyPool.gameObject.SetActive(false); }

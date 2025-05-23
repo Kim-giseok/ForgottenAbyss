@@ -44,7 +44,7 @@ public class SSDashAttack : Node
         if (!animInfo.IsName("Combo1") && !animInfo.IsName("Combo2") && !animInfo.IsName("Combo3")) return;
         if (status == AnimationStatus.Start)
         {
-            BoltsPool.Instance.CreateMelee(controller.transform).SetDamage(10).Fire();
+            BoltsPool.Instance.CreateMelee(controller.transform).SetDamage(((EnemyController)controller).resourceHandler.Get(EnemyStatType.Attack).value).Fire();
         }
         
         if (status == AnimationStatus.End)
@@ -65,7 +65,7 @@ public class RandomCoolTimeNode : Node
 {
     public override void Start()
     {
-        context.Set("idleRandomDuration", Random.Range(1.4f, 2.8f));
+        context.Set("idleRandomDuration", Random.Range(0.8f, 1.4f));
         
         controller.Rigid.velocity = new Vector2(0, controller.Rigid.velocity.y);
         
