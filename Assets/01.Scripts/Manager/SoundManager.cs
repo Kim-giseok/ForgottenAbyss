@@ -44,7 +44,7 @@ public class SoundManager : SingletonLoadRemain<SoundManager>
 
     protected override void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if (scene.name == "Stage1") { PlayBGM("Combat1"); }
+        if (scene.name == "Stage1" || scene.name == "Stage2") { PlayBGM("Combat1"); }
     }
 
     protected override void Init()
