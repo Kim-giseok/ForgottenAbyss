@@ -225,10 +225,12 @@ public class PlayerStatus : CharacterStatus
 
     private void Update()
     {
+#if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.Alpha0))
         {
             GainExperience(100f);
         }
+#endif
     }
 
     private void InitializeStats()

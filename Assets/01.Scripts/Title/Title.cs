@@ -1,5 +1,7 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class Title : MonoBehaviour
 {
@@ -7,6 +9,9 @@ public class Title : MonoBehaviour
     public GameObject optionWindow;
     public GameObject exitWindow;
     public GameObject infoWindow;
+    public CanvasGroup exitCanvasGroup;
+    public Image fadeImage;
+    public float fadeDuration = 2f;
 
     private void Start()
     {
@@ -20,6 +25,7 @@ public class Title : MonoBehaviour
 
     public void OpenExitWindow()
     {
+        exitCanvasGroup.alpha = 1f;
         exitWindow.SetActive(true);
     }
 
@@ -70,9 +76,28 @@ public class Title : MonoBehaviour
 
     public void ExitGame()
     {
-        Application.Quit();
+        StartCoroutine(DarkenUIAndExit());
+    }
+
+    private IEnumerator DarkenUIAndExit()
+    {
+        float elapsed = 0f;
+        Color color = fadeImage.color;
+        color.a = 1f;
+
+        while (elapsed < fadeDuration)
+        {
+            elapsed += Time.deltaTime;
+            float alpha = Mathf.Lerp(0f, 1f, elapsed / fadeDuration);
+            color.a = alpha;
+            fadeImage.color = color;
+            yield return null;
+        }
+
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
+#else
+        Application.Quit(); // 게임 종료
 #endif
     }
 }
