@@ -1,12 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class EnemyAgis
-{
-    // public Skills skills
-}
-
-// 두개로 분리하기
+// 두개로 분리하기 - moveNode와 AttackNode로 분리
 public class AgisSpreadShot : Node
 {
     private readonly float duration = 1f;
@@ -30,21 +25,21 @@ public class AgisSpreadShot : Node
 
     public override void Update()
     {
-        if (currTime >= duration)
-        {
-            Vector2[] directions = { Vector2.up, Vector2.down, Vector2.right, Vector2.left };
+        if (!(currTime >= duration)) return;
+        
+        const int angleStep = 20;
+        const int totalAngles = 360 / angleStep;
 
-            foreach (var dir in directions)
-            {
-                BoltsPool.Instance
-                    .Create(controller.transform, Bolts.Type.Linear)
-                    .SetDirection(dir)
-                    .SetSpeed(16f)
-                    .SetDamage(20)
-                    .Fire();
-            }
-            SetStatus(Status.Success); return;
+        for (var i = 0; i < totalAngles; i++)
+        {
+            float angleDeg = i * angleStep;
+            var angleRad = angleDeg * Mathf.Deg2Rad;
+
+            var dir = new Vector2(Mathf.Cos(angleRad), Mathf.Sin(angleRad)).normalized;
+            BoltsPool.Instance.Create(controller.transform, Bolts.Type.Linear).SetDirection(dir).SetSpeed(16f).SetDamage(20).Fire();
         }
+
+        SetStatus(Status.Success);
     }
 
     public override void End()
@@ -54,6 +49,7 @@ public class AgisSpreadShot : Node
     }
 }
 
+// 마찬가지로 2개의 노드로 분리하기
 public class AgisRainNode : Node
 {
     private readonly float duration = 2f;
