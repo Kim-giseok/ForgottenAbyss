@@ -5,8 +5,14 @@ public class BTBuilder
 {
     public void Condition(Func<EnemyBaseController, bool> callback)
     {
-        // new ConditionNode(callback);
     }
+
+    public void Sequence()
+    {
+        
+    }
+    
+    public void Selector() {}
     
     public void End()
     {
