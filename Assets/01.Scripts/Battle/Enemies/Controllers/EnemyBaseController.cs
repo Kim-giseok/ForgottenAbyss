@@ -45,13 +45,7 @@ public class EnemyBaseController: MonoBehaviour
     {
         Machine.OnAnimatedEvent(value == 1);
     }
-
-
-    public void OnAgentDetected(EnemyAgent.Status status)
-    {
-        Machine.OnAgentDetected(status);
-    }
-
+    
     // character controller //
     // notice: 플립 개념이 거꾸로 되어있다.
     public void Flip(bool isFlip)

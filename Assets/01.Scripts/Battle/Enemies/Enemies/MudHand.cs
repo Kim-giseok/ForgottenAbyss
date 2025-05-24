@@ -99,10 +99,6 @@ public class MudHandRandCoolNode : Node
         if (currTime >= context.Get<float>("idleRandomDuration")) { SetStatus(Status.Success); }
     }
 
-    public override void OnAgentDetected(EnemyAgent.Status status)
-    {
-        if(status == EnemyAgent.Status.None) { SetStatus(Status.Fail); }
-    }
 }
 
 public class MudAttackNode : Node

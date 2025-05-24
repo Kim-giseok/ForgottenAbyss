@@ -76,11 +76,6 @@ public class RandomCoolTimeNode : Node
     {
         if (currTime >= context.Get<float>("idleRandomDuration")) { SetStatus(Status.Success); }
     }
-
-    public override void OnAgentDetected(EnemyAgent.Status status)
-    {
-        if(status == EnemyAgent.Status.None) { SetStatus(Status.Fail); }
-    }
 }
 
 
@@ -97,10 +92,5 @@ public class CoolTimeNode : Node
     public override void Update()
     {
         if (currTime >= duration) { SetStatus(Status.Success); }
-    }
-
-    public override void OnAgentDetected(EnemyAgent.Status status)
-    {
-        if(status == EnemyAgent.Status.None) { SetStatus(Status.Fail); }
     }
 }

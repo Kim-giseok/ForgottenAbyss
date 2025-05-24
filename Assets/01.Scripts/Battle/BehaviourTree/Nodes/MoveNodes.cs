@@ -20,11 +20,6 @@ public class IdleNode : Node
     {
         if (currTime >= duration) { SetStatus(Status.Success); }
     }
-
-    public override void OnAgentDetected(EnemyAgent.Status status)
-    {
-        if(status != EnemyAgent.Status.None) { SetStatus(Status.Fail); }
-    }
 }
 
 // do: 범위를 지정해두는 방법이 있음
@@ -59,11 +54,6 @@ public class PatrolMove : Node
         }
         
         controller.Rigid.velocity = new Vector2(context.Get<Vector2>("direction").x, controller.Rigid.velocity.y);
-    }
-    
-    public override void OnAgentDetected(EnemyAgent.Status status)
-    {
-        if(status != EnemyAgent.Status.None) { SetStatus(Status.Fail); }
     }
 }
 

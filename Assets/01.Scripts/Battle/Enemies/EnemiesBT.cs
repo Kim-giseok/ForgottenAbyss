@@ -69,8 +69,7 @@ public class EnemiesBT
                     //     // 연속 공격이 왜 안됨(애님메이션 관련 문제)
                     (0.9f, new SequenceNode( new GunnerRangeAttack(), new IdleNode(0.05f), new GunnerRangeAttack())),
                     (1f, new GunnerRangeAttack())
-                    }),
-                    new CoolTimeNode(0.5f)), 
+                    })), 
                 new SequenceNode(new IdleNode(1), new PatrolMove(1)))
         },
         {

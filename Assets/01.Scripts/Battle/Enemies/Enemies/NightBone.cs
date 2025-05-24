@@ -45,7 +45,7 @@ public class ChargingNode : Node
     public override void Update()
     {
         controller.LookTarget();
-        if(currTime >= duration) { SetStatus(Status.Success); return; }
+        if(currTime >= duration) { SetStatus(Status.Success); }
     }
 }
 
