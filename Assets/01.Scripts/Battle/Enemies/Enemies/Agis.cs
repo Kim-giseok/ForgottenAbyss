@@ -27,7 +27,7 @@ public class AgisSpreadShot : Node
     {
         if (!(currTime >= duration)) return;
         
-        const int angleStep = 20;
+        const int angleStep = 30;
         const int totalAngles = 360 / angleStep;
 
         for (var i = 0; i < totalAngles; i++)
@@ -36,7 +36,7 @@ public class AgisSpreadShot : Node
             var angleRad = angleDeg * Mathf.Deg2Rad;
 
             var dir = new Vector2(Mathf.Cos(angleRad), Mathf.Sin(angleRad)).normalized;
-            BoltsPool.Instance.Create(controller.transform, Bolts.Type.Linear).SetDirection(dir).SetSpeed(16f).SetDamage(20).Fire();
+            BoltsPool.Instance.Create(controller.transform, Bolts.Type.Linear).SetDirection(dir).SetSpeed(16f).SetDamage(((SummonController)controller).eController.resourceHandler.Get(EnemyStatType.Attack).value).Fire();
         }
 
         SetStatus(Status.Success);
@@ -72,9 +72,9 @@ public class AgisRainNode : Node
     {
         if (currTime >= duration) { SetStatus(Status.Success); return; }
 
-        if (!Mathf.Approximately(Mathf.Floor(currTime / 0.2f), Mathf.Floor((currTime - Time.deltaTime) / 0.2f)))
+        if (!Mathf.Approximately(Mathf.Floor(currTime / 0.05f), Mathf.Floor((currTime - Time.deltaTime) / 0.05f)))
         {
-            BoltsPool.Instance.Create(controller.transform, Bolts.Type.Rain).SetEffect(Bolts.EffectType.Penetration).SetDamage(8).Fire();
+            BoltsPool.Instance.Create(controller.transform, Bolts.Type.Rain).SetEffect(Bolts.EffectType.Penetration).SetDamage(((SummonController)controller).eController.resourceHandler.Get(EnemyStatType.Attack).value).Fire();
         }
 
     }
@@ -159,45 +159,55 @@ public class AgisMoveNode : Node
             
             int attackType = Random.Range(0, 3);
 
+            
+            var bulletCount = 9;
+            var angleStep = 360f / bulletCount;
+            var radius = 42f;
+            
             switch (attackType)
             {
                 case 0:
                     // 방사 공격
-                    SoundManager.Instance.Playsfx("AgisSpell");
-                    int bulletCount = 9;
-                    float angleStep = 360f / bulletCount;
-                    float radius = 42f;
-
+                    // SoundManager.Instance.Playsfx("AgisSpell");
+                    // for (int i = 0; i < bulletCount; i++)
+                    // {
+                    //     float angle = i * angleStep * Mathf.Deg2Rad;
+                    //     Vector2 direction = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * radius;
+                    //
+                    //     // ((EnemyController)controller).statusHandler.castingDirection = direction;
+                    //     BoltsPool.Instance.CreateSummon(controller.transform, SummonSkillManager.Skill.Agis)
+                    //         .SetCastingDirection(direction).Fire();
+                    // }
+                    // break;
+                case 1:
+                    SoundManager.Instance.Playsfx("AgisSpell3");
+                    // 블랙홀 발사
                     for (int i = 0; i < bulletCount; i++)
                     {
                         float angle = i * angleStep * Mathf.Deg2Rad;
                         Vector2 direction = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * radius;
 
-                        // ((EnemyController)controller).statusHandler.castingDirection = direction;
-                        BoltsPool.Instance.CreateSummon(controller.transform, SummonSkillManager.Skill.Agis)
-                            .SetCastingDirection(direction).Fire();
+                        
+                        Debug.Log(direction);
+                        BoltsPool.Instance.Create(controller.transform, Bolts.Type.BlackHole).SetEffect(Bolts.EffectType.Penetration)
+                            .SetDirection(direction).SetDamage(10f).SetDuration(4).Fire();
                     }
-                    break;
-                case 1:
-                    SoundManager.Instance.Playsfx("AgisSpell3");
-                    // 블랙홀 발사
-                    BoltsPool.Instance.Create(controller.transform, Bolts.Type.BlackHole).SetEffect(Bolts.EffectType.Penetration)
-                        .SetDirection(Vector2.down * 6f).SetDamage(10f).SetDuration(4).Fire();
+
                     break;
                 case 2:
-                    SoundManager.Instance.Playsfx("AgisSpell2");
-                    // 빗물 공격
-                    Vector2[] offsets = {
-                        new(16f, 0f),
-                        new(48f, 0f),
-                        new(-16f, 0f),
-                        new(-48f, 0f),
-                    };
-
-                    foreach (var offset in offsets)
-                    {
-                        BoltsPool.Instance.CreateSummon(controller.transform, SummonSkillManager.Skill.AgisRain).SetCastingDirection(offset).Fire();
-                    }
+                    // SoundManager.Instance.Playsfx("AgisSpell2");
+                    // // 빗물 공격
+                    // Vector2[] offsets = {
+                    //     new(16f, 0f),
+                    //     new(48f, 0f),
+                    //     new(-16f, 0f),
+                    //     new(-48f, 0f),
+                    // };
+                    //
+                    // foreach (var offset in offsets)
+                    // {
+                    //     BoltsPool.Instance.CreateSummon(controller.transform, SummonSkillManager.Skill.AgisRain).SetCastingDirection(offset).Fire();
+                    // }
                     break;
             }
         }
