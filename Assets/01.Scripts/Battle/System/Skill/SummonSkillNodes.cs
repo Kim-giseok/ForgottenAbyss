@@ -21,15 +21,16 @@ public class DashAttack : Node
     {
         if (controller is not SummonController sController) { SetStatus(Status.Fail); return; }
         
+        SoundManager.Instance.Playsfx("AgisSpell");
+
         controller.Anim.SetSpeed(2f);
         controller.Anim.Play("Attack");
         
         sController.Flip(Mathf.Approximately(sController.caster.eulerAngles.y, 0));
         
         // 이동 방향을 체크하도록 처리
-        controller.Rigid.velocity = sController.direction * 120f;
+        controller.Rigid.velocity = SummonController.InputDirection * 120f;
         controller.Rigid.drag = 20f;
-
     }
 
     public override void OnAnimated(AnimationStatus status, AnimatorStateInfo animInfo)
@@ -98,11 +99,11 @@ public class ComboDashAttack : Node
         controller.Rigid.gravityScale = 0f;
         controller.Rigid.drag = 4f;
         
-        controller.Rigid.AddForce(sController.direction * 40f, ForceMode2D.Impulse);
+        controller.Rigid.AddForce(SummonController.InputDirection * 40f, ForceMode2D.Impulse);
         
         // 공격 방향으로 Z축 회전
-        float angle = Mathf.Atan2(sController.direction.y, Mathf.Abs(sController.direction.x)) * Mathf.Rad2Deg;
-        controller.transform.rotation = Quaternion.Euler(0, sController.direction.x < 0 ? 180 : 0, angle); 
+        float angle = Mathf.Atan2(SummonController.InputDirection.y, Mathf.Abs(SummonController.InputDirection.x)) * Mathf.Rad2Deg;
+        controller.transform.rotation = Quaternion.Euler(0, SummonController.InputDirection.x < 0 ? 180 : 0, angle); 
         
         context.Set("combo", currComboCount + 1);
     }

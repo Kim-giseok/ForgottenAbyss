@@ -26,7 +26,7 @@ public class SummonController: EnemyBaseController
     private SpriteRenderer cRenderer;
 
     public float degree;
-    public Vector2 direction => GameManager.Instance.player.controller.inputVec;
+    public static Vector2 InputDirection => GameManager.Instance.player.controller.inputVec;
     
     public SummonController SetCastingDirection(Vector2 direction)
     {
