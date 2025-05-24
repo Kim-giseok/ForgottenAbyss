@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+// notice: 애니메이션의 이름만 다르고, 공격 형태는 유사하다.
 public class ExplosionNode : Node
 {
     public override void Start()

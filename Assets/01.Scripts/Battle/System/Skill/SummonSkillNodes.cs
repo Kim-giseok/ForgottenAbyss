@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// 액션으로 빼기
 public class CancelAttached : Node
 {
     public override void Start()
@@ -13,6 +14,7 @@ public class CancelAttached : Node
 
 // 공격가 대쉬가 섞인 형태
 // 캐릭터 비활성화로 인한 리지드 바디 직접 참조 문제 발생
+// 사실상 대시 공격
 public class DashAttack : Node
 {
     public override void Start()
@@ -22,26 +24,20 @@ public class DashAttack : Node
         controller.Anim.SetSpeed(2f);
         controller.Anim.Play("Attack");
         
-        context.Set("direction", sController.cRigidbody.velocity.normalized);
         sController.Flip(Mathf.Approximately(sController.caster.eulerAngles.y, 0));
         
-        controller.Rigid.velocity = sController.cRigidbody.velocity.normalized * 80f;
+        // 이동 방향을 체크하도록 처리
+        controller.Rigid.velocity = sController.direction * 120f;
         controller.Rigid.drag = 20f;
 
     }
 
     public override void OnAnimated(AnimationStatus status, AnimatorStateInfo animInfo)
     {
-        if (!animInfo.IsName("Attack")) return;
-        
         if (status == AnimationStatus.Start)
         {
-            BoltsPool.Instance.CreateMelee(controller.transform)
-                .SetLocalPos(Vector2.zero)
-                .SetDamage(20)
-                .SetSize(2f)
-                .Fire();
-            return;
+            BoltsPool.Instance.CreateMelee(controller.transform).SetLocalPos(Vector2.zero)
+                .SetDamage(GameManager.Instance.player.playerstatus.GetStat(StatType.ATK) * 5f).SetSize(2f).Fire();
         }
         
         if (status == AnimationStatus.End)
@@ -63,8 +59,7 @@ public class Explosion : Node
 {
     public override void Start()
     {
-        if(controller is not SummonController sController) { SetStatus(Status.Fail); return; }
-        sController.Anim.Play("Explosion");
+        controller.Anim.Play("Explosion");
         controller.Anim.SetSpeed(1f);
     }
 
@@ -72,18 +67,13 @@ public class Explosion : Node
     {
         if (isFire)
         {
-            BoltsPool.Instance.CreateMelee(controller.transform)
-                .SetLocalPos(Vector2.zero)
-                .SetDamage(20)
-                .SetSize(2f)
-                .Fire();
+            BoltsPool.Instance.CreateMelee(controller.transform).SetLocalPos(Vector2.zero).SetDamage(20).SetSize(2f).Fire();
         }
         else BoltsPool.Instance.DisableMelee(controller.transform);
     }
 
     public override void OnAnimated(AnimationStatus status, AnimatorStateInfo animInfo)
     {
-        if (!animInfo.IsName("Explosion")) return;
         if(status == AnimationStatus.End) { SetStatus(Status.Success); return; }
     }
 
@@ -123,7 +113,6 @@ public class ComboDashAttack : Node
         
         context.Set("combo", 0);
         // 처음 위치 찾기 어려움
-        sController.SecDirection(sController.cRigidbody.velocity.normalized);
         DashAttack(0);
     }
     public override void Update()

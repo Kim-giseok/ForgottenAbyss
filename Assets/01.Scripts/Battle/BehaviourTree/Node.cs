@@ -47,5 +47,6 @@ public abstract class Node
     
     // notice : EnemyDetectHandler 에서 앞으로 갈 수 있는 지 등의 정보를 전달
 
+    // 다른 방식으로 할 수 있는 지 생각해보기 - 내부에 이벤트 처리가 많은 경우 비용이 크게 발생
     public virtual void OnPressed() { }
 }

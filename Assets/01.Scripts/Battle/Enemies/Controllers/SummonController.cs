@@ -26,9 +26,7 @@ public class SummonController: EnemyBaseController
     private SpriteRenderer cRenderer;
 
     public float degree;
-    public Vector2 direction {get; private set;}
-    
-    public void SecDirection(Vector2 direction) => this.direction = direction;
+    public Vector2 direction => GameManager.Instance.player.controller.inputVec;
     
     public SummonController SetCastingDirection(Vector2 direction)
     {
@@ -138,11 +136,11 @@ public class SummonController: EnemyBaseController
     
     private void Update()
     {
+        // 다른 방식으로 처리 필요
         if (Input.GetKeyDown(KeyCode.A)) { Machine.currNode.OnPressed(); } // 임시 등록
 
         if (isCasterAttached)
         {
-            direction = GameManager.Instance.player.controller.inputVec;
             caster.transform.position = transform.position;
         }
     }
