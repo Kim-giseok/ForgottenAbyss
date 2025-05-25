@@ -1,4 +1,3 @@
-using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -9,7 +8,6 @@ public class EnemyController : EnemyBaseController, IDamagable
     public bool isBaked = false;
     
     // status로 관리해야할까?
-    public bool isIgnoreHitAnim;
     public Enemy enemyName;
     
     [SerializeField] private int level = 1;
@@ -163,7 +161,6 @@ public class EnemyController : EnemyBaseController, IDamagable
     public void GetDamageByType(float damage, EnemyStatusHandler.HitType hitType = EnemyStatusHandler.HitType.Stun)
     {
         OnHit(damage, hitType);
-        if (isIgnoreHitAnim || hitType == EnemyStatusHandler.HitType.Normal) return;
         
         statusHandler.SetMode(EnmeyMode.Hit, true);
         Machine.Notify();
