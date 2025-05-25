@@ -66,18 +66,5 @@ public abstract class Node
 public abstract class Node<T> : Node where T : EnemyBaseController
 {
     // 새로 제네릭 타입으로 컨트롤러 선언 (부모 필드 숨김)
-    protected new T controller;
-
-    public new void SetController(EnemyBaseController controller)
-    {
-        // 실제로는 T 타입이어야 하므로 캐스팅 시도
-        this.controller = controller as T;
-        if (this.controller == null)
-        {
-            Debug.LogError($"Controller must be of type {typeof(T).Name}");
-        }
-
-        machine = this.controller.Machine;
-        context = machine.context;
-    }
+    protected new T controller => base.controller as T;
 }

@@ -192,7 +192,7 @@ public class EnemiesBT
                                     .End()
                                 .End()
                                 // 공격 가능한 경우
-                                .Sequence().Do<StopNode>().Do<BringerAttackNode>().Do<IdleNode>().End()
+                                .Sequence().Do<StopNode>().Do<BringerAttackNode>().Do<IdleNode>(1).End()
                             .End()
                         .End()
                         // 이동 중인 경우
