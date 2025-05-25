@@ -34,8 +34,6 @@ public class RootNode : Node
 // node에 index 
 public class SequenceNode : Node
 {
-    private bool isIgnoreNotify = false;
-    
     public SequenceNode(params Node[] nodes)
     {
         foreach (Node child in nodes)
@@ -45,15 +43,9 @@ public class SequenceNode : Node
         }
     }
 
-    public SequenceNode Ignore()
-    {
-        isIgnoreNotify = true;
-        return this;
-    }
-
     public override void Start()
     {
-        machine.isIgnoreNotify = isIgnoreNotify;
+        machine.isIgnoreNotify = IsIgnoreNotify;
         machine.SetCurrentNode(children[0]);
     }
 
@@ -198,12 +190,9 @@ public class ConditionNode : Node
 {
     private readonly Func<EnemyController, bool> callback;
 
-    public ConditionNode(Func<EnemyController, bool> callback, Node child)
+    public ConditionNode(Func<EnemyController, bool> callback)
     {
         this.callback = callback;
-        
-        child.SetParent(this);
-        children.Add(child);
     }
 
     public override void Start()

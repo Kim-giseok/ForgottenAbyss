@@ -15,6 +15,14 @@ public abstract class Node
     public enum Status { Success, Fail }
     public enum AnimationStatus { Start, End }
 
+    protected bool IsIgnoreNotify = false;
+    
+    public Node Ignore()
+    {
+        IsIgnoreNotify = true;
+        return this;
+    }
+
     public void SetController(EnemyBaseController controller)
     {
         this.controller = controller;
@@ -26,6 +34,14 @@ public abstract class Node
     {
         this.parent = parent;
     }
+    
+    public void AddChild(Node child)
+    {
+        child.SetParent(this);
+        children.Add(child);
+    }
+
+    public virtual void GetStatus(Status newStatus, Node caller) {}
 
     public void SetStatus(Status newStatus)
     {
@@ -43,10 +59,7 @@ public abstract class Node
     public virtual void OnAnimatedEvent(bool isFire) {}
     public virtual void OnAnimated(AnimationStatus status, AnimatorStateInfo animInfo) {}
     
-    public virtual void GetStatus(Status newStatus, Node caller) {}
-    
     // notice : EnemyDetectHandler 에서 앞으로 갈 수 있는 지 등의 정보를 전달
-
     // 다른 방식으로 할 수 있는 지 생각해보기 - 내부에 이벤트 처리가 많은 경우 비용이 크게 발생
     public virtual void OnPressed() { }
 }
