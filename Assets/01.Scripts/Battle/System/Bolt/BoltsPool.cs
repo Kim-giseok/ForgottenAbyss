@@ -107,7 +107,6 @@ public class BoltsPool : MonoBehaviour // 단위 미사일
         bolt.transform.position = parent.position + Vector3.up;
         
         bolt.SetDirection(parent.transform.right);
-        
         bolt.machine.Define(Bolts.Get(boltType));
         
         return bolt;
@@ -131,7 +130,7 @@ public class BoltsPool : MonoBehaviour // 단위 미사일
         bolt.gameObject.SetActive(true);
         bolt.animHandler.Play(animName);
 
-        transform.rotation = Quaternion.Euler(0, parent.transform.eulerAngles.y, 0);
+        bolt.transform.rotation = Quaternion.Euler(0, parent.transform.eulerAngles.y, 0);
 
         return bolt;
     }
