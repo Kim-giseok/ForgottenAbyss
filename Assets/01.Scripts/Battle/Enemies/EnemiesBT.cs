@@ -123,37 +123,6 @@ public class EnemiesBT
                 .End()
                 .Build()
         },
-       // {
-        //     // 소드맨 - 속도가 빨라서 원거리 공격이 파훼법(방어가 필요할 듯)
-        //     (int)Enemy.SwordShadow,
-        //     new SelectorNode(
-        //         new SequenceNode(
-        //             new HitNode(), 
-        //             new DieNode()
-        //         ),
-        //         new ConditionNode(
-        //             controller => controller.Board.IsAttacking, 
-        //             new SelectorNode(
-        //                 // 추격 중인 경우,
-        //                 new ConditionNode(
-        //                     ctrl => ctrl.Agent.status != EnemyAgent.Status.Tracked,
-        //                     new SelectorNode(
-        //                         new ConditionNode(ctrl => ctrl.detectHandler.isWalkable, new TracingNode()),
-        //                         // 범위에서 벗어날 경우 그냥 공격
-        //                         new LookTargetNode()
-        //                     )
-        //                 ),
-        //                 new RandomNode(new()
-        //                 {
-        //                     (0.3f, new SequenceNode(new SSCastingNode(), new SSDashAttack("Combo1"), new RandomCoolTimeNode()).Ignore()),
-        //                     (0.6f, new SequenceNode(new SSCastingNode(), new SSDashAttack("Combo2"), new RandomCoolTimeNode()).Ignore()),
-        //                     (1f, new SequenceNode(new SSCastingNode(), new SSDashAttack("Combo3"), new RandomCoolTimeNode()).Ignore())
-        //                 }))),
-        //         new SequenceNode(
-        //             new IdleNode(1), 
-        //             new PatrolMove(1))
-        //     )
-        // },}
         {
             (int)Enemy.Wizard,
             new SelectorNode(
@@ -206,6 +175,31 @@ public class EnemiesBT
         //             new PatrolMove(1))
         //     )
         // },
+        {
+            (int)Enemy.Bringer,
+            new BTBuilder()
+                    .Selector()
+                        // 피격 당한 경우
+                        .Sequence().Do<HitNode>().Do<DieNode>().End()
+                        // 전투 중인 경우
+                        .Condition(ctrl => ctrl.Board.IsAttacking)
+                            .Selector()
+                                // 추적 중인 경우
+                                .Condition(ctrl => ctrl.Agent.status != EnemyAgent.Status.Tracked)
+                                    .Selector()
+                                        .Condition(ctrl => ctrl.detectHandler.isWalkable).Do<TracingNode>().End()
+                                        .Do<LookTargetNode>()   
+                                    .End()
+                                .End()
+                                // 공격 가능한 경우
+                                .Sequence().Do<StopNode>().Do<BringerAttackNode>().Do<IdleNode>().End()
+                            .End()
+                        .End()
+                        // 이동 중인 경우
+                        .Sequence().Do<IdleNode>(1).Do<PatrolMove>(1).End()
+                    .End()
+                .Build()
+        }
         // {
         //     (int)Enemy.MoonStone,
         //     new SelectorNode(
