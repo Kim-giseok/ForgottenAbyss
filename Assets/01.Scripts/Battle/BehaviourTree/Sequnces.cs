@@ -213,19 +213,23 @@ public class ConditionNode : Node
     }
 }
 
-public class CheckNode : Node
+public class CheckNode<T> : Node where T : EnemyBaseController
 {
-    private readonly Func<EnemyController, bool> callback;
+    private readonly Func<T, bool> callback;
 
-    public CheckNode(Func<EnemyController, bool> callback)
+    public CheckNode(Func<T, bool> callback)
     {
         this.callback = callback;
     }
 
-
     public override void Start()
     {
-        bool result = callback(controller as EnemyController);
+        bool result = callback((T)controller); // controller를 T로 안전하게 캐스팅
         SetStatus(result ? Status.Success : Status.Fail);
     }
+}
+
+public class CheckNode : CheckNode<EnemyController>
+{
+    public CheckNode(Func<EnemyController, bool> callback) : base(callback) { }
 }

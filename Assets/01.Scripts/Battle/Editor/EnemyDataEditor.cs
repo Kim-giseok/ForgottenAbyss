@@ -49,7 +49,7 @@ public class EnemyTableEditor : EditorWindow
         wnd.titleContent = new GUIContent("Enemy Table");
     }
 
-    private enum EnemyType { Agis, Archer, Ghost, GhostChild, Gunner, NightBone, SwordShadow, Wizard, MudEye, MudHand, Bringer, MoonStone }
+    private enum EnemyType { Agis, Archer, Ghost, GhostChild, Gunner, NightBone, SwordShadow, Wizard, MudEye, MudHand, Bringer, MoonStone, Cathulu }
 
     private readonly Dictionary<(EnemyType, string), IntegerField> _fields = new();
 

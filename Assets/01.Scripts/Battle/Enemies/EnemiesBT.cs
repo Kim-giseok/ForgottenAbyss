@@ -2,9 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using static BT;
 
 // 이름으로 BT를 지정하는 부분 고민해보기
-public enum Enemy { Test, Agis, Archer, Ghost, GhostChild, Gunner, NightBone, SwordShadow, Wizard, MudEye, MudHand, Bringer, MoonStone }
+public enum Enemy { Test, Agis, Archer, Ghost, GhostChild, Gunner, NightBone, SwordShadow, Wizard, MudEye, MudHand, Bringer, MoonStone, Cathulu }
 
 public class EnemiesBT
 {
@@ -20,31 +21,66 @@ public class EnemiesBT
         // notice: 타격이 발생하면 순차 순회를 통해서 다른 스킬 사용되지 않는 현상 발생
         {
           (int)Enemy.Agis,
-          new SelectorNode(
-              new SequenceNode(new HitNode(), new SetZeroPosNode(), new DieNode()),
-              // new SequenceNode(new BlackHoleNode(), new AgisTriangleNode(), new AgisMoveNode(3), new AgisMoveNode(-3))
-              new SequenceNode(new AgisMoveNode())
+          Selector(
+              Sequence(
+                  Condition(ctrl => ctrl.statusHandler.GetMode(EnmeyMode.Hit)), 
+                  Selector(
+                      // 사망한 경우
+                      Sequence(
+                          Condition(ctrl => ctrl.resourceHandler.Get(EnemyStatType.Health).value <= 0),
+                          Do<SetZeroPosNode>(),
+                          Do<DieNode>()
+                      ).Ignore(),
+                      Do<HitNode>() 
+                  )
+              ),
+              Sequence(Do<AgisMoveNode>())
               )
         },
         {
             (int)Enemy.Archer,
-            new BTBuilder()
-                .Selector()
-                    .Sequence().Do<HitNode>().Do<DieNode>().End()
-                    .Condition(ctrl => ctrl.Board.IsAttacking)
-                        .Selector()
-                            .Condition(ctrl => ctrl.Agent.status != EnemyAgent.Status.Tracked)
-                                .Selector()
-                                    .Condition(ctrl => ctrl.detectHandler.isWalkable).Do<TracingNode>().End()
-                                    .Sequence(true).Do<StopNode>().Do<ChargingNode>(1.6f).Do<RangeMultiAttackNode>().End()
-                                .End()
-                            .End()
-                            .Sequence(true).Do<StopNode>().Do<ChargingNode>(1.6f).Do<RangeMultiAttackNode>().End()
-                        .End()
-                    .End()
-                    .Sequence().Do<IdleNode>(1).Do<PatrolMove>(1).End()
-                .End()
-                .Build()
+            Selector(
+                // 피격 당한 경우
+                Sequence(
+                    Condition(ctrl => ctrl.statusHandler.GetMode(EnmeyMode.Hit)), 
+                    Selector(
+                        // 사망한 경우
+                        Sequence(
+                            Condition(ctrl => ctrl.resourceHandler.Get(EnemyStatType.Health).value <= 0),
+                            Do<DieNode>().Ignore()
+                        ),
+                        Do<HitNode>() 
+                    )
+                ),
+                Sequence(
+                    Condition(ctrl => ctrl.Board.IsAttacking),
+                    Selector(
+                        Sequence(
+                            Condition(ctrl => ctrl.Agent.status != EnemyAgent.Status.Tracked),
+                            Selector(
+                                Sequence(
+                                    Condition(ctrl => ctrl.detectHandler.isWalkable),
+                                    Do<TracingNode>()
+                                ),
+                                Sequence(
+                                    Do<StopNode>(),
+                                    Do<ChargingNode>(1.6f),
+                                    Do<RangeMultiAttackNode>()
+                                ).Ignore()
+                            )
+                        ),
+                        Sequence(
+                            Do<StopNode>(),
+                            Do<ChargingNode>(1.6f),
+                            Do<RangeMultiAttackNode>()
+                        ).Ignore()
+                    )
+                ),
+                Sequence(
+                    Do<IdleNode>(1f),
+                    Do<PatrolMove>(1f)
+                )
+            )
         },
         {
             (int)Enemy.Ghost,
@@ -70,135 +106,237 @@ public class EnemiesBT
                 new SequenceNode(new IdleNode(1), new PatrolMove(1)))
         },
         {
-            // 탱커 - 폭팔 발생 시 도주 필요
             (int)Enemy.NightBone,
-            new BTBuilder()
-               .Selector()
-                    .Sequence().Do<HitNode>().Do<DieNode>().End()
-                    .Condition(ctrl => ctrl.Board.IsAttacking)
-                        .Selector()
-                            .Condition(ctrl => ctrl.Agent.status != EnemyAgent.Status.Tracked)
-                                .Selector()
-                                    .Condition(ctrl => ctrl.detectHandler.isWalkable).Do<TracingNode>().End()
-                                    .Do<LookTargetNode>()
-                                .End()
-                            .End()
-                            .Sequence()
-                                .Do<StopNode>()
-                                .Do(() => new RandomNode(new List<(float, Node)>
-                                {
-                                    (0.2f, new SequenceNode(new ChargingNode(1f), new ExplosionNode()).Ignore()),
-                                    (1f, new SequenceNode(new MeleeAttack(), new IdleNode(0.5f)).Ignore())
-                                }))
-                            .End()
-                        .End()
-                   .End()
-                   .Sequence().Do<IdleNode>(1f).Do<PatrolMove>(1f).End()
-               .End()
-               .Build()
+            Selector(
+                // 피격 당한 경우
+                Sequence(
+                    Condition(ctrl => ctrl.statusHandler.GetMode(EnmeyMode.Hit)), 
+                    Selector(
+                        // 사망한 경우
+                        Sequence(
+                            Condition(ctrl => ctrl.resourceHandler.Get(EnemyStatType.Health).value <= 0),
+                            Do<DieNode>()
+                            ),
+                        Do<HitNode>() 
+                    )
+                ),
+                // 전투 상태인 경우
+                Sequence(
+                    Condition(ctrl => ctrl.Board.IsAttacking),
+                    Selector(
+                        // 추적 중인 경우
+                        Sequence(
+                            Condition(ctrl => ctrl.Agent.status != EnemyAgent.Status.Tracked),
+                            Selector(
+                                Sequence(Condition(ctrl => ctrl.detectHandler.isWalkable), Do<TracingNode>()),
+                                Do<LookTargetNode>()
+                            )
+                        ),
+                        // 추적 완료한 경우
+                        Sequence(
+                            Do<StopNode>(),
+                            DoRandom(
+                                (0.2f, Sequence(Do<ChargingNode>(1f), Do<ExplosionNode>()).Ignore()),
+                                (1f, Sequence(Do<MeleeAttack>(), Do<IdleNode>(0.5f)).Ignore())
+                            )
+                        )
+                    )
+                ),
+                // 일반 상태인 경우
+                Sequence(Do<IdleNode>(1f), Do<PatrolMove>(1f))
+            )
         },
         {
-            // 소드맨 - 속도가 빨라서 원거리 공격이 파훼법(방어가 필요할 듯)
             (int)Enemy.SwordShadow,
-            new BTBuilder()
-                .Selector()
-                    .Sequence().Do<HitNode>().Do<DieNode>().End()
-                    .Condition(ctrl => ctrl.Board.IsAttacking)
-                    .Selector()
-                        .Condition(ctrl => ctrl.Agent.status != EnemyAgent.Status.Tracked)
-                            .Selector()
-                                .Condition(ctrl => ctrl.detectHandler.isWalkable).Do<TracingNode>().End()
-                                .Do<LookTargetNode>()
-                            .End()
-                        .End()
-                        .Do(() => new RandomNode(new List<(float, Node)>
-                        {
-                            (0.3f, new SequenceNode(new SSCastingNode(), new SSDashAttack("Combo1"), new RandomCoolTimeNode()).Ignore()),
-                            (0.6f, new SequenceNode(new SSCastingNode(), new SSDashAttack("Combo2"), new RandomCoolTimeNode()).Ignore()),
-                            (1f,  new SequenceNode(new SSCastingNode(), new SSDashAttack("Combo3"), new RandomCoolTimeNode()).Ignore())
-                        }))
-                        .End()
-                    .End()
-                    .Sequence().Do<IdleNode>(1).Do<PatrolMove>(1).End()
-                .End()
-                .Build()
+            Selector(
+                Sequence(
+                    Condition(ctrl => ctrl.statusHandler.GetMode(EnmeyMode.Hit)), 
+                    Selector(
+                        // 사망한 경우
+                        Sequence(
+                            Condition(ctrl => ctrl.resourceHandler.Get(EnemyStatType.Health).value <= 0),
+                            Do<DieNode>()
+                        ),
+                        Do<HitNode>() 
+                    )
+                ),
+                Sequence(
+                    Condition(ctrl => ctrl.Board.IsAttacking),
+                    Selector(
+                        Sequence(
+                            Condition(ctrl => ctrl.Agent.status != EnemyAgent.Status.Tracked),
+                            Selector(
+                                Sequence(
+                                    Condition(ctrl => ctrl.detectHandler.isWalkable),
+                                    Do<TracingNode>()
+                                ),
+                                Do<LookTargetNode>()
+                            )
+                        ),
+                        DoRandom(
+                            (0.3f, Sequence(Do<SSCastingNode>(), Do<SSDashAttack>("Combo1"), Do<RandomCoolTimeNode>()).Ignore()),
+                            (0.6f, Sequence(Do<SSCastingNode>(), Do<SSDashAttack>("Combo2"), Do<RandomCoolTimeNode>()).Ignore()),
+                            (1f,  Sequence(Do<SSCastingNode>(), Do<SSDashAttack>("Combo3"), Do<RandomCoolTimeNode>()).Ignore())
+                        )
+                    )
+                ),
+                Sequence(
+                    Do<IdleNode>(1f),
+                    Do<PatrolMove>(1f)
+                )
+            )
         },
         {
             (int)Enemy.Wizard,
-            new SelectorNode(
-                new SequenceNode(new HitNode(), new DieNode()), 
-                    new SequenceNode( new StopNode(), new IdleNode(1.6f), new WizadRecursiveNode(), new IdleNode(1.6f)),
-                    new SequenceNode(new IdleNode(1.6f), new HealNode())
-                )
+            Selector(
+                // 피격 당한 경우
+                Sequence(
+                    Condition(ctrl => ctrl.statusHandler.GetMode(EnmeyMode.Hit)), 
+                    Selector(
+                        // 사망한 경우
+                        Sequence(
+                            Condition(ctrl => ctrl.resourceHandler.Get(EnemyStatType.Health).value <= 0),
+                            Do<DieNode>()
+                        ),
+                        Do<HitNode>() 
+                    )
+                ),
+                // 공격 상태인 경우
+                Sequence(
+                    Condition(ctrl => ctrl.Board.IsAttacking),
+                    Do<StopNode>(), Do<IdleNode>(1.6f), Do<WizadRecursiveNode>(), Do<IdleNode>(1.6f))
+                ,
+                Sequence(Do<IdleNode>(1.6f), Do<HealNode>())
+            )
         },
         {
             (int)Enemy.MudEye,
-            new SelectorNode(
-                new SequenceNode(new HitNode(), new DieNode()),
-                // new SequenceNode(new MudWarpNode(), new MudWarpNode(), new MudWarpNode())
-                // new SequenceNode(new IdleNode(1), new MudWarpNode())
-                new SequenceNode(new IdleNode(1))
-                )
+            Selector(
+                // 피격 당한 경우
+                Sequence(
+                    Condition(ctrl => ctrl.statusHandler.GetMode(EnmeyMode.Hit)), 
+                    Selector(
+                        // 사망한 경우
+                        Sequence(
+                            Condition(ctrl => ctrl.resourceHandler.Get(EnemyStatType.Health).value <= 0),
+                            Do<DieNode>()
+                        ),
+                        Do<HitNode>() 
+                    )
+                ),
+                Sequence(Do<IdleNode>(1))
+            )
         },
         {
             (int)Enemy.MudHand,
-            new SelectorNode(
-                new SequenceNode(new HitNode(), new DieNode()),
-                new SequenceNode(new MudSHandpawnNode(), new RandomCoolTimeNode(), new MudHandRangeAttack())
-                // new SequenceNode(new MudSHandpawnNode(), new MudCastingNode(), new MudAttackNode(), new MudIdleNode())
+            Selector(
+                Sequence(
+                    Condition(ctrl => ctrl.statusHandler.GetMode(EnmeyMode.Hit)), 
+                    Selector(
+                        // 사망한 경우
+                        Sequence(
+                            Condition(ctrl => ctrl.resourceHandler.Get(EnemyStatType.Health).value <= 0),
+                            Do<DieNode>()
+                        ),
+                        Do<HitNode>() 
+                    )
+                ),
+                Sequence(
+                    Do<MudSHandpawnNode>(),
+                    Do<RandomCoolTimeNode>(),
+                    Do<MudHandRangeAttack>()
+                )
             )
         },
-        // {
-        //     (int)Enemy.Bringer,
-        //     new SelectorNode(
-        //         new SequenceNode(
-        //             new HitNode(), 
-        //             new DieNode()
-        //         ),
-        //         new ConditionNode(
-        //             controller => controller.Board.IsAttacking, 
-        //             new SelectorNode(
-        //                 // 추격 중인 경우,
-        //                 new ConditionNode(
-        //                     ctrl => ctrl.Agent.status != EnemyAgent.Status.Tracked,
-        //                     new SelectorNode(
-        //                         new ConditionNode(ctrl => ctrl.detectHandler.isWalkable, new TracingNode()),
-        //                         // 범위에서 벗어날 경우 그냥 공격
-        //                         new LookTargetNode()
-        //                     )
-        //                 ),
-        //                 // 공격 중인 경우
-        //                 new SequenceNode(new StopNode(), new BringerAttackNode(), new IdleNode(1f))
-        //             )),
-        //         new SequenceNode(
-        //             new IdleNode(1), 
-        //             new PatrolMove(1))
-        //     )
-        // },
         {
             (int)Enemy.Bringer,
-            new BTBuilder()
-                    .Selector()
-                        // 피격 당한 경우
-                        .Sequence().Do<HitNode>().Do<DieNode>().End()
-                        // 전투 중인 경우
-                        .Condition(ctrl => ctrl.Board.IsAttacking)
-                            .Selector()
-                                // 추적 중인 경우
-                                .Condition(ctrl => ctrl.Agent.status != EnemyAgent.Status.Tracked)
-                                    .Selector()
-                                        .Condition(ctrl => ctrl.detectHandler.isWalkable).Do<TracingNode>().End()
-                                        .Do<LookTargetNode>()   
-                                    .End()
-                                .End()
-                                // 공격 가능한 경우
-                                .Sequence().Do<StopNode>().Do<BringerAttackNode>().Do<IdleNode>(1).End()
-                            .End()
-                        .End()
-                        // 이동 중인 경우
-                        .Sequence().Do<IdleNode>(1).Do<PatrolMove>(1).End()
-                    .End()
-                .Build()
+            Selector(
+                // 피격 당한 경우
+                Sequence(
+                    Condition(ctrl => ctrl.statusHandler.GetMode(EnmeyMode.Hit)), 
+                    Selector(
+                        // 사망한 경우
+                        Sequence(
+                            Condition(ctrl => ctrl.resourceHandler.Get(EnemyStatType.Health).value <= 0),
+                            Do<DieNode>()
+                        ),
+                        Do<HitNode>() 
+                    )
+                ),
+                // 전투 중인 경우
+                Sequence(
+                    Condition(ctrl => ctrl.Board.IsAttacking),
+                    Selector(
+                        // 추적 중인 경우
+                        Sequence(
+                            Condition(ctrl => ctrl.Agent.status != EnemyAgent.Status.Tracked),
+                            Selector(
+                                Sequence(
+                                    Condition(ctrl => ctrl.detectHandler.isWalkable),
+                                    Do<TracingNode>()
+                                ),
+                                Do<LookTargetNode>()
+                            )
+                        ),
+                        // 공격 가능한 경우
+                        Sequence(
+                            Do<StopNode>(),
+                            Do<BringerAttackNode>(),
+                            Do<IdleNode>(1f)
+                        )
+                    )
+                ),
+                // 이동 중인 경우
+                Sequence(
+                    Do<IdleNode>(1f),
+                    Do<PatrolMove>(1f)
+                )
+            )
+        },
+        {
+            (int)Enemy.Cathulu,
+            Selector(
+                // 피격 당한 경우
+                Sequence(
+                    Condition(ctrl => ctrl.statusHandler.GetMode(EnmeyMode.Hit)), 
+                    Selector(
+                        // 사망한 경우
+                        Sequence(
+                            Condition(ctrl => ctrl.resourceHandler.Get(EnemyStatType.Health).value <= 0),
+                            Do<DieNode>()
+                        ),
+                        Do<HitNode>() 
+                    )
+                ),
+                // 전투 중인 경우
+                Sequence(
+                    Condition(ctrl => ctrl.Board.IsAttacking),
+                    Selector(
+                        // 추적 중인 경우
+                        Sequence(
+                            Condition(ctrl => ctrl.Agent.status != EnemyAgent.Status.Tracked),
+                            Selector(
+                                Sequence(
+                                    Condition(ctrl => ctrl.detectHandler.isWalkable),
+                                    Do<TracingNode>()
+                                ),
+                                Do<LookTargetNode>()
+                            )
+                        ),
+                        // 공격 가능한 경우
+                        Sequence(
+                            Do<StopNode>(),
+                            Do<MeleeAttack>(),
+                            Do<IdleNode>(1f)
+                        ).Ignore()
+                    )
+                ),
+                // 이동 중인 경우
+                Sequence(
+                    Do<IdleNode>(1f),
+                    Do<PatrolMove>(1f)
+                )
+            )
         }
         // {
         //     (int)Enemy.MoonStone,

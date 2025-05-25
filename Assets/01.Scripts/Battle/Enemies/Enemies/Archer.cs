@@ -51,7 +51,6 @@ public class RangeMultiAttackNode : Node
     
     public override void OnAnimated(AnimationStatus status, AnimatorStateInfo animInfo)
     {
-        if (!animInfo.IsName("Attack")) return;
         if (status == AnimationStatus.End) { SetStatus(Status.Success); }
     }
 }

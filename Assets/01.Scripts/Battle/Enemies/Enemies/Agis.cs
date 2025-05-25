@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 
 // 두개로 분리하기 - moveNode와 AttackNode로 분리
-public class AgisSpreadShot : Node
+public class AgisSpreadShot : Node<SummonController>
 {
     private readonly float duration = 1f;
     private readonly Vector2 direction;
@@ -11,13 +11,8 @@ public class AgisSpreadShot : Node
     {
         controller.Rigid.drag = 10f;
 
-        // 따라오지 않는 현상 수정 필요
-        if (controller is SummonController sContorller)
-        {
-            controller.Collider.isTrigger = true;
-            controller.Rigid.AddForce(sContorller.castingDirection, ForceMode2D.Impulse);
-            // controller.transform.SetParent(sContorller.eController.transform);
-        }
+        controller.Collider.isTrigger = true;
+        controller.Rigid.AddForce(controller.castingDirection, ForceMode2D.Impulse);
      
         // 애니메이션 도중 스프라이트 컬러 변경되지 않는 현상 발생
         controller.Render.color = Color.black;

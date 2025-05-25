@@ -24,19 +24,13 @@ public class HitNode : Node<EnemyController>
 {
     public override void Start()
     {
-        // do: 시퀀스를 통행 애초에 진입이 안되도록 노드 지정
-        // do: 조건 노드로 빼기
-        if (!controller.statusHandler.GetMode(EnmeyMode.Hit)) { SetStatus(Status.Fail); return; }
-        if(controller.resourceHandler.Get(EnemyStatType.Health).value <= 0) { SetStatus(Status.Success); return; }
-        
         controller.statusHandler.SetMode(EnmeyMode.Hit, false);
         controller.Anim.Play("Hit");
     }
 
     public override void OnAnimated(AnimationStatus status, AnimatorStateInfo animInfo)
     {
-        if (!animInfo.IsName("Hit") || status != AnimationStatus.End) return;
-        SetStatus(Status.Fail);
+        if (status == AnimationStatus.End) {SetStatus(Status.Fail);}
     }
 }
 
@@ -44,7 +38,6 @@ public class DieNode : Node
 {
     public override void Start()
     {
-        if (controller is not EnemyController eController || eController.resourceHandler.Get(EnemyStatType.Health).value > 0) { SetStatus(Status.Fail); return;}
         
         machine.isIgnoreNotify = true;
 
