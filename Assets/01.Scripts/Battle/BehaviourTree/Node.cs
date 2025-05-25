@@ -1,22 +1,23 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// 비제네릭 베이스 클래스
 public abstract class Node
 {
-    protected Node parent;
+    private Node parent;
     public List<Node> children { get; private set; } = new();
-    
-    protected EnemyBaseController controller; 
+
+    protected EnemyBaseController controller;
     protected BTMachine machine;
     protected BTContext context;
-    
-    public float currTime => machine.currTime;
-    
-    public enum Status { Success, Fail }
+
+    protected float currTime => machine.currTime;
+
+    protected enum Status { Success, Fail }
     public enum AnimationStatus { Start, End }
 
     protected bool IsIgnoreNotify = false;
-    
+
     public Node Ignore()
     {
         IsIgnoreNotify = true;
@@ -34,32 +35,49 @@ public abstract class Node
     {
         this.parent = parent;
     }
-    
+
     public void AddChild(Node child)
     {
         child.SetParent(this);
         children.Add(child);
     }
 
-    public virtual void GetStatus(Status newStatus, Node caller) {}
+    protected virtual void GetStatus(Status newStatus, Node caller) { }
 
-    public void SetStatus(Status newStatus)
+    protected void SetStatus(Status newStatus)
     {
         machine.SetPlaying(false);
-        
-        parent.SetController(controller); // 여기서도 전달 불가 발생
+
+        parent.SetController(controller);
         parent.GetStatus(newStatus, this);
     }
 
-    // 모든 이벤트가 직전에 node의 controller 변경해주는 작업이 발생함
-    public virtual void Start() {}
-    public virtual void Update() {}
-    public virtual void End() {}
+    public virtual void Start() { }
+    public virtual void Update() { }
+    public virtual void End() { }
 
-    public virtual void OnAnimatedEvent(bool isFire) {}
-    public virtual void OnAnimated(AnimationStatus status, AnimatorStateInfo animInfo) {}
-    
-    // notice : EnemyDetectHandler 에서 앞으로 갈 수 있는 지 등의 정보를 전달
-    // 다른 방식으로 할 수 있는 지 생각해보기 - 내부에 이벤트 처리가 많은 경우 비용이 크게 발생
+    public virtual void OnAnimatedEvent(bool isFire) { }
+    public virtual void OnAnimated(AnimationStatus status, AnimatorStateInfo animInfo) { }
+
     public virtual void OnPressed() { }
+}
+
+// 제네릭 서브 클래스
+public abstract class Node<T> : Node where T : EnemyBaseController
+{
+    // 새로 제네릭 타입으로 컨트롤러 선언 (부모 필드 숨김)
+    protected new T controller;
+
+    public new void SetController(EnemyBaseController controller)
+    {
+        // 실제로는 T 타입이어야 하므로 캐스팅 시도
+        this.controller = controller as T;
+        if (this.controller == null)
+        {
+            Debug.LogError($"Controller must be of type {typeof(T).Name}");
+        }
+
+        machine = this.controller.Machine;
+        context = machine.context;
+    }
 }

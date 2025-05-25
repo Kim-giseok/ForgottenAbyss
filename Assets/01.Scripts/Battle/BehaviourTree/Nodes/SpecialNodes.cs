@@ -20,18 +20,17 @@ public class GuardNode : Node
 
 // knockBack이 들어갈 수도 있도록
 // 피격 애니메이션 자체는 발생하더라도 바로 액션 끝나도록
-public class HitNode : Node
+public class HitNode : Node<EnemyController>
 {
     public override void Start()
     {
         // do: 시퀀스를 통행 애초에 진입이 안되도록 노드 지정
-        if (controller is not EnemyController eController) return;
         // do: 조건 노드로 빼기
-        if (!eController.statusHandler.GetMode(EnmeyMode.Hit)) { SetStatus(Status.Fail); return; }
-        if(eController.resourceHandler.Get(EnemyStatType.Health).value <= 0) { SetStatus(Status.Success); return; }
+        if (!controller.statusHandler.GetMode(EnmeyMode.Hit)) { SetStatus(Status.Fail); return; }
+        if(controller.resourceHandler.Get(EnemyStatType.Health).value <= 0) { SetStatus(Status.Success); return; }
         
-        eController.statusHandler.SetMode(EnmeyMode.Hit, false);
-        eController.Anim.Play("Hit");
+        controller.statusHandler.SetMode(EnmeyMode.Hit, false);
+        controller.Anim.Play("Hit");
     }
 
     public override void OnAnimated(AnimationStatus status, AnimatorStateInfo animInfo)

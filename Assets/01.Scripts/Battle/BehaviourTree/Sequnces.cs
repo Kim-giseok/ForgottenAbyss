@@ -22,7 +22,7 @@ public class RootNode : Node
     }
 
     // 어떤 상태가 들어오든 다시 시작
-    public override void GetStatus(Status newStatus, Node caller)
+    protected override void GetStatus(Status newStatus, Node caller)
     {
         machine.OnLooped?.Invoke(); 
         // notice: destroy 프레임이 끝나기 전에 삭제되지 않늨 현상에 대한 대처 필요
@@ -49,7 +49,7 @@ public class SequenceNode : Node
         machine.SetCurrentNode(children[0]);
     }
 
-    public override void GetStatus(Status newStatus , Node caller)
+    protected override void GetStatus(Status newStatus , Node caller)
     {
 
         if (newStatus == Status.Fail)
@@ -92,8 +92,8 @@ public class SelectorNode : Node
     {
         machine.SetCurrentNode(children[0]);
     }
-    
-    public override void GetStatus(Status newStatus, Node caller)
+
+    protected override void GetStatus(Status newStatus, Node caller)
     {
 
         if (newStatus == Status.Fail)
@@ -137,7 +137,7 @@ public class RandomNode : Node
         machine.SetCurrentNode(children[percentage.IndexOf(selected)]);
     }
 
-    public override void GetStatus(Status newStatus, Node caller)
+    protected override void GetStatus(Status newStatus, Node caller)
     {
         SetStatus(newStatus);
     }
@@ -207,7 +207,7 @@ public class ConditionNode : Node
         machine.SetCurrentNode(children[0]);
     }
 
-    public override void GetStatus(Status newStatus, Node caller)
+    protected override void GetStatus(Status newStatus, Node caller)
     {
         SetStatus(newStatus);
     }
