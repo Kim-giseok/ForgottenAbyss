@@ -4,16 +4,16 @@ using UnityEngine;
 // 두개로 분리하기 - moveNode와 AttackNode로 분리
 public class AgisSpreadShot : Node<SummonController>
 {
-    private readonly float duration = 0.4f;
+    private readonly float duration = 0.6f;
     private readonly Vector2 direction;
 
     public override void Start() // 한번 더 실행하는 현상 발생
     {
 
-        controller.Rigid.drag = 28f;
+        controller.Rigid.drag = 25f;
 
         controller.Collider.isTrigger = true;
-        controller.Rigid.AddForce(controller.castingDirection * 3.8f, ForceMode2D.Impulse);
+        controller.Rigid.AddForce(controller.castingDirection * 3f, ForceMode2D.Impulse);
      
         // 애니메이션 도중 스프라이트 컬러 변경되지 않는 현상 발생
         controller.Render.color = Color.black;
@@ -23,9 +23,9 @@ public class AgisSpreadShot : Node<SummonController>
     {
         if (!(currTime >= duration)) return;
         // 데미지 체크
-        var damage = controller.eController ? controller.eController.Resource.Get(EnemyStatType.Attack).value : GameManager.Instance.player.playerstatus.GetStat(StatType.ATK);
+        var damage = controller.eController ? controller.eController.Resource.Get(EnemyStatType.Attack).value / 2 : GameManager.Instance.player.playerstatus.GetStat(StatType.ATK);
         
-        const int angleStep = 20;
+        const int angleStep = 30;
         const int totalAngles = 360 / angleStep;
 
         for (var i = 0; i < totalAngles; i++)
@@ -34,7 +34,7 @@ public class AgisSpreadShot : Node<SummonController>
             var angleRad = angleDeg * Mathf.Deg2Rad;
 
             var dir = new Vector2(Mathf.Cos(angleRad), Mathf.Sin(angleRad)).normalized;
-            BoltsPool.Instance.Create(controller.transform, Bolts.Type.Linear).SetDirection(dir).SetSpeed(30f).SetDamage(damage).Fire();
+            BoltsPool.Instance.Create(controller.transform, Bolts.Type.Linear).SetDirection(dir).SetSpeed(14f).SetDamage(damage).Fire();
         }
 
         SetStatus(Status.Success);
@@ -67,7 +67,7 @@ public class AgisRainNode : Node<SummonController>
     {
         if (currTime >= duration) { SetStatus(Status.Success); return; }
 
-        if (!Mathf.Approximately(Mathf.Floor(currTime / 0.05f), Mathf.Floor((currTime - Time.deltaTime) / 0.05f)))
+        if (!Mathf.Approximately(Mathf.Floor(currTime / 0.2f), Mathf.Floor((currTime - Time.deltaTime) / 0.2f)))
         {
             BoltsPool.Instance.Create(controller.transform, Bolts.Type.Rain).SetEffect(Bolts.EffectType.Penetration).SetDamage(((SummonController)controller).eController.Resource.Get(EnemyStatType.Attack).value).Fire();
         }
@@ -163,10 +163,9 @@ public class AgisMoveNode : Node
                     for (int i = 0; i < 6; i++)
                     {
                         float angle = i * 90 * Mathf.Deg2Rad;
-                        Vector2 direction = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * 32;
+                        Vector2 direction = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * 36;
 
                         
-                        Debug.Log(direction);
                         BoltsPool.Instance.Create(controller.transform, Bolts.Type.BlackHole).SetEffect(Bolts.EffectType.Penetration)
                             .SetDirection(direction).SetDamage(10f).SetDuration(4).Fire();
                     }

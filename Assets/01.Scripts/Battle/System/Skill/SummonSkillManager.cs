@@ -17,7 +17,7 @@ public class SummonSkillManager
         { (int)Skill.ComboDashAttack, (Enemy.SwordShadow, new SequenceNode(new InitNode(new Vector2(2.2f, 2.2f)), new ComboDashAttack())) },
         // bug: 사이즈 지정하기 전에 이미 생성되어버려서 큰 대상이 나타나는 문제 발생
         { (int)Skill.Agis, (Enemy.Agis, new AgisSpreadShot()) },
-        { (int)Skill.AgisRain, (Enemy.Agis, new SequenceNode(new AgisRainNode())) },
+        { (int)Skill.AgisRain, (Enemy.Agis, new AgisRainNode()) },
         { (int)Skill.Heal, (Enemy.Wizard, new SkillHealNode()) },
         { (int)Skill.ArcherArrow, (Enemy.Archer, new RangeMultiAttackNode()) },
         { (int)Skill.MudWave, (Enemy.MudHand, new SequenceNode(new MudCastingNode(), new MudAttackNode())) },
