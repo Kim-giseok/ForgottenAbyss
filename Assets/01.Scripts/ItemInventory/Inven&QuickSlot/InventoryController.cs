@@ -224,8 +224,8 @@ public class InventoryController : MonoBehaviour, IItemContainer
         }
 
 
-        if ((itemA is ArmorSO armorA && SystemManager.Instance.equipmentManager.IsArmorEquipped(armorA.slot)) ||
-            (itemB is ArmorSO armorB && SystemManager.Instance.equipmentManager.IsArmorEquipped(armorB.slot)) ||
+        if ((itemA is ArmorSO armorA && SystemManager.Instance.equipmentManager.IsSpecificArmorEquipped(armorA)) ||
+            (itemB is ArmorSO armorB && SystemManager.Instance.equipmentManager.IsSpecificArmorEquipped(armorB)) ||
             (itemA is MemorySkillItem memoryA && SystemManager.Instance.equipmentManager.IsMemoryPieceEquipped(memoryA.memoryPieceId)) ||
             (itemB is MemorySkillItem memoryB && SystemManager.Instance.equipmentManager.IsMemoryPieceEquipped(memoryB.memoryPieceId)))
         {

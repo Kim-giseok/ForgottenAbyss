@@ -123,7 +123,7 @@ public class PassiveUI : MonoBehaviour
 
     public void OnClickCritical()
     {
-        if (_playerStatus.GetAvailableStatPoints() <= 0 || atkLevel >= maxAtkLevel)
+        if (_playerStatus.GetAvailableStatPoints() <= 0 || crtLevel >= maxCrtLevel)
         {
             return;
         }
@@ -150,7 +150,7 @@ public class PassiveUI : MonoBehaviour
 
     public void OnClickHp()
     {
-        if (_playerStatus.GetAvailableStatPoints() <= 0 || atkLevel >= maxAtkLevel)
+        if (_playerStatus.GetAvailableStatPoints() <= 0 || hpLevel >= maxHpLevel)
         {
             return;
         }
@@ -177,7 +177,7 @@ public class PassiveUI : MonoBehaviour
 
     public void OnClickDefence()
     {
-        if (_playerStatus.GetAvailableStatPoints() <= 0 || atkLevel >= maxAtkLevel)
+        if (_playerStatus.GetAvailableStatPoints() <= 0 || defLevel >= maxDefLevel)
         {
             return;
         }
@@ -204,7 +204,7 @@ public class PassiveUI : MonoBehaviour
 
     public void OnClickSpeed()
     {
-        if (_playerStatus.GetAvailableStatPoints() <= 0 || atkLevel >= maxAtkLevel)
+        if (_playerStatus.GetAvailableStatPoints() <= 0 || speedLevel >= maxSpeedLevel)
         {
             return;
         }
@@ -212,7 +212,7 @@ public class PassiveUI : MonoBehaviour
         if (_playerStatus.InvestStatPoint(StatType.SPEED))
         {
             speedLevel++;
-            speedText.text = $"이동속도+0.2\n Lv {speedLevel}/{maxSpeedLevel}";
+            speedText.text = $"이동속도+0.03\n Lv {speedLevel}/{maxSpeedLevel}";
         }
 
         //float currentSpd = _playerStatus.GetStat(StatType.SPEED);
@@ -231,7 +231,7 @@ public class PassiveUI : MonoBehaviour
 
     public void OnClickCoolDown()
     {
-        if (_playerStatus.GetAvailableStatPoints() <= 0 || atkLevel >= maxAtkLevel)
+        if (_playerStatus.GetAvailableStatPoints() <= 0 || coolDownLevel >= maxCoolDownLevel)
         {
             return;
         }
@@ -270,7 +270,7 @@ public class PassiveUI : MonoBehaviour
         crtText.text = $"치명타 확률+3%\n Lv {crtLevel}/{maxCrtLevel}";
         hpText.text = $"HP+10\n Lv {hpLevel}/{maxHpLevel}";
         defText.text = $"방어력+2\n Lv {defLevel}/{maxDefLevel}";
-        speedText.text = $"이동속도+0.2\n Lv {speedLevel}/{maxSpeedLevel}";
+        speedText.text = $"이동속도+0.03\n Lv {speedLevel}/{maxSpeedLevel}";
         coolDownText.text = $"스킬 쿨타임 감소\n2%\n Lv {coolDownLevel}/{maxCoolDownLevel}";
 
         // 버튼 상태도 업데이트

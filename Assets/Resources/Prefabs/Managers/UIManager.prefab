@@ -395,7 +395,19 @@ MonoBehaviour:
   m_Value: 0.721
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 3284617970377027857}
+        m_TargetAssemblyTypeName: SettingsMenu, Assembly-CSharp
+        m_MethodName: ChageSfxVolume
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &148025018979727747
 GameObject:
   m_ObjectHideFlags: 0
@@ -6111,7 +6123,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 1
+  m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!1 &2538546830931902784
@@ -8523,7 +8535,19 @@ MonoBehaviour:
   m_Value: 0.721
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 3284617970377027857}
+        m_TargetAssemblyTypeName: SettingsMenu, Assembly-CSharp
+        m_MethodName: ChangeBgmVolume
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &4718512157061416773
 GameObject:
   m_ObjectHideFlags: 0
@@ -10237,7 +10261,7 @@ MonoBehaviour:
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 1920, y: 1080}
-  m_ScreenMatchMode: 0
+  m_ScreenMatchMode: 1
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
@@ -11620,7 +11644,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_IgnoreReversedGraphics: 1
+  m_IgnoreReversedGraphics: 0
   m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
@@ -13475,7 +13499,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 1
+  m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!1 &7401081294032593004
@@ -15008,7 +15032,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 1
+  m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!1 &8469696951203587080
@@ -15846,7 +15870,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 1
+  m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!1 &9013776740260717558
@@ -18360,6 +18384,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7766137188011670335}
     m_Modifications:
+    - target: {fileID: 418098902837381763, guid: 871e724aeca94ed41b11a3375f7512e1, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 76ffb4ebcf3c647a58d004325eb3354c, type: 2}
+    - target: {fileID: 418098902837381763, guid: 871e724aeca94ed41b11a3375f7512e1, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 3156123842336014381, guid: 76ffb4ebcf3c647a58d004325eb3354c, type: 2}
     - target: {fileID: 2082306345590923949, guid: 871e724aeca94ed41b11a3375f7512e1, type: 3}
       propertyPath: dragCanvas
       value: 
@@ -18408,6 +18440,14 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4052368996361318085, guid: 871e724aeca94ed41b11a3375f7512e1, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 76ffb4ebcf3c647a58d004325eb3354c, type: 2}
+    - target: {fileID: 4052368996361318085, guid: 871e724aeca94ed41b11a3375f7512e1, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 3156123842336014381, guid: 76ffb4ebcf3c647a58d004325eb3354c, type: 2}
     - target: {fileID: 4764139458843903110, guid: 871e724aeca94ed41b11a3375f7512e1, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -18520,6 +18560,14 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5978894651341279914, guid: 871e724aeca94ed41b11a3375f7512e1, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 76ffb4ebcf3c647a58d004325eb3354c, type: 2}
+    - target: {fileID: 5978894651341279914, guid: 871e724aeca94ed41b11a3375f7512e1, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 3156123842336014381, guid: 76ffb4ebcf3c647a58d004325eb3354c, type: 2}
     - target: {fileID: 6244623378642648516, guid: 871e724aeca94ed41b11a3375f7512e1, type: 3}
       propertyPath: dragCanvas
       value: 
@@ -18544,6 +18592,14 @@ PrefabInstance:
       propertyPath: dragItemPool
       value: 
       objectReference: {fileID: 2248443711567395389}
+    - target: {fileID: 7139043065933421354, guid: 871e724aeca94ed41b11a3375f7512e1, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 76ffb4ebcf3c647a58d004325eb3354c, type: 2}
+    - target: {fileID: 7139043065933421354, guid: 871e724aeca94ed41b11a3375f7512e1, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 3156123842336014381, guid: 76ffb4ebcf3c647a58d004325eb3354c, type: 2}
     - target: {fileID: 7622476174706194329, guid: 871e724aeca94ed41b11a3375f7512e1, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -18568,6 +18624,14 @@ PrefabInstance:
       propertyPath: dragItemPool
       value: 
       objectReference: {fileID: 2248443711567395389}
+    - target: {fileID: 8197218666207505070, guid: 871e724aeca94ed41b11a3375f7512e1, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 76ffb4ebcf3c647a58d004325eb3354c, type: 2}
+    - target: {fileID: 8197218666207505070, guid: 871e724aeca94ed41b11a3375f7512e1, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 3156123842336014381, guid: 76ffb4ebcf3c647a58d004325eb3354c, type: 2}
     - target: {fileID: 8344972980744650127, guid: 871e724aeca94ed41b11a3375f7512e1, type: 3}
       propertyPath: dragCanvas
       value: 

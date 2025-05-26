@@ -410,12 +410,15 @@ public class EquipmentManager : MonoBehaviour
         return equippedArmors.ContainsKey(slot);
     }
 
+    public bool IsSpecificArmorEquipped(ArmorSO armor)
+    {
+        return equippedArmors.TryGetValue(armor.slot, out var equippedArmor) && equippedArmor.armor == armor;
+    }
+
     public bool IsMemoryPieceEquipped(int memoryPieceId)
     {
         var curMemory = SystemManager.Instance.weaponManager.GetCurrentMemoryPieceSO();
-        if(curMemory == null) return false;
-        if (curMemory.currentMemoryPieceId == memoryPieceId) return true;
-        else return false;
+        return curMemory != null && curMemory.currentMemoryPieceId == memoryPieceId;
     }
 
     [Serializable]

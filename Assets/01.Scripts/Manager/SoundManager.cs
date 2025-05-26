@@ -44,24 +44,28 @@ public class SoundManager : SingletonLoadRemain<SoundManager>
 
     protected override void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        base.OnSceneLoaded(scene, mode);
+
         if (scene.name == "Stage1" || scene.name == "Stage2") { PlayBGM("Combat1"); }
     }
 
     protected override void Init()
     {
+        base.Init();
+
         Addressables.LoadAssetsAsync<AudioClip>("BGM", null).Completed += (handle) =>
         {
             foreach (var clip in handle.Result)
             {
-                addressBGMList.Add(clip.name, clip);
+                addressBGMList[clip.name] = clip;
             }
         };
-        
+
         Addressables.LoadAssetsAsync<AudioClip>("SFX", null).Completed += (handle) =>
         {
             foreach (var clip in handle.Result)
             {
-                addressSfxList.Add(clip.name, clip);
+                addressSfxList[clip.name] = clip;
             }
         };
     }
@@ -82,7 +86,7 @@ public class SoundManager : SingletonLoadRemain<SoundManager>
         bgmSource.loop = true;
         PlayBgm();
     }
-    
+
     protected override void OnDestroy()
     {
         base.OnDestroy();
@@ -119,19 +123,19 @@ public class SoundManager : SingletonLoadRemain<SoundManager>
     {
         sfxSource.Stop();
     }
-    
+
     public void FadeOutBGM(float duration = 1f)
     {
         if (!bgmSource.isPlaying) return;
         var currVolume = bgmSource.volume;
-        
+
         bgmSource.DOFade(0f, duration).OnComplete(() =>
         {
             bgmSource.Stop();
             bgmSource.volume = currVolume;
         });
     }
-    
+
     public void FadeOutSFX(float duration = 1f)
     {
         sfxSource.DOFade(0f, duration).OnComplete(() => sfxSource.Stop());
@@ -150,7 +154,7 @@ public class SoundManager : SingletonLoadRemain<SoundManager>
             PlaySFX(addressSfxList[sfxName]);
             return;
         }
-        
+
         AudioClip sfx = null;
         foreach (var clip in sfxList)
             if (clip.name == sfxName)
@@ -162,7 +166,7 @@ public class SoundManager : SingletonLoadRemain<SoundManager>
         if (sfx != null)
             PlaySFX(sfx);
     }
-    
+
     public void PlaySfxRepeat(string sfxName, float interval, int repeatCount = 1)
     {
         PlaySfxRepeatAsync(sfxName, interval, repeatCount).Forget();

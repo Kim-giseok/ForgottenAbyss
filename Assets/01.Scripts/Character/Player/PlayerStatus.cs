@@ -300,7 +300,7 @@ public class PlayerStatus : CharacterStatus
         statPointIncrease[StatType.CRITICAL] = 3f;  // 치명타 확률 증가량
         statPointIncrease[StatType.MaxHP] = 10f;    // 최대HP 증가량
         statPointIncrease[StatType.DEF] = 1f;       // 방어력 증가량
-        statPointIncrease[StatType.SPEED] = 0.2f;   // 이동속도 증가량
+        statPointIncrease[StatType.SPEED] = 0.03f;   // 이동속도 증가량
         statPointIncrease[StatType.COOLDOWN_REDUCTION] = 2f;   // 스킬 쿨타임 감소
 
         // 패시브 스탯 최대 레벨
@@ -573,11 +573,24 @@ public class PlayerStatus : CharacterStatus
 
     private IEnumerator ApplyTemporaryBuff(StatType stat, float amount, float duration)
     {
-        SetStat(stat, GetStat(stat) + amount);
-        yield return new WaitForSeconds(duration);
-        SetStat(stat, GetStat(stat) - amount);
-        activeBuffs.Remove(stat);
+        if (stat == StatType.SPEED)
+        {
+            float originalValue = GetStat(stat);
+            float percentBonus = originalValue * (amount / 100f);
+            SetStat(stat, originalValue + percentBonus);
 
+            yield return new WaitForSeconds(duration);
+
+            SetStat(stat, originalValue);
+        }
+        else
+        {
+            SetStat(stat, GetStat(stat) + amount);
+            yield return new WaitForSeconds(duration);
+            SetStat(stat, GetStat(stat) - amount);
+        }
+
+        activeBuffs.Remove(stat);
         Debug.Log($"[PlayerStatus] {stat} 버프 종료");
     }
 
