@@ -18,9 +18,7 @@ public class Boss2EndingScene: CutScene
     {
         // do: 앞에 죽는 모습을 좀 더 표시한 후 진행하기
         GameManager.Instance.PausePlayer();
-        Player.controller.rigid.velocity = Vector2.zero;
-        Player.controller.rigid.isKinematic = true;
-        Player.controller.rigid.Sleep();
+        Player.controller.rigid.simulated = false;
         Light.FadeOut(1f, 0.5f);
         await UniTask.Delay(1000);
         Sound.StopBGM();
@@ -82,9 +80,9 @@ public class Boss2EndingScene: CutScene
         Narration().Forget();
         SetCutSceneMode(false);
         
-        Player.controller.rigid.isKinematic = false;
-        Player.controller.rigid.WakeUp();
+
         Player.animator.Play("Idle");
+        Player.controller.rigid.simulated = true;
         
         gameObject.SetActive(false);
         GameManager.Instance.PausePlayer(false);
