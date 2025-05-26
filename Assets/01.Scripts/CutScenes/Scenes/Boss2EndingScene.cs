@@ -7,7 +7,7 @@ using UnityEngine.Serialization;
 
 public class Boss2EndingScene: CutScene
 { 
-    public RectTransform screenshot;
+    public Canvas screenshot;
 
     public ActorController mudEye;
     
@@ -20,6 +20,7 @@ public class Boss2EndingScene: CutScene
         GameManager.Instance.PausePlayer();
         Player.controller.rigid.velocity = Vector2.zero;
         Player.controller.rigid.isKinematic = true;
+        Player.controller.rigid.Sleep();
         Light.FadeOut(1f, 0.5f);
         await UniTask.Delay(1000);
         Sound.StopBGM();
@@ -61,7 +62,7 @@ public class Boss2EndingScene: CutScene
         
         await UniTask.Delay(5000);
         // [이미지 표시]
-        UIPool.Set(screenshot);
+        screenshot.gameObject.SetActive(true);
         Scene.FadeScreen.SetFade(true, 5f);
         
         LetterBox.SetColor(Color.red);
@@ -77,11 +78,12 @@ public class Boss2EndingScene: CutScene
         Light.globalLight.intensity = 1;
         Scene.FadeScreen.Reset();
         Scene.GrayScreen.Reset();
-        UIPool.Delete(screenshot);
+        screenshot.gameObject.SetActive(false);
         Narration().Forget();
         SetCutSceneMode(false);
         
         Player.controller.rigid.isKinematic = false;
+        Player.controller.rigid.WakeUp();
         Player.animator.Play("Idle");
         
         gameObject.SetActive(false);
