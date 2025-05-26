@@ -18,7 +18,10 @@ public class GoldManager : MonoBehaviour
             Instance = this;
         else
             Destroy(gameObject);
+    }
 
+    private void Start()
+    {
         // 초기 UI업데이트
         OnGoldChanged?.Invoke(currentGold);
     }

@@ -22,6 +22,13 @@ public class GoldTextUpdater : MonoBehaviour
             GoldManager.Instance.OnGoldChanged -= UpdateGoldText;
     }
 
+    private IEnumerator Start()
+    {
+        yield return null; // 한 프레임 기다림
+        if (GoldManager.Instance != null)
+            UpdateGoldText(GoldManager.Instance.GetGold());
+    }
+
     private void UpdateGoldText(int amount)
     {
         goldText.text = $"{amount:N0}";
