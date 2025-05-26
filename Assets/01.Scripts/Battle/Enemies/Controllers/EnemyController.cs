@@ -132,31 +132,28 @@ public class EnemyController : EnemyBaseController, IDamagable
 
     private void OnHit(float damage, EnemyStatusHandler.HitType hitType = EnemyStatusHandler.HitType.Stun)
     {
+        if (statusHandler.GetMode(EnmeyMode.Die)) return;
+
         resourceHandler.Modify(EnemyStatType.Health, -damage);
         
         if (hitType == EnemyStatusHandler.HitType.Normal)
         {
-            BoltsPool.Instance.Particle(transform, "Hit2")
-                .SetSize(0.8f).SetColor(new Color(0, 0, 0, 0.2f)).SetPosition(transform.position + new Vector3(Random.Range(-0.2f, 0.2f), 0.6f + Random.Range(-0.2f, 0.2f))).Play();
-            BoltsPool.Instance.Particle(transform, "Hit3")
-                .SetSize(0.8f).SetColor(Color.yellow).SetPosition(transform.position + new Vector3(Random.Range(-0.2f, 0.2f), 0.6f + Random.Range(-0.2f, 0.2f))).Play();
+            BoltsPool.Instance.Particle(transform, "Hit2").SetSize(0.8f).SetColor(new Color(0, 0, 0, 0.2f)).SetPosition(transform.position + new Vector3(Random.Range(-0.2f, 0.2f), 0.6f + Random.Range(-0.2f, 0.2f))).Play();
+            BoltsPool.Instance.Particle(transform, "Hit3").SetSize(0.8f).SetColor(Color.yellow).SetPosition(transform.position + new Vector3(Random.Range(-0.2f, 0.2f), 0.6f + Random.Range(-0.2f, 0.2f))).Play();
          
             SoundManager.Instance.Playsfx("HitByBow2");
         }
 
         if (hitType == EnemyStatusHandler.HitType.Stun)
         {
-            BoltsPool.Instance.Particle(transform, "Hit")
-                .SetSize(0.8f).SetColor(new Color(0, 0, 0, 0.2f)).SetPosition(transform.position + new Vector3(Random.Range(-0.2f, 0.2f), 0.6f + Random.Range(-0.2f, 0.2f))).Play();
-            BoltsPool.Instance.Particle(transform, "Hit")
-                .SetSize(0.15f).SetColor(Color.yellow).SetPosition(transform.position + new Vector3(Random.Range(-0.2f, 0.2f), 0.6f + Random.Range(-0.2f, 0.2f))).Play();
+            BoltsPool.Instance.Particle(transform, "Hit").SetSize(0.8f).SetColor(new Color(0, 0, 0, 0.2f)).SetPosition(transform.position + new Vector3(Random.Range(-0.2f, 0.2f), 0.6f + Random.Range(-0.2f, 0.2f))).Play();
+            BoltsPool.Instance.Particle(transform, "Hit").SetSize(0.15f).SetColor(Color.yellow).SetPosition(transform.position + new Vector3(Random.Range(-0.2f, 0.2f), 0.6f + Random.Range(-0.2f, 0.2f))).Play();
 
             SoundManager.Instance.Playsfx("HitByMelee");
         }
 
         if (!(resourceHandler.Get(EnemyStatType.Health).value <= 0)) return;
 
-        if (statusHandler.GetMode(EnmeyMode.Die)) return;
         statusHandler.SetMode(EnmeyMode.Hit, true);
         statusHandler.SetMode(EnmeyMode.Die, true);
         
@@ -188,7 +185,12 @@ public class EnemyController : EnemyBaseController, IDamagable
         // statusHandler.stamina -= 1;
         // if (statusHandler.stamina <= 0) { statusHandler.stamina = 3; }
 
-        if (!Board.IsAttacking) { Board.IsAttacking = true; }
+        if (!Board.IsAttacking)
+        {
+            Board.IsAttacking = true;
+            // why: 가장 처음 공격을 당한 경우, 바로 달려와야하므로 갱신 요청
+            Machine.Notify();
+        }
         OnHit(damage);
         // statusHandler.SetMode(EnmeyMode.Hit, true);
         // Machine.Notify();
