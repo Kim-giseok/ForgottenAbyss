@@ -63,6 +63,7 @@ public class ControllerPlayer : MonoBehaviour
     private float jumpInputCooldown = 0.1f;
 
     public float dashCoolTime = 0f;
+    private bool canSwap = true;
 
     private void Awake()
     {
@@ -255,10 +256,20 @@ public class ControllerPlayer : MonoBehaviour
 
     void OnOtherWeapon() //���⺯ȯ Ű �Է�
     {
+        if (!canSwap) return;
+
+        canSwap = false;
         SystemManager.Instance.weaponManager.SwapWeapon();
-        Debug.Log("Z: �ٸ������ ��ȯ");
+        Debug.Log("Z: 다른 무기로 변경");
+
+        StartCoroutine(ResetSwapCooldown());
     }
 
+    private IEnumerator ResetSwapCooldown()
+    {
+        yield return new WaitForSeconds(0.5f);
+        canSwap = true;
+    }
 
     public void UpdateDirection() //���� ��ȯ
     {
