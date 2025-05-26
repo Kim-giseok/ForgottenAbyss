@@ -29,9 +29,9 @@ public class EnemiesBT
                       Sequence(
                           Condition(ctrl => ctrl.Resource.Get(EnemyStatType.Health).value <= 0),
                           Do<SetZeroPosNode>(),
-                          Nodes.Die
+                          Do<DieNode>()
                       ).Ignore(),
-                      Nodes.Hit
+                      Do<HitNode>()
                   )
               ),
               Sequence(Do<AgisMoveNode>())

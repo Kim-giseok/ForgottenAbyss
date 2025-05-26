@@ -104,12 +104,12 @@ public class BlackHoleBolt : BoltNode
     public override void Update()
     {
         // RaycastHit2D[] hits = Physics2D.CircleCastAll(bolt.transform.position, 4f, Vector2.down,  LayerMask.GetMask("Player", "Enemy"));
-        RaycastHit2D[] hits = Physics2D.CircleCastAll(bolt.transform.position, 4f, Vector2.down, 12f, LayerMask.GetMask("Player"));
+        RaycastHit2D[] hits = Physics2D.CircleCastAll(bolt.transform.position, 3f, Vector2.down, 12f, LayerMask.GetMask("Player"));
         foreach (var hit in hits)
         {
             if (!hit.rigidbody) continue;
             var direction = (bolt.transform.position - hit.transform.position).normalized;
-            hit.rigidbody.AddForce(direction * 4f, ForceMode2D.Force);
+            hit.rigidbody.AddForce(direction * 3f, ForceMode2D.Force);
         }
     }
 

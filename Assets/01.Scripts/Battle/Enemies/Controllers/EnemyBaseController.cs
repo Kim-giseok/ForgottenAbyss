@@ -45,7 +45,7 @@ public class EnemyBaseController: MonoBehaviour
     protected void OnAnimatedEvent(int value) // notice: string과 enum으로 좀 더 다양하게 구현하도록 처리
     {
         // machine의 제거가 더 늦어서 발생하는 문제로 보임
-        if (!this || !gameObject || Machine != null) return;
+        if (!this) return;
         
         Machine?.OnAnimatedEvent(value == 1);
     }

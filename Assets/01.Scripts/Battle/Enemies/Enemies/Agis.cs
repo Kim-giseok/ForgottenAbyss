@@ -142,32 +142,28 @@ public class AgisMoveNode : Node
             int attackType = Random.Range(0, 3);
 
             
-            var bulletCount = 9;
-            var angleStep = 360f / bulletCount;
-            var radius = 42f;
-            
             switch (attackType)
             {
                 case 0:
                     // 방사 공격
-                    // SoundManager.Instance.Playsfx("AgisSpell");
-                    // for (int i = 0; i < bulletCount; i++)
-                    // {
-                    //     float angle = i * angleStep * Mathf.Deg2Rad;
-                    //     Vector2 direction = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * radius;
-                    //
-                    //     // ((EnemyController)controller).statusHandler.castingDirection = direction;
-                    //     BoltsPool.Instance.CreateSummon(controller.transform, SummonSkillManager.Skill.Agis)
-                    //         .SetCastingDirection(direction).Fire();
-                    // }
-                    // break;
+                    SoundManager.Instance.Playsfx("AgisSpell");
+                    for (int i = 0; i < 9; i++)
+                    {
+                        float angle = i * 60 * Mathf.Deg2Rad;
+                        Vector2 direction = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * 42;
+                    
+                        // ((EnemyController)controller).statusHandler.castingDirection = direction;
+                        BoltsPool.Instance.CreateSummon(controller.transform, SummonSkillManager.Skill.Agis)
+                            .SetCastingDirection(direction).Fire();
+                    }
+                    break;
                 case 1:
                     SoundManager.Instance.Playsfx("AgisSpell3");
                     // 블랙홀 발사
-                    for (int i = 0; i < bulletCount; i++)
+                    for (int i = 0; i < 6; i++)
                     {
-                        float angle = i * angleStep * Mathf.Deg2Rad;
-                        Vector2 direction = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * radius;
+                        float angle = i * 90 * Mathf.Deg2Rad;
+                        Vector2 direction = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * 32;
 
                         
                         Debug.Log(direction);
@@ -177,19 +173,19 @@ public class AgisMoveNode : Node
 
                     break;
                 case 2:
-                    // SoundManager.Instance.Playsfx("AgisSpell2");
-                    // // 빗물 공격
-                    // Vector2[] offsets = {
-                    //     new(16f, 0f),
-                    //     new(48f, 0f),
-                    //     new(-16f, 0f),
-                    //     new(-48f, 0f),
-                    // };
-                    //
-                    // foreach (var offset in offsets)
-                    // {
-                    //     BoltsPool.Instance.CreateSummon(controller.transform, SummonSkillManager.Skill.AgisRain).SetCastingDirection(offset).Fire();
-                    // }
+                    SoundManager.Instance.Playsfx("AgisSpell2");
+                    // 빗물 공격
+                    Vector2[] offsets = {
+                        new(16f, 0f),
+                        new(48f, 0f),
+                        new(-16f, 0f),
+                        new(-48f, 0f),
+                    };
+                    
+                    foreach (var offset in offsets)
+                    {
+                        BoltsPool.Instance.CreateSummon(controller.transform, SummonSkillManager.Skill.AgisRain).SetCastingDirection(offset).Fire();
+                    }
                     break;
             }
         }

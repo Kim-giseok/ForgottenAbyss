@@ -568,7 +568,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4415495858370617319, guid: 6dc31ed564c18ca4b9568794c27595d7, type: 3}
   m_PrefabInstance: {fileID: 1354557273}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1371356750}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: eb354eabd912cd44ca6ae06b6cae8fdd, type: 3}
@@ -629,14 +629,17 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3741893359042678545, guid: 6dc31ed564c18ca4b9568794c27595d7, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1371356763}
   m_SourcePrefab: {fileID: 100100000, guid: 6dc31ed564c18ca4b9568794c27595d7, type: 3}
 --- !u!114 &1354557274 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 307188709645930398, guid: 6dc31ed564c18ca4b9568794c27595d7, type: 3}
   m_PrefabInstance: {fileID: 1354557273}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1371356750}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 39a5f5a0c2370ae4d8d16db0febae4fb, type: 3}
@@ -647,6 +650,23 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3592222812765152639, guid: 6dc31ed564c18ca4b9568794c27595d7, type: 3}
   m_PrefabInstance: {fileID: 1354557273}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1371356750 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3741893359042678545, guid: 6dc31ed564c18ca4b9568794c27595d7, type: 3}
+  m_PrefabInstance: {fileID: 1354557273}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1371356763
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1371356750}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0710f989ba9740ab84ad9e7665fce297, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1873933378
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1032,23 +1052,23 @@ PrefabInstance:
     - target: {fileID: 5771899917361786963, guid: 73ebf0a50cec85d46a7a6c23506d898d, type: 3}
       propertyPath: maps.Array.data[0]
       value: 
-      objectReference: {fileID: 3523219499257367131, guid: b589b2edeb6da8c4480ac372a3ae3e7d, type: 3}
+      objectReference: {fileID: 3523219499257367131, guid: 9ed317d0111c77a4bb341fbebe1eca26, type: 3}
     - target: {fileID: 5771899917361786963, guid: 73ebf0a50cec85d46a7a6c23506d898d, type: 3}
       propertyPath: maps.Array.data[1]
       value: 
-      objectReference: {fileID: 3523219499257367131, guid: 8e7a9d93f404940488fbcef786b7a686, type: 3}
+      objectReference: {fileID: 3523219499257367131, guid: b589b2edeb6da8c4480ac372a3ae3e7d, type: 3}
     - target: {fileID: 5771899917361786963, guid: 73ebf0a50cec85d46a7a6c23506d898d, type: 3}
       propertyPath: maps.Array.data[2]
       value: 
-      objectReference: {fileID: 3523219499257367131, guid: d0e181ad0382201409ba889a3026e569, type: 3}
+      objectReference: {fileID: 3523219499257367131, guid: 8e7a9d93f404940488fbcef786b7a686, type: 3}
     - target: {fileID: 5771899917361786963, guid: 73ebf0a50cec85d46a7a6c23506d898d, type: 3}
       propertyPath: maps.Array.data[3]
       value: 
-      objectReference: {fileID: 3523219499257367131, guid: f9cbcf48101f8c141a480ae0b834321f, type: 3}
+      objectReference: {fileID: 3523219499257367131, guid: d0e181ad0382201409ba889a3026e569, type: 3}
     - target: {fileID: 5771899917361786963, guid: 73ebf0a50cec85d46a7a6c23506d898d, type: 3}
       propertyPath: maps.Array.data[4]
       value: 
-      objectReference: {fileID: 3523219499257367131, guid: 9ed317d0111c77a4bb341fbebe1eca26, type: 3}
+      objectReference: {fileID: 3523219499257367131, guid: f9cbcf48101f8c141a480ae0b834321f, type: 3}
     - target: {fileID: 5771899917361786963, guid: 73ebf0a50cec85d46a7a6c23506d898d, type: 3}
       propertyPath: maps.Array.data[5]
       value: 

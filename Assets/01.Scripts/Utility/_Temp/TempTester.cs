@@ -7,7 +7,7 @@ public class TempTester: MonoBehaviour
    {
       if (Input.GetKeyDown(KeyCode.Alpha1))
       {
-         BoltsPool.Instance.CreateSummon(transform, SummonSkillManager.Skill.DashAttack, true).Fire();
+         BoltsPool.Instance.CreateSummon(transform, SummonSkillManager.Skill.ArcherArrow, true).Fire();
       }
       
       if (Input.GetKeyDown(KeyCode.Alpha2))
