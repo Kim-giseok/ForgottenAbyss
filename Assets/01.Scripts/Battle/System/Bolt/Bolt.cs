@@ -37,7 +37,7 @@ public class Bolt: MonoBehaviour
         transform.localScale = new Vector3(0.2f, 0.2f, 1);
         
         // boltBuilder 에게 한번 더 요청하는 방식으로 간결하게 해소하기
-        attr.machine.Clear();
+        attr.machine.Stop();
         attr.effects.Clear();
         attr.Rigidbody.velocity = Vector2.zero;
 
