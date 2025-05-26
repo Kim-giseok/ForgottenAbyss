@@ -20,11 +20,12 @@ public class GuardNode : Node
 
 // knockBack이 들어갈 수도 있도록
 // 피격 애니메이션 자체는 발생하더라도 바로 액션 끝나도록
+// 데미지 갱신이 내부에서 발생하지 않으면서 순수 노드 역할이 커짐
 public class HitNode : Node<EnemyController>
 {
     public override void Start()
     {
-        controller.statusHandler.SetMode(EnmeyMode.Hit, false);
+        controller.Status.SetMode(EnmeyMode.Hit, false);
         controller.Anim.Play("Hit");
     }
 
@@ -34,7 +35,7 @@ public class HitNode : Node<EnemyController>
     }
 }
 
-public class DieNode : Node
+public class DieNode : Node<EnemyController>
 {
     public override void Start()
     {
@@ -50,9 +51,9 @@ public class DieNode : Node
 
     public override void OnAnimated(AnimationStatus status, AnimatorStateInfo animInfo)
     {
-        if (!animInfo.IsName("Die") || controller is not EnemyController eController || status != AnimationStatus.End) return; 
+        if (status != AnimationStatus.End) return; 
         
-        eController.Die();
+        controller.Die();
         machine.isIgnoreNotify = false;
     }
 }

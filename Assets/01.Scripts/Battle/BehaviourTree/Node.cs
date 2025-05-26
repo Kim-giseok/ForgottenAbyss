@@ -59,6 +59,7 @@ public abstract class Node
     public virtual void OnAnimatedEvent(bool isFire) { }
     public virtual void OnAnimated(AnimationStatus status, AnimatorStateInfo animInfo) { }
 
+    // 현재 노드를 actionable 변수로 두고 SetStatus를 보내도록 처리해서 OnEvent를 제거하는 방식으로 변경하면 어떨까?
     public virtual void OnPressed() { }
 }
 

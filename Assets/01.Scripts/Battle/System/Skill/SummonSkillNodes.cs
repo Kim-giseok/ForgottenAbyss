@@ -85,21 +85,21 @@ public class Explosion : Node
 }
 
 // 공격해야 다음 노드로 넘어가는 형태로 분리하기
-public class ComboDashAttack : Node
+public class ComboDashAttack : Node<SummonController>
 {
     private List<string> combo = new() { "Combo1", "Combo2", "Combo3" };
 
-    public void DashAttack(int currComboCount)
+    private void DashAttack(int currComboCount)
     {
-        if (controller is not SummonController sController) return;
-
+        SoundManager.Instance.Playsfx("AgisSpell");
+        
         controller.Anim.Play(combo[currComboCount]);
 
         controller.Rigid.velocity = Vector2.zero;
         controller.Rigid.gravityScale = 0f;
-        controller.Rigid.drag = 4f;
+        controller.Rigid.drag = 10f;
         
-        controller.Rigid.AddForce(SummonController.InputDirection * 40f, ForceMode2D.Impulse);
+        controller.Rigid.AddForce(SummonController.InputDirection * 120f, ForceMode2D.Impulse);
         
         // 공격 방향으로 Z축 회전
         float angle = Mathf.Atan2(SummonController.InputDirection.y, Mathf.Abs(SummonController.InputDirection.x)) * Mathf.Rad2Deg;
@@ -110,8 +110,6 @@ public class ComboDashAttack : Node
 
     public override void Start()
     {
-        if (controller is not SummonController sController) return;
-        
         context.Set("combo", 0);
         // 처음 위치 찾기 어려움
         DashAttack(0);
@@ -134,8 +132,6 @@ public class ComboDashAttack : Node
 
     public override void OnAnimated(AnimationStatus status, AnimatorStateInfo animInfo)
     {
-        if(!animInfo.IsName("Combo1") && !animInfo.IsName("Combo2") && !animInfo.IsName("Combo3")) return;
-        
         if (status == AnimationStatus.Start)
         {
             BoltsPool.Instance.CreateMelee(controller.transform)

@@ -18,7 +18,7 @@ public class MeleeAttack : Node
         {
             controller.soundHandler.Play(EnemySoundType.Attack);
             // 데미지나 사이즈등은 추상화로 접급
-            BoltsPool.Instance.CreateMelee(controller.transform, ((EnemyController)controller).resourceHandler.Get(EnemyStatType.Attack).value).Fire();
+            BoltsPool.Instance.CreateMelee(controller.transform, ((EnemyController)controller).Resource.Get(EnemyStatType.Attack).value).Fire();
             // NightBone만 실행되어야하여 전략패턴으로 빼야함
             BoltsPool.Instance.Particle(controller.transform, "Slash").SetSize(2.5f).SetPosition(controller.transform.position + new Vector3(Random.Range(-0.2f, 0.2f), 0.6f + Random.Range(-0.2f, 0.2f))).Play();
         }

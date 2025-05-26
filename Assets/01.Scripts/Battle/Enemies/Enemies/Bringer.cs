@@ -14,7 +14,7 @@ public class BringerAttackNode : Node
         {
             // 데미지나 사이즈등은 추상화로 접급
             BoltsPool.Instance.CreateMelee(controller.transform)
-                .SetDamage(((EnemyController)controller).resourceHandler.Get(EnemyStatType.Attack).value)
+                .SetDamage(((EnemyController)controller).Resource.Get(EnemyStatType.Attack).value)
                 .SetKnockBack(20)
                 .SetSize(3f, 2f)
                 .Fire();

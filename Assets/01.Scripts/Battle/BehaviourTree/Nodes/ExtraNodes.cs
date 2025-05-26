@@ -1,5 +1,6 @@
 using UnityEngine;
 
+// 액션 노드로 관리하기
 public class InitNode: Node
 {
     private readonly Vector2 size;

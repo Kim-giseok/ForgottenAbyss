@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
@@ -55,6 +56,9 @@ public class SummonController: EnemyBaseController
     // ReSharper disable Unity.PerformanceAnalysis
     public void SetCaster(Transform currCaster ,bool isAttached = false)
     {
+        this.eController = null;
+        this.pController = null;
+        
         // 캐스팅마다 가져오면서 비용이 커질 수 있는 점 관리 필요 - 캐싱을 통해서 
         caster = currCaster;
         // 컨트롤러만 가져오면 내부에서 파악할 수 있다.
@@ -72,7 +76,7 @@ public class SummonController: EnemyBaseController
             this.eController = eController;
             // 주입은 외부에서 가능하게 하고, 다양한 플레이어가 자신 만의 값으로 등록하도록 변경하기
             // statusHandler인 경우 깊은 복사가 필요해질 수 있음
-            castingDirection = eController.statusHandler.castingDirection;
+            castingDirection = eController.Status.castingDirection;
             isPlayerCaster = false;
         }
         
@@ -145,7 +149,7 @@ public class SummonController: EnemyBaseController
         }
     }
 
-    private void OnDestroy()
+    protected void OnDestroy()
     {
         if (!isCasterAttached) return;
         cRigidbody.velocity = Vector2.zero;

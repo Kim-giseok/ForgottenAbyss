@@ -4,15 +4,16 @@ using UnityEngine;
 // 두개로 분리하기 - moveNode와 AttackNode로 분리
 public class AgisSpreadShot : Node<SummonController>
 {
-    private readonly float duration = 1f;
+    private readonly float duration = 0.4f;
     private readonly Vector2 direction;
 
     public override void Start() // 한번 더 실행하는 현상 발생
     {
-        controller.Rigid.drag = 10f;
+
+        controller.Rigid.drag = 28f;
 
         controller.Collider.isTrigger = true;
-        controller.Rigid.AddForce(controller.castingDirection, ForceMode2D.Impulse);
+        controller.Rigid.AddForce(controller.castingDirection * 3.8f, ForceMode2D.Impulse);
      
         // 애니메이션 도중 스프라이트 컬러 변경되지 않는 현상 발생
         controller.Render.color = Color.black;
@@ -21,8 +22,10 @@ public class AgisSpreadShot : Node<SummonController>
     public override void Update()
     {
         if (!(currTime >= duration)) return;
+        // 데미지 체크
+        var damage = controller.eController ? controller.eController.Resource.Get(EnemyStatType.Attack).value : GameManager.Instance.player.playerstatus.GetStat(StatType.ATK);
         
-        const int angleStep = 30;
+        const int angleStep = 20;
         const int totalAngles = 360 / angleStep;
 
         for (var i = 0; i < totalAngles; i++)
@@ -31,7 +34,7 @@ public class AgisSpreadShot : Node<SummonController>
             var angleRad = angleDeg * Mathf.Deg2Rad;
 
             var dir = new Vector2(Mathf.Cos(angleRad), Mathf.Sin(angleRad)).normalized;
-            BoltsPool.Instance.Create(controller.transform, Bolts.Type.Linear).SetDirection(dir).SetSpeed(16f).SetDamage(((SummonController)controller).eController.resourceHandler.Get(EnemyStatType.Attack).value).Fire();
+            BoltsPool.Instance.Create(controller.transform, Bolts.Type.Linear).SetDirection(dir).SetSpeed(30f).SetDamage(damage).Fire();
         }
 
         SetStatus(Status.Success);
@@ -45,7 +48,7 @@ public class AgisSpreadShot : Node<SummonController>
 }
 
 // 마찬가지로 2개의 노드로 분리하기
-public class AgisRainNode : Node
+public class AgisRainNode : Node<SummonController>
 {
     private readonly float duration = 2f;
     private readonly Vector2 direction;
@@ -56,10 +59,7 @@ public class AgisRainNode : Node
         controller.Rigid.drag = 10f;
 
         // 따라오지 않는 현상 수정 필요 - transform으로 처리
-        if (controller is SummonController sContorller)
-        {
-            controller.Rigid.AddForce(sContorller.castingDirection, ForceMode2D.Impulse);
-        }
+        controller.Rigid.AddForce(controller.castingDirection, ForceMode2D.Impulse);
      
     }
 
@@ -69,11 +69,9 @@ public class AgisRainNode : Node
 
         if (!Mathf.Approximately(Mathf.Floor(currTime / 0.05f), Mathf.Floor((currTime - Time.deltaTime) / 0.05f)))
         {
-            BoltsPool.Instance.Create(controller.transform, Bolts.Type.Rain).SetEffect(Bolts.EffectType.Penetration).SetDamage(((SummonController)controller).eController.resourceHandler.Get(EnemyStatType.Attack).value).Fire();
+            BoltsPool.Instance.Create(controller.transform, Bolts.Type.Rain).SetEffect(Bolts.EffectType.Penetration).SetDamage(((SummonController)controller).eController.Resource.Get(EnemyStatType.Attack).value).Fire();
         }
-
     }
-
 
     public override void End()
     {
@@ -81,19 +79,7 @@ public class AgisRainNode : Node
     }
 }
 
-public class SummoningNode : Node
-{
-    public override void Start()
-    {
-        // ProjectileManager.Instance.CreateSummon(controller.transform, SummonSkillManager.Skill.BossSkill3, false);
-    }
-
-    public override void Update()
-    {
-        if(currTime >= 1f) { SetStatus(Status.Success); return; }
-    }
-}
-
+// 액션 노드로 활용하기
 public class SetZeroPosNode : Node
 {
     public override void Start()
@@ -117,6 +103,7 @@ public class BlackHoleNode : Node
     }
 }
 
+// board 정보로 어떻게 갱신할 수 있을까?
 // 이 스킬이 추상화되도록 하기
 public class AgisMoveNode : Node
 {
@@ -216,6 +203,7 @@ public class AgisMoveNode : Node
     }
 }
 
+// 소환 노드로 병합 관리 가능
 public class AgisTriangleNode : Node
 {
     public override void Start()

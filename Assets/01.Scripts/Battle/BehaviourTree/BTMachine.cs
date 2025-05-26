@@ -31,6 +31,7 @@ public class BTMachine
         if (!isPlaying) return;
 
         currTime += Time.fixedDeltaTime;
+        
         currNode.SetController(controller);
         currNode.Update();
     }

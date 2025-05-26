@@ -23,15 +23,15 @@ public class EnemiesBT
           (int)Enemy.Agis,
           Selector(
               Sequence(
-                  Condition(ctrl => ctrl.statusHandler.GetMode(EnmeyMode.Hit)), 
+                  Condition(ctrl => ctrl.Status.GetMode(EnmeyMode.Hit)), 
                   Selector(
                       // 사망한 경우
                       Sequence(
-                          Condition(ctrl => ctrl.resourceHandler.Get(EnemyStatType.Health).value <= 0),
+                          Condition(ctrl => ctrl.Resource.Get(EnemyStatType.Health).value <= 0),
                           Do<SetZeroPosNode>(),
-                          Do<DieNode>()
+                          Nodes.Die
                       ).Ignore(),
-                      Do<HitNode>() 
+                      Nodes.Hit
                   )
               ),
               Sequence(Do<AgisMoveNode>())
@@ -42,13 +42,13 @@ public class EnemiesBT
             Selector(
                 // 피격 당한 경우
                 Sequence(
-                    Condition(ctrl => ctrl.statusHandler.GetMode(EnmeyMode.Hit)), 
+                    Condition(ctrl => ctrl.Status.GetMode(EnmeyMode.Hit)), 
                     Selector(
                         // 사망한 경우
                         Sequence(
-                            Condition(ctrl => ctrl.resourceHandler.Get(EnemyStatType.Health).value <= 0),
-                            Do<DieNode>().Ignore()
-                        ),
+                            Condition(ctrl => ctrl.Resource.Get(EnemyStatType.Health).value <= 0),
+                            Do<DieNode>()
+                        ).Ignore(),
                         Do<HitNode>() 
                     )
                 ),
@@ -59,7 +59,7 @@ public class EnemiesBT
                             Condition(ctrl => ctrl.Agent.status != EnemyAgent.Status.Tracked),
                             Selector(
                                 Sequence(
-                                    Condition(ctrl => ctrl.detectHandler.isWalkable),
+                                    Condition(ctrl => ctrl.Detect.isWalkable),
                                     Do<TracingNode>()
                                 ),
                                 Sequence(
@@ -110,11 +110,11 @@ public class EnemiesBT
             Selector(
                 // 피격 당한 경우
                 Sequence(
-                    Condition(ctrl => ctrl.statusHandler.GetMode(EnmeyMode.Hit)), 
+                    Condition(ctrl => ctrl.Status.GetMode(EnmeyMode.Hit)), 
                     Selector(
                         // 사망한 경우
                         Sequence(
-                            Condition(ctrl => ctrl.resourceHandler.Get(EnemyStatType.Health).value <= 0),
+                            Condition(ctrl => ctrl.Resource.Get(EnemyStatType.Health).value <= 0),
                             Do<DieNode>()
                             ),
                         Do<HitNode>() 
@@ -128,7 +128,7 @@ public class EnemiesBT
                         Sequence(
                             Condition(ctrl => ctrl.Agent.status != EnemyAgent.Status.Tracked),
                             Selector(
-                                Sequence(Condition(ctrl => ctrl.detectHandler.isWalkable), Do<TracingNode>()),
+                                Sequence(Condition(ctrl => ctrl.Detect.isWalkable), Do<TracingNode>()),
                                 Do<LookTargetNode>()
                             )
                         ),
@@ -150,11 +150,11 @@ public class EnemiesBT
             (int)Enemy.SwordShadow,
             Selector(
                 Sequence(
-                    Condition(ctrl => ctrl.statusHandler.GetMode(EnmeyMode.Hit)), 
+                    Condition(ctrl => ctrl.Status.GetMode(EnmeyMode.Hit)), 
                     Selector(
                         // 사망한 경우
                         Sequence(
-                            Condition(ctrl => ctrl.resourceHandler.Get(EnemyStatType.Health).value <= 0),
+                            Condition(ctrl => ctrl.Resource.Get(EnemyStatType.Health).value <= 0),
                             Do<DieNode>()
                         ),
                         Do<HitNode>() 
@@ -167,7 +167,7 @@ public class EnemiesBT
                             Condition(ctrl => ctrl.Agent.status != EnemyAgent.Status.Tracked),
                             Selector(
                                 Sequence(
-                                    Condition(ctrl => ctrl.detectHandler.isWalkable),
+                                    Condition(ctrl => ctrl.Detect.isWalkable),
                                     Do<TracingNode>()
                                 ),
                                 Do<LookTargetNode>()
@@ -191,11 +191,11 @@ public class EnemiesBT
             Selector(
                 // 피격 당한 경우
                 Sequence(
-                    Condition(ctrl => ctrl.statusHandler.GetMode(EnmeyMode.Hit)), 
+                    Condition(ctrl => ctrl.Status.GetMode(EnmeyMode.Hit)), 
                     Selector(
                         // 사망한 경우
                         Sequence(
-                            Condition(ctrl => ctrl.resourceHandler.Get(EnemyStatType.Health).value <= 0),
+                            Condition(ctrl => ctrl.Resource.Get(EnemyStatType.Health).value <= 0),
                             Do<DieNode>()
                         ),
                         Do<HitNode>() 
@@ -214,11 +214,11 @@ public class EnemiesBT
             Selector(
                 // 피격 당한 경우
                 Sequence(
-                    Condition(ctrl => ctrl.statusHandler.GetMode(EnmeyMode.Hit)), 
+                    Condition(ctrl => ctrl.Status.GetMode(EnmeyMode.Hit)), 
                     Selector(
                         // 사망한 경우
                         Sequence(
-                            Condition(ctrl => ctrl.resourceHandler.Get(EnemyStatType.Health).value <= 0),
+                            Condition(ctrl => ctrl.Resource.Get(EnemyStatType.Health).value <= 0),
                             Do<DieNode>()
                         ),
                         Do<HitNode>() 
@@ -231,11 +231,11 @@ public class EnemiesBT
             (int)Enemy.MudHand,
             Selector(
                 Sequence(
-                    Condition(ctrl => ctrl.statusHandler.GetMode(EnmeyMode.Hit)), 
+                    Condition(ctrl => ctrl.Status.GetMode(EnmeyMode.Hit)), 
                     Selector(
                         // 사망한 경우
                         Sequence(
-                            Condition(ctrl => ctrl.resourceHandler.Get(EnemyStatType.Health).value <= 0),
+                            Condition(ctrl => ctrl.Resource.Get(EnemyStatType.Health).value <= 0),
                             Do<DieNode>()
                         ),
                         Do<HitNode>() 
@@ -253,11 +253,11 @@ public class EnemiesBT
             Selector(
                 // 피격 당한 경우
                 Sequence(
-                    Condition(ctrl => ctrl.statusHandler.GetMode(EnmeyMode.Hit)), 
+                    Condition(ctrl => ctrl.Status.GetMode(EnmeyMode.Hit)), 
                     Selector(
                         // 사망한 경우
                         Sequence(
-                            Condition(ctrl => ctrl.resourceHandler.Get(EnemyStatType.Health).value <= 0),
+                            Condition(ctrl => ctrl.Resource.Get(EnemyStatType.Health).value <= 0),
                             Do<DieNode>()
                         ),
                         Do<HitNode>() 
@@ -272,7 +272,7 @@ public class EnemiesBT
                             Condition(ctrl => ctrl.Agent.status != EnemyAgent.Status.Tracked),
                             Selector(
                                 Sequence(
-                                    Condition(ctrl => ctrl.detectHandler.isWalkable),
+                                    Condition(ctrl => ctrl.Detect.isWalkable),
                                     Do<TracingNode>()
                                 ),
                                 Do<LookTargetNode>()
@@ -298,11 +298,11 @@ public class EnemiesBT
             Selector(
                 // 피격 당한 경우
                 Sequence(
-                    Condition(ctrl => ctrl.statusHandler.GetMode(EnmeyMode.Hit)), 
+                    Condition(ctrl => ctrl.Status.GetMode(EnmeyMode.Hit)), 
                     Selector(
                         // 사망한 경우
                         Sequence(
-                            Condition(ctrl => ctrl.resourceHandler.Get(EnemyStatType.Health).value <= 0),
+                            Condition(ctrl => ctrl.Resource.Get(EnemyStatType.Health).value <= 0),
                             Do<DieNode>()
                         ),
                         Do<HitNode>() 
@@ -317,7 +317,7 @@ public class EnemiesBT
                             Condition(ctrl => ctrl.Agent.status != EnemyAgent.Status.Tracked),
                             Selector(
                                 Sequence(
-                                    Condition(ctrl => ctrl.detectHandler.isWalkable),
+                                    Condition(ctrl => ctrl.Detect.isWalkable),
                                     Do<TracingNode>()
                                 ),
                                 Do<LookTargetNode>()

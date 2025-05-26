@@ -46,6 +46,8 @@ public class SequenceNode : Node
     public override void Start()
     {
         machine.isIgnoreNotify = IsIgnoreNotify;
+        
+        children[0].SetParent(this);
         machine.SetCurrentNode(children[0]);
     }
 
@@ -101,7 +103,9 @@ public class SelectorNode : Node
             int currIndex = children.IndexOf(caller);
             if (currIndex < children.Count - 1)
             {
-                machine.SetCurrentNode(children[currIndex + 1]);
+                var currNode = children[currIndex + 1];
+                currNode.SetParent(this);
+                machine.SetCurrentNode(currNode);
                 return;
             }
             

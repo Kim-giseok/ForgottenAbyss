@@ -14,7 +14,7 @@ public class ExplosionNode : Node
     {
         if (isFire) {
             // 스킬인 경우, 계수 개념 등록하기
-            BoltsPool.Instance.CreateMelee(controller.transform).SetLocalPos(Vector2.zero).SetDamage(((EnemyController)controller).resourceHandler.Get(EnemyStatType.Attack).value * 2).SetSize(2f).Fire();
+            BoltsPool.Instance.CreateMelee(controller.transform).SetLocalPos(Vector2.zero).SetDamage(((EnemyController)controller).Resource.Get(EnemyStatType.Attack).value * 2).SetSize(2f).Fire();
             BoltsPool.Instance.Particle(controller.transform, "NightBone_Explosion").SetSize(2.5f).SetPosition(controller.transform.position + new Vector3(Random.Range(-0.2f, 0.2f), 0.6f + Random.Range(-0.2f, 0.2f))).Play();
 
         }
