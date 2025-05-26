@@ -123,7 +123,7 @@ public class PassiveUI : MonoBehaviour
 
     public void OnClickCritical()
     {
-        if (_playerStatus.GetAvailableStatPoints() <= 0 || atkLevel >= maxAtkLevel)
+        if (_playerStatus.GetAvailableStatPoints() <= 0 || crtLevel >= maxCrtLevel)
         {
             return;
         }
@@ -150,7 +150,7 @@ public class PassiveUI : MonoBehaviour
 
     public void OnClickHp()
     {
-        if (_playerStatus.GetAvailableStatPoints() <= 0 || atkLevel >= maxAtkLevel)
+        if (_playerStatus.GetAvailableStatPoints() <= 0 || hpLevel >= maxHpLevel)
         {
             return;
         }
@@ -177,7 +177,7 @@ public class PassiveUI : MonoBehaviour
 
     public void OnClickDefence()
     {
-        if (_playerStatus.GetAvailableStatPoints() <= 0 || atkLevel >= maxAtkLevel)
+        if (_playerStatus.GetAvailableStatPoints() <= 0 || defLevel >= maxDefLevel)
         {
             return;
         }
@@ -204,7 +204,7 @@ public class PassiveUI : MonoBehaviour
 
     public void OnClickSpeed()
     {
-        if (_playerStatus.GetAvailableStatPoints() <= 0 || atkLevel >= maxAtkLevel)
+        if (_playerStatus.GetAvailableStatPoints() <= 0 || speedLevel >= maxSpeedLevel)
         {
             return;
         }
@@ -231,7 +231,7 @@ public class PassiveUI : MonoBehaviour
 
     public void OnClickCoolDown()
     {
-        if (_playerStatus.GetAvailableStatPoints() <= 0 || atkLevel >= maxAtkLevel)
+        if (_playerStatus.GetAvailableStatPoints() <= 0 || coolDownLevel >= maxCoolDownLevel)
         {
             return;
         }
