@@ -523,7 +523,7 @@ MonoBehaviour:
   isDead: 0
   defenseFactor: 100
   hpRegenRate: 50
-  mpRegenRate: 5
+  mpRegenRate: 10
   speed: 0
 --- !u!114 &5384723960413066390
 MonoBehaviour:
@@ -609,6 +609,7 @@ MonoBehaviour:
   rangedAttack: {fileID: 8607925810357332777}
   skillSpawnPoint: {fileID: 3592222812765152639}
   skillSpawnPoint2: {fileID: 6279390733494535156}
+  player: {fileID: 0}
   isSkillPlaying: 0
   isBowAttack: 0
 --- !u!114 &2270387077147384627

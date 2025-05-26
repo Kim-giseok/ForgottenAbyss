@@ -491,17 +491,17 @@ public class ControllerPlayer : MonoBehaviour
     {
         if (weaponType == WeaponType.Sword)
         {
-            dashDistance = 3f;
-            dashTime = 0.25f;
-            dashCost = 10f;
-            dashCoolTime = 0.5f;
+            dashDistance = 2f;
+            dashTime = 0.2f;
+            dashCost = 7f;
+            dashCoolTime = 0.2f;
         }
         else if (weaponType == WeaponType.Bow)
         {
-            dashDistance = 2f;
-            dashTime = 0.25f;
-            dashCost = 7f;
-            dashCoolTime = 0.3f;
+            dashDistance = 3f;
+            dashTime = 0.3f;
+            dashCost = 10f;
+            dashCoolTime = 0.35f;
         }
         else
         {
