@@ -11,9 +11,9 @@ public class AudioSetting : MonoBehaviour
 
     private void Start()
     {
-        masterSlider.onValueChanged.AddListener(SetMasterVolume);
-        bgmSlider.onValueChanged.AddListener(SetBGMVolume);
-        sfxSlider.onValueChanged.AddListener(SetSFXVolume);
+        masterSlider.onValueChanged.AddListener((float v)=>SoundManager.Instance.ChangeSound(VOLTYPE.MASTER, v));
+        bgmSlider.onValueChanged.AddListener((float v) => SoundManager.Instance.ChangeSound(VOLTYPE.BGM, v));
+        sfxSlider.onValueChanged.AddListener((float v) => SoundManager.Instance.ChangeSound(VOLTYPE.SFX, v));
 
         // 초기 슬라이더 값 설정 (슬라이더 최소 값은 0이 아니라 0.0001로 설정할 수 있음)
         masterSlider.value = 1;
