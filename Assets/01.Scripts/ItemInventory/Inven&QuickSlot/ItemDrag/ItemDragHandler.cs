@@ -75,7 +75,7 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
             return;
         }
 
-        if (draggedItem is ArmorSO armor && SystemManager.Instance.equipmentManager.IsArmorEquipped(armor.slot))
+        if (draggedItem is ArmorSO armor && SystemManager.Instance.equipmentManager.IsSpecificArmorEquipped(armor))
         {
             Debug.LogWarning("[ItemDragHandler] 장착된 방어구는 드래그할 수 없습니다.");
             return;
@@ -121,6 +121,12 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
             return;
         }
 
+        if (dragManager.OriginContainer == null)
+        {
+            Debug.LogWarning("dragManager.OriginContainer가 null입니다!");
+            return;
+        }
+
         // 자기 슬롯이면 무시
         if (dragManager.OriginContainer == targetContainer && dragManager.OriginIndex == targetIndex)
         {
@@ -129,6 +135,11 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         }
 
         var originSlot = dragManager.OriginContainer.GetSlot(dragManager.OriginIndex);
+        if (originSlot == null)
+        {
+            Debug.LogWarning("OriginSlot이 null입니다.");
+            return;
+        }
 
         // 퀵슬롯 참조된 인벤토리 슬롯이면 이동 금지
         if (dragManager.OriginContainer is InventoryController inv &&
