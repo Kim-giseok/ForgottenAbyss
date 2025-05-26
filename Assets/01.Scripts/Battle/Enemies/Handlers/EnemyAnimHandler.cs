@@ -5,16 +5,20 @@ public class EnemyAnimHandler: MonoBehaviour
 {
     private EnemyBaseController controller;
     public Animator animator { get; private set; }
-    
-    public enum Status { None, Start, End } 
+
+    private enum Status { None, Start, End } 
     private Status currStatus = Status.None;
     private int currClipHash;
     
     public void SetController(RuntimeAnimatorController newController) => animator.runtimeAnimatorController = newController;
     // fix: 다시 시작 시 재생되지 않는 현상 수정
-    public void Play(string animationName) => animator.Play(animationName, 0, 0f);
+    public void Play(string animationName)
+    {
+        animator.Play(animationName, 0, 0f);
+        currStatus = Status.None;
+    }
+
     public void SetSpeed(float speed) => animator.speed = speed;
-    public void Refresh() => currStatus = Status.None;
     
     private void Awake()
     {
@@ -24,35 +28,24 @@ public class EnemyAnimHandler: MonoBehaviour
     
     private void Update()
     {
-        AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
-        float progress = stateInfo.normalizedTime % 1f;
+        var stateInfo = animator.GetCurrentAnimatorStateInfo(0);
 
-        if (stateInfo is { normalizedTime: >= 1f, loop: false }) return;
-
-        // 애니메이션이 변경되면 상태 처음부터 다시 시작
         if (currClipHash != stateInfo.shortNameHash)
         {
             currClipHash = stateInfo.shortNameHash;
-            currStatus = Status.None;
-        }
-        
-        if (progress < 0.05f && currStatus != Status.Start)
-        {
             currStatus = Status.Start;
-            
-            if (controller.Machine.currNode == null) return;
-            controller.Machine.currNode.SetController(controller);
-            controller.Machine.currNode.OnAnimated(Node.AnimationStatus.Start, stateInfo);
+
+            controller.Machine.currNode?.SetController(controller);
+            controller.Machine.currNode?.OnAnimated(Node.AnimationStatus.Start, stateInfo);
         }
-        
-        
-        
-        if (progress > 0.95f && currStatus != Status.End)
+
+        // 애니메이션 종료 감지 (1바퀴 이상 돌았을 때)
+        if (stateInfo.normalizedTime >= 1f && currStatus == Status.Start)
         {
             currStatus = Status.End;
-            // 에러 발생 확인 필요 - confirm : 확인 결과 Node 내부에서 에러가 나면 여기서 에러를 반환
+
             controller.Machine.currNode?.SetController(controller);
             controller.Machine.currNode?.OnAnimated(Node.AnimationStatus.End, stateInfo);
-        }   
+        }
     }
 }
