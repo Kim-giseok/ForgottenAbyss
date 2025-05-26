@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// 액션으로 빼기
 public class CancelAttached : Node
 {
     public override void Start()
@@ -13,35 +14,31 @@ public class CancelAttached : Node
 
 // 공격가 대쉬가 섞인 형태
 // 캐릭터 비활성화로 인한 리지드 바디 직접 참조 문제 발생
+// 사실상 대시 공격
 public class DashAttack : Node
 {
     public override void Start()
     {
         if (controller is not SummonController sController) { SetStatus(Status.Fail); return; }
         
+        SoundManager.Instance.Playsfx("AgisSpell");
+
         controller.Anim.SetSpeed(2f);
         controller.Anim.Play("Attack");
         
-        context.Set("direction", sController.cRigidbody.velocity.normalized);
         sController.Flip(Mathf.Approximately(sController.caster.eulerAngles.y, 0));
         
-        controller.Rigid.velocity = sController.cRigidbody.velocity.normalized * 80f;
+        // 이동 방향을 체크하도록 처리
+        controller.Rigid.velocity = SummonController.InputDirection * 120f;
         controller.Rigid.drag = 20f;
-
     }
 
     public override void OnAnimated(AnimationStatus status, AnimatorStateInfo animInfo)
     {
-        if (!animInfo.IsName("Attack")) return;
-        
         if (status == AnimationStatus.Start)
         {
-            BoltsPool.Instance.CreateMelee(controller.transform)
-                .SetLocalPos(Vector2.zero)
-                .SetDamage(20)
-                .SetSize(2f)
-                .Fire();
-            return;
+            BoltsPool.Instance.CreateMelee(controller.transform).SetLocalPos(Vector2.zero)
+                .SetDamage(GameManager.Instance.player.playerstatus.GetStat(StatType.ATK) * 5f).SetSize(2f).Fire();
         }
         
         if (status == AnimationStatus.End)
@@ -63,8 +60,7 @@ public class Explosion : Node
 {
     public override void Start()
     {
-        if(controller is not SummonController sController) { SetStatus(Status.Fail); return; }
-        sController.Anim.Play("Explosion");
+        controller.Anim.Play("Explosion");
         controller.Anim.SetSpeed(1f);
     }
 
@@ -72,18 +68,13 @@ public class Explosion : Node
     {
         if (isFire)
         {
-            BoltsPool.Instance.CreateMelee(controller.transform)
-                .SetLocalPos(Vector2.zero)
-                .SetDamage(20)
-                .SetSize(2f)
-                .Fire();
+            BoltsPool.Instance.CreateMelee(controller.transform).SetLocalPos(Vector2.zero).SetDamage(20).SetSize(2f).Fire();
         }
         else BoltsPool.Instance.DisableMelee(controller.transform);
     }
 
     public override void OnAnimated(AnimationStatus status, AnimatorStateInfo animInfo)
     {
-        if (!animInfo.IsName("Explosion")) return;
         if(status == AnimationStatus.End) { SetStatus(Status.Success); return; }
     }
 
@@ -94,36 +85,33 @@ public class Explosion : Node
 }
 
 // 공격해야 다음 노드로 넘어가는 형태로 분리하기
-public class ComboDashAttack : Node
+public class ComboDashAttack : Node<SummonController>
 {
     private List<string> combo = new() { "Combo1", "Combo2", "Combo3" };
 
-    public void DashAttack(int currComboCount)
+    private void DashAttack(int currComboCount)
     {
-        if (controller is not SummonController sController) return;
-
+        SoundManager.Instance.Playsfx("AgisSpell");
+        
         controller.Anim.Play(combo[currComboCount]);
 
         controller.Rigid.velocity = Vector2.zero;
         controller.Rigid.gravityScale = 0f;
-        controller.Rigid.drag = 4f;
+        controller.Rigid.drag = 10f;
         
-        controller.Rigid.AddForce(sController.direction * 40f, ForceMode2D.Impulse);
+        controller.Rigid.AddForce(SummonController.InputDirection * 120f, ForceMode2D.Impulse);
         
         // 공격 방향으로 Z축 회전
-        float angle = Mathf.Atan2(sController.direction.y, Mathf.Abs(sController.direction.x)) * Mathf.Rad2Deg;
-        controller.transform.rotation = Quaternion.Euler(0, sController.direction.x < 0 ? 180 : 0, angle); 
+        float angle = Mathf.Atan2(SummonController.InputDirection.y, Mathf.Abs(SummonController.InputDirection.x)) * Mathf.Rad2Deg;
+        controller.transform.rotation = Quaternion.Euler(0, SummonController.InputDirection.x < 0 ? 180 : 0, angle); 
         
         context.Set("combo", currComboCount + 1);
     }
 
     public override void Start()
     {
-        if (controller is not SummonController sController) return;
-        
         context.Set("combo", 0);
         // 처음 위치 찾기 어려움
-        sController.SecDirection(sController.cRigidbody.velocity.normalized);
         DashAttack(0);
     }
     public override void Update()
@@ -144,8 +132,6 @@ public class ComboDashAttack : Node
 
     public override void OnAnimated(AnimationStatus status, AnimatorStateInfo animInfo)
     {
-        if(!animInfo.IsName("Combo1") && !animInfo.IsName("Combo2") && !animInfo.IsName("Combo3")) return;
-        
         if (status == AnimationStatus.Start)
         {
             BoltsPool.Instance.CreateMelee(controller.transform)

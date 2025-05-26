@@ -20,10 +20,10 @@ public class MudEyeHitEvent: MonoBehaviour,IDamagable
     {
         controller.GetDamage(damage);
 
-        var health = controller.resourceHandler.Get(EnemyStatType.Health);
+        var health = controller.Resource.Get(EnemyStatType.Health);
         UIManager.Instance.BossHealthUI.SetPercentage((int)(health.value / health.maxValue * 100));
         
-        if (controller.resourceHandler.Get(EnemyStatType.Health).value <= 0)
+        if (controller.Resource.Get(EnemyStatType.Health).value <= 0)
         {
             // 비용 문제 추후 생각해보기
             foreach (Transform child in enemyPool.gameObject.transform)

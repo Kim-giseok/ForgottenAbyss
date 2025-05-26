@@ -15,7 +15,7 @@ public class AgisHitEvent: MonoBehaviour, IDamagable
     {
         controller.GetDamage(damage);
 
-        var health = controller.resourceHandler.Get(EnemyStatType.Health);
+        var health = controller.Resource.Get(EnemyStatType.Health);
         var currHealthPercent = (int)((health.value / health.maxValue) * 100f);
         UIManager.Instance.BossHealthUI.SetPercentage(currHealthPercent);
         

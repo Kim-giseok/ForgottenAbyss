@@ -23,7 +23,7 @@ public class IntroBattleScene: CutScene
         UI.HideIngameUI();
         Camera.Init();
         LetterBox.Set(true);
-        
+
         // [인트로]
         ToolTip.Set("아무 키를 눌러 다음으로 진행해주세요.", new Vector3(0, 340, 0));
         await Text("아무것도 기억나지 않아...");
@@ -152,12 +152,19 @@ public class IntroBattleScene: CutScene
         Player.controller.playerCollider.isTrigger = true;
         Player.controller.rigid.gravityScale = 0;
         
-        Sound.Playsfx("AgisSpell");
-        Player.controller.rigid.AddForce(new Vector2(2, 1) * 4f, ForceMode2D.Impulse);
-        Player.animator.Play("Dash");
-        await UniTask.Delay(300);
-        Projectile.CreateSummon(Player.transform, SummonSkillManager.Skill.DashAttack, true).Fire();
-        await UniTask.Delay(400);
+        Time.timeScale = 0.3f;
+        Camera.Focus(Player);
+        Camera.Zoom(true, 0.2f);
+        
+        Player.controller.inputVec = new Vector2(1f, 0.5f);
+        var summon = Projectile.CreateSummon(Player.transform, SummonSkillManager.Skill.DashAttack, true).Fire();
+
+        await UniTask.Delay(250);
+        Time.timeScale = 1f;
+
+        summon.Rigid.isKinematic = true;
+        summon.Rigid.velocity = Vector2.zero;
+        Player.controller.inputVec = Vector2.zero;
 
         // Hit 매소드로 한번 묶기
         Projectile.Particle(transform, "Hit").SetSize(0.8f).SetColor(new Color(0, 0, 0, 0.2f)).SetPosition(archer.transform.position + new Vector3(Random.Range(-0.2f, 0.2f), 0.6f + Random.Range(-0.2f, 0.2f))).Play();
@@ -192,6 +199,7 @@ public class IntroBattleScene: CutScene
         await Text("고마워요. 그런데... 방금 그 그림자의 힘, 대체 어떤 거죠?", npcOrigin.transform);
         
         Camera.Focus(Player.transform);
+        Camera.Zoom(false, 0f);
         await Text("떠오르지 않아요.. 단지, 갑자기 이 장면이 낯설지 않게 느껴졌어요.", Player.transform);
         
         Camera.Focus(npcOrigin.transform);

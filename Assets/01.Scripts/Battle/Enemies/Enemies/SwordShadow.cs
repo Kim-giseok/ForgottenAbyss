@@ -40,11 +40,9 @@ public class SSDashAttack : Node
     
     public override void OnAnimated(AnimationStatus status, AnimatorStateInfo animInfo)
     {
-        // notice: 플래그로 관리 필요
-        if (!animInfo.IsName("Combo1") && !animInfo.IsName("Combo2") && !animInfo.IsName("Combo3")) return;
         if (status == AnimationStatus.Start)
         {
-            BoltsPool.Instance.CreateMelee(controller.transform).SetDamage(((EnemyController)controller).resourceHandler.Get(EnemyStatType.Attack).value).Fire();
+            BoltsPool.Instance.CreateMelee(controller.transform).SetDamage(((EnemyController)controller).Resource.Get(EnemyStatType.Attack).value).Fire();
         }
         
         if (status == AnimationStatus.End)
@@ -76,11 +74,6 @@ public class RandomCoolTimeNode : Node
     {
         if (currTime >= context.Get<float>("idleRandomDuration")) { SetStatus(Status.Success); }
     }
-
-    public override void OnAgentDetected(EnemyAgent.Status status)
-    {
-        if(status == EnemyAgent.Status.None) { SetStatus(Status.Fail); }
-    }
 }
 
 
@@ -97,10 +90,5 @@ public class CoolTimeNode : Node
     public override void Update()
     {
         if (currTime >= duration) { SetStatus(Status.Success); }
-    }
-
-    public override void OnAgentDetected(EnemyAgent.Status status)
-    {
-        if(status == EnemyAgent.Status.None) { SetStatus(Status.Fail); }
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class EnemyBaseController: MonoBehaviour
@@ -10,7 +11,7 @@ public class EnemyBaseController: MonoBehaviour
     public Material Mat { get; protected set; }
     public EnemyAnimHandler Anim { get; protected set; }
     public EnemyCombatHandler combatHandler { get; protected set; }
-    public EnemyDetectHandler detectHandler { get; protected set; }
+    public EnemyDetectHandler Detect { get; protected set; }
     public EnemySoundHandler soundHandler { get; protected set; }
 
     public EnemyBoard Board { get; protected set; }
@@ -27,7 +28,7 @@ public class EnemyBaseController: MonoBehaviour
         Anim = GetComponent<EnemyAnimHandler>();
 
         combatHandler = new EnemyCombatHandler();
-        detectHandler = GetComponent<EnemyDetectHandler>();
+        Detect = GetComponent<EnemyDetectHandler>();
         soundHandler = GetComponent<EnemySoundHandler>();
         Board = new EnemyBoard();
         
@@ -43,15 +44,12 @@ public class EnemyBaseController: MonoBehaviour
     // Destory된 이후에 발생한 경우 오류 발생
     protected void OnAnimatedEvent(int value) // notice: string과 enum으로 좀 더 다양하게 구현하도록 처리
     {
-        Machine.OnAnimatedEvent(value == 1);
+        // machine의 제거가 더 늦어서 발생하는 문제로 보임
+        if (!this) return;
+        
+        Machine?.OnAnimatedEvent(value == 1);
     }
-
-
-    public void OnAgentDetected(EnemyAgent.Status status)
-    {
-        Machine.OnAgentDetected(status);
-    }
-
+    
     // character controller //
     // notice: 플립 개념이 거꾸로 되어있다.
     public void Flip(bool isFlip)
@@ -62,5 +60,4 @@ public class EnemyBaseController: MonoBehaviour
     {
         if(Agent) { Flip(Agent.GetDirection().x > 0); }
     }
-
 }

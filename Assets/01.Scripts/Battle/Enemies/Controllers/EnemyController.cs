@@ -1,4 +1,3 @@
-using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -9,15 +8,14 @@ public class EnemyController : EnemyBaseController, IDamagable
     public bool isBaked = false;
     
     // status로 관리해야할까?
-    public bool isIgnoreHitAnim;
     public Enemy enemyName;
     
     [SerializeField] private int level = 1;
     public int Level => !level.Equals(EnemyLevelSystem.CurrLevel) ? level : EnemyLevelSystem.CurrLevel;
     
     
-    public EnemyResourceHandler resourceHandler { get; private set; }
-    public EnemyStatusHandler statusHandler { get; private set; }
+    public EnemyResourceHandler Resource { get; private set; }
+    public EnemyStatusHandler Status { get; private set; }
     public EnemyRewardHandler rewardHandler { get; private set; }
 
     // children 시스템 등록
@@ -27,8 +25,8 @@ public class EnemyController : EnemyBaseController, IDamagable
     {
         base.Awake();
         
-        resourceHandler = GetComponent<EnemyResourceHandler>();
-        statusHandler = GetComponent<EnemyStatusHandler>();
+        Resource = GetComponent<EnemyResourceHandler>();
+        Status = GetComponent<EnemyStatusHandler>();
         rewardHandler = GetComponent<EnemyRewardHandler>();
     }
 
@@ -106,7 +104,7 @@ public class EnemyController : EnemyBaseController, IDamagable
 
     public void SetConfig(string newEnemyName)
     {
-        resourceHandler.Define(EnemiesLoader.Get<EnemyStatSO>(newEnemyName));
+        Resource.Define(EnemiesLoader.Get<EnemyStatSO>(newEnemyName));
         
         soundHandler.Define(EnemiesLoader.Get<EnemySoundSO>(newEnemyName));
         rewardHandler.Define(EnemiesLoader.Get<EnemyRewardSO>(newEnemyName));
@@ -130,11 +128,12 @@ public class EnemyController : EnemyBaseController, IDamagable
         Machine.Start();
     }
 
+    // 회피 기능을 만약 만든다면, 충격 방지 센서보다 큰 콘라이더 하나 필요.
     private void OnHit(float damage, EnemyStatusHandler.HitType hitType = EnemyStatusHandler.HitType.Stun)
     {
-        if (statusHandler.GetMode(EnmeyMode.Die)) return;
+        if (Status.GetMode(EnmeyMode.Die)) return;
 
-        resourceHandler.Modify(EnemyStatType.Health, -damage);
+        Resource.Modify(EnemyStatType.Health, -damage);
         
         if (hitType == EnemyStatusHandler.HitType.Normal)
         {
@@ -152,10 +151,10 @@ public class EnemyController : EnemyBaseController, IDamagable
             SoundManager.Instance.Playsfx("HitByMelee");
         }
 
-        if (!(resourceHandler.Get(EnemyStatType.Health).value <= 0)) return;
+        if (!(Resource.Get(EnemyStatType.Health).value <= 0)) return;
 
-        statusHandler.SetMode(EnmeyMode.Hit, true);
-        statusHandler.SetMode(EnmeyMode.Die, true);
+        Status.SetMode(EnmeyMode.Hit, true);
+        Status.SetMode(EnmeyMode.Die, true);
         
         Machine.Notify(true);
     }
@@ -163,9 +162,8 @@ public class EnemyController : EnemyBaseController, IDamagable
     public void GetDamageByType(float damage, EnemyStatusHandler.HitType hitType = EnemyStatusHandler.HitType.Stun)
     {
         OnHit(damage, hitType);
-        if (isIgnoreHitAnim || hitType == EnemyStatusHandler.HitType.Normal) return;
         
-        statusHandler.SetMode(EnmeyMode.Hit, true);
+        Status.SetMode(EnmeyMode.Hit, true);
         Machine.Notify();
         
     }
@@ -221,8 +219,8 @@ public class EnemyController : EnemyBaseController, IDamagable
     private void OnDisable()
     {
         // Die 이후 초기화
-        statusHandler.SetMode(EnmeyMode.Hit, false);
-        statusHandler.SetMode(EnmeyMode.Die, false);
+        Status.SetMode(EnmeyMode.Hit, false);
+        Status.SetMode(EnmeyMode.Die, false);
         Collider.enabled = true;
         Rigid.isKinematic = false;
     }

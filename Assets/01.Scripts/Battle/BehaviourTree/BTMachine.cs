@@ -31,6 +31,7 @@ public class BTMachine
         if (!isPlaying) return;
 
         currTime += Time.fixedDeltaTime;
+        
         currNode.SetController(controller);
         currNode.Update();
     }
@@ -67,12 +68,6 @@ public class BTMachine
     
     // 현재 노드가 없는 경우 문제 발생 
     // controller에서 한번 거칠 필요 있을까 의문 필요
-    
-    public void OnAgentDetected(EnemyAgent.Status status)
-    {
-        currNode?.OnAgentDetected(status);
-    }
-    
 
     public void Define(Node newNode)    
     {

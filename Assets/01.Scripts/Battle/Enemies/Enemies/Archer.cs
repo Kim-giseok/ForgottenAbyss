@@ -6,6 +6,7 @@ public class RangeMultiAttackNode : Node
     public override void Start()
     {
         controller.Anim.Play("Attack");
+        // LookTarget을 조건에 따라 다르게 설정하기
         if (controller is EnemyController) { controller.LookTarget(); }
     }
     
@@ -22,7 +23,7 @@ public class RangeMultiAttackNode : Node
                         .SetSprite("arrow")
                         .SetEffect(Bolts.EffectType.Penetration)
                         .SetSize(1f)
-                        .SetDamage(eController.resourceHandler.Get(EnemyStatType.Attack).value)
+                        .SetDamage(eController.Resource.Get(EnemyStatType.Attack).value)
                         .SetSpeed(30)
                         .SetDegree(controller.Agent.GetDegree() + currDegree)
                         .SetDuration(0.6f)
@@ -32,7 +33,7 @@ public class RangeMultiAttackNode : Node
             
             if (controller is SummonController sController)
             {
-                for (int currDegree = 0; currDegree <= 360; currDegree += 30)
+                for (var currDegree = 0; currDegree <= 360; currDegree += 30)
                 {
                     BoltsPool.Instance.Create(controller.transform, Bolts.Type.Decrescendo)
                         .SetSprite("arrow")
@@ -51,11 +52,11 @@ public class RangeMultiAttackNode : Node
     
     public override void OnAnimated(AnimationStatus status, AnimatorStateInfo animInfo)
     {
-        if (!animInfo.IsName("Attack")) return;
         if (status == AnimationStatus.End) { SetStatus(Status.Success); }
     }
 }
 
+// 회피 관련, dash-move
 public class PlayRollingAnimation : Node
 {
     public override void Start()
@@ -65,7 +66,7 @@ public class PlayRollingAnimation : Node
 
     public override void OnAnimated(AnimationStatus status, AnimatorStateInfo animInfo)
     {
-        if(animInfo.IsName("Rolling") && status == AnimationStatus.End) { SetStatus(Status.Success); }
+        if(status == AnimationStatus.End) { SetStatus(Status.Success); }
     }
 }
 

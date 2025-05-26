@@ -1,4 +1,5 @@
 public class Nodes
 {
-    public static Node Hit = new HitNode();
+    public static readonly Node Hit = new HitNode();
+    public static readonly Node Die = new DieNode();
 }

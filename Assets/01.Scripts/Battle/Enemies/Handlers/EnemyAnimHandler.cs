@@ -39,7 +39,7 @@ public class EnemyAnimHandler: MonoBehaviour
             controller.Machine.currNode?.OnAnimated(Node.AnimationStatus.Start, stateInfo);
         }
 
-        // 애니메이션 종료 감지 (1바퀴 이상 돌았을 때)
+        // 애니메이션 종료 감지 (1바퀴 이상 돌았을 때) - start가 무조건 먼저 발생하기 때문에 기존 end가 먼저 실행되는 문제 발생 X
         if (stateInfo.normalizedTime >= 1f && currStatus == Status.Start)
         {
             currStatus = Status.End;

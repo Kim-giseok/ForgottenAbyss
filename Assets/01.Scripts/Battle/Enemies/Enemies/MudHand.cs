@@ -16,7 +16,7 @@ public class MudSHandpawnNode : Node
                 BoltsPool.Instance.Create(controller.transform, Bolts.Type.Parabola)
                     .SetEffect(Bolts.EffectType.Penetration)
                     .SetSize(0.6f)
-                    .SetDamage(eController.resourceHandler.Get(EnemyStatType.Attack).value)
+                    .SetDamage(eController.Resource.Get(EnemyStatType.Attack).value)
                     .SetSpeed(8)
                     .SetDegree(currDegree)
                     .SetDuration(0.6f)
@@ -99,10 +99,6 @@ public class MudHandRandCoolNode : Node
         if (currTime >= context.Get<float>("idleRandomDuration")) { SetStatus(Status.Success); }
     }
 
-    public override void OnAgentDetected(EnemyAgent.Status status)
-    {
-        if(status == EnemyAgent.Status.None) { SetStatus(Status.Fail); }
-    }
 }
 
 public class MudAttackNode : Node
@@ -168,7 +164,7 @@ public class MudHandRangeAttack : Node
                 BoltsPool.Instance.Create(controller.transform, Bolts.Type.Parabola)
                     .SetEffect(Bolts.EffectType.Penetration)
                     .SetSize(0.6f)
-                    .SetDamage(eController.resourceHandler.Get(EnemyStatType.Attack).value)
+                    .SetDamage(eController.Resource.Get(EnemyStatType.Attack).value)
                     .SetSpeed(8)
                     .SetDegree(currDegree)
                     .SetDuration(3f)

@@ -22,7 +22,7 @@ public class RootNode : Node
     }
 
     // 어떤 상태가 들어오든 다시 시작
-    public override void GetStatus(Status newStatus, Node caller)
+    protected override void GetStatus(Status newStatus, Node caller)
     {
         machine.OnLooped?.Invoke(); 
         // notice: destroy 프레임이 끝나기 전에 삭제되지 않늨 현상에 대한 대처 필요
@@ -34,8 +34,6 @@ public class RootNode : Node
 // node에 index 
 public class SequenceNode : Node
 {
-    private bool isIgnoreNotify = false;
-    
     public SequenceNode(params Node[] nodes)
     {
         foreach (Node child in nodes)
@@ -45,19 +43,15 @@ public class SequenceNode : Node
         }
     }
 
-    public SequenceNode Ignore()
-    {
-        isIgnoreNotify = true;
-        return this;
-    }
-
     public override void Start()
     {
-        machine.isIgnoreNotify = isIgnoreNotify;
+        machine.isIgnoreNotify = IsIgnoreNotify;
+        
+        children[0].SetParent(this);
         machine.SetCurrentNode(children[0]);
     }
 
-    public override void GetStatus(Status newStatus , Node caller)
+    protected override void GetStatus(Status newStatus , Node caller)
     {
 
         if (newStatus == Status.Fail)
@@ -100,8 +94,8 @@ public class SelectorNode : Node
     {
         machine.SetCurrentNode(children[0]);
     }
-    
-    public override void GetStatus(Status newStatus, Node caller)
+
+    protected override void GetStatus(Status newStatus, Node caller)
     {
 
         if (newStatus == Status.Fail)
@@ -109,7 +103,9 @@ public class SelectorNode : Node
             int currIndex = children.IndexOf(caller);
             if (currIndex < children.Count - 1)
             {
-                machine.SetCurrentNode(children[currIndex + 1]);
+                var currNode = children[currIndex + 1];
+                currNode.SetParent(this);
+                machine.SetCurrentNode(currNode);
                 return;
             }
             
@@ -145,7 +141,7 @@ public class RandomNode : Node
         machine.SetCurrentNode(children[percentage.IndexOf(selected)]);
     }
 
-    public override void GetStatus(Status newStatus, Node caller)
+    protected override void GetStatus(Status newStatus, Node caller)
     {
         SetStatus(newStatus);
     }
@@ -198,12 +194,9 @@ public class ConditionNode : Node
 {
     private readonly Func<EnemyController, bool> callback;
 
-    public ConditionNode(Func<EnemyController, bool> callback, Node child)
+    public ConditionNode(Func<EnemyController, bool> callback)
     {
         this.callback = callback;
-        
-        child.SetParent(this);
-        children.Add(child);
     }
 
     public override void Start()
@@ -218,25 +211,29 @@ public class ConditionNode : Node
         machine.SetCurrentNode(children[0]);
     }
 
-    public override void GetStatus(Status newStatus, Node caller)
+    protected override void GetStatus(Status newStatus, Node caller)
     {
         SetStatus(newStatus);
     }
 }
 
-public class CheckNode : Node
+public class CheckNode<T> : Node where T : EnemyBaseController
 {
-    private readonly Func<EnemyController, bool> callback;
+    private readonly Func<T, bool> callback;
 
-    public CheckNode(Func<EnemyController, bool> callback)
+    public CheckNode(Func<T, bool> callback)
     {
         this.callback = callback;
     }
 
-
     public override void Start()
     {
-        bool result = callback(controller as EnemyController);
+        bool result = callback((T)controller); // controller를 T로 안전하게 캐스팅
         SetStatus(result ? Status.Success : Status.Fail);
     }
+}
+
+public class CheckNode : CheckNode<EnemyController>
+{
+    public CheckNode(Func<EnemyController, bool> callback) : base(callback) { }
 }

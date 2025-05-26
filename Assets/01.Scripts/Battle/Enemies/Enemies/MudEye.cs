@@ -47,7 +47,7 @@ public class MudEyeSpell : Node
         controller.transform.localScale = new Vector3(Random.Range(0.8f, 3f), Random.Range(0.8f, 3f), 1);
         
         SoundManager.Instance.Playsfx("Piano1");
-        var count = 8;
+        var count = 12;
         for (var i = 0; i < count; i++)
         {
             var angle = i * 360f / count;

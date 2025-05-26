@@ -7,7 +7,7 @@ public class TempTester: MonoBehaviour
    {
       if (Input.GetKeyDown(KeyCode.Alpha1))
       {
-         EnemiesPool.Instance.Create(Enemy.NightBone, transform.position + new Vector3(0, 0.1f, 0));
+         BoltsPool.Instance.CreateSummon(transform, SummonSkillManager.Skill.ArcherArrow, true).Fire();
       }
       
       if (Input.GetKeyDown(KeyCode.Alpha2))
@@ -37,6 +37,8 @@ public class TempTester: MonoBehaviour
       
       if (Input.GetKeyDown(KeyCode.Alpha7))
       {
+         SoundManager.Instance.Playsfx("AgisSpell");
+
          for (int i = 0; i < 9; i++)
          {
             float angle = i * 40 * Mathf.Deg2Rad;

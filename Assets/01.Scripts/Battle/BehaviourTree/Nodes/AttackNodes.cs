@@ -18,12 +18,9 @@ public class MeleeAttack : Node
         {
             controller.soundHandler.Play(EnemySoundType.Attack);
             // 데미지나 사이즈등은 추상화로 접급
-            BoltsPool.Instance.CreateMelee(controller.transform, controller.combatHandler.power).Fire();
-
+            BoltsPool.Instance.CreateMelee(controller.transform, ((EnemyController)controller).Resource.Get(EnemyStatType.Attack).value).Fire();
             // NightBone만 실행되어야하여 전략패턴으로 빼야함
-            BoltsPool.Instance.Particle(controller.transform, "Slash")
-                .SetSize(2.5f).SetPosition(controller.transform.position + new Vector3(Random.Range(-0.2f, 0.2f), 0.6f + Random.Range(-0.2f, 0.2f))).Play();
-
+            BoltsPool.Instance.Particle(controller.transform, "Slash").SetSize(2.5f).SetPosition(controller.transform.position + new Vector3(Random.Range(-0.2f, 0.2f), 0.6f + Random.Range(-0.2f, 0.2f))).Play();
         }
         else
         {
@@ -34,7 +31,6 @@ public class MeleeAttack : Node
     // fix: 의미 없는 호출이 발생할 수 있느 점에 대한 고려 필요
     public override void OnAnimated(AnimationStatus status, AnimatorStateInfo animInfo)
     {
-        if (!animInfo.IsName("Attack")) return;
         if (status == AnimationStatus.End) { SetStatus(Status.Success); }
     }
     

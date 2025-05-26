@@ -1,28 +1,19 @@
 using System.Collections;
 using UnityEngine;
 
-public class EnemyAgis
+// 두개로 분리하기 - moveNode와 AttackNode로 분리
+public class AgisSpreadShot : Node<SummonController>
 {
-    // public Skills skills
-}
-
-// 두개로 분리하기
-public class AgisSpreadShot : Node
-{
-    private readonly float duration = 1f;
+    private readonly float duration = 0.6f;
     private readonly Vector2 direction;
 
     public override void Start() // 한번 더 실행하는 현상 발생
     {
-        controller.Rigid.drag = 10f;
 
-        // 따라오지 않는 현상 수정 필요
-        if (controller is SummonController sContorller)
-        {
-            controller.Collider.isTrigger = true;
-            controller.Rigid.AddForce(sContorller.castingDirection, ForceMode2D.Impulse);
-            // controller.transform.SetParent(sContorller.eController.transform);
-        }
+        controller.Rigid.drag = 25f;
+
+        controller.Collider.isTrigger = true;
+        controller.Rigid.AddForce(controller.castingDirection * 3f, ForceMode2D.Impulse);
      
         // 애니메이션 도중 스프라이트 컬러 변경되지 않는 현상 발생
         controller.Render.color = Color.black;
@@ -30,21 +21,23 @@ public class AgisSpreadShot : Node
 
     public override void Update()
     {
-        if (currTime >= duration)
-        {
-            Vector2[] directions = { Vector2.up, Vector2.down, Vector2.right, Vector2.left };
+        if (!(currTime >= duration)) return;
+        // 데미지 체크
+        var damage = controller.eController ? controller.eController.Resource.Get(EnemyStatType.Attack).value / 2 : GameManager.Instance.player.playerstatus.GetStat(StatType.ATK);
+        
+        const int angleStep = 30;
+        const int totalAngles = 360 / angleStep;
 
-            foreach (var dir in directions)
-            {
-                BoltsPool.Instance
-                    .Create(controller.transform, Bolts.Type.Linear)
-                    .SetDirection(dir)
-                    .SetSpeed(16f)
-                    .SetDamage(20)
-                    .Fire();
-            }
-            SetStatus(Status.Success); return;
+        for (var i = 0; i < totalAngles; i++)
+        {
+            float angleDeg = i * angleStep;
+            var angleRad = angleDeg * Mathf.Deg2Rad;
+
+            var dir = new Vector2(Mathf.Cos(angleRad), Mathf.Sin(angleRad)).normalized;
+            BoltsPool.Instance.Create(controller.transform, Bolts.Type.Linear).SetDirection(dir).SetSpeed(14f).SetDamage(damage).Fire();
         }
+
+        SetStatus(Status.Success);
     }
 
     public override void End()
@@ -54,7 +47,8 @@ public class AgisSpreadShot : Node
     }
 }
 
-public class AgisRainNode : Node
+// 마찬가지로 2개의 노드로 분리하기
+public class AgisRainNode : Node<SummonController>
 {
     private readonly float duration = 2f;
     private readonly Vector2 direction;
@@ -65,10 +59,7 @@ public class AgisRainNode : Node
         controller.Rigid.drag = 10f;
 
         // 따라오지 않는 현상 수정 필요 - transform으로 처리
-        if (controller is SummonController sContorller)
-        {
-            controller.Rigid.AddForce(sContorller.castingDirection, ForceMode2D.Impulse);
-        }
+        controller.Rigid.AddForce(controller.castingDirection, ForceMode2D.Impulse);
      
     }
 
@@ -78,11 +69,9 @@ public class AgisRainNode : Node
 
         if (!Mathf.Approximately(Mathf.Floor(currTime / 0.2f), Mathf.Floor((currTime - Time.deltaTime) / 0.2f)))
         {
-            BoltsPool.Instance.Create(controller.transform, Bolts.Type.Rain).SetEffect(Bolts.EffectType.Penetration).SetDamage(8).Fire();
+            BoltsPool.Instance.Create(controller.transform, Bolts.Type.Rain).SetEffect(Bolts.EffectType.Penetration).SetDamage(((SummonController)controller).eController.Resource.Get(EnemyStatType.Attack).value).Fire();
         }
-
     }
-
 
     public override void End()
     {
@@ -90,19 +79,7 @@ public class AgisRainNode : Node
     }
 }
 
-public class SummoningNode : Node
-{
-    public override void Start()
-    {
-        // ProjectileManager.Instance.CreateSummon(controller.transform, SummonSkillManager.Skill.BossSkill3, false);
-    }
-
-    public override void Update()
-    {
-        if(currTime >= 1f) { SetStatus(Status.Success); return; }
-    }
-}
-
+// 액션 노드로 활용하기
 public class SetZeroPosNode : Node
 {
     public override void Start()
@@ -126,6 +103,7 @@ public class BlackHoleNode : Node
     }
 }
 
+// board 정보로 어떻게 갱신할 수 있을까?
 // 이 스킬이 추상화되도록 하기
 public class AgisMoveNode : Node
 {
@@ -163,20 +141,17 @@ public class AgisMoveNode : Node
             
             int attackType = Random.Range(0, 3);
 
+            
             switch (attackType)
             {
                 case 0:
                     // 방사 공격
                     SoundManager.Instance.Playsfx("AgisSpell");
-                    int bulletCount = 9;
-                    float angleStep = 360f / bulletCount;
-                    float radius = 42f;
-
-                    for (int i = 0; i < bulletCount; i++)
+                    for (int i = 0; i < 9; i++)
                     {
-                        float angle = i * angleStep * Mathf.Deg2Rad;
-                        Vector2 direction = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * radius;
-
+                        float angle = i * 60 * Mathf.Deg2Rad;
+                        Vector2 direction = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * 42;
+                    
                         // ((EnemyController)controller).statusHandler.castingDirection = direction;
                         BoltsPool.Instance.CreateSummon(controller.transform, SummonSkillManager.Skill.Agis)
                             .SetCastingDirection(direction).Fire();
@@ -185,8 +160,16 @@ public class AgisMoveNode : Node
                 case 1:
                     SoundManager.Instance.Playsfx("AgisSpell3");
                     // 블랙홀 발사
-                    BoltsPool.Instance.Create(controller.transform, Bolts.Type.BlackHole).SetEffect(Bolts.EffectType.Penetration)
-                        .SetDirection(Vector2.down * 6f).SetDamage(10f).SetDuration(4).Fire();
+                    for (int i = 0; i < 6; i++)
+                    {
+                        float angle = i * 90 * Mathf.Deg2Rad;
+                        Vector2 direction = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * 36;
+
+                        
+                        BoltsPool.Instance.Create(controller.transform, Bolts.Type.BlackHole).SetEffect(Bolts.EffectType.Penetration)
+                            .SetDirection(direction).SetDamage(10f).SetDuration(4).Fire();
+                    }
+
                     break;
                 case 2:
                     SoundManager.Instance.Playsfx("AgisSpell2");
@@ -197,7 +180,7 @@ public class AgisMoveNode : Node
                         new(-16f, 0f),
                         new(-48f, 0f),
                     };
-
+                    
                     foreach (var offset in offsets)
                     {
                         BoltsPool.Instance.CreateSummon(controller.transform, SummonSkillManager.Skill.AgisRain).SetCastingDirection(offset).Fire();
@@ -215,6 +198,7 @@ public class AgisMoveNode : Node
     }
 }
 
+// 소환 노드로 병합 관리 가능
 public class AgisTriangleNode : Node
 {
     public override void Start()

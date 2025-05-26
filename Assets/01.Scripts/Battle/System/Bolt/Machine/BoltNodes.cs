@@ -4,7 +4,6 @@ public class LinearBolt : BoltNode
 {
     public override void Update()
     {
-        if (currTime >= 0.4f) Next();
         bolt.Rigidbody.velocity = bolt.direction * bolt.speed;
     }
 }
@@ -16,11 +15,11 @@ public class RainBolt : BoltNode
     {
         
         bolt.Rigidbody.drag = 20;
-        bolt.Rigidbody.gravityScale = 32f;
-        bolt.Rigidbody.AddForce(new Vector2(Random.Range(-8f, 8f), 4f) * 40f, ForceMode2D.Impulse);
+        bolt.Rigidbody.gravityScale = 40f;
+        bolt.Rigidbody.AddForce(new Vector2(Random.Range(-8f, 8f), 8f) * 40f, ForceMode2D.Impulse);
     }
 
-    public override void Update() { if (currTime >= 0.4f) Next(); }
+    public override void Update() { if (currTime >= 0.8f) Next(); }
 
     public override void End()
     {
@@ -96,20 +95,20 @@ public class BlackHoleBolt : BoltNode
         bolt.animHandler.Play("BlackHole");
         bolt.Renderer.color = Color.black;
         
-        bolt.Rigidbody.drag = 2;
+        bolt.Rigidbody.drag = 6f;
         
-        bolt.Rigidbody.AddForce(Vector2.down * 12f, ForceMode2D.Impulse);
+        bolt.Rigidbody.AddForce(bolt.direction, ForceMode2D.Impulse);
     }
 
     public override void Update()
     {
         // RaycastHit2D[] hits = Physics2D.CircleCastAll(bolt.transform.position, 4f, Vector2.down,  LayerMask.GetMask("Player", "Enemy"));
-        RaycastHit2D[] hits = Physics2D.CircleCastAll(bolt.transform.position, 4f, Vector2.down, 12f, LayerMask.GetMask("Player"));
+        RaycastHit2D[] hits = Physics2D.CircleCastAll(bolt.transform.position, 2f, Vector2.down, 8f, LayerMask.GetMask("Player"));
         foreach (var hit in hits)
         {
             if (!hit.rigidbody) continue;
             var direction = (bolt.transform.position - hit.transform.position).normalized;
-            hit.rigidbody.AddForce(direction * 4f, ForceMode2D.Force);
+            hit.rigidbody.AddForce(direction * 2f, ForceMode2D.Force);
         }
     }
 

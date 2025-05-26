@@ -24,6 +24,12 @@ public class StepMachine
         currNode.Update();
     }
 
+    public void Stop()
+    {
+        isRunning = false;
+        nodes.Clear();
+    }
+
     // ReSharper disable Unity.PerformanceAnalysis
     public void SetNode(int index)
     {

@@ -7,7 +7,7 @@ using UnityEngine.Serialization;
 
 public class Boss2EndingScene: CutScene
 { 
-    public RectTransform screenshot;
+    public Canvas screenshot;
 
     public ActorController mudEye;
     
@@ -18,8 +18,7 @@ public class Boss2EndingScene: CutScene
     {
         // do: 앞에 죽는 모습을 좀 더 표시한 후 진행하기
         GameManager.Instance.PausePlayer();
-        Player.controller.rigid.velocity = Vector2.zero;
-        Player.controller.rigid.isKinematic = true;
+        Player.controller.rigid.simulated = false;
         Light.FadeOut(1f, 0.5f);
         await UniTask.Delay(1000);
         Sound.StopBGM();
@@ -61,7 +60,7 @@ public class Boss2EndingScene: CutScene
         
         await UniTask.Delay(5000);
         // [이미지 표시]
-        UIPool.Set(screenshot);
+        screenshot.gameObject.SetActive(true);
         Scene.FadeScreen.SetFade(true, 5f);
         
         LetterBox.SetColor(Color.red);
@@ -77,12 +76,13 @@ public class Boss2EndingScene: CutScene
         Light.globalLight.intensity = 1;
         Scene.FadeScreen.Reset();
         Scene.GrayScreen.Reset();
-        UIPool.Delete(screenshot);
+        screenshot.gameObject.SetActive(false);
         Narration().Forget();
         SetCutSceneMode(false);
         
-        Player.controller.rigid.isKinematic = false;
+
         Player.animator.Play("Idle");
+        Player.controller.rigid.simulated = true;
         
         gameObject.SetActive(false);
         GameManager.Instance.PausePlayer(false);
