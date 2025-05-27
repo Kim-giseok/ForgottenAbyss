@@ -575,7 +575,7 @@ Transform:
   m_GameObject: {fileID: 1682662592764676516}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 27.3, y: 0, z: 0}
+  m_LocalPosition: {x: 26.7, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2125,7 +2125,7 @@ Transform:
   m_GameObject: {fileID: 2151788064097948462}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -26.8, y: 0, z: 0}
+  m_LocalPosition: {x: -25.1, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3772,8 +3772,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   status: 0
-  defenseDistance: 0
-  combatDuration: 0
 --- !u!114 &7233168646716091763
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6612,6 +6610,7 @@ MonoBehaviour:
   maxDamage: 20
   mapSwapper: {fileID: 9021293935457611724}
   enemyPool: {fileID: 4700105136876615200}
+  isEnd: 0
 --- !u!114 &7401990435878570803
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6878,11 +6877,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 522394515444416918, guid: 8cb82dbafa528cd40b9c1aa017d30253, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 36
+      value: 35.88
       objectReference: {fileID: 0}
     - target: {fileID: 522394515444416918, guid: 8cb82dbafa528cd40b9c1aa017d30253, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 2.83
       objectReference: {fileID: 0}
     - target: {fileID: 522394515444416918, guid: 8cb82dbafa528cd40b9c1aa017d30253, type: 3}
       propertyPath: m_LocalPosition.z
@@ -6919,6 +6918,10 @@ PrefabInstance:
     - target: {fileID: 2200350032846286578, guid: 8cb82dbafa528cd40b9c1aa017d30253, type: 3}
       propertyPath: m_Name
       value: RightToLeft
+      objectReference: {fileID: 0}
+    - target: {fileID: 2200350032846286578, guid: 8cb82dbafa528cd40b9c1aa017d30253, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7822760281104899675, guid: 8cb82dbafa528cd40b9c1aa017d30253, type: 3}
       propertyPath: m_Color.a
