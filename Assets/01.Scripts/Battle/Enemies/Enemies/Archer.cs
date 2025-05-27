@@ -24,9 +24,9 @@ public class RangeMultiAttackNode : Node
                         .SetEffect(Bolts.EffectType.Penetration)
                         .SetSize(1f)
                         .SetDamage(eController.Resource.Get(EnemyStatType.Attack).value)
-                        .SetSpeed(30)
+                        .SetSpeed(35)
                         .SetDegree(controller.Agent.GetDegree() + currDegree)
-                        .SetDuration(0.6f)
+                        .SetDuration(0.8f)
                         .Fire();
                 }
             }
