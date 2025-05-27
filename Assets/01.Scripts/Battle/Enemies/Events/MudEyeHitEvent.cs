@@ -10,6 +10,8 @@ public class MudEyeHitEvent: MonoBehaviour,IDamagable
     public MapSwapper mapSwapper;
     public GameObject enemyPool;
 
+    public bool isEnd;
+    
     private void Awake()
     {
         controller = GetComponent<EnemyController>();
@@ -18,6 +20,8 @@ public class MudEyeHitEvent: MonoBehaviour,IDamagable
     // ReSharper disable Unity.PerformanceAnalysis
     public void GetDamage(float damage)
     {
+        if (isEnd) return;
+        
         controller.GetDamage(damage);
 
         var health = controller.Resource.Get(EnemyStatType.Health);
@@ -25,6 +29,7 @@ public class MudEyeHitEvent: MonoBehaviour,IDamagable
         
         if (controller.Resource.Get(EnemyStatType.Health).value <= 0)
         {
+            isEnd = true;
             // 비용 문제 추후 생각해보기
             foreach (Transform child in enemyPool.gameObject.transform)
             {

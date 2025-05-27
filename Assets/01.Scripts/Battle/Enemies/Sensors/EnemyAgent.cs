@@ -22,9 +22,8 @@ public class EnemyAgent : MonoBehaviour
     public float TracingSpeed => 
         controller is not EnemyController eController ? 0f : eController.Resource.Get(EnemyStatType.Speed)?.value ?? 0f;
     
-    public float defenseDistance;
-
-    public float combatDuration; // 전
+    // public float defenseDistance;
+    // public float combatDuration; // 전
     
     // public Tilemap tilemap; // 추후 동적으로 찾도록 처리
 
