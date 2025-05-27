@@ -83,6 +83,7 @@ public class SummonController: EnemyBaseController
         isCasterAttached = isAttached;
         
         if (!isCasterAttached) return;
+        SkillController.Instance.isDisable = true;
         // 플레이어 비/활성화가 잠시 필요 - agent 쪽에서 인식 처리만 잘되면 됨
         cRenderer.enabled = false;
         // 서먼 스킬을 사용하는 동안은 무적 처리
@@ -114,7 +115,9 @@ public class SummonController: EnemyBaseController
         isCasterAttached = false;
         cRigidbody.velocity = Vector2.zero;
         cRenderer.enabled = true;
-        if(isPlayerCaster && !pController) { pController.isInvincible = false; }
+        SkillController.Instance.isDisable = false;
+
+        if(pController) { pController.isInvincible = false; }
     }
 
     private void Start()
@@ -141,7 +144,7 @@ public class SummonController: EnemyBaseController
     private void Update()
     {
         // 다른 방식으로 처리 필요
-        if (Input.GetKeyDown(KeyCode.A)) { Machine.currNode.OnPressed(); } // 임시 등록
+        // if (Input.GetKeyDown(KeyCode.A)) { Machine.currNode.OnPressed(); } // 임시 등록
 
         if (isCasterAttached)
         {
@@ -155,6 +158,7 @@ public class SummonController: EnemyBaseController
         cRigidbody.velocity = Vector2.zero;
         cRenderer.enabled = true;
         Collider.isTrigger = false;
-        if(isPlayerCaster && !pController) { pController.isInvincible = false; }
+        SkillController.Instance.isDisable = false;
+        if(pController) { pController.isInvincible = false; }
     }
 }
