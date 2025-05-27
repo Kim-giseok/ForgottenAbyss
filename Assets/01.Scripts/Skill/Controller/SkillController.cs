@@ -23,7 +23,9 @@ public class SkillController : Singleton<SkillController>
     private bool isDead = false;
     public bool isSkillPlaying = false;
     public bool isBowAttack = false;
-
+    
+    [HideInInspector] public bool isDisable;
+    
     private void Start()
     {
         Initialized();
@@ -53,7 +55,7 @@ public class SkillController : Singleton<SkillController>
                 break;
         }
 
-        Debug.Log($"[Combat] ¹«±â Å¸ÀÔ: {weaponData.Type}, ¿¬°á ¿Ï·á");
+        Debug.Log($"[Combat] ï¿½ï¿½ï¿½ï¿½ Å¸ï¿½ï¿½: {weaponData.Type}, ï¿½ï¿½ï¿½ï¿½ ï¿½Ï·ï¿½");
 
         if (skillManager != null)
         {
@@ -66,7 +68,7 @@ public class SkillController : Singleton<SkillController>
                 memorySkill = skillManager.GetSkillInstance(memoryId);
             }
 
-            Debug.Log("[SkillController] ½ºÅ³ ¿¬°á ¿Ï·á");
+            Debug.Log("[SkillController] ï¿½ï¿½Å³ ï¿½ï¿½ï¿½ï¿½ ï¿½Ï·ï¿½");
         }
     }
 
@@ -78,6 +80,8 @@ public class SkillController : Singleton<SkillController>
 
     void OnAttack(InputValue value)
     {
+        if(isDisable) return;
+        
         AnimatorStateInfo stateInfo = GameManager.Instance.player.animator.GetCurrentAnimatorStateInfo(0);
         bool isInAttackState = stateInfo.IsTag("Attack") && stateInfo.normalizedTime <= 0.1f;
 
@@ -85,13 +89,13 @@ public class SkillController : Singleton<SkillController>
 
         if (!SystemManager.Instance.weaponManager.IsWeaponEquipped())
         {
-            Debug.LogWarning("¹«±â°¡ ÀåÂøµÇÁö ¾Ê¾Ò½À´Ï´Ù. ÀÏ¹Ý°ø°Ý ºÒ°¡!!");
+            Debug.LogWarning("ï¿½ï¿½ï¿½â°¡ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¾Ò½ï¿½ï¿½Ï´ï¿½. ï¿½Ï¹Ý°ï¿½ï¿½ï¿½ ï¿½Ò°ï¿½!!");
             return;
         }
 
         if (!IsExecutable() || !player.canAttack || IsTurning())
         {
-            Debug.Log("A: °ø°Ý ºÒ°¡ ¶Ç´Â ¹æÇâ ÀüÈ¯ Áß - °ø°Ý ÀÔ·Â ¹öÆÛ¸µ");
+            Debug.Log("A: ï¿½ï¿½ï¿½ï¿½ ï¿½Ò°ï¿½ ï¿½Ç´ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¯ ï¿½ï¿½ - ï¿½ï¿½ï¿½ï¿½ ï¿½Ô·ï¿½ ï¿½ï¿½ï¿½Û¸ï¿½");
             SystemManager.Instance.actionBufferUtil.BufferAction(
                 "NormalAttack",
                 () => IsExecutable() && player.canAttack && !isInAttackState,
@@ -102,35 +106,41 @@ public class SkillController : Singleton<SkillController>
         else
             combatSkill.Execute();
 
-        Debug.Log("A: ±âº» °ø°Ý");
+        Debug.Log("A: ï¿½âº» ï¿½ï¿½ï¿½ï¿½");
     }
 
     void OnFirstSkill(InputValue value)
     {
+        if(isDisable) return;
+        
         if ((!IsExecutable() && !IsBufferable()) || player.isOnLadder) return;
         TryBufferOrExecuteSkill(skill01, "FirstSkill");
-        Debug.Log("S: ½ºÅ³1");
+        Debug.Log("S: ï¿½ï¿½Å³1");
     }
 
     void OnSecondSkill(InputValue value)
     {
+        if(isDisable) return;
+
         if ((!IsExecutable() && !IsBufferable()) || player.isOnLadder) return;
         TryBufferOrExecuteSkill(skill02, "SecondSkill");
-        Debug.Log("D: ½ºÅ³2");
+        Debug.Log("D: ï¿½ï¿½Å³2");
     }
 
     void OnSpecialSkill(InputValue value)
     {
+        if(isDisable) return;
+
         if ((!IsExecutable() && !IsBufferable()) || player.isOnLadder) return;
         if (memorySkill == null)
         {
             if (DamageTextManager.Instance != null)
-                DamageTextManager.Instance.ShowMessage("±â¾ï ½ºÅ³ÀÌ ÀåÂøµÇÁö ¾Ê¾Ò½À´Ï´Ù.");
+                DamageTextManager.Instance.ShowMessage("ï¿½ï¿½ï¿½ ï¿½ï¿½Å³ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¾Ò½ï¿½ï¿½Ï´ï¿½.");
 
             return;
         }
         TryBufferOrExecuteSkill(memorySkill, "SpecialSkill");
-        Debug.Log("R: ±â¾ï ½ºÅ³");
+        Debug.Log("R: ï¿½ï¿½ï¿½ ï¿½ï¿½Å³");
     }
 
     public void SetSkillPlaying(bool value) => isSkillPlaying = value;
@@ -160,7 +170,7 @@ public class SkillController : Singleton<SkillController>
 
     //public bool IsAttacking()
     //{
-    //    // È°ÀÌ °Ëº¸´Ù ¾ÈÁÁÀº °Í°°¾Æ¼­ ½ºÅ³ »ç¿ë Á¦ÇÑÀ» ÀÓ½Ã·Î Ç®¾îÁÜ ÆòÅ¸ Áß ½ºÅ³ »ç¿ë °¡´É
+    //    // È°ï¿½ï¿½ ï¿½Ëºï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Í°ï¿½ï¿½Æ¼ï¿½ ï¿½ï¿½Å³ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ó½Ã·ï¿½ Ç®ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Å¸ ï¿½ï¿½ ï¿½ï¿½Å³ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     //    return (comboAttack != null && comboAttack.IsAttacking) ||
     //           //(rangedAttack != null && rangedAttack.IsAttacking) ||
     //           isSkillPlaying;
@@ -229,7 +239,7 @@ public class SkillController : Singleton<SkillController>
         if (!SystemManager.Instance.skillManager.IsSkillEquipped(instance))
         {
             if (DamageTextManager.Instance != null)
-                DamageTextManager.Instance.ShowMessage("½ºÅ³ÀÌ ÀåÂøµÇÁö ¾Ê¾Ò½À´Ï´Ù!");
+                DamageTextManager.Instance.ShowMessage("ï¿½ï¿½Å³ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¾Ò½ï¿½ï¿½Ï´ï¿½!");
 
             return;
         }
@@ -238,12 +248,12 @@ public class SkillController : Singleton<SkillController>
 
         if (IsExecutable())
         {
-            Debug.Log("¹Ù·Î ½ÇÇà");
+            Debug.Log("ï¿½Ù·ï¿½ ï¿½ï¿½ï¿½ï¿½");
             StartCoroutine(UseSkillRoutine(instance));
         }
-        else if (IsBufferable()) // Áï½Ã ½ÇÇà ºÒ°¡´ÉÇÏÁö¸¸ ÀÌÈÄ ½ÇÇàµÉ °¡´É¼ºÀÌ ÀÖ´Ù¸é ¹öÆÛ¸µ
+        else if (IsBufferable()) // ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ò°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½É¼ï¿½ï¿½ï¿½ ï¿½Ö´Ù¸ï¿½ ï¿½ï¿½ï¿½Û¸ï¿½
         {
-            Debug.Log("¹öÆÛ¸µ ½ÇÇà");
+            Debug.Log("ï¿½ï¿½ï¿½Û¸ï¿½ ï¿½ï¿½ï¿½ï¿½");
             SystemManager.Instance.actionBufferUtil.BufferAction(
                 bufferName,
                 () => IsExecutable(),
@@ -298,7 +308,7 @@ public class SkillController : Singleton<SkillController>
                     else
                     {
                         comboAttack = FindObjectOfType<ComboAttack>();
-                        Debug.LogWarning("comboAttackÀÌ nullÀÌ°Å³ª DestroyµÊ ¡æ Àç¿¬°á ½Ãµµ");
+                        Debug.LogWarning("comboAttackï¿½ï¿½ nullï¿½Ì°Å³ï¿½ Destroyï¿½ï¿½ ï¿½ï¿½ ï¿½ç¿¬ï¿½ï¿½ ï¿½Ãµï¿½");
                     }
                     break;
 
@@ -308,12 +318,12 @@ public class SkillController : Singleton<SkillController>
                     else
                     {
                         rangedAttack = FindObjectOfType<RangedAttack>();
-                        Debug.LogWarning("rangedAttackÀÌ nullÀÌ°Å³ª DestroyµÊ ¡æ Àç¿¬°á ½Ãµµ");
+                        Debug.LogWarning("rangedAttackï¿½ï¿½ nullï¿½Ì°Å³ï¿½ Destroyï¿½ï¿½ ï¿½ï¿½ ï¿½ç¿¬ï¿½ï¿½ ï¿½Ãµï¿½");
                     }
                     break;
 
                 default:
-                    Debug.LogWarning($"ResetAttack() - ¾Ë ¼ö ¾ø´Â ¹«±â Å¸ÀÔ: {currentWeaponType}");
+                    Debug.LogWarning($"ResetAttack() - ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Å¸ï¿½ï¿½: {currentWeaponType}");
                     break;
             }
         }
