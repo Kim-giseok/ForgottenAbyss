@@ -36,19 +36,25 @@ public class FieldItemDropAnimator: MonoBehaviour
     IEnumerator ParabolaMoveRoutine(Vector2 endPoint, Vector2 startPoint)
     {
         float time = 0;
+        float currentX = transform.position.x;
+        
         while (time < duration)
         {
             time += Time.deltaTime;
             float progress = time / duration;
 
-            float x = Mathf.Lerp(endPoint.x, startPoint.x, progress);
+            float targetX = Mathf.Lerp(endPoint.x, startPoint.x, progress);
             float y = endPoint.y + height * 4f * (progress - progress * progress);
+            
+            float deltaX = targetX - currentX;
 
-            transform.position = new Vector3(x, y);
+            var hit = Physics2D.Raycast(new Vector2(currentX, transform.position.y), Vector2.right * Mathf.Sign(deltaX), Mathf.Abs(deltaX), LayerMask.GetMask("Ground", "IgnoreCollision"));
+            if (!hit.collider) { currentX = targetX; }
+            
+            transform.position = new Vector3(currentX, y);
             yield return null;
         }
 
-        transform.position = startPoint;
 
         yield return new WaitForSeconds(0.5f);
         
