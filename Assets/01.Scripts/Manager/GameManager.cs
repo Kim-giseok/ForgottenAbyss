@@ -53,7 +53,7 @@ public class GameManager : SingletonLoadRemain<GameManager>
         int deviceWidth = Screen.width;
         int deviceHeight = Screen.height;
 
-        Screen.SetResolution(setWidth, (int)(((float)deviceHeight / deviceWidth) * setWidth), true); // SetResolution 함수 제대로 사용하기
+        Screen.SetResolution(setWidth, (int)(((float)deviceHeight / deviceWidth) * setWidth), Screen.fullScreen); // SetResolution 함수 제대로 사용하기
 
         if ((float)setWidth / setHeight < (float)deviceWidth / deviceHeight) // 기기의 해상도 비가 더 큰 경우
         {
