@@ -73,8 +73,9 @@ public class MapSpawnManager : Singleton<MapSpawnManager>
 
         if (SpawnedMap != null)
             Destroy(SpawnedMap.gameObject);
-        foreach (var item in GameObject.FindGameObjectsWithTag("FieldItem"))
-        { item.gameObject.SetActive(false); }
+        
+        foreach (var item in GameObject.FindGameObjectsWithTag("FieldItem")) { item.gameObject.SetActive(false); }
+        BoltsPool.Instance.Clear();
 
         SpawnedMap = Instantiate(maps[mapIdx++]);
 
