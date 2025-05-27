@@ -4,12 +4,12 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UIManager : SingletonLoadRemain<UIManager>
+public class UIManager : MonoBehaviour
 {
+    public static UIManager Instance { get; private set; }
     public DragManager DragManager { get; private set; }
     public DragItemPool dragItemPool;
     public QuickSlotController quickSlotController;
-    [field: SerializeField] public Camera UIcamera { get; private set; }
 
     [Header("ScreenUI")]
     public InventoryUIManager inventoryUI;
@@ -33,14 +33,22 @@ public class UIManager : SingletonLoadRemain<UIManager>
     public float fadeDuration = 1f;
     public float holdTime = 2f;
 
-    protected override void Awake()
+    private void Awake()
     {
         dragItemPool.Initialize();
 
-        base.Awake();
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
 
         DragManager = new DragManager();
         Debug.Log("[UIManager] DragManager ������");
+
     }
 
     public void ToggleInventory() => inventoryUI?.ToggleInventory();
