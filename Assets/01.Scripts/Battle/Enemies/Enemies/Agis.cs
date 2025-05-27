@@ -67,7 +67,7 @@ public class AgisRainNode : Node<SummonController>
     {
         if (currTime >= duration) { SetStatus(Status.Success); return; }
 
-        if (!Mathf.Approximately(Mathf.Floor(currTime / 0.2f), Mathf.Floor((currTime - Time.deltaTime) / 0.2f)))
+        if (!Mathf.Approximately(Mathf.Floor(currTime / 0.18f), Mathf.Floor((currTime - Time.deltaTime) / 0.18f)))
         {
             BoltsPool.Instance.Create(controller.transform, Bolts.Type.Rain).SetEffect(Bolts.EffectType.Penetration).SetDamage(((SummonController)controller).eController.Resource.Get(EnemyStatType.Attack).value).Fire();
         }

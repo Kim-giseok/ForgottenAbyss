@@ -87,49 +87,38 @@ public class Explosion : Node
 // 공격해야 다음 노드로 넘어가는 형태로 분리하기
 public class ComboDashAttack : Node<SummonController>
 {
-    private List<string> combo = new() { "Combo1", "Combo2", "Combo3" };
+    private readonly string animationName;
+    private Vector2 prevInput;
 
-    private void DashAttack(int currComboCount)
+    public ComboDashAttack(string animationName)
+    {
+        this.animationName = animationName;
+    }
+    
+    public override void Start()
     {
         SoundManager.Instance.Playsfx("AgisSpell");
         
-        controller.Anim.Play(combo[currComboCount]);
+        controller.Anim.Play(animationName);
 
         controller.Rigid.velocity = Vector2.zero;
         controller.Rigid.gravityScale = 0f;
         controller.Rigid.drag = 10f;
         
-        controller.Rigid.AddForce(SummonController.InputDirection * 120f, ForceMode2D.Impulse);
+        controller.Rigid.AddForce(SummonController.InputDirection * 80f, ForceMode2D.Impulse);
         
         // 공격 방향으로 Z축 회전
         float angle = Mathf.Atan2(SummonController.InputDirection.y, Mathf.Abs(SummonController.InputDirection.x)) * Mathf.Rad2Deg;
-        controller.transform.rotation = Quaternion.Euler(0, SummonController.InputDirection.x < 0 ? 180 : 0, angle); 
+        controller.transform.rotation = Quaternion.Euler(0, GameManager.Instance.player.transform.eulerAngles.y > 0 ? 180 : 0, angle); 
         
-        context.Set("combo", currComboCount + 1);
-    }
-
-    public override void Start()
-    {
-        context.Set("combo", 0);
-        // 처음 위치 찾기 어려움
-        DashAttack(0);
+        prevInput = SummonController.InputDirection;
     }
     public override void Update()
     {
         // 제한시간이 지나면 종료
-        if(currTime > 3f) { SetStatus(Status.Fail); }
+        if(currTime > 1f) { SetStatus(Status.Success); }
     }
-
-    //do: 이동을 인식하는 것도 필요
-    public override void OnPressed()
-    {
-        
-        int currComboCount = context.Get<int>("combo");
-        if (currComboCount > 2) return;
-        
-        DashAttack(currComboCount);
-    }
-
+    
     public override void OnAnimated(AnimationStatus status, AnimatorStateInfo animInfo)
     {
         if (status == AnimationStatus.Start)
@@ -144,14 +133,7 @@ public class ComboDashAttack : Node<SummonController>
         if(status == AnimationStatus.End)
         {
             BoltsPool.Instance.DisableMelee(controller.transform);
-            
-            int currComboCount = context.Get<int>("combo");
-
-            if (currComboCount == combo.Count)
-            {
-                SetStatus(Status.Success);
-                return;
-            }
+            SetStatus(Status.Success);
         }
     }
 
