@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class MudEyeHitEvent: MonoBehaviour,IDamagable
@@ -11,6 +12,10 @@ public class MudEyeHitEvent: MonoBehaviour,IDamagable
     public GameObject enemyPool;
 
     public bool isEnd;
+    
+    // 변경 주기를 통해 과도한 변경 발생하는 점 수정
+    public float swapCooldown = 3f;
+    private bool canSwap = true;
     
     private void Awake()
     {
@@ -46,10 +51,19 @@ public class MudEyeHitEvent: MonoBehaviour,IDamagable
         }
         
         totalDamage += damage;
-        if (totalDamage > maxDamage)
+        if (totalDamage > maxDamage && canSwap)
         {
             totalDamage = 0;
             mapSwapper.SwapMapAsync().Forget();
+            
+            canSwap = false;
+            StartCoroutine(SwapCooldownRoutine());
         }
+    }
+
+    private IEnumerator SwapCooldownRoutine()
+    {
+        yield return new WaitForSeconds(swapCooldown);
+        canSwap = true;
     }
 }

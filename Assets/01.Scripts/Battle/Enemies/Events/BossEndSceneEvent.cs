@@ -12,6 +12,8 @@ public class BossEndSceneEvent: MonoBehaviour
         if (!gameObject.scene.isLoaded) return;
         
         var fieldItem = FieldItemPool.Instance.CurrMemoryItems.Find(item => item.item.itemName == "기억의 조각");
+        if (!fieldItem) return;
+        
         var memoryItemEvent = fieldItem.AddComponent<BossMemoryItemEvent>();
         memoryItemEvent.SetEvent(() => endScene.SetActive(true));
         
