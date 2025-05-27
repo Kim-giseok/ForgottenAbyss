@@ -4,6 +4,7 @@ using Cinemachine;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.SceneManagement;
 
 public class GameManager : SingletonLoadRemain<GameManager>
@@ -39,6 +40,8 @@ public class GameManager : SingletonLoadRemain<GameManager>
             cameraZoom = mainCamera.GetComponent<CameraZoom>();
 
             SetCameraResolution();
+            mainCamera.GetUniversalAdditionalCameraData().cameraStack.Clear();
+            mainCamera.GetUniversalAdditionalCameraData().cameraStack.Add(UIManager.Instance.UIcamera);
         }
     }
 
@@ -49,7 +52,7 @@ public class GameManager : SingletonLoadRemain<GameManager>
         int deviceWidth = Screen.width;
         int deviceHeight = Screen.height;
 
-        Screen.SetResolution(setWidth, (int)(((float)deviceHeight / deviceWidth) * setWidth), true); // SetResolution 함수 제대로 사용하기
+        Screen.SetResolution(setWidth, (int)(((float)deviceHeight / deviceWidth) * setWidth), Screen.fullScreen); // SetResolution 함수 제대로 사용하기
 
         if ((float)setWidth / setHeight < (float)deviceWidth / deviceHeight) // 기기의 해상도 비가 더 큰 경우
         {
