@@ -42,7 +42,7 @@ public class GameManager : SingletonLoadRemain<GameManager>
             SetCameraResolution(mainCamera);
 
             mainCamera.GetUniversalAdditionalCameraData().cameraStack.Clear();
-            SetCameraResolution(UIManager.Instance.UIcamera);
+            UIManager.Instance.UIcamera.rect = mainCamera.rect;
             mainCamera.GetUniversalAdditionalCameraData().cameraStack.Add(UIManager.Instance.UIcamera);
         }
     }
@@ -54,7 +54,8 @@ public class GameManager : SingletonLoadRemain<GameManager>
         int deviceWidth = Screen.width;
         int deviceHeight = Screen.height;
 
-        Screen.SetResolution(setWidth, (int)(((float)deviceHeight / deviceWidth) * setWidth), Screen.fullScreen); // SetResolution 함수 제대로 사용하기
+        bool isFull = Screen.fullScreen;
+        //Screen.SetResolution(setWidth, (int)(((float)deviceHeight / deviceWidth) * setWidth), true); // SetResolution 함수 제대로 사용하기
 
         if ((float)setWidth / setHeight < (float)deviceWidth / deviceHeight) // 기기의 해상도 비가 더 큰 경우
         {
