@@ -4,6 +4,7 @@ using Cinemachine;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.SceneManagement;
 
 public class GameManager : SingletonLoadRemain<GameManager>
@@ -39,6 +40,9 @@ public class GameManager : SingletonLoadRemain<GameManager>
             cameraZoom = mainCamera.GetComponent<CameraZoom>();
 
             SetCameraResolution();
+
+            mainCamera.GetUniversalAdditionalCameraData().cameraStack.Clear();
+            mainCamera.GetUniversalAdditionalCameraData().cameraStack.Add(UIManager.Instance.UIcamera);
         }
     }
 
