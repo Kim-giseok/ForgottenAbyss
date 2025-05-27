@@ -32,6 +32,7 @@ public class ConfirmationUI : BaseUI
     {
         onClick?.Invoke();
         onClick = null;
+        GameManager.Instance.PausePlayer(false);
         gameObject.SetActive(false);
     }
 }

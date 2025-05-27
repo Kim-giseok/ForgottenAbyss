@@ -10,6 +10,7 @@ public class UIManager : MonoBehaviour
     public DragManager DragManager { get; private set; }
     public DragItemPool dragItemPool;
     public QuickSlotController quickSlotController;
+    [field: SerializeField] public Camera UIcamera { get; private set; }
 
     [Header("ScreenUI")]
     public InventoryUIManager inventoryUI;
@@ -48,7 +49,6 @@ public class UIManager : MonoBehaviour
 
         DragManager = new DragManager();
         Debug.Log("[UIManager] DragManager ������");
-
     }
 
     public void ToggleInventory() => inventoryUI?.ToggleInventory();
