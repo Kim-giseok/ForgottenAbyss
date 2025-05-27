@@ -48,11 +48,8 @@ public class Boss2StartScene: CutScene
         LetterBox.SetColor(Color.red);
 
         await Narration("색이란 건 섞일수록 더 아름다워질 줄 알았지만,\n 이 세상은 검게 물들고 말았네..");
-        await Wait();
-        
         await Narration("진실을 본다고 오해하지 마라.\n 익숙함에 속아 잠들고 잠기겨라.");
-        await Wait();
-
+        
         Camera.Focus(Player);
         Sound.Playsfx("Sword1");
         Light.FadeOut(0.2f, 0.5f);
@@ -65,11 +62,7 @@ public class Boss2StartScene: CutScene
         
         Camera.Focus(mudEyeActor);
         await Narration("그림자여, 이미 우리는 하나의 약속된 운명을 함께할 것이다.");
-        await Wait();
-        
         await Narration("지독한 시간 속에서 서서히 잠식되리라.");
-        await Wait();
-        
         
         Narration().Forget();
         SetCutSceneMode(false);
