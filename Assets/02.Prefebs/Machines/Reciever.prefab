@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3050901875184515690}
+  - component: {fileID: 3859869026767787222}
   - component: {fileID: 8853770928741369288}
   - component: {fileID: 7668138020508233137}
   - component: {fileID: 874264554450282891}
@@ -35,7 +36,7 @@ Transform:
   - {fileID: 4823863779231931021}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8853770928741369288
+--- !u!114 &3859869026767787222
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -44,7 +45,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2113587801728021610}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1017d71fcc4afc94598b7b4705e700e6, type: 3}
+  m_Script: {fileID: 11500000, guid: 0c653c23b13451d45a00f1609302bd4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   machineAnim: {fileID: 874264554450282891}
@@ -69,6 +70,18 @@ MonoBehaviour:
       m_Calls: []
   isLoop: 0
   waitTime: 0
+--- !u!114 &8853770928741369288
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2113587801728021610}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1017d71fcc4afc94598b7b4705e700e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   recieveItem: []
   recieveNum: 0
 --- !u!61 &7668138020508233137

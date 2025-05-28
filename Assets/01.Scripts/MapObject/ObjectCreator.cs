@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MachineReciever : Machine
+public class ObjectCreator : MonoBehaviour
 {
     [Header("RecieveParameter")]
     [SerializeField] GameObject[] recieveItem;
