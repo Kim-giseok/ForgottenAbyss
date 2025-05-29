@@ -104,5 +104,6 @@ public class AgisStartScene : CutScene
         
         UI.BossHealthUI.Active(true);
         UI.BossHealthUI.SetProfile(BossProfileType.Agis);
+        UI.BossHealthUI.SetPercentage(100);
     }   
 }
