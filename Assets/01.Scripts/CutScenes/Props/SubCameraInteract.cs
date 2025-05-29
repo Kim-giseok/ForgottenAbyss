@@ -58,6 +58,14 @@ public class SubCameraInteract: MonoBehaviour
         
         virCam1Confiner2D.m_BoundingShape2D = confiner2D?.m_BoundingShape2D;
         virCam2Confiner2D.m_BoundingShape2D = confiner2D?.m_BoundingShape2D;
+        
+   
+    }
+
+    public void Connect()
+    {
+        virCam1Confiner2D.enabled = true;
+        virCam2Confiner2D.enabled = true;
     }
 
     public void DisConnect()
