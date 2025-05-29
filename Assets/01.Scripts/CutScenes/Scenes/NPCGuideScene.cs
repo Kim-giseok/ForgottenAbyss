@@ -20,6 +20,7 @@ public class NPCGuideScene: CutScene
         GameManager.Instance.PausePlayer();
 
         Camera.Init();
+        Camera.Connect();
         Camera.Focus(npc);
         
         Camera.Shake(2f, 2f, 0.2f);
