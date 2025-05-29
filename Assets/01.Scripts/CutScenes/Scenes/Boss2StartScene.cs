@@ -78,7 +78,8 @@ public class Boss2StartScene: CutScene
         
         UI.BossHealthUI.Active(true);
         UI.BossHealthUI.SetProfile(BossProfileType.MudEye);
-        
+        UI.BossHealthUI.SetPercentage(100);
+
         Camera.Reset();
         GameManager.Instance.PausePlayer(false);
         Player.animator.Play("Idle");
