@@ -227,11 +227,9 @@ public class ComboAttack : MonoBehaviour
         while (elapsed < moveTime)
         {
             elapsed += Time.deltaTime;
-            transform.position = Vector3.Lerp(startPos, targetPos, elapsed / moveTime);
+            player.rigid.MovePosition(Vector3.Lerp(startPos, targetPos, elapsed / moveTime));
             yield return null;
         }
-
-        transform.position = targetPos;
     }
 
     void OnJumpSmash(string data)

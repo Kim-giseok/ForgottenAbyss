@@ -4,6 +4,7 @@ using UnityEngine;
 public class DashState : PlayerStateMachine
 {
     private float dashTimer = 0f;
+    private float invincibiltiyTime = 0.8f;
     public DashState(ControllerPlayer player) : base(player) { }
     public override void Enter()
     {
@@ -13,7 +14,7 @@ public class DashState : PlayerStateMachine
         playerSound.DashSound();
         player.animator.SetBool("IsDash", true);
         player.animator.SetTrigger("DashTrigger");
-        player.SetInvincibility(player.dashTime + 0.5f);
+        player.SetInvincibility(invincibiltiyTime);
 
         player.canAttack = false;
         player.canSkill = false;
